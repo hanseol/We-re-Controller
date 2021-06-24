@@ -58,9 +58,12 @@
 	</bean> -->
 
 	<!-- for JFile -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="2"/>
 
-	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1" p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" p:viewClass="org.springframework.web.servlet.view.JstlView"/>
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		p:order="3" p:prefix="/WEB-INF/jsp/" 
+		p:suffix=".jsp"
+	 	p:viewClass="org.springframework.web.servlet.view.JstlView"/>
 		  
 	<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" id="jsonView">
 		<property name="contentType" value="text/html;charset=UTF-8"/>
@@ -90,5 +93,21 @@
 	<mvc:view-controller path="/uss/ion/fbk/facebookSignin.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookSignin" />
 	<mvc:view-controller path="/uss/ion/fbk/facebookSignout.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
 	-->
+	
+	<!-- tiles 설정  -->
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<property name="order" value="1" />
+	</bean>
 
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/config/egovframework/springmvc/tiles-define.xml</value>
+			</list>
+		</property>
+	</bean>
 </beans>

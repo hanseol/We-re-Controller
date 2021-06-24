@@ -15,3 +15,4 @@
 		</frameset>
 	<frame name="_bottom" src="${pageContext.request.contextPath}/EgovBottom.do" scrolling="no" title="푸터">
 </frameset>
+

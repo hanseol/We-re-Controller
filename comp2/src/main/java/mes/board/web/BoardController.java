@@ -76,7 +76,7 @@ public class BoardController {
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
         
-        return "/mes/board/BoardList";
+        return "mes/board/BoardList.page";
     } 
     
     @RequestMapping("/board/addBoardView.do")

@@ -12,7 +12,9 @@
 </head>
 <body>
 <div id="footer">
-	<div><strong class="footer_title_strong">Copyright(c)2018 eGovframework. All right reserved.</strong></div>
+	<div>
+		<strong class="footer_title_strong">Copyright(c)2018 eGovframework. All right reserved.</strong>
+	</div>
 </div>
 </body>
 </html>
