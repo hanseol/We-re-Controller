@@ -7,41 +7,21 @@
 	</context:component-scan>
 	
 	<!-- For Pagination Tag -->
-	<bean class="egovframework.com.cmm.ImagePaginationRenderer"
-	id="imageRenderer" />
+	<bean class="egovframework.com.cmm.ImagePaginationRenderer" id="imageRenderer"/>
 
-	<bean
-		class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager"
-		id="paginationManager">
+	<bean class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager" id="paginationManager">
 		<property name="rendererType">
 			<map>
-				<entry key="image" value-ref="imageRenderer" />
+				<entry key="image" value-ref="imageRenderer"/>
 			</map>
 		</property>
-
 	</bean>
 
-<bean
-	class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-	<property name="webBindingInitializer">
-		<bean
-			class="egovframework.example.cmmn.web.EgovBindingInitializer" />
-	</property>
-	<property name="messageConverters">
-		<list>
-			<bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
-			<bean
-				class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter">
-				<property name="supportedMediaTypes">
-					<list>
-						<value>*/*;charset=UTF-8</value>
-					</list>
-				</property>
-			</bean>
-		</list>
-	</property>
-</bean>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="webBindingInitializer">
+            <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
+        </property>
+    </bean>
     
     <!-- setting Locale Locale Interceptor 설정하기  -->
     <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" id="localeChangeInterceptor" p:paramName="lang"/>
