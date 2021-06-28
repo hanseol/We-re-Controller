@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.order.service.impl.ProOrderMapper">
+	
+
+	<resultMap id="proOrder" type="mes.pro.order.service.ProOrderVO">
+		<result property="proOrderCode" column="PRO_ORDER_CODE" />
+		<result property="proOrderGubun" column="PRO_ORDER_GUBUN" />
+		<result property="proOrderQty" column="PRO_ORDER_QTY" />
+		<result property="proOrderRank" column="PRO_ORDER_RANK" />
+		<result property="proOrderDate" column="PRO_ORDER_DATE" />
+	</resultMap>
+	
+	<insert id="insertProOrder">
+		<![CDATA[
+			INSERT INTO PRO_ORDER 
+				( PRO_ORDER_CODE
+				  , PRO_ORDER_GUBUN
+				  , PRO_ORDER_QTY
+				  , PRO_ORDER_RANK
+				  , PRO_ORDER_DATE )
+			VALUES ( #{proOrderCode}
+				  , #{proOrderGubun}
+				  , #{proOrderQty}
+				  , #{proOrderRank}
+				  , #{proOrderDate} )
+		]]>
+	</insert>
+	
+	<update id="updateProOrder">
+		<![CDATA[
+			UPDATE PRO_ORDER
+			SET PRO_ORDER_CODE=#{proOrderCode}
+				, PRO_ORDER_GUBUN=#{proOrderGubun}
+				, PRO_ORDER_QTY=#{proOrderQty}
+				, PRO_ORDER_RANK=#{proOrderRank}
+				, PRO_ORDER_DATE=#{proOrderDate}
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</update>
+	
+	<delete id="deleteProOrder">
+		<![CDATA[
+			DELETE FROM PRO_ORDER 
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</delete>
+	
+	<select id="selectProOrder" resultMap="proOrder">
+		<![CDATA[
+			SELECT
+				PRO_ORDER_CODE
+				, PRO_ORDER_GUBUN
+				, PRO_ORDER_QTY
+				, PRO_ORDER_RANK
+				, PRO_ORDER_DATE
+			FROM PRO_ORDER
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</select>
+	
+	<select id="selectProOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								PRO_ORDER_CODE
+								, PRO_ORDER_GUBUN
+								, PRO_ORDER_QTY
+								, PRO_ORDER_RANK
+								, PRO_ORDER_DATE
+						FROM PRO_ORDER
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						PRO_ORDER_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						PRO_ORDER_GUBUN LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						PRO_ORDER_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectProOrderListTotCnt" parameterType="mes.pro.order.service.ProOrderVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM PRO_ORDER
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_ORDER_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_ORDER_GUBUN LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>
