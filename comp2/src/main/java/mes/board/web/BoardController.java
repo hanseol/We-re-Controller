@@ -1,24 +1,30 @@
 package mes.board.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
-import mes.board.service.BoardService;
 import mes.board.service.BoardDefaultVO;
+import mes.board.service.BoardService;
 import mes.board.service.BoardVO;
+import mes.board.service.GridDataVO;
 
 /**
  * @Class Name : BoardController.java
@@ -44,97 +50,100 @@ public class BoardController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 	
-    /**
-	 * BOARD 목록을 조회한다. (pageing)
+    /*
+	 * 테이블 목록 조회.
 	 * @param searchVO - 조회할 정보가 담긴 BoardDefaultVO
-	 * @return "/board/BoardList"
+	 * @return "map"
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/board/BoardList.do")
-    public String selectBoardList(@ModelAttribute("searchVO") BoardDefaultVO searchVO, 
-    		ModelMap model)
-            throws Exception {
+    @RequestMapping(value="/mes/readBoard")
+    @ResponseBody
+    public Map<String, Object> readBoard(Model model, 
+    		 @ModelAttribute("searchVO") BoardDefaultVO searchVO) throws Exception{
+
+    	int rowSize = boardService.selectBoardListTotCnt(searchVO);
+    	searchVO.setLastIndex(rowSize);
+    	List<?> boardList = boardService.selectBoardList(searchVO);
     	
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+    	Map<String, Object> paging = new HashMap<>();
+    	paging.put("page", searchVO.getPageIndex());
+    	paging.put("totalCount", rowSize);
+    	System.out.println("============================="+rowSize);
     	
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-        List<?> boardList = boardService.selectBoardList(searchVO);
-        model.addAttribute("resultList", boardList);
+    	Map<String,Object> data = new HashMap<>();
+    	data.put("contents", boardList);
+    	data.put("pagination", paging);
+    	
+    	Map<String,Object> map = new HashMap<>();
+    	map.put("result", true);
+    	map.put("data", data);
         
-        int totCnt = boardService.selectBoardListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
-        
-        return "mes/board/BoardList.page";
-    } 
-    
-    @RequestMapping("/board/addBoardView.do")
-    public String addBoardView(
-            @ModelAttribute("searchVO") BoardDefaultVO searchVO, Model model)
-            throws Exception {
-        model.addAttribute("boardVO", new BoardVO());
-        return "mes/board/BoardRegister.page";
+    	return map;
     }
     
-    @RequestMapping("/board/addBoard.do")
-    public String addBoard(
-            BoardVO boardVO,
-            @ModelAttribute("searchVO") BoardDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        boardService.insertBoard(boardVO);
-        status.setComplete();
-        return "forward:/board/BoardList.do";
+    /*
+	 * 테이블 행 추가.
+	 * @return "map"
+	 * @exception Exception
+	 */
+    @PostMapping("/ajax/insertBoard")
+    @ResponseBody
+    public Map<String,Object> insertBoard(@RequestBody GridDataVO gd) throws Exception {
+    
+    	List<BoardVO> list = new ArrayList<>();
+    	list = gd.getCreatedRows();
+    	
+    	for(int i=0;i<list.size();i++) {
+    		boardService.insertBoard(list.get(i));
+    	}
+    	
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("result", true);
+    	data.put("data", list);
+    	
+    	return data;
     }
     
-    @RequestMapping("/board/updateBoardView.do")
-    public String updateBoardView(
-            @RequestParam("no") java.math.BigDecimal no ,
-            @ModelAttribute("searchVO") BoardDefaultVO searchVO, Model model)
-            throws Exception {
-        BoardVO boardVO = new BoardVO();
-        boardVO.setNo(no);
-        // 변수명은 CoC 에 따라 boardVO
-        model.addAttribute(selectBoard(boardVO, searchVO));
-        return "mes/board/BoardRegister.page";
-    }
-
-    @RequestMapping("/board/selectBoard.do")
-    public @ModelAttribute("boardVO")
-    BoardVO selectBoard(
-            BoardVO boardVO,
-            @ModelAttribute("searchVO") BoardDefaultVO searchVO) throws Exception {
-        return boardService.selectBoard(boardVO);
-    }
-
-    @RequestMapping("/board/updateBoard.do")
-    public String updateBoard(
-            BoardVO boardVO,
-            @ModelAttribute("searchVO") BoardDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        boardService.updateBoard(boardVO);
-        status.setComplete();
-        return "forward:/board/BoardList.do";
+    
+    /*
+	 * 테이블 행 삭제.
+	 * @return "map"
+	 * @exception Exception
+	 */
+    @DeleteMapping("/ajax/deleteBoard")
+    @ResponseBody
+    public Map<String,Object> deleteBoard(@RequestBody GridDataVO gd) throws Exception {
+    	
+    	List<BoardVO> list = gd.getDeltedRows();
+    	for(int i=0; i<list.size(); i++) {
+    		boardService.deleteBoard(list.get(i));
+    	}
+    	
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("result", true);
+    	data.put("data", list.size());
+    	
+    	return data;
     }
     
-    @RequestMapping("/board/deleteBoard.do")
-    public String deleteBoard(
-            BoardVO boardVO,
-            @ModelAttribute("searchVO") BoardDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        boardService.deleteBoard(boardVO);
-        status.setComplete();
-        return "forward:/board/BoardList.do";
+    /*
+	 * 테이블 행 업데이트.
+	 * @return "map"
+	 * @exception Exception
+	 */
+    @PutMapping("/ajax/updateBoard")
+    @ResponseBody
+    public Map<String,Object> updateBoard(@RequestBody GridDataVO gd) throws Exception {
+    	
+    	List<BoardVO> list = gd.getUpdatedRows();
+    	for(int i=0; i<list.size(); i++) {
+    		boardService.updateBoard(list.get(i));
+    	}
+    	
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("result", true);
+    	data.put("data", list);
+    	
+    	return data;
     }
-
 }

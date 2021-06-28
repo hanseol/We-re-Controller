@@ -27,8 +27,8 @@ public class BoardVO extends BoardDefaultVO{
     private java.lang.String content;
     
     /** WDATE */
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
-    private java.util.Date wdate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String wdate;
     
     public java.math.BigDecimal getNo() {
         return this.no;
@@ -54,11 +54,11 @@ public class BoardVO extends BoardDefaultVO{
         this.content = content;
     }
     
-    public java.util.Date getWdate() {
+    public java.lang.String getWdate() {
         return this.wdate;
     }
     
-    public void setWdate(java.util.Date wdate) {
+    public void setWdate(java.lang.String wdate) {
         this.wdate = wdate;
     }
     

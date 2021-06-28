@@ -62,7 +62,7 @@ SELECT * FROM (
 								NO
 								, TITLE
 								, CONTENT
-								, WDATE
+								, TO_CHAR(WDATE,'YYYY/MM/DD') WDATE
 						FROM BOARD
 				WHERE 1=1
 				<if test="searchKeyword != null and searchKeyword != ''">
@@ -78,7 +78,7 @@ SELECT * FROM (
 		
 		<![CDATA[					
 	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM > #{firstIndex}
+)WHERE RNUM >= #{firstIndex}
 ]]>
 	</select>	
 	<select id="selectBoardListTotCnt" parameterType="mes.board.service.BoardVO" resultType="int">

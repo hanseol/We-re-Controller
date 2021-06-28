@@ -1,0 +1,70 @@
+package mes.sal.inout.service;
+
+import java.util.List;
+
+import mes.sal.inout.service.SalInoutDefaultVO;
+import mes.sal.inout.service.SalInoutVO;
+
+/**
+ * @Class Name : SalInoutService.java
+ * @Description : SalInout Business class
+ * @Modification Information
+ *
+ * @author hk
+ * @since 2021-06-28
+ * @version 1.0
+ * @see
+ *  
+ *  Copyright (C)  All right reserved.
+ */
+public interface SalInoutService {
+	
+	/**
+	 * SAL_INOUT을 등록한다.
+	 * @param vo - 등록할 정보가 담긴 SalInoutVO
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+    String insertSalInout(SalInoutVO vo) throws Exception;
+    
+    /**
+	 * SAL_INOUT을 수정한다.
+	 * @param vo - 수정할 정보가 담긴 SalInoutVO
+	 * @return void형
+	 * @exception Exception
+	 */
+    void updateSalInout(SalInoutVO vo) throws Exception;
+    
+    /**
+	 * SAL_INOUT을 삭제한다.
+	 * @param vo - 삭제할 정보가 담긴 SalInoutVO
+	 * @return void형 
+	 * @exception Exception
+	 */
+    void deleteSalInout(SalInoutVO vo) throws Exception;
+    
+    /**
+	 * SAL_INOUT을 조회한다.
+	 * @param vo - 조회할 정보가 담긴 SalInoutVO
+	 * @return 조회한 SAL_INOUT
+	 * @exception Exception
+	 */
+    SalInoutVO selectSalInout(SalInoutVO vo) throws Exception;
+    
+    /**
+	 * SAL_INOUT 목록을 조회한다.
+	 * @param searchVO - 조회할 정보가 담긴 VO
+	 * @return SAL_INOUT 목록
+	 * @exception Exception
+	 */
+    List selectSalInoutList(SalInoutDefaultVO searchVO) throws Exception;
+    
+    /**
+	 * SAL_INOUT 총 갯수를 조회한다.
+	 * @param searchVO - 조회할 정보가 담긴 VO
+	 * @return SAL_INOUT 총 갯수
+	 * @exception
+	 */
+    int selectSalInoutListTotCnt(SalInoutDefaultVO searchVO);
+    
+}

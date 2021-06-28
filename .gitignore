@@ -4,11 +4,11 @@
 
 ### Eclipse ###
 
-/target/
-/target/*
+/comp2/target/
+/comp2/target/*
 .classpath
 .project
-/.settings/
+/comp2/.settings/
 
 .metadata
 bin/

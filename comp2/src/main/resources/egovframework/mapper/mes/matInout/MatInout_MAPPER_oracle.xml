@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.mat.inout.service.impl.MatInoutMapper">
+
+
+	<resultMap id="matInout" type="mes.mat.inout.service.MatInoutVO">
+		<result property="matInoutStatement" column="MAT_INOUT_STATEMENT" />
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="matInoutDate" column="MAT_INOUT_DATE" />
+		<result property="matInoutGubun" column="MAT_INOUT_GUBUN" />
+		<result property="matInoutQuantity" column="MAT_INOUT_QUANTITY" />
+		<result property="matLotNo" column="MAT_LOT_NO" />
+		<result property="comProcessCode" column="COM_PROCESS_CODE" />
+		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
+		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
+	</resultMap>
+
+	<insert id="insertMatInout">
+		<![CDATA[
+			INSERT INTO MAT_INOUT 
+				( MAT_INOUT_STATEMENT
+				  , COM_MATERIAL_CODE
+				  , MAT_INOUT_DATE
+				  , MAT_INOUT_GUBUN
+				  , MAT_INOUT_QUANTITY
+				  , MAT_LOT_NO
+				  , COM_PROCESS_CODE
+				  , MAT_INOUT_UNIT_PRICE
+				  , MAT_INOUT_PRICE )
+			VALUES ( #{matInoutStatement}
+				  , #{comMaterialCode}
+				  , #{matInoutDate}
+				  , #{matInoutGubun}
+				  , #{matInoutQuantity}
+				  , #{matLotNo}
+				  , #{comProcessCode}
+				  , #{matInoutUnitPrice}
+				  , #{matInoutPrice} )
+		]]>
+	</insert>
+
+	<update id="updateMatInout">
+		<![CDATA[
+			UPDATE MAT_INOUT
+			SET MAT_INOUT_STATEMENT=#{matInoutStatement}
+				, COM_MATERIAL_CODE=#{comMaterialCode}
+				, MAT_INOUT_DATE=#{matInoutDate}
+				, MAT_INOUT_GUBUN=#{matInoutGubun}
+				, MAT_INOUT_QUANTITY=#{matInoutQuantity}
+				, MAT_LOT_NO=#{matLotNo}
+				, COM_PROCESS_CODE=#{comProcessCode}
+				, MAT_INOUT_UNIT_PRICE=#{matInoutUnitPrice}
+				, MAT_INOUT_PRICE=#{matInoutPrice}
+						WHERE MAT_INOUT_STATEMENT=#{matInoutStatement}
+				]]>
+	</update>
+
+	<delete id="deleteMatInout">
+		<![CDATA[
+			DELETE FROM MAT_INOUT 
+						WHERE MAT_INOUT_STATEMENT=#{matInoutStatement}
+				]]>
+	</delete>
+
+	<select id="selectMatInout" resultMap="matInout">
+		<![CDATA[
+			SELECT
+				MAT_INOUT_STATEMENT
+				, COM_MATERIAL_CODE
+				, MAT_INOUT_DATE
+				, MAT_INOUT_GUBUN
+				, MAT_INOUT_QUANTITY
+				, MAT_LOT_NO
+				, COM_PROCESS_CODE
+				, MAT_INOUT_UNIT_PRICE
+				, MAT_INOUT_PRICE
+			FROM MAT_INOUT
+						WHERE MAT_INOUT_STATEMENT=#{matInoutStatement}
+				]]>
+	</select>
+
+	<select id="selectMatInoutList"
+		parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+		SELECT
+		MAT_INOUT_STATEMENT
+		, COM_MATERIAL_CODE
+		, MAT_INOUT_DATE
+		, MAT_INOUT_GUBUN
+		, MAT_INOUT_QUANTITY
+		, MAT_LOT_NO
+		, COM_PROCESS_CODE
+		, MAT_INOUT_UNIT_PRICE
+		, MAT_INOUT_PRICE
+		FROM MAT_INOUT
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				MAT_INOUT_STATEMENT = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1">AND
+				COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+		ORDER BY
+		MAT_INOUT_STATEMENT DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>
+	<select id="selectMatInoutListTotCnt"
+		parameterType="mes.mat.inout.service.MatInoutVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM MAT_INOUT
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				MAT_INOUT_STATEMENT = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1">AND
+				COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+	</select>
+	
+</mapper>
