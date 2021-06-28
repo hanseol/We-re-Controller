@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.plan.service.impl.ProPlanDetailMapper">
+	
+
+	<resultMap id="proPlanDetail" type="mes.pro.plan.service.ProPlanDetailVO">
+		<result property="proPlanDetailCode" column="PRO_PLAN_DETAIL_CODE" />
+		<result property="proPlanCode" column="PRO_PLAN_CODE" />
+		<result property="erpOrderCode" column="ERP_ORDER_CODE" />
+		<result property="erpProductDeadline" column="ERP_PRODUCT_DEADLINE" />
+		<result property="proPlanDate" column="PRO_PLAN_DATE" />
+		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
+		<result property="proPlanExpectQty" column="PRO_PLAN_EXPECT_QTY" />
+		<result property="proPlanDayQty" column="PRO_PLAN_DAY_QTY" />
+		<result property="proPlanSeq" column="PRO_PLAN_SEQ" />
+		<result property="erpOrderQty" column="ERP_ORDER_QTY" />
+		<result property="proPlanQty" column="PRO_PLAN_QTY" />
+	</resultMap>
+	
+	<insert id="insertProPlanDetail">
+		<![CDATA[
+			INSERT INTO PRO_PLAN_DETAIL 
+				( PRO_PLAN_DETAIL_CODE
+				  , PRO_PLAN_CODE
+				  , ERP_ORDER_CODE
+				  , ERP_PRODUCT_DEADLINE
+				  , PRO_PLAN_DATE
+				  , ERP_CUSTOMER_CODE
+				  , PRO_PLAN_EXPECT_QTY
+				  , PRO_PLAN_DAY_QTY
+				  , PRO_PLAN_SEQ
+				  , ERP_ORDER_QTY
+				  , PRO_PLAN_QTY )
+			VALUES ( #{proPlanDetailCode}
+				  , #{proPlanCode}
+				  , #{erpOrderCode}
+				  , #{erpProductDeadline}
+				  , #{proPlanDate}
+				  , #{erpCustomerCode}
+				  , #{proPlanExpectQty}
+				  , #{proPlanDayQty}
+				  , #{proPlanSeq}
+				  , #{erpOrderQty}
+				  , #{proPlanQty} )
+		]]>
+	</insert>
+	
+	<update id="updateProPlanDetail">
+		<![CDATA[
+			UPDATE PRO_PLAN_DETAIL
+			SET PRO_PLAN_DETAIL_CODE=#{proPlanDetailCode}
+				, PRO_PLAN_CODE=#{proPlanCode}
+				, ERP_ORDER_CODE=#{erpOrderCode}
+				, ERP_PRODUCT_DEADLINE=#{erpProductDeadline}
+				, PRO_PLAN_DATE=#{proPlanDate}
+				, ERP_CUSTOMER_CODE=#{erpCustomerCode}
+				, PRO_PLAN_EXPECT_QTY=#{proPlanExpectQty}
+				, PRO_PLAN_DAY_QTY=#{proPlanDayQty}
+				, PRO_PLAN_SEQ=#{proPlanSeq}
+				, ERP_ORDER_QTY=#{erpOrderQty}
+				, PRO_PLAN_QTY=#{proPlanQty}
+						WHERE PRO_PLAN_DETAIL_CODE=#{proPlanDetailCode}
+				]]>
+	</update>
+	
+	<delete id="deleteProPlanDetail">
+		<![CDATA[
+			DELETE FROM PRO_PLAN_DETAIL 
+						WHERE PRO_PLAN_DETAIL_CODE=#{proPlanDetailCode}
+				]]>
+	</delete>
+	
+	<select id="selectProPlanDetail" resultMap="proPlanDetail">
+		<![CDATA[
+			SELECT
+				PRO_PLAN_DETAIL_CODE
+				, PRO_PLAN_CODE
+				, ERP_ORDER_CODE
+				, ERP_PRODUCT_DEADLINE
+				, PRO_PLAN_DATE
+				, ERP_CUSTOMER_CODE
+				, PRO_PLAN_EXPECT_QTY
+				, PRO_PLAN_DAY_QTY
+				, PRO_PLAN_SEQ
+				, ERP_ORDER_QTY
+				, PRO_PLAN_QTY
+			FROM PRO_PLAN_DETAIL
+						WHERE PRO_PLAN_DETAIL_CODE=#{proPlanDetailCode}
+				]]>
+	</select>
+	
+	<select id="selectProPlanDetailList" parameterType="mes.pro.plan.service.ProPlanDetailVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								PRO_PLAN_DETAIL_CODE
+								, PRO_PLAN_CODE
+								, ERP_ORDER_CODE
+								, ERP_PRODUCT_DEADLINE
+								, PRO_PLAN_DATE
+								, ERP_CUSTOMER_CODE
+								, PRO_PLAN_EXPECT_QTY
+								, PRO_PLAN_DAY_QTY
+								, PRO_PLAN_SEQ
+								, ERP_ORDER_QTY
+								, PRO_PLAN_QTY
+						FROM PRO_PLAN_DETAIL
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						PRO_PLAN_DETAIL_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						PRO_PLAN_CODE LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						PRO_PLAN_DETAIL_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectProPlanDetailListTotCnt" parameterType="mes.pro.plan.service.ProPlanDetailVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM PRO_PLAN_DETAIL
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_PLAN_DETAIL_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_PLAN_CODE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>

@@ -24,19 +24,7 @@
 	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/images/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="${pageContext.request.contextPath}/resources/images/favicon.png">
-</head>
-<body> 
-	<!-- WRAPPER -->
-	<div id="wrapper">
-		<tiles:insertAttribute name="header" />
-		<tiles:insertAttribute name="navigation" />
-		<div class="main">
-			<tiles:insertAttribute name="body" />
-		</div>
-		<div class="clearfix"></div>
-		<tiles:insertAttribute name="footer" />
-	</div>
-	<!-- END WRAPPER -->
+
 	<!-- JavaScript -->
 	<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -44,5 +32,21 @@
 	<script src="${pageContext.request.contextPath}/resources/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/vendor/chartist/js/chartist.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/scripts/klorofil-common.js"></script>
+</head>
+<body> 
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<tiles:insertAttribute name="header" />
+		<tiles:insertAttribute name="navigation" />
+		<div class="main">
+			<div class="main-content">
+			<tiles:insertAttribute name="body" />
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<tiles:insertAttribute name="footer" />
+	</div>
+	<!-- END WRAPPER -->
+	
 </body>
 </html>
