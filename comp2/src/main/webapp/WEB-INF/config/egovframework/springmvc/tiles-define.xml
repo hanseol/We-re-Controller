@@ -24,4 +24,8 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
 	</definition>
 	
+		<definition name="*/*/*/*.page" extends="layout-tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	
 </tiles-definitions>
