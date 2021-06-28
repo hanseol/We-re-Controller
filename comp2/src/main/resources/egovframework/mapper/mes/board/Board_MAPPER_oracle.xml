@@ -78,7 +78,7 @@ SELECT * FROM (
 		
 		<![CDATA[					
 	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM > #{firstIndex}
+)WHERE RNUM >= #{firstIndex}
 ]]>
 	</select>	
 	<select id="selectBoardListTotCnt" parameterType="mes.board.service.BoardVO" resultType="int">

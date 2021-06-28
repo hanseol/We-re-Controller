@@ -126,6 +126,7 @@ const gridData = [
       }
     ]
   });
+  /* 
 
   grid.on('check', ev => {
       console.log('check!', ev);
@@ -137,7 +138,7 @@ const gridData = [
 
     grid.on('focusChange', ev => {
       console.log('change focused cell!', ev);
-    });
+    }); */
 </script>
 </body>
 </html>
