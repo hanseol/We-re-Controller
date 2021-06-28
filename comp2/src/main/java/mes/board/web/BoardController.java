@@ -142,6 +142,8 @@ public class BoardController {
         return "forward:/board/BoardList.do";
     }
 
+    
+    //조회.
     @RequestMapping(value="/mes/readBoard")
     @ResponseBody
     public Map<String, Object> readBoard(Model model, 
