@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.mat.order.service.impl.ErpMaterialOrderMapper">
+	
+
+	<resultMap id="erpMaterialOrder" type="mes.mat.order.service.ErpMaterialOrderVO">
+		<result property="erpMaterialOrderCode" column="ERP_MATERIAL_ORDER_CODE" />
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="erpMaterialOrderQty" column="ERP_MATERIAL_ORDER_QTY" />
+		<result property="erpVendorCode" column="ERP_VENDOR_CODE" />
+		<result property="erpMaterialUnitPrice" column="ERP_MATERIAL_UNIT_PRICE" />
+		<result property="erpMaterialOrderDate" column="ERP_MATERIAL_ORDER_DATE" />
+		<result property="erpMaterialRequestDate" column="ERP_MATERIAL_REQUEST_DATE" />
+	</resultMap>
+	<resultMap id="matInout" type="mes.mat.inout.service.MatInoutVO">
+		<result property="matInoutStatement" column="MAT_INOUT_STATEMENT" />
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="matInoutDate" column="MAT_INOUT_DATE" />
+		<result property="matInoutGubun" column="MAT_INOUT_GUBUN" />
+		<result property="matInoutQuantity" column="MAT_INOUT_QUANTITY" />
+		<result property="matLotNo" column="MAT_LOT_NO" />
+		<result property="comProcessCode" column="COM_PROCESS_CODE" />
+		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
+		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
+	</resultMap>
+	<resultMap type="mes.mat.order.service.resultMapVO" id="resultMaps">
+		<collection property="orderVO" resultMap="erpMaterialOrder"></collection>
+		<collection property="matInoutVO" resultMap="matInout"></collection>
+	</resultMap>
+	
+	<insert id="insertErpMaterialOrder">
+		<![CDATA[
+			INSERT INTO ERP_MATERIAL_ORDER 
+				( ERP_MATERIAL_ORDER_CODE
+				  , COM_MATERIAL_CODE
+				  , ERP_MATERIAL_ORDER_QTY
+				  , ERP_VENDOR_CODE
+				  , ERP_MATERIAL_UNIT_PRICE
+				  , ERP_MATERIAL_ORDER_DATE
+				  , ERP_MATERIAL_REQUEST_DATE )
+			VALUES ( #{erpMaterialOrderCode}
+				  , #{comMaterialCode}
+				  , #{erpMaterialOrderQty}
+				  , #{erpVendorCode}
+				  , #{erpMaterialUnitPrice}
+				  , #{erpMaterialOrderDate}
+				  , #{erpMaterialRequestDate} )
+		]]>
+	</insert>
+	
+	<update id="updateErpMaterialOrder">
+		<![CDATA[
+			UPDATE ERP_MATERIAL_ORDER
+			SET ERP_MATERIAL_ORDER_CODE=#{erpMaterialOrderCode}
+				, COM_MATERIAL_CODE=#{comMaterialCode}
+				, ERP_MATERIAL_ORDER_QTY=#{erpMaterialOrderQty}
+				, ERP_VENDOR_CODE=#{erpVendorCode}
+				, ERP_MATERIAL_UNIT_PRICE=#{erpMaterialUnitPrice}
+				, ERP_MATERIAL_ORDER_DATE=#{erpMaterialOrderDate}
+				, ERP_MATERIAL_REQUEST_DATE=#{erpMaterialRequestDate}
+						WHERE ERP_MATERIAL_ORDER_CODE=#{erpMaterialOrderCode}
+				]]>
+	</update>
+	
+	<delete id="deleteErpMaterialOrder">
+		<![CDATA[
+			DELETE FROM ERP_MATERIAL_ORDER 
+						WHERE ERP_MATERIAL_ORDER_CODE=#{erpMaterialOrderCode}
+				]]>
+	</delete>
+	
+	<select id="selectErpMaterialOrder" resultMap="erpMaterialOrder">
+		<![CDATA[
+			SELECT
+				ERP_MATERIAL_ORDER_CODE
+				, COM_MATERIAL_CODE
+				, ERP_MATERIAL_ORDER_QTY
+				, ERP_VENDOR_CODE
+				, ERP_MATERIAL_UNIT_PRICE
+				, ERP_MATERIAL_ORDER_DATE
+				, ERP_MATERIAL_REQUEST_DATE
+			FROM ERP_MATERIAL_ORDER
+						WHERE ERP_MATERIAL_ORDER_CODE=#{erpMaterialOrderCode}
+				]]>
+	</select>
+	
+	<select id="selectErpMaterialOrderList" parameterType="mes.mat.order.service.ErpMaterialOrderVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								ERP_MATERIAL_ORDER_CODE
+								, COM_MATERIAL_CODE
+								, ERP_MATERIAL_ORDER_QTY
+								, ERP_VENDOR_CODE
+								, ERP_MATERIAL_UNIT_PRICE
+								, ERP_MATERIAL_ORDER_DATE
+								, ERP_MATERIAL_REQUEST_DATE
+						FROM ERP_MATERIAL_ORDER
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						ERP_MATERIAL_ORDER_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						ERP_MATERIAL_ORDER_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectErpMaterialOrderListTotCnt" parameterType="mes.mat.order.service.ErpMaterialOrderVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM ERP_MATERIAL_ORDER
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					ERP_MATERIAL_ORDER_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+	<select id="selectOrderList" resultMap="resultMaps">
+		SELECT		e.erp_material_order_date,
+					e.erp_material_order_code,
+					c.com_material_code,
+					c.com_material_name,
+					m.mat_inout_date,
+					e.erp_material_order_qty,
+					e.erp_vendor_code,
+					m.mat_lot_no "matInout.matLotNo",
+					m.mat_inout_quantity
+		FROM		erp_material_order e,
+					com_material c,
+					mat_inout m
+		WHERE		e.com_material_code = c.com_material_code
+		AND			c.com_material_code = m.com_material_code
+	</select>
+</mapper>
