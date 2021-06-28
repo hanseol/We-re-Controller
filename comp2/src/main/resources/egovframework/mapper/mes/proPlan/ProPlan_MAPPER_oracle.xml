@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.plan.service.impl.ProPlanMapper">
+	
+
+	<resultMap id="proPlan" type="mes.pro.plan.service.ProPlanVO">
+		<result property="proPlanCode" column="PRO_PLAN_CODE" />
+		<result property="proPlanName" column="PRO_PLAN_NAME" />
+		<result property="proPlanDate" column="PRO_PLAN_DATE" />
+		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
+	</resultMap>
+	
+	<insert id="insertProPlan">
+		<![CDATA[
+			INSERT INTO PRO_PLAN 
+				( PRO_PLAN_CODE
+				  , PRO_PLAN_NAME
+				  , PRO_PLAN_DATE
+				  , ERP_CUSTOMER_CODE )
+			VALUES ( #{proPlanCode}
+				  , #{proPlanName}
+				  , #{proPlanDate}
+				  , #{erpCustomerCode} )
+		]]>
+	</insert>
+	
+	<update id="updateProPlan">
+		<![CDATA[
+			UPDATE PRO_PLAN
+			SET PRO_PLAN_CODE=#{proPlanCode}
+				, PRO_PLAN_NAME=#{proPlanName}
+				, PRO_PLAN_DATE=#{proPlanDate}
+				, ERP_CUSTOMER_CODE=#{erpCustomerCode}
+						WHERE PRO_PLAN_CODE=#{proPlanCode}
+				]]>
+	</update>
+	
+	<delete id="deleteProPlan">
+		<![CDATA[
+			DELETE FROM PRO_PLAN 
+						WHERE PRO_PLAN_CODE=#{proPlanCode}
+				]]>
+	</delete>
+	
+	<select id="selectProPlan" resultMap="proPlan">
+		<![CDATA[
+			SELECT
+				PRO_PLAN_CODE
+				, PRO_PLAN_NAME
+				, PRO_PLAN_DATE
+				, ERP_CUSTOMER_CODE
+			FROM PRO_PLAN
+						WHERE PRO_PLAN_CODE=#{proPlanCode}
+				]]>
+	</select>
+	
+	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT m.pro_plan_date
+				     , m.pro_plan_code
+				     , d.erp_customer_code
+				     , e.erp_product_code
+				     , e.erp_product_name 
+				     , d.erp_order_code
+				     , d.erp_product_deadline
+				     , d.erp_order_qty
+				     , d.pro_plan_qty
+				     , d.pro_work_date
+				     , d.pro_plan_seq
+				FROM pro_plan m
+				   , pro_plan_detail d
+				   , erp_product_order e
+				WHERE m.pro_plan_code = d.pro_plan_code
+				  AND d.erp_order_code = e.erp_order_code
+				  AND 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						PRO_PLAN_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						PRO_PLAN_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectProPlanListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM PRO_PLAN
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_PLAN_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>
