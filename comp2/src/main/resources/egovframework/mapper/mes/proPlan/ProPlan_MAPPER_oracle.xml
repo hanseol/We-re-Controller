@@ -88,13 +88,17 @@ SELECT * FROM (
 		
 		<![CDATA[					
 	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM > #{firstIndex}
+)WHERE RNUM >= #{firstIndex}
 ]]>
 	</select>	
 	<select id="selectProPlanListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
 			SELECT COUNT(*) totcnt
-			FROM PRO_PLAN
-			WHERE 1=1
+			FROM pro_plan m
+				   , pro_plan_detail d
+				   , erp_product_order e
+			WHERE m.pro_plan_code = d.pro_plan_code
+			AND d.erp_order_code = e.erp_order_code
+			AND 1=1
 			<if test="searchKeyword != null and searchKeyword != ''">
 				<if test="searchCondition == 0">AND
 					PRO_PLAN_CODE = #{searchKeyword}
@@ -103,6 +107,7 @@ SELECT * FROM (
 					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
 				</if>
 			</if>
+			
 	</select>
 
 </mapper>

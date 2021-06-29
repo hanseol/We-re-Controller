@@ -1,8 +1,7 @@
 package mes.pro.order.service;
 
 import java.util.List;
-import mes.pro.order.service.ProOrderDetailDefaultVO;
-import mes.pro.order.service.ProOrderDetailVO;
+
 
 /**
  * @Class Name : ProOrderDetailService.java
@@ -56,7 +55,7 @@ public interface ProOrderDetailService {
 	 * @return PRO_ORDER_DETAIL 목록
 	 * @exception Exception
 	 */
-    List selectProOrderDetailList(ProOrderDetailDefaultVO searchVO) throws Exception;
+    List<?> selectProOrderDetailList(ProOrderDetailVO searchVO) throws Exception;
     
     /**
 	 * PRO_ORDER_DETAIL 총 갯수를 조회한다.
@@ -64,6 +63,6 @@ public interface ProOrderDetailService {
 	 * @return PRO_ORDER_DETAIL 총 갯수
 	 * @exception
 	 */
-    int selectProOrderDetailListTotCnt(ProOrderDetailDefaultVO searchVO);
+    int selectProOrderDetailListTotCnt(ProOrderDetailVO searchVO);
     
 }

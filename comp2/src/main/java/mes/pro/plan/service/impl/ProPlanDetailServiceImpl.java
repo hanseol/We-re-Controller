@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.pro.plan.service.ProPlanDetailService;
-import mes.pro.plan.service.ProPlanDetailDefaultVO;
 import mes.pro.plan.service.ProPlanDetailVO;
 /**
  * @Class Name : ProPlanDetailServiceImpl.java
@@ -101,7 +100,7 @@ public class ProPlanDetailServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return PRO_PLAN_DETAIL 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProPlanDetailList(ProPlanDetailDefaultVO searchVO) throws Exception {
+    public List<?> selectProPlanDetailList(ProPlanDetailVO searchVO) throws Exception {
         return proPlanDetailDAO.selectProPlanDetailList(searchVO);
     }
 
@@ -111,7 +110,7 @@ public class ProPlanDetailServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return PRO_PLAN_DETAIL 총 갯수
 	 * @exception
 	 */
-    public int selectProPlanDetailListTotCnt(ProPlanDetailDefaultVO searchVO) {
+    public int selectProPlanDetailListTotCnt(ProPlanDetailVO searchVO) {
 		return proPlanDetailDAO.selectProPlanDetailListTotCnt(searchVO);
 	}
     

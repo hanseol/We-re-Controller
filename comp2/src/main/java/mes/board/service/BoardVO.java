@@ -1,6 +1,8 @@
 package mes.board.service;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import mes.main.service.SearchVO;
 //test
 /**
  * @Class Name : BoardVO.java
@@ -14,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class BoardVO extends BoardDefaultVO{
+public class BoardVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** NO */
@@ -27,8 +29,8 @@ public class BoardVO extends BoardDefaultVO{
     private java.lang.String content;
     
     /** WDATE */
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
-    private java.util.Date wdate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String wdate;
     
     public java.math.BigDecimal getNo() {
         return this.no;
@@ -54,11 +56,11 @@ public class BoardVO extends BoardDefaultVO{
         this.content = content;
     }
     
-    public java.util.Date getWdate() {
+    public java.lang.String getWdate() {
         return this.wdate;
     }
     
-    public void setWdate(java.util.Date wdate) {
+    public void setWdate(java.lang.String wdate) {
         this.wdate = wdate;
     }
     

@@ -15,9 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
 import mes.pro.order.service.ProOrderDetailService;
-import mes.pro.order.service.ProOrderDetailDefaultVO;
 import mes.pro.order.service.ProOrderDetailVO;
 
 /**
@@ -51,7 +49,7 @@ public class ProOrderDetailController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="/proOrderDetail/ProOrderDetailList.do")
-    public String selectProOrderDetailList(@ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO, 
+    public String selectProOrderDetailList(@ModelAttribute("searchVO") ProOrderDetailVO searchVO, 
     		ModelMap model)
             throws Exception {
     	
@@ -81,7 +79,7 @@ public class ProOrderDetailController {
     
     @RequestMapping("/proOrderDetail/addProOrderDetailView.do")
     public String addProOrderDetailView(
-            @ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProOrderDetailVO searchVO, Model model)
             throws Exception {
         model.addAttribute("proOrderDetailVO", new ProOrderDetailVO());
         return "mes/proOrderDetail/ProOrderDetailRegister.page";
@@ -90,7 +88,7 @@ public class ProOrderDetailController {
     @RequestMapping("/proOrderDetail/addProOrderDetail.do")
     public String addProOrderDetail(
             ProOrderDetailVO proOrderDetailVO,
-            @ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProOrderDetailVO searchVO, SessionStatus status)
             throws Exception {
         proOrderDetailService.insertProOrderDetail(proOrderDetailVO);
         status.setComplete();
@@ -100,7 +98,7 @@ public class ProOrderDetailController {
     @RequestMapping("/proOrderDetail/updateProOrderDetailView.do")
     public String updateProOrderDetailView(
             @RequestParam("proOrderDetailCode") java.lang.String proOrderDetailCode ,
-            @ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProOrderDetailVO searchVO, Model model)
             throws Exception {
         ProOrderDetailVO proOrderDetailVO = new ProOrderDetailVO();
         proOrderDetailVO.setProOrderDetailCode(proOrderDetailCode);
@@ -113,14 +111,14 @@ public class ProOrderDetailController {
     public @ModelAttribute("proOrderDetailVO")
     ProOrderDetailVO selectProOrderDetail(
             ProOrderDetailVO proOrderDetailVO,
-            @ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO) throws Exception {
+            @ModelAttribute("searchVO") ProOrderDetailVO searchVO) throws Exception {
         return proOrderDetailService.selectProOrderDetail(proOrderDetailVO);
     }
 
     @RequestMapping("/proOrderDetail/updateProOrderDetail.do")
     public String updateProOrderDetail(
             ProOrderDetailVO proOrderDetailVO,
-            @ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProOrderDetailVO searchVO, SessionStatus status)
             throws Exception {
         proOrderDetailService.updateProOrderDetail(proOrderDetailVO);
         status.setComplete();
@@ -130,7 +128,7 @@ public class ProOrderDetailController {
     @RequestMapping("/proOrderDetail/deleteProOrderDetail.do")
     public String deleteProOrderDetail(
             ProOrderDetailVO proOrderDetailVO,
-            @ModelAttribute("searchVO") ProOrderDetailDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProOrderDetailVO searchVO, SessionStatus status)
             throws Exception {
         proOrderDetailService.deleteProOrderDetail(proOrderDetailVO);
         status.setComplete();

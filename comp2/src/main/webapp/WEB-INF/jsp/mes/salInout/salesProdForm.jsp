@@ -6,7 +6,7 @@
 <!-- 2021.06. 28 값을 받아와 검색하기, 값을 입력하기 모두 이루어져야하므로 input 넣어야 함 -->
 
 <!-- master. form action 넣어야 함 -->
-<%
+
 <form id="searchForm" name="searchForm" action="./salesProdForm.jsp" method="post">
 	
 	<div id="master" name="master">
@@ -57,6 +57,6 @@
 			</div>
 			<!-- /List -->
 </div>
-</form:form>
-%>
+
+
 <!-- detail -->

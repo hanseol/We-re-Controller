@@ -1,8 +1,6 @@
 package mes.pro.plan.service;
 
 import java.util.List;
-import mes.pro.plan.service.ProPlanDefaultVO;
-import mes.pro.plan.service.ProPlanVO;
 
 /**
  * @Class Name : ProPlanService.java
@@ -56,7 +54,7 @@ public interface ProPlanService {
 	 * @return PRO_PLAN 목록
 	 * @exception Exception
 	 */
-    List selectProPlanList(ProPlanDefaultVO searchVO) throws Exception;
+    List<?> selectProPlanList(ProPlanVO searchVO) throws Exception;
     
     /**
 	 * PRO_PLAN 총 갯수를 조회한다.
@@ -64,6 +62,6 @@ public interface ProPlanService {
 	 * @return PRO_PLAN 총 갯수
 	 * @exception
 	 */
-    int selectProPlanListTotCnt(ProPlanDefaultVO searchVO);
+    int selectProPlanListTotCnt(ProPlanVO searchVO);
     
 }

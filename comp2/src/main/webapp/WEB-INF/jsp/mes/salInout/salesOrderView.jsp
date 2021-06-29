@@ -59,7 +59,6 @@
 			</div>
 			<!-- /List -->
 </div>
-</form:form>
 <!-- detail -->
 
 

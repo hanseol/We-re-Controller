@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
 
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
 .my-panel {
 	text-align: right;
@@ -11,12 +15,14 @@
 }
 </style>
 
+<!-- 타이틀 -->
 <div class="content-fluid">
 	<div>
-		<h2>페이지 명</h2>
+		<h2>생산 지시 관리</h2>
 	</div>
 </div>
 
+<!-- 마스터테이블의 CRUD 버튼 -->
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
@@ -28,7 +34,7 @@
 	</div>
 </div>
 
-
+<!-- 마스터 테이블 -->
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
@@ -44,16 +50,17 @@
 	</div>
 </div>
 
+
+<!-- 디테일 테이블 -->
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
 					<p class="panel-subtitle">Grid 테스트</p>
-					<input type="text" id="no" name="no">
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button" id="findRow">조회</button>
+					<button type="button">조회</button>
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
@@ -64,16 +71,22 @@
 		</div>
 	</div>
 </div>
-
 <script>
 	$(document).ready(function() {
 
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData = [ {
-				No : "",
-				Title : "",
-				Content : "",
-				Date : ""
+				comProductCode : "",
+				comProductName : "",
+				proOrderCode : "",
+				erpProductDeadline : "",
+				erpOrderQty : "" ,
+				proOrderQty : "" ,
+				macHourQty : "" ,
+				dayQty : "" ,
+				dayCount : "" ,
+				proWorkDate : "" ,
+				proOrderSeq : ""
 			} ];
 			grid.appendRow(rowData, {
 				at : grid.getRowCount(),
@@ -88,7 +101,7 @@
 		});
 		
 		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(false);
+			grid.removeCheckedRows(true);
 			grid.request('deleteData');
 		});
 		
@@ -97,19 +110,10 @@
 			grid.request('updateData');
 		});
 		
-		$(document).on("click", "button[id=findRow]", function() {
-			var no = $("#no").val();
-			console.log(no);
-			var readParams = {
-					'searchKeyword' : no
-				};
-			grid.readData(1, readParams, true);
-		});
-		
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/mes/readBoard',
+					url : '${pageContext.request.contextPath}/proOrder/ProdView',
 					method : 'GET'
 				},
 				createData : {
@@ -118,7 +122,7 @@
 				},
 				deleteData : {
 					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
-					method : 'POST'
+					method : 'DELETE'
 				},
 				updateData : {
 					url : '${pageContext.request.contextPath}/ajax/updateBoard',
@@ -133,20 +137,20 @@
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			columns : [ {
-				header : 'No',
-				name : 'no',
+				header : '제품코드',
+				name : 'comProductCode',
 				editor : 'text'
 			}, {
-				header : 'Title',
-				name : 'title',
+				header : '제품명',
+				name : 'comProductName',
 				editor : 'text'
 			}, {
-				header : 'Content',
-				name : 'content',
+				header : '주문번호',
+				name : 'proOrderCode',
 				editor : 'text'
 			}, {
-				header : 'Date',
-				name : 'wdate',
+				header : '납기일자',
+				name : 'erpProductDeadline',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -154,10 +158,38 @@
 						language: 'ko'
 					} 
 				}
+			}, {
+				header : '주문량',
+				name : 'erpOrderQty',
+				editor : 'text'
+			}, {
+				header : '지시량',
+				name : 'proOrderQty',
+				editor : 'text'
+			}, {
+				header : 'UPH',
+				name : 'macHourQty',
+				editor : 'text'
+			}, {
+				header : '일생산량',
+				name : 'dayQty',
+				editor : 'text'
+			}, {
+				header : '일수',
+				name : 'dayCount',
+				editor : 'text'
+			}, {
+				header : '작업일자',
+				name : 'proWorkDate',
+				editor : 'text'
+			} , {
+				header : '작업순서',
+				name : 'proOrderSeq',
+				editor : 'text'
 			} ]
 		});
 	
-/* 	grid.on('response', ev => {
+	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);
 
@@ -167,7 +199,10 @@
 	
 	grid.on('check', (ev) => {
 		  alert(`check: ${ev.rowKey}`);
-	}); */
+	});
 	
 }); //end of document ready
 </script>
+
+
+

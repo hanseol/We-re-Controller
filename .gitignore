@@ -4,15 +4,17 @@
 
 ### Eclipse ###
 
-/comp2/target/
-/comp2/target/*
+comp2/target/
+comp2/target/*
 .classpath
+/comp2/target/classes/*
 .project
-/comp2/.settings/
+comp2/.settings/
 
 .metadata
 bin/
 tmp/
+*.class
 *.tmp
 *.bak
 *.swp
@@ -77,7 +79,7 @@ local.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
 
-.class
+*.class
 target
 
 Replace with HEAD Revision

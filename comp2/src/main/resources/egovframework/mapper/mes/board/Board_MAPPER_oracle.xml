@@ -36,14 +36,13 @@
 				]]>
 	</update>
 	
-	<delete id="deleteBoard">
-		<![CDATA[
-			DELETE FROM BOARD 
-						WHERE NO=#{no}
-				]]>
+	<delete id="deleteBoard" parameterType="mes.board.service.BoardVO">
+		DELETE FROM BOARD 
+		WHERE NO=#{no}
 	</delete>
 	
 	<select id="selectBoard" resultMap="board">
+		
 		<![CDATA[
 			SELECT
 				NO
@@ -62,7 +61,7 @@ SELECT * FROM (
 								NO
 								, TITLE
 								, CONTENT
-								, WDATE
+								, TO_CHAR(WDATE,'YYYY/MM/DD') WDATE
 						FROM BOARD
 				WHERE 1=1
 				<if test="searchKeyword != null and searchKeyword != ''">

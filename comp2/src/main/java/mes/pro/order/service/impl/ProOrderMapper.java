@@ -3,7 +3,7 @@ package mes.pro.order.service.impl;
 import java.util.List;
 
 import mes.pro.order.service.ProOrderVO;
-import mes.pro.order.service.ProOrderDefaultVO;
+import mes.main.service.SearchVO;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -61,7 +61,7 @@ public interface ProOrderMapper {
 	 * @return PRO_ORDER 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProOrderList(ProOrderDefaultVO searchVO) throws Exception;
+    public List<?> selectProOrderList(SearchVO searchVO) throws Exception;
 
     /**
 	 * PRO_ORDER 총 갯수를 조회한다.
@@ -69,6 +69,6 @@ public interface ProOrderMapper {
 	 * @return PRO_ORDER 총 갯수
 	 * @exception
 	 */
-    public int selectProOrderListTotCnt(ProOrderDefaultVO searchVO);
+    public int selectProOrderListTotCnt(SearchVO searchVO);
 
 }

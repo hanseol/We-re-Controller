@@ -10,14 +10,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import mes.pro.plan.service.ProPlanDetailService;
-import mes.pro.plan.service.ProPlanDetailDefaultVO;
 import mes.pro.plan.service.ProPlanDetailVO;
 
 /**
@@ -34,7 +32,6 @@ import mes.pro.plan.service.ProPlanDetailVO;
  */
 
 @Controller
-@SessionAttributes(types=ProPlanDetailVO.class)
 public class ProPlanDetailController {
 
     @Resource(name = "proPlanDetailService")
@@ -51,7 +48,7 @@ public class ProPlanDetailController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="proPlanDetail/ProPlanDetailList.do")
-    public String selectProPlanDetailList(@ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO, 
+    public String selectProPlanDetailList(@ModelAttribute("searchVO") ProPlanDetailVO searchVO, 
     		ModelMap model)
             throws Exception {
     	
@@ -81,7 +78,7 @@ public class ProPlanDetailController {
     
     @RequestMapping("proPlanDetail/addProPlanDetailView.do")
     public String addProPlanDetailView(
-            @ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProPlanDetailVO searchVO, Model model)
             throws Exception {
         model.addAttribute("proPlanDetailVO", new ProPlanDetailVO());
         return "mes/proPlanDetail/ProPlanDetailRegister.page";
@@ -90,7 +87,7 @@ public class ProPlanDetailController {
     @RequestMapping("proPlanDetail/addProPlanDetail.do")
     public String addProPlanDetail(
             ProPlanDetailVO proPlanDetailVO,
-            @ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProPlanDetailVO searchVO, SessionStatus status)
             throws Exception {
         proPlanDetailService.insertProPlanDetail(proPlanDetailVO);
         status.setComplete();
@@ -100,7 +97,7 @@ public class ProPlanDetailController {
     @RequestMapping("proPlanDetail/updateProPlanDetailView.do")
     public String updateProPlanDetailView(
             @RequestParam("proPlanDetailCode") java.lang.String proPlanDetailCode ,
-            @ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProPlanDetailVO searchVO, Model model)
             throws Exception {
         ProPlanDetailVO proPlanDetailVO = new ProPlanDetailVO();
         proPlanDetailVO.setProPlanDetailCode(proPlanDetailCode);
@@ -113,14 +110,14 @@ public class ProPlanDetailController {
     public @ModelAttribute("proPlanDetailVO")
     ProPlanDetailVO selectProPlanDetail(
             ProPlanDetailVO proPlanDetailVO,
-            @ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO) throws Exception {
+            @ModelAttribute("searchVO") ProPlanDetailVO searchVO) throws Exception {
         return proPlanDetailService.selectProPlanDetail(proPlanDetailVO);
     }
 
     @RequestMapping("proPlanDetail/updateProPlanDetail.do")
     public String updateProPlanDetail(
             ProPlanDetailVO proPlanDetailVO,
-            @ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProPlanDetailVO searchVO, SessionStatus status)
             throws Exception {
         proPlanDetailService.updateProPlanDetail(proPlanDetailVO);
         status.setComplete();
@@ -130,7 +127,7 @@ public class ProPlanDetailController {
     @RequestMapping("proPlanDetail/deleteProPlanDetail.do")
     public String deleteProPlanDetail(
             ProPlanDetailVO proPlanDetailVO,
-            @ModelAttribute("searchVO") ProPlanDetailDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProPlanDetailVO searchVO, SessionStatus status)
             throws Exception {
         proPlanDetailService.deleteProPlanDetail(proPlanDetailVO);
         status.setComplete();

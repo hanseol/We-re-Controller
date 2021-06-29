@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.pro.plan.service.ProPlanService;
-import mes.pro.plan.service.ProPlanDefaultVO;
 import mes.pro.plan.service.ProPlanVO;
 /**
  * @Class Name : ProPlanServiceImpl.java
@@ -101,8 +100,8 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return PRO_PLAN 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProPlanList(ProPlanDefaultVO searchVO) throws Exception {
-        return proPlanDAO.selectProPlanList(searchVO);
+    public List<?> selectProPlanList(ProPlanVO vo) throws Exception {
+        return proPlanDAO.selectProPlanList(vo);
     }
 
     /**
@@ -111,8 +110,8 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return PRO_PLAN 총 갯수
 	 * @exception
 	 */
-    public int selectProPlanListTotCnt(ProPlanDefaultVO searchVO) {
-		return proPlanDAO.selectProPlanListTotCnt(searchVO);
+    public int selectProPlanListTotCnt(ProPlanVO vo) {
+		return proPlanDAO.selectProPlanListTotCnt(vo);
 	}
     
 }
