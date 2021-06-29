@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mes.mat.lot.service.impl.MatLotMapper">
+	<resultMap id="erpMaterialOrder" type="mes.mat.order.service.ErpMaterialOrderVO">
+		<result property="erpMaterialOrderCode"	column="ERP_MATERIAL_ORDER_CODE" />
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="erpMaterialOrderQty" column="ERP_MATERIAL_ORDER_QTY" />
+		<result property="erpVendorCode" column="ERP_VENDOR_CODE" />
+		<result property="erpMaterialUnitPrice"	column="ERP_MATERIAL_UNIT_PRICE" />
+		<result property="erpMaterialOrderDate" column="ERP_MATERIAL_ORDER_DATE" />
+		<result property="erpMaterialRequestDate" column="ERP_MATERIAL_REQUEST_DATE" />
+	</resultMap>
+	<resultMap id="matInout" type="mes.mat.inout.service.MatInoutVO">
+		<result property="matInoutStatement" column="MAT_INOUT_STATEMENT" />
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="matInoutDate" column="MAT_INOUT_DATE" />
+		<result property="matInoutGubun" column="MAT_INOUT_GUBUN" />
+		<result property="matInoutQuantity" column="MAT_INOUT_QUANTITY" />
+		<result property="matLotNo" column="MAT_LOT_NO" />
+		<result property="comProcessCode" column="COM_PROCESS_CODE" />
+		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
+		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
+	</resultMap>
+	<resultMap id="comMaterial"	type="mes.mat.matr.service.ComMaterialVO">
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="comMaterialName" column="COM_MATERIAL_NAME" />
+		<result property="comMaterialBarcode" column="COM_MATERIAL_BARCODE" />
+		<result property="comMaterialSize" column="COM_MATERIAL_SIZE" />
+		<result property="comMaterialUnit" column="COM_MATERIAL_UNIT" />
+		<result property="comMaterialVendorCode" column="COM_MATERIAL_VENDOR_CODE" />
+		<result property="comMaterialSafetyStock" column="COM_MATERIAL_SAFETY_STOCK" />
+		<result property="comMaterialMin" column="COM_MATERIAL_MIN" />
+		<result property="comMaterialMax" column="COM_MATERIAL_MAX" />
+	</resultMap>
+	<resultMap type="mes.main.map.ResultMapVO" id="resultMaps">
+		<collection property="orderVO" resultMap="erpMaterialOrder" />
+		<collection property="matInoutVO" resultMap="matInout" />
+		<collection property="matrVO" resultMap="comMaterial" />
+	</resultMap>
+	<select id="selectMatLotList" resultMap="resultMaps">
+		SELECT  c.com_material_code,
+        		c.com_material_name,
+        		c.com_material_size,
+        		m.mat_lot_no,
+        		m.mat_inout_quantity
+		FROM    com_material c,
+        		mat_inout m
+		WHERE   c.com_material_code = m.com_material_code
+	</select>
+</mapper>

@@ -58,7 +58,7 @@
 	<div>
 		<main>
 			<div>
-				<h2>발주관리 참조</h2>
+				<h2>자재LOT 조회</h2>
 				<!-- 검색(Master) -->
 				<form id="masterForm" name="masterForm" method="post">
 					<div>
@@ -85,39 +85,34 @@
 						<button>인쇄</button>
 					</div>
 				</form>
-				<form id="detailForm" name="detailForm" method="post" action="">
+				<form id="detailForm" name="detailForm" method="post">
 					<div>
 						<table class="dataTable" border="1" align="center">
 							<thead>
 								<tr>
-									<th>발주일자</th>
-									<th>발주번호</th>
 									<th>자재코드</th>
 									<th>자재명</th>
-									<th>입고일자</th>
-									<th>발주량</th>
-									<th>거래처명</th>
-									<th>자재LOT_NO</th>
+									<th>규격</th>
 									<th>입고량</th>
+									<th>출고량</th>
+									<th>현재고</th>
+									<!-- 현재고는 계산 -->
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${selectOrderList}" var="order">
+								<c:forEach items="${selectMatLotList}" var="lot">
 									<tr>
-										<td>${order.orderVO.erpMaterialOrderDate }</td>
-										<td>${order.orderVO.erpMaterialOrderCode }</td>
-										<td>${order.orderVO.comMaterialCode }</td>
-										<%-- <td>${order.matInoutVO.comMaterialName }</td>--%>
-										<td>${order.matInoutVO.matInoutDate }</td>
-										<td>${order.orderVO.erpMaterialOrderQty }</td>
-										<td>${order.orderVO.erpVendorCode }</td>
-										<td>${order.matInoutVO.matLotNo }</td>
-										<td>${order.matInoutVO.matInoutQuantity }</td>
+										<td>${lot.matrVO.comMaterialCode }</td>
+										<td>${lot.matrVO.comMaterialName }</td>
+										<td>${lot.matrVO.comMaterialSize }</td>
+										<td>${lot.matInoutVO.matInoutQuantity }</td>
+										<td>${lot.matInoutVO.matInoutQuantity }</td>
+										<%--<td>현재고는 계산</td> --%>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
-					</div>${selectOrderList}
+					</div>
 				</form>
 			</div>
 		</main>

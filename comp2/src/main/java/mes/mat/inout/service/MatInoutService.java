@@ -1,8 +1,6 @@
 package mes.mat.inout.service;
 
 import java.util.List;
-import mes.mat.inout.service.MatInoutDefaultVO;
-import mes.mat.inout.service.MatInoutVO;
 
 /**
  * @Class Name : MatInoutService.java
@@ -65,5 +63,7 @@ public interface MatInoutService {
 	 * @exception
 	 */
     int selectMatInoutListTotCnt(MatInoutDefaultVO searchVO);
+    
+    List<?> selectInoutList(MatInoutDefaultVO searchVO) throws Exception;
     
 }

@@ -24,9 +24,21 @@
 		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
 		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
 	</resultMap>
-	<resultMap type="mes.mat.order.service.resultMapVO" id="resultMaps">
+	<resultMap id="comMaterial" type="mes.mat.matr.service.ComMaterialVO">
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="comMaterialName" column="COM_MATERIAL_NAME" />
+		<result property="comMaterialBarcode" column="COM_MATERIAL_BARCODE" />
+		<result property="comMaterialSize" column="COM_MATERIAL_SIZE" />
+		<result property="comMaterialUnit" column="COM_MATERIAL_UNIT" />
+		<result property="comMaterialVendorCode" column="COM_MATERIAL_VENDOR_CODE" />
+		<result property="comMaterialSafetyStock" column="COM_MATERIAL_SAFETY_STOCK" />
+		<result property="comMaterialMin" column="COM_MATERIAL_MIN" />
+		<result property="comMaterialMax" column="COM_MATERIAL_MAX" />
+	</resultMap>
+	<resultMap type="mes.main.map.ResultMapVO" id="resultMaps">
 		<collection property="orderVO" resultMap="erpMaterialOrder"></collection>
 		<collection property="matInoutVO" resultMap="matInout"></collection>
+		<collection property="matrVO" resultMap="comMaterial"></collection>
 	</resultMap>
 	
 	<insert id="insertErpMaterialOrder">
@@ -135,7 +147,7 @@ SELECT * FROM (
 					m.mat_inout_date,
 					e.erp_material_order_qty,
 					e.erp_vendor_code,
-					m.mat_lot_no "matInout.matLotNo",
+					m.mat_lot_no,
 					m.mat_inout_quantity
 		FROM		erp_material_order e,
 					com_material c,

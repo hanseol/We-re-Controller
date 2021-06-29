@@ -68,15 +68,15 @@ public class MatInoutController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-        List<?> matInoutList = matInoutService.selectMatInoutList(searchVO);
-        model.addAttribute("resultList", matInoutList);
+        List<?> matInoutList = matInoutService.selectInoutList(searchVO);
+        model.addAttribute("selectInoutList", matInoutList);
         
         int totCnt = matInoutService.selectMatInoutListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
         
         return "mes/matInout/matrInoutView.page";
-    } 
+    }
     
     @RequestMapping("/matInout/addMatInoutView.do")
     public String addMatInoutView(

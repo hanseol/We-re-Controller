@@ -92,29 +92,28 @@
 								<tr>
 									<th>자재코드</th>
 									<th>자재명</th>
-									<th>규격</th>
-									<th>단위</th>
-									<th>발주코드</th>
-									<th>수량</th>
-									<th>단가</th>
-									<th>금액</th>
-									<th>자재LOT_NO</th>
-									<!-- 현재고는 계산 -->
+									<th>안전재고</th>
+									<th>이월량</th>
+									<!-- 이월량 계산 -->
+									<th>입고량</th>
+									<th>출고량</th>
+									<th>현재고</th>
+									<!-- 현재고 계산 -->
+									<th>미달량</th>
+									<!-- 미달량 계산 -->
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${selectInoutList}" var="inout">
+								<c:forEach items="${selectMatList}" var="matr">
 									<tr>
-										<td>${inout.matrVO.comMaterialCode }</td>
-										<td>${inout.matrVO.comMaterialName }</td>
-										<td>${inout.matrVO.comMaterialSize }</td>
-										<td>${inout.matrVO.comMaterialUnit }</td>
-										<td>${inout.orderVO.erpMaterialOrderCode }</td>
-										<td>${inout.matInoutVO.matInoutQuantity }</td>
-										<td>${inout.matInoutVO.matInoutUnitPrice }</td>
-										<td>${inout.matInoutVO.matInoutPrice }</td>
-										<td>${inout.matInoutVO.matLotNo }</td>
-										<%--<td>현재고는 계산</td> --%>
+										<td>${matr.matrVO.comMaterialCode }</td>
+										<td>${matr.matrVO.comMaterialName }</td>
+										<td>${matr.matrVO.comMaterialSafetyStock}</td>
+										<%-- 이월량 추가할 자리 --%>
+										<td>${matr.matInoutVO.matInoutQuantity }</td>
+										<td>${matr.matInoutVO.matInoutQuantity }</td>
+										<%-- 현재고 추가할 자리 --%>
+										<%-- 미달량 추가할 자리 --%>
 									</tr>
 								</c:forEach>
 							</tbody>

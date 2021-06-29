@@ -90,31 +90,29 @@
 						<table class="dataTable" border="1" align="center">
 							<thead>
 								<tr>
+									<th>업체명</th>
+									<th>검사일자</th>
 									<th>자재코드</th>
 									<th>자재명</th>
-									<th>규격</th>
-									<th>단위</th>
-									<th>발주코드</th>
-									<th>수량</th>
-									<th>단가</th>
-									<th>금액</th>
-									<th>자재LOT_NO</th>
-									<!-- 현재고는 계산 -->
+									<th>입고량</th>
+									<th>검사량</th>
+									<th>합격량</th>
+									<th>불량량</th>
+									<th>불량명</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${selectInoutList}" var="inout">
+								<c:forEach items="${selectMatrChkList}" var="matrChk">
 									<tr>
-										<td>${inout.matrVO.comMaterialCode }</td>
-										<td>${inout.matrVO.comMaterialName }</td>
-										<td>${inout.matrVO.comMaterialSize }</td>
-										<td>${inout.matrVO.comMaterialUnit }</td>
-										<td>${inout.orderVO.erpMaterialOrderCode }</td>
-										<td>${inout.matInoutVO.matInoutQuantity }</td>
-										<td>${inout.matInoutVO.matInoutUnitPrice }</td>
-										<td>${inout.matInoutVO.matInoutPrice }</td>
-										<td>${inout.matInoutVO.matLotNo }</td>
-										<%--<td>현재고는 계산</td> --%>
+										<td>${matrChk.matrVO.erpVendorCode }</td>
+										<td>${matrChk.matrVO.quaMaterialChkDate }</td>
+										<td>${matrChk.matrVO.comMaterialCode}</td>
+										<td>${matrChk.matInoutVO.comMaterialName }</td>
+										<td>${matrChk.matInoutVO.matInoutQuantity }</td>
+										<td>${matrChk.matrVO.quaMaterialChk }</td>
+										<td>${matrChk.matrVO.quaMaterialPQty }</td>
+										<td>${matrChk.matrVO.quaMaterialFQty}</td>
+										<td>${matrChk.matInoutVO.comMaterialFName }</td>
 									</tr>
 								</c:forEach>
 							</tbody>

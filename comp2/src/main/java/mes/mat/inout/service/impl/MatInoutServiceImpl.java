@@ -114,4 +114,9 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return matInoutDAO.selectMatInoutListTotCnt(searchVO);
 	}
     
+    //리스트 전체조회 맵퍼로 돌리기
+    public List<?> selectInoutList(MatInoutDefaultVO searchVO) throws Exception {
+    	return matInoutDAO.selectInoutList(searchVO);
+    }
+    
 }

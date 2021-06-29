@@ -58,7 +58,7 @@
 	<div>
 		<main>
 			<div>
-				<h2>자재입출고 조회</h2>
+				<h2>발주관리 참조</h2>
 				<!-- 검색(Master) -->
 				<form id="masterForm" name="masterForm" method="post">
 					<div>
@@ -85,36 +85,34 @@
 						<button>인쇄</button>
 					</div>
 				</form>
-				<form id="detailForm" name="detailForm" method="post">
+				<form id="detailForm" name="detailForm" method="post" action="">
 					<div>
 						<table class="dataTable" border="1" align="center">
 							<thead>
 								<tr>
+									<th>발주일자</th>
+									<th>발주번호</th>
 									<th>자재코드</th>
 									<th>자재명</th>
-									<th>규격</th>
-									<th>단위</th>
-									<th>발주코드</th>
-									<th>수량</th>
-									<th>단가</th>
-									<th>금액</th>
+									<th>입고일자</th>
+									<th>발주량</th>
+									<th>거래처명</th>
 									<th>자재LOT_NO</th>
-									<!-- 현재고는 계산 -->
+									<th>입고량</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${selectInoutList}" var="inout">
+								<c:forEach items="${selectOrderList}" var="order">
 									<tr>
-										<td>${inout.matrVO.comMaterialCode }</td>
-										<td>${inout.matrVO.comMaterialName }</td>
-										<td>${inout.matrVO.comMaterialSize }</td>
-										<td>${inout.matrVO.comMaterialUnit }</td>
-										<td>${inout.orderVO.erpMaterialOrderCode }</td>
-										<td>${inout.matInoutVO.matInoutQuantity }</td>
-										<td>${inout.matInoutVO.matInoutUnitPrice }</td>
-										<td>${inout.matInoutVO.matInoutPrice }</td>
-										<td>${inout.matInoutVO.matLotNo }</td>
-										<%--<td>현재고는 계산</td> --%>
+										<td>${order.orderVO.erpMaterialOrderDate }</td>
+										<td>${order.orderVO.erpMaterialOrderCode }</td>
+										<td>${order.matrVO.comMaterialCode }</td>
+										<td>${order.matrVO.comMaterialName }</td>
+										<td>${order.matInoutVO.matInoutDate }</td>
+										<td>${order.orderVO.erpMaterialOrderQty }</td>
+										<td>${order.orderVO.erpVendorCode }</td>
+										<td>${order.matInoutVO.matLotNo }</td>
+										<td>${order.matInoutVO.matInoutQuantity }</td>
 									</tr>
 								</c:forEach>
 							</tbody>

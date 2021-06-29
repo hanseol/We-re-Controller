@@ -70,5 +70,8 @@ public interface MatInoutMapper {
 	 * @exception
 	 */
     public int selectMatInoutListTotCnt(MatInoutDefaultVO searchVO);
-
+    
+    //입출고조회페이지 리스트 조회
+    public List<?> selectInoutList(MatInoutDefaultVO searchVO) throws Exception;
+    
 }

@@ -4,6 +4,15 @@
 <mapper namespace="mes.mat.inout.service.impl.MatInoutMapper">
 
 
+	<resultMap id="erpMaterialOrder" type="mes.mat.order.service.ErpMaterialOrderVO">
+		<result property="erpMaterialOrderCode"	column="ERP_MATERIAL_ORDER_CODE" />
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="erpMaterialOrderQty" column="ERP_MATERIAL_ORDER_QTY" />
+		<result property="erpVendorCode" column="ERP_VENDOR_CODE" />
+		<result property="erpMaterialUnitPrice"	column="ERP_MATERIAL_UNIT_PRICE" />
+		<result property="erpMaterialOrderDate" column="ERP_MATERIAL_ORDER_DATE" />
+		<result property="erpMaterialRequestDate" column="ERP_MATERIAL_REQUEST_DATE" />
+	</resultMap>
 	<resultMap id="matInout" type="mes.mat.inout.service.MatInoutVO">
 		<result property="matInoutStatement" column="MAT_INOUT_STATEMENT" />
 		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
@@ -14,6 +23,23 @@
 		<result property="comProcessCode" column="COM_PROCESS_CODE" />
 		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
 		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
+	</resultMap>
+	<resultMap id="comMaterial"
+		type="mes.mat.matr.service.ComMaterialVO">
+		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
+		<result property="comMaterialName" column="COM_MATERIAL_NAME" />
+		<result property="comMaterialBarcode" column="COM_MATERIAL_BARCODE" />
+		<result property="comMaterialSize" column="COM_MATERIAL_SIZE" />
+		<result property="comMaterialUnit" column="COM_MATERIAL_UNIT" />
+		<result property="comMaterialVendorCode" column="COM_MATERIAL_VENDOR_CODE" />
+		<result property="comMaterialSafetyStock" column="COM_MATERIAL_SAFETY_STOCK" />
+		<result property="comMaterialMin" column="COM_MATERIAL_MIN" />
+		<result property="comMaterialMax" column="COM_MATERIAL_MAX" />
+	</resultMap>
+	<resultMap type="mes.main.map.ResultMapVO" id="resultMaps">
+		<collection property="orderVO" resultMap="erpMaterialOrder" />
+		<collection property="matInoutVO" resultMap="matInout" />
+		<collection property="matrVO" resultMap="comMaterial" />
 	</resultMap>
 
 	<insert id="insertMatInout">
@@ -88,11 +114,13 @@
 		MAT_INOUT_STATEMENT
 		, COM_MATERIAL_CODE
 		, MAT_INOUT_DATE
-		, MAT_INOUT_GUBUN
+		,
+		MAT_INOUT_GUBUN
 		, MAT_INOUT_QUANTITY
 		, MAT_LOT_NO
 		, COM_PROCESS_CODE
-		, MAT_INOUT_UNIT_PRICE
+		,
+		MAT_INOUT_UNIT_PRICE
 		, MAT_INOUT_PRICE
 		FROM MAT_INOUT
 		WHERE 1=1
@@ -126,5 +154,24 @@
 			</if>
 		</if>
 	</select>
-	
+	<!-- 입출고조회페이지 전체조회 쿼리 -->
+	<select id="selectInoutList" resultMap="resultMaps">
+		SELECT c.com_material_code,
+		c.com_material_name,
+		c.com_material_size,
+		c.com_material_unit,
+		e.erp_material_order_code,
+		m.mat_inout_quantity,
+		m.mat_inout_unit_price,
+		m.mat_inout_price,
+		m.mat_lot_no
+		<!--현재고는 계산(if) -->
+		FROM erp_material_order e,
+		com_material c,
+		mat_inout m
+		WHERE e.com_material_code = c.com_material_code
+		AND
+		c.com_material_code = m.com_material_code
+	</select>
+
 </mapper>

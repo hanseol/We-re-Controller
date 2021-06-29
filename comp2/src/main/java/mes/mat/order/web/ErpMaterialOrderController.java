@@ -77,7 +77,7 @@ public class ErpMaterialOrderController {
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
         
-        return "mes/erpMaterialOrder/matrOrderViews.page";
+        return "mes/matOrder/matrOrderViews.page";
     } 
     
     @RequestMapping("/erpMaterialOrder/addErpMaterialOrderView.do")
