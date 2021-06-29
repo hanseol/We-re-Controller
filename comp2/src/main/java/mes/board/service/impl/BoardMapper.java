@@ -3,8 +3,7 @@ package mes.board.service.impl;
 import java.util.List;
 
 import mes.board.service.BoardVO;
-import mes.board.service.BoardDefaultVO;
-
+import mes.main.service.SearchVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
 /**
@@ -53,7 +52,7 @@ public interface BoardMapper {
 	 * @return 조회한 BOARD
 	 * @exception Exception
 	 */
-    public BoardVO selectBoard(BoardVO vo) throws Exception;
+    public BoardVO selectBoard(SearchVO vo) throws Exception;
 
     /**
 	 * BOARD 목록을 조회한다.
@@ -61,7 +60,7 @@ public interface BoardMapper {
 	 * @return BOARD 목록
 	 * @exception Exception
 	 */
-    public List<?> selectBoardList(BoardDefaultVO searchVO) throws Exception;
+    public List<?> selectBoardList(SearchVO searchVO) throws Exception;
 
     /**
 	 * BOARD 총 갯수를 조회한다.
@@ -69,6 +68,6 @@ public interface BoardMapper {
 	 * @return BOARD 총 갯수
 	 * @exception
 	 */
-    public int selectBoardListTotCnt(BoardDefaultVO searchVO);
+    public int selectBoardListTotCnt(SearchVO searchVO);
 
 }

@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
 
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
 .my-panel {
 	text-align: right;
@@ -54,9 +50,10 @@
 			<div class="row">
 				<div class="col-md-7">
 					<p class="panel-subtitle">Grid 테스트</p>
+					<input type="text" id="no" name="no">
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button">조회</button>
+					<button type="button" id="findRow">조회</button>
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
@@ -91,13 +88,22 @@
 		});
 		
 		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(true);
+			grid.removeCheckedRows(false);
 			grid.request('deleteData');
 		});
 		
 		$(document).on("click", "button[id=updateRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('updateData');
+		});
+		
+		$(document).on("click", "button[id=findRow]", function() {
+			var no = $("#no").val();
+			console.log(no);
+			var readParams = {
+					'searchKeyword' : no
+				};
+			grid.readData(1, readParams, true);
 		});
 		
 		const dataSource = {
@@ -112,7 +118,7 @@
 				},
 				deleteData : {
 					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
-					method : 'DELETE'
+					method : 'POST'
 				},
 				updateData : {
 					url : '${pageContext.request.contextPath}/ajax/updateBoard',
@@ -151,7 +157,7 @@
 			} ]
 		});
 	
-	grid.on('response', ev => {
+/* 	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);
 
@@ -161,7 +167,7 @@
 	
 	grid.on('check', (ev) => {
 		  alert(`check: ${ev.rowKey}`);
-	});
+	}); */
 	
 }); //end of document ready
 </script>

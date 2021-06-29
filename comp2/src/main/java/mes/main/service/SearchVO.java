@@ -1,4 +1,4 @@
-package mes.board.service;
+package mes.main.service;
 
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class BoardDefaultVO implements Serializable {
+public class SearchVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

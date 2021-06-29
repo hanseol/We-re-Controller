@@ -9,30 +9,27 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
-import mes.board.service.BoardDefaultVO;
 import mes.board.service.BoardService;
 import mes.board.service.BoardVO;
-import mes.board.service.GridDataVO;
+import mes.main.service.GridDataVO;
+import mes.main.service.SearchVO;
 
 /**
  * @Class Name : BoardController.java
  * @Description : Board Controller class
  * @Modification Information
  *
- * @author kym
- * @since 20210621
+ * @author hanseol
+ * @since 20210629
  * @version 1.0
  * @see
  *  
@@ -44,7 +41,7 @@ import mes.board.service.GridDataVO;
 public class BoardController {
 
     @Resource(name = "boardService")
-    private BoardService boardService;
+    private BoardService service;
     
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
@@ -59,19 +56,35 @@ public class BoardController {
     @RequestMapping(value="/mes/readBoard")
     @ResponseBody
     public Map<String, Object> readBoard(Model model, 
-    		 @ModelAttribute("searchVO") BoardDefaultVO searchVO) throws Exception{
+    		 @ModelAttribute("searchVO") SearchVO searchVO) throws Exception{
 
-    	int rowSize = boardService.selectBoardListTotCnt(searchVO);
-    	searchVO.setLastIndex(rowSize);
-    	List<?> boardList = boardService.selectBoardList(searchVO);
+    	int rowSize = 0;
+    	List<?> list = new ArrayList<>();
+    	
+    	//검색조건이 있을 경우
+    	if(!searchVO.getSearchKeyword().equals("")) {
+    	
+    		//mapper 조건에 따라 condition 설정 필요함.
+        	searchVO.setSearchCondition("0");
+    		
+    		rowSize = service.selectBoardListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectBoardList(searchVO);
+        //검색조건이 없을 경우
+    	}else {
+    		rowSize = service.selectBoardListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectBoardList(searchVO);
+    	}
     	
     	Map<String, Object> paging = new HashMap<>();
     	paging.put("page", searchVO.getPageIndex());
     	paging.put("totalCount", rowSize);
-    	System.out.println("============================="+rowSize);
     	
     	Map<String,Object> data = new HashMap<>();
-    	data.put("contents", boardList);
+    	data.put("contents", list);
     	data.put("pagination", paging);
     	
     	Map<String,Object> map = new HashMap<>();
@@ -94,7 +107,7 @@ public class BoardController {
     	list = gd.getCreatedRows();
     	
     	for(int i=0;i<list.size();i++) {
-    		boardService.insertBoard(list.get(i));
+    		service.insertBoard(list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
@@ -110,18 +123,18 @@ public class BoardController {
 	 * @return "map"
 	 * @exception Exception
 	 */
-    @DeleteMapping("/ajax/deleteBoard")
+    @PostMapping("/ajax/deleteBoard")
     @ResponseBody
     public Map<String,Object> deleteBoard(@RequestBody GridDataVO gd) throws Exception {
     	
-    	List<BoardVO> list = gd.getDeltedRows();
+    	List<BoardVO> list = gd.getDeletedRows();
     	for(int i=0; i<list.size(); i++) {
-    		boardService.deleteBoard(list.get(i));
+    		service.deleteBoard(list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
     	data.put("result", true);
-    	data.put("data", list.size());
+    	data.put("data", list);
     	
     	return data;
     }
@@ -136,8 +149,9 @@ public class BoardController {
     public Map<String,Object> updateBoard(@RequestBody GridDataVO gd) throws Exception {
     	
     	List<BoardVO> list = gd.getUpdatedRows();
+    	//전달받은 데이터 수 만큼.
     	for(int i=0; i<list.size(); i++) {
-    		boardService.updateBoard(list.get(i));
+    		service.updateBoard(list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();

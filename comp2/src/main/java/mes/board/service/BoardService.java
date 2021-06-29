@@ -1,8 +1,8 @@
 package mes.board.service;
 
 import java.util.List;
-import mes.board.service.BoardDefaultVO;
 import mes.board.service.BoardVO;
+import mes.main.service.SearchVO;
 
 /**
  * @Class Name : BoardService.java
@@ -48,7 +48,7 @@ public interface BoardService {
 	 * @return 조회한 BOARD
 	 * @exception Exception
 	 */
-    BoardVO selectBoard(BoardVO vo) throws Exception;
+    //BoardVO selectBoard(BoardVO vo) throws Exception;
     
     /**
 	 * BOARD 목록을 조회한다.
@@ -56,7 +56,7 @@ public interface BoardService {
 	 * @return BOARD 목록
 	 * @exception Exception
 	 */
-    List selectBoardList(BoardDefaultVO searchVO) throws Exception;
+    List selectBoardList(SearchVO searchVO) throws Exception;
     
     /**
 	 * BOARD 총 갯수를 조회한다.
@@ -64,6 +64,6 @@ public interface BoardService {
 	 * @return BOARD 총 갯수
 	 * @exception
 	 */
-    int selectBoardListTotCnt(BoardDefaultVO searchVO);
+    int selectBoardListTotCnt(SearchVO searchVO);
     
 }

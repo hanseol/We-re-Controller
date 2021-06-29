@@ -4,15 +4,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.board.service.BoardService;
-import mes.board.service.BoardDefaultVO;
 import mes.board.service.BoardVO;
+import mes.main.service.SearchVO;
 /**
  * @Class Name : BoardServiceImpl.java
  * @Description : Board Business Implement class
@@ -88,12 +87,12 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 조회한 BOARD
 	 * @exception Exception
 	 */
-    public BoardVO selectBoard(BoardVO vo) throws Exception {
-        BoardVO resultVO = boardDAO.selectBoard(vo);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
-        return resultVO;
-    }
+//    public BoardVO selectBoard(BoardVO vo) throws Exception {
+//        BoardVO resultVO = boardDAO.selectBoard(vo);
+//        if (resultVO == null)
+//            throw processException("info.nodata.msg");
+//        return resultVO;
+//    }
 
     /**
 	 * BOARD 목록을 조회한다.
@@ -101,7 +100,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return BOARD 목록
 	 * @exception Exception
 	 */
-    public List<?> selectBoardList(BoardDefaultVO searchVO) throws Exception {
+    public List<?> selectBoardList(SearchVO searchVO) throws Exception {
         return boardDAO.selectBoardList(searchVO);
     }
 
@@ -111,7 +110,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return BOARD 총 갯수
 	 * @exception
 	 */
-    public int selectBoardListTotCnt(BoardDefaultVO searchVO) {
+    public int selectBoardListTotCnt(SearchVO searchVO) {
 		return boardDAO.selectBoardListTotCnt(searchVO);
 	}
     

@@ -1,6 +1,8 @@
 package mes.board.service;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import mes.main.service.SearchVO;
 //test
 /**
  * @Class Name : BoardVO.java
@@ -14,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class BoardVO extends BoardDefaultVO{
+public class BoardVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** NO */

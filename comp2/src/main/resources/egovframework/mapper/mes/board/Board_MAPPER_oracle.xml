@@ -36,14 +36,13 @@
 				]]>
 	</update>
 	
-	<delete id="deleteBoard">
-		<![CDATA[
-			DELETE FROM BOARD 
-						WHERE NO=#{no}
-				]]>
+	<delete id="deleteBoard" parameterType="mes.board.service.BoardVO">
+		DELETE FROM BOARD 
+		WHERE NO=#{no}
 	</delete>
 	
 	<select id="selectBoard" resultMap="board">
+		
 		<![CDATA[
 			SELECT
 				NO
