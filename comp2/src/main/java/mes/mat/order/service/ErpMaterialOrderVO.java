@@ -1,6 +1,7 @@
 package mes.mat.order.service;
 
 import lombok.Data;
+import mes.main.service.SearchVO;
 
 /**
  * @Class Name : ErpMaterialOrderVO.java
@@ -15,7 +16,7 @@ import lombok.Data;
  *  Copyright (C)  All right reserved.
  */
 @Data
-public class ErpMaterialOrderVO extends ErpMaterialOrderDefaultVO{
+public class ErpMaterialOrderVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** ERP_MATERIAL_ORDER_CODE */

@@ -7,8 +7,8 @@ import mes.mat.order.service.ErpMaterialOrderVO;
 import mes.qua.chk.service.QuaMaterialChkVO;
 @Data
 public class ResultMapVO {
-	private ErpMaterialOrderVO orderVO;
-	private MatInoutVO matInoutVO;
-	private ComMaterialVO matrVO;
-	private QuaMaterialChkVO matrChkVO;
+	//private ErpMaterialOrderVO orderVO;
+	//private MatInoutVO matInoutVO;
+	//private ComMaterialVO matrVO;
+	//private QuaMaterialChkVO matrChkVO;
 }

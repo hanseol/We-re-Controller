@@ -1,6 +1,9 @@
 package mes.mat.order.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,13 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import mes.mat.order.service.ErpMaterialOrderDefaultVO;
 import mes.mat.order.service.ErpMaterialOrderService;
 import mes.mat.order.service.ErpMaterialOrderVO;
 
@@ -33,11 +32,10 @@ import mes.mat.order.service.ErpMaterialOrderVO;
  */
 
 @Controller
-@SessionAttributes(types=ErpMaterialOrderVO.class)
 public class ErpMaterialOrderController {
 
     @Resource(name = "erpMaterialOrderService")
-    private ErpMaterialOrderService erpMaterialOrderService;
+    private ErpMaterialOrderService service;
     
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
@@ -49,100 +47,53 @@ public class ErpMaterialOrderController {
 	 * @return "/erpMaterialOrder/ErpMaterialOrderList"
 	 * @exception Exception
 	 */
+    @RequestMapping(value="/mat/order/readMatrOrder")
+    @ResponseBody
+    public Map<String, Object> readBoard(Model model, 
+    		 @ModelAttribute("searchVO") ErpMaterialOrderVO searchVO) throws Exception{
+
+    	int rowSize = 0;
+    	List<?> list = new ArrayList<>();
+    	
+    	//검색조건이 있을 경우
+    	if(!searchVO.getSearchKeyword().equals("")) {
+    	
+    		//mapper 조건에 따라 condition 설정 필요함.
+        	searchVO.setSearchCondition("0");
+    		
+    		rowSize = service.selectErpMaterialOrderListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectOrderList(searchVO);
+        //검색조건이 없을 경우
+    	}else {
+    		rowSize = service.selectErpMaterialOrderListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectOrderList(searchVO);
+    	}
+    	
+    	Map<String, Object> paging = new HashMap<>();
+    	paging.put("page", searchVO.getPageIndex());
+    	paging.put("totalCount", rowSize);
+    	
+    	Map<String,Object> data = new HashMap<>();
+    	data.put("contents", list);
+    	data.put("pagination", paging);
+    	
+    	Map<String,Object> map = new HashMap<>();
+    	map.put("result", true);
+    	map.put("data", data);
+        
+    	return map;
+    }
+    
+    //뷰페이지만 넘겨준다.
     @RequestMapping(value="/erpMaterialOrder/ErpMaterialOrderList.do")
-    public String selectErpMaterialOrderList(@ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO, 
-    		ModelMap model)
-            throws Exception {
-    	
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
-    	
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-        List<?> erpMaterialOrderList = erpMaterialOrderService.selectOrderList(searchVO);
-        model.addAttribute("resultList", erpMaterialOrderList);
-        
-        model.addAttribute("selectOrderList", erpMaterialOrderList);
-        
-        int totCnt = erpMaterialOrderService.selectErpMaterialOrderListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
-        
+    public String selectErpMaterialOrderList(@ModelAttribute("searchVO") ErpMaterialOrderVO searchVO, 
+    		ModelMap model) {
+    
         return "mes/matOrder/matrOrderViews.page";
     } 
-    
-    @RequestMapping("/erpMaterialOrder/addErpMaterialOrderView.do")
-    public String addErpMaterialOrderView(
-            @ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO, Model model)
-            throws Exception {
-        model.addAttribute("erpMaterialOrderVO", new ErpMaterialOrderVO());
-        return "/erpMaterialOrder/ErpMaterialOrderRegister";
-    }
-    
-    @RequestMapping("/erpMaterialOrder/addErpMaterialOrder.do")
-    public String addErpMaterialOrder(
-            ErpMaterialOrderVO erpMaterialOrderVO,
-            @ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        erpMaterialOrderService.insertErpMaterialOrder(erpMaterialOrderVO);
-        status.setComplete();
-        return "forward:/erpMaterialOrder/ErpMaterialOrderList.do";
-    }
-    
-    @RequestMapping("/erpMaterialOrder/updateErpMaterialOrderView.do")
-    public String updateErpMaterialOrderView(
-            @RequestParam("erpMaterialOrderCode") java.lang.String erpMaterialOrderCode ,
-            @ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO, Model model)
-            throws Exception {
-        ErpMaterialOrderVO erpMaterialOrderVO = new ErpMaterialOrderVO();
-        erpMaterialOrderVO.setErpMaterialOrderCode(erpMaterialOrderCode);
-        // 변수명은 CoC 에 따라 erpMaterialOrderVO
-        model.addAttribute(selectErpMaterialOrder(erpMaterialOrderVO, searchVO));
-        return "/erpMaterialOrder/ErpMaterialOrderRegister";
-    }
-
-    @RequestMapping("/erpMaterialOrder/selectErpMaterialOrder.do")
-    public @ModelAttribute("erpMaterialOrderVO")
-    ErpMaterialOrderVO selectErpMaterialOrder(
-            ErpMaterialOrderVO erpMaterialOrderVO,
-            @ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO) throws Exception {
-        return erpMaterialOrderService.selectErpMaterialOrder(erpMaterialOrderVO);
-    }
-
-    @RequestMapping("/erpMaterialOrder/updateErpMaterialOrder.do")
-    public String updateErpMaterialOrder(
-            ErpMaterialOrderVO erpMaterialOrderVO,
-            @ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        erpMaterialOrderService.updateErpMaterialOrder(erpMaterialOrderVO);
-        status.setComplete();
-        return "forward:/erpMaterialOrder/ErpMaterialOrderList.do";
-    }
-    
-    @RequestMapping("/erpMaterialOrder/deleteErpMaterialOrder.do")
-    public String deleteErpMaterialOrder(
-            ErpMaterialOrderVO erpMaterialOrderVO,
-            @ModelAttribute("searchVO") ErpMaterialOrderDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        erpMaterialOrderService.deleteErpMaterialOrder(erpMaterialOrderVO);
-        status.setComplete();
-        return "forward:/erpMaterialOrder/ErpMaterialOrderList.do";
-    }
-    
-    @RequestMapping("/erpMaterialOrder/matrOrderView.do")
-    public String searchMatrOrder(Model model) {
-    	
-    	
-    	return "mes/erpMaterialOrder/matrOrderViews.page";
-    }
 
 }

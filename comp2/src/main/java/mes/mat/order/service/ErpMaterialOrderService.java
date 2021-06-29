@@ -2,9 +2,6 @@ package mes.mat.order.service;
 
 import java.util.List;
 
-import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import mes.mat.order.service.ErpMaterialOrderDefaultVO;
-import mes.mat.order.service.ErpMaterialOrderVO;
 
 /**
  * @Class Name : ErpMaterialOrderService.java
@@ -58,7 +55,7 @@ public interface ErpMaterialOrderService {
 	 * @return ERP_MATERIAL_ORDER 목록
 	 * @exception Exception
 	 */
-    List selectErpMaterialOrderList(ErpMaterialOrderDefaultVO searchVO) throws Exception;
+    List selectErpMaterialOrderList(ErpMaterialOrderVO searchVO) throws Exception;
     
     /**
 	 * ERP_MATERIAL_ORDER 총 갯수를 조회한다.
@@ -66,8 +63,8 @@ public interface ErpMaterialOrderService {
 	 * @return ERP_MATERIAL_ORDER 총 갯수
 	 * @exception
 	 */
-    int selectErpMaterialOrderListTotCnt(ErpMaterialOrderDefaultVO searchVO);
+    int selectErpMaterialOrderListTotCnt(ErpMaterialOrderVO searchVO);
     
     //리스트 전체 데이터 조회
-	List<?> selectOrderList(ErpMaterialOrderDefaultVO searchVO) throws Exception;
+	List<?> selectOrderList(ErpMaterialOrderVO searchVO) throws Exception;
 }

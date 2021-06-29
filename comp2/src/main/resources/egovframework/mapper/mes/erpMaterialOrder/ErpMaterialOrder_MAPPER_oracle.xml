@@ -126,10 +126,48 @@ SELECT * FROM (
 )WHERE RNUM > #{firstIndex}
 ]]>
 	</select>	
+
+	<select id="selectOrderList" parameterType="mes.mat.order.service.ErpMaterialOrderVO" resultType="egovMap">
+		SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT		e.erp_material_order_date,
+							e.erp_material_order_code,
+							c.com_material_code,
+							c.com_material_name,
+							m.mat_inout_date,
+							e.erp_material_order_qty,
+							e.erp_vendor_code,
+							m.mat_lot_no,
+							m.mat_inout_quantity
+				FROM		erp_material_order e,
+							com_material c,
+							mat_inout m
+				WHERE		e.com_material_code = c.com_material_code
+				AND			c.com_material_code = m.com_material_code
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						ERP_MATERIAL_ORDER_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						ERP_MATERIAL_ORDER_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM >= #{firstIndex}
+]]>
+	</select>
+	
 	<select id="selectErpMaterialOrderListTotCnt" parameterType="mes.mat.order.service.ErpMaterialOrderVO" resultType="int">
 			SELECT COUNT(*) totcnt
-			FROM ERP_MATERIAL_ORDER
-			WHERE 1=1
+			FROM		erp_material_order e,
+							com_material c,
+							mat_inout m
+			WHERE		e.com_material_code = c.com_material_code
+			AND			c.com_material_code = m.com_material_code
 			<if test="searchKeyword != null and searchKeyword != ''">
 				<if test="searchCondition == 0">AND
 					ERP_MATERIAL_ORDER_CODE = #{searchKeyword}
@@ -139,20 +177,5 @@ SELECT * FROM (
 				</if>
 			</if>
 	</select>
-	<select id="selectOrderList" resultMap="resultMaps">
-		SELECT		e.erp_material_order_date,
-					e.erp_material_order_code,
-					c.com_material_code,
-					c.com_material_name,
-					m.mat_inout_date,
-					e.erp_material_order_qty,
-					e.erp_vendor_code,
-					m.mat_lot_no,
-					m.mat_inout_quantity
-		FROM		erp_material_order e,
-					com_material c,
-					mat_inout m
-		WHERE		e.com_material_code = c.com_material_code
-		AND			c.com_material_code = m.com_material_code
-	</select>
+	
 </mapper>

@@ -30,7 +30,7 @@
 							<a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>자재</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages3" class="collapse ">
 								<ul class="nav">
-									<li><a href="page-profile.html" class="">Profile</a></li>
+									<li><a href="erpMaterialOrder/ErpMaterialOrderList.do" class="">자재발주조회</a></li>
 									<li><a href="page-login.html" class="">Login</a></li>
 									<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
 								</ul>

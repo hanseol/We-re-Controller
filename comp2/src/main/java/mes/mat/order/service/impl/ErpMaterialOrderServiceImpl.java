@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import mes.mat.order.service.ErpMaterialOrderDefaultVO;
 import mes.mat.order.service.ErpMaterialOrderService;
 import mes.mat.order.service.ErpMaterialOrderVO;
 /**
@@ -100,7 +99,7 @@ public class ErpMaterialOrderServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return ERP_MATERIAL_ORDER 목록
 	 * @exception Exception
 	 */
-    public List<?> selectErpMaterialOrderList(ErpMaterialOrderDefaultVO searchVO) throws Exception {
+    public List<?> selectErpMaterialOrderList(ErpMaterialOrderVO searchVO) throws Exception {
         return erpMaterialOrderDAO.selectErpMaterialOrderList(searchVO);
     }
 
@@ -110,13 +109,13 @@ public class ErpMaterialOrderServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return ERP_MATERIAL_ORDER 총 갯수
 	 * @exception
 	 */
-    public int selectErpMaterialOrderListTotCnt(ErpMaterialOrderDefaultVO searchVO) {
+    public int selectErpMaterialOrderListTotCnt(ErpMaterialOrderVO searchVO) {
 		return erpMaterialOrderDAO.selectErpMaterialOrderListTotCnt(searchVO);
 	}
     
     //리스트 전체 조회
 	@Override
-	public List<?> selectOrderList(ErpMaterialOrderDefaultVO searchVO) throws Exception {
+	public List<?> selectOrderList(ErpMaterialOrderVO searchVO) throws Exception {
 		
 		return erpMaterialOrderDAO.selectOrderList(searchVO);
 	}
