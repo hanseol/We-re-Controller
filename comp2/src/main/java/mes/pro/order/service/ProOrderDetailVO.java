@@ -1,6 +1,8 @@
 package mes.pro.order.service;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import mes.main.service.SearchVO;
 
 /**
  * @Class Name : ProOrderDetailVO.java
@@ -16,7 +18,8 @@ import lombok.Data;
  */
 
 @Data
-public class ProOrderDetailVO extends ProOrderDetailDefaultVO{
+@EqualsAndHashCode(callSuper=false)
+public class ProOrderDetailVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     private java.lang.String proOrderDetailCode;
     private java.lang.String proOrderCode;

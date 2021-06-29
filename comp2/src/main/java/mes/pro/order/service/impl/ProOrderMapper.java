@@ -4,7 +4,6 @@ import java.util.List;
 
 import mes.pro.order.service.ProOrderVO;
 import mes.main.service.SearchVO;
-import mes.pro.order.service.ProOrderDefaultVO;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 

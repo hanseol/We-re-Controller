@@ -1,9 +1,6 @@
 package mes.pro.plan.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,22 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
+import mes.main.service.SearchVO;
 import mes.pro.plan.service.ProPlanService;
-import mes.board.service.BoardVO;
-import mes.board.service.GridDataVO;
-import mes.pro.plan.service.ProPlanDefaultVO;
 import mes.pro.plan.service.ProPlanVO;
 
 /**
@@ -43,7 +33,6 @@ import mes.pro.plan.service.ProPlanVO;
  */
 
 @Controller
-@SessionAttributes(types=ProPlanVO.class)
 public class ProPlanController {
 	
 //  업데이트
@@ -68,7 +57,7 @@ public class ProPlanController {
 	 */
     //생산계획조회 페이지로 이동
     @RequestMapping(value="proPlan/ProdPlanView.do")
-    public String selectProPlanList(@ModelAttribute("searchVO") ProPlanDefaultVO searchVO, 
+    public String selectProPlanList(@ModelAttribute("searchVO") ProPlanVO searchVO, 
     		ModelMap model)
             throws Exception {
     	
@@ -92,68 +81,68 @@ public class ProPlanController {
         int totCnt = proPlanService.selectProPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
-        
+       
         return "mes/pro/plan/ProdPlanView.page";
     } 
     
     //생산계획폼으로 이동 
     @RequestMapping("proPlan/prodPlanForm.do")
     public String addProPlanView(
-            @ModelAttribute("searchVO") ProPlanDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProPlanVO searchVO, Model model)
             throws Exception {
         model.addAttribute("proPlanVO", new ProPlanVO());
         return "mes/pro/plan/prodPlanForm.page";
     }
     
 
-    @RequestMapping("proPlan/addProPlan.do")
-    public String addProPlan(
-            ProPlanVO proPlanVO,
-            @ModelAttribute("searchVO") ProPlanDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        proPlanService.insertProPlan(proPlanVO);
-        status.setComplete();
-        return "forward:/proPlan/ProdPlanView.do";
-    }
-    
-    @RequestMapping("proPlan/updateProPlanView.do")
-    public String updateProPlanView(
-            @RequestParam("proPlanCode") java.lang.String proPlanCode ,
-            @ModelAttribute("searchVO") ProPlanDefaultVO searchVO, Model model)
-            throws Exception {
-        ProPlanVO proPlanVO = new ProPlanVO();
-        proPlanVO.setProPlanCode(proPlanCode);
-        // 변수명은 CoC 에 따라 proPlanVO
-        model.addAttribute(selectProPlan(proPlanVO, searchVO));
-        return "mes/pro/plan/prodPlanForm.page";
-    }
-
-    @RequestMapping("proPlan/selectProPlan.do")
-    public @ModelAttribute("proPlanVO")
-    ProPlanVO selectProPlan(
-            ProPlanVO proPlanVO,
-            @ModelAttribute("searchVO") ProPlanDefaultVO searchVO) throws Exception {
-        return proPlanService.selectProPlan(proPlanVO);
-    }
-
-    @RequestMapping("proPlan/updateProPlan.do")
-    public String updateProPlan(
-            ProPlanVO proPlanVO,
-            @ModelAttribute("searchVO") ProPlanDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        proPlanService.updateProPlan(proPlanVO);
-        status.setComplete();
-        return "forward:/proPlan/ProdPlanView.do";
-    }
-    
-    @RequestMapping("proPlan/deleteProPlan.do")
-    public String deleteProPlan(
-            ProPlanVO proPlanVO,
-            @ModelAttribute("searchVO") ProPlanDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        proPlanService.deleteProPlan(proPlanVO);
-        status.setComplete();
-        return "forward:/proPlan/ProdPlanView.do";
-    }
+//    @RequestMapping("proPlan/addProPlan.do")
+//    public String addProPlan(
+//            SearchVO proPlanVO,
+//            @ModelAttribute("searchVO") ProPlanVO searchVO, SessionStatus status)
+//            throws Exception {
+//        proPlanService.insertProPlan(proPlanVO);
+//        status.setComplete();
+//        return "forward:/proPlan/ProdPlanView.do";
+//    }
+//    
+//    @RequestMapping("proPlan/updateProPlanView.do")
+//    public String updateProPlanView(
+//            @RequestParam("proPlanCode") java.lang.String proPlanCode ,
+//            @ModelAttribute("searchVO") ProPlanVO searchVO, Model model)
+//            throws Exception {
+//    	ProPlanVO proPlanVO = new ProPlanVO();
+//        proPlanVO.setProPlanCode(proPlanCode);
+//        // 변수명은 CoC 에 따라 proPlanVO
+//        model.addAttribute(selectProPlan(proPlanVO, searchVO));
+//        return "mes/pro/plan/prodPlanForm.page";
+//    }
+//
+//    @RequestMapping("proPlan/selectProPlan.do")
+//    public @ModelAttribute("proPlanVO")
+//    SearchVO selectProPlan(
+//            SearchVO proPlanVO,
+//            @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
+//        return proPlanService.selectProPlan(proPlanVO);
+//    }
+//
+//    @RequestMapping("proPlan/updateProPlan.do")
+//    public String updateProPlan(
+//            SearchVO proPlanVO,
+//            @ModelAttribute("searchVO") ProPlanVO searchVO, SessionStatus status)
+//            throws Exception {
+//        proPlanService.updateProPlan(proPlanVO);
+//        status.setComplete();
+//        return "forward:/proPlan/ProdPlanView.do";
+//    }
+//    
+//    @RequestMapping("proPlan/deleteProPlan.do")
+//    public String deleteProPlan(
+//            SearchVO proPlanVO,
+//            @ModelAttribute("searchVO") ProPlanVO searchVO, SessionStatus status)
+//            throws Exception {
+//        proPlanService.deleteProPlan(proPlanVO);
+//        status.setComplete();
+//        return "forward:/proPlan/ProdPlanView.do";
+//    }
 
 }

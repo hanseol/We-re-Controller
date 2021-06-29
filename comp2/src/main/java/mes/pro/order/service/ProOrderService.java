@@ -2,9 +2,6 @@ package mes.pro.order.service;
 
 import java.util.List;
 
-import mes.main.service.SearchVO;
-import mes.pro.order.service.ProOrderDefaultVO;
-import mes.pro.order.service.ProOrderVO;
 
 /**
  * @Class Name : ProOrderService.java
@@ -58,7 +55,7 @@ public interface ProOrderService {
 	 * @return PRO_ORDER 목록
 	 * @exception Exception
 	 */
-    List selectProOrderList(SearchVO searchVO) throws Exception;
+    List<?> selectProOrderList(ProOrderVO searchVO) throws Exception;
     
     /**
 	 * PRO_ORDER 총 갯수를 조회한다.
@@ -66,6 +63,6 @@ public interface ProOrderService {
 	 * @return PRO_ORDER 총 갯수
 	 * @exception
 	 */
-    int selectProOrderListTotCnt(SearchVO searchVO);
+    int selectProOrderListTotCnt(ProOrderVO searchVO);
     
 }

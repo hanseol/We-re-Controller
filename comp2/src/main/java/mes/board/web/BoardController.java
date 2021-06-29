@@ -37,7 +37,7 @@ import mes.main.service.SearchVO;
  */
 
 @Controller
-@SessionAttributes(types=BoardVO.class)
+//@SessionAttributes(types=BoardVO.class)
 public class BoardController {
 
     @Resource(name = "boardService")
@@ -56,7 +56,7 @@ public class BoardController {
     @RequestMapping(value="/mes/readBoard")
     @ResponseBody
     public Map<String, Object> readBoard(Model model, 
-    		 @ModelAttribute("searchVO") SearchVO searchVO) throws Exception{
+    		 @ModelAttribute("searchVO") BoardVO searchVO) throws Exception{
 
     	int rowSize = 0;
     	List<?> list = new ArrayList<>();

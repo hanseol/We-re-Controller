@@ -4,15 +4,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.pro.order.service.ProOrderDetailService;
-import mes.pro.order.service.ProOrderDetailDefaultVO;
 import mes.pro.order.service.ProOrderDetailVO;
+import mes.pro.order.service.ProOrderVO;
 /**
  * @Class Name : ProOrderDetailServiceImpl.java
  * @Description : ProOrderDetail Business Implement class
@@ -101,7 +100,7 @@ public class ProOrderDetailServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return PRO_ORDER_DETAIL 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProOrderDetailList(ProOrderDetailDefaultVO searchVO) throws Exception {
+    public List<?> selectProOrderDetailList(ProOrderDetailVO searchVO) throws Exception {
         return proOrderDetailDAO.selectProOrderDetailList(searchVO);
     }
 
@@ -111,7 +110,7 @@ public class ProOrderDetailServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return PRO_ORDER_DETAIL 총 갯수
 	 * @exception
 	 */
-    public int selectProOrderDetailListTotCnt(ProOrderDetailDefaultVO searchVO) {
+    public int selectProOrderDetailListTotCnt(ProOrderDetailVO searchVO) {
 		return proOrderDetailDAO.selectProOrderDetailListTotCnt(searchVO);
 	}
     

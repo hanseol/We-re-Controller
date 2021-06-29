@@ -9,20 +9,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import mes.pro.order.service.ProOrderService;
-import mes.main.service.SearchVO;
-import mes.pro.order.service.ProOrderDefaultVO;
 import mes.pro.order.service.ProOrderVO;
 
 /**
@@ -39,7 +33,6 @@ import mes.pro.order.service.ProOrderVO;
  */
 
 @Controller
-@SessionAttributes(types=ProOrderVO.class)
 public class ProOrderController {
 
     @Resource(name = "proOrderService")
@@ -52,31 +45,33 @@ public class ProOrderController {
     //테이블 목록 조회
     @RequestMapping("proOrder/ProdView")
     @ResponseBody
-    public Map<String, Object> readOrder(Model model, @ModelAttribute("searchVO") SearchVO searchVO ) throws Exception {
+    public Map<String, Object> readOrder(Model model, 
+    		@ModelAttribute("proOrderVO") ProOrderVO proOrderVO ) throws Exception {
 
     	int rowSize = 0;
     	List<?> list = new ArrayList<>();
     	
     	//검색조건이 있을 경우
-    	if(!searchVO.getSearchKeyword().equals("")) {
+    	if(!proOrderVO.getSearchKeyword().equals("")) {
     	
     		//mapper 조건에 따라 condition 설정 필요함.
-        	searchVO.setSearchCondition("0");
+    		proOrderVO.setSearchCondition("0");
     		
-    		rowSize = service.selectProOrderListTotCnt(searchVO);
-        	searchVO.setLastIndex(rowSize);
+    		rowSize = service.selectProOrderListTotCnt(proOrderVO);
+    		proOrderVO.setLastIndex(rowSize);
         	
-        	list = service.selectProOrderList(searchVO);
+        	list = service.selectProOrderList(proOrderVO);
         //검색조건이 없을 경우
     	}else {
-    		rowSize = service.selectProOrderListTotCnt(searchVO);
-        	searchVO.setLastIndex(rowSize);
+    		rowSize = service.selectProOrderListTotCnt(proOrderVO);
+    		
+    		proOrderVO.setLastIndex(rowSize);
         	
-        	list = service.selectProOrderList(searchVO);
+        	list = service.selectProOrderList(proOrderVO);
     	}
     	
     	Map<String, Object> paging = new HashMap<>();
-    	paging.put("page", searchVO.getPageIndex());
+    	paging.put("page", proOrderVO.getPageIndex());
     	paging.put("totalCount", rowSize);
     	
     	Map<String,Object> data = new HashMap<>();
@@ -90,39 +85,39 @@ public class ProOrderController {
     	return map;
     }
     
-    //생산지시 리스트 조회
-    @RequestMapping(value="/proOrder/ProOrderList.do")
-    public String selectProOrderList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model) throws Exception {
-    	
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
-    	
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-        List<?> proOrderList = service.selectProOrderList(searchVO);
-        model.addAttribute("resultList", proOrderList);
-        
-        int totCnt = service.selectProOrderListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
-        
-        return "mes/pro/order/prodView.page";
-    } 
+//    //생산지시 리스트 조회
+//    @RequestMapping(value="/proOrder/ProOrderList.do")
+//    public String selectProOrderList(@ModelAttribute("searchVO") ProOrderVO searchVO, ModelMap model) throws Exception {
+//    	
+//    	/** EgovPropertyService.sample */
+//    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+//    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+//    	
+//    	/** pageing */
+//    	PaginationInfo paginationInfo = new PaginationInfo();
+//		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+//		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+//		paginationInfo.setPageSize(searchVO.getPageSize());
+//		
+//		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+//		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+//		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+//		
+//        List<?> proOrderList = service.selectProOrderList(searchVO);
+//        model.addAttribute("resultList", proOrderList);
+//        
+//        int totCnt = service.selectProOrderListTotCnt(searchVO);
+//		paginationInfo.setTotalRecordCount(totCnt);
+//        model.addAttribute("paginationInfo", paginationInfo);
+//        
+//        return "mes/pro/order/prodView.page";
+//    } 
     
     
     //생산지시 폼 호출
     @RequestMapping("/proOrder/addProOrderView.do")
-    public String addProOrderView(@ModelAttribute("searchVO") SearchVO searchVO, Model model) throws Exception {
-        model.addAttribute("proOrderVO", new ProOrderVO());
+    public String addProOrderView(Model model){
+       
         return "mes/pro/order/prodForm.page";
     }
     

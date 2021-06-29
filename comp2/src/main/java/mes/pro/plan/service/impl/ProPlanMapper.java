@@ -3,7 +3,6 @@ package mes.pro.plan.service.impl;
 import java.util.List;
 
 import mes.pro.plan.service.ProPlanVO;
-import mes.pro.plan.service.ProPlanDefaultVO;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -61,7 +60,7 @@ public interface ProPlanMapper {
 	 * @return PRO_PLAN 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProPlanList(ProPlanDefaultVO searchVO) throws Exception;
+    public List<?> selectProPlanList(ProPlanVO searchVO) throws Exception;
 
     /**
 	 * PRO_PLAN 총 갯수를 조회한다.
@@ -69,6 +68,6 @@ public interface ProPlanMapper {
 	 * @return PRO_PLAN 총 갯수
 	 * @exception
 	 */
-    public int selectProPlanListTotCnt(ProPlanDefaultVO searchVO);
+    public int selectProPlanListTotCnt(ProPlanVO searchVO);
 
 }

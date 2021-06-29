@@ -1,6 +1,9 @@
 package mes.pro.plan.service;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import mes.main.service.SearchVO;
 
 /**
  * @Class Name : ProPlanVO.java
@@ -16,7 +19,9 @@ import lombok.Data;
  */
 
 @Data
-public class ProPlanVO extends ProPlanDefaultVO{
+@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
+public class ProPlanVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     
