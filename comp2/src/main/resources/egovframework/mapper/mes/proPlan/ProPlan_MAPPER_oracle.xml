@@ -55,42 +55,45 @@
 				]]>
 	</select>
 	
+	<!-- 전체 목록 조회 -->
 	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
-SELECT * FROM (
-	SELECT A.*, ROWNUM RNUM FROM (
-				SELECT m.pro_plan_date
-				     , m.pro_plan_code
-				     , d.erp_customer_code
-				     , e.erp_product_code
-				     , e.erp_product_name 
-				     , d.erp_order_code
-				     , d.erp_product_deadline
-				     , d.erp_order_qty
-				     , d.pro_plan_qty
-				     , d.pro_work_date
-				     , d.pro_plan_seq
-				FROM pro_plan m
-				   , pro_plan_detail d
-				   , erp_product_order e
-				WHERE m.pro_plan_code = d.pro_plan_code
-				  AND d.erp_order_code = e.erp_order_code
-				  AND 1=1
-				<if test="searchKeyword != null and searchKeyword != ''">
-					<if test="searchCondition == 0">AND
-						PRO_PLAN_CODE = #{searchKeyword}
-					</if>
-					<if test="searchCondition == 1">AND
-						PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
-					</if>
-				</if>
-					ORDER BY 
-						PRO_PLAN_CODE DESC
-		
-		<![CDATA[					
-	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM >= #{firstIndex}
-]]>
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT m.pro_plan_date
+						     , m.pro_plan_code
+						     , d.erp_customer_code
+						     , e.erp_product_code
+						     , e.erp_product_name 
+						     , d.erp_order_code
+						     , d.erp_product_deadline
+						     , d.erp_order_qty
+						     , d.pro_plan_qty
+						     , d.pro_work_date
+						     , d.pro_plan_seq
+						FROM pro_plan m
+						   , pro_plan_detail d
+						   , erp_product_order e
+						WHERE m.pro_plan_code = d.pro_plan_code
+						  AND d.erp_order_code = e.erp_order_code
+						  AND 1=1
+						<if test="searchKeyword != null and searchKeyword != ''">
+							<if test="searchCondition == 0">AND
+								PRO_PLAN_CODE = #{searchKeyword}
+							</if>
+							<if test="searchCondition == 1">AND
+								PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+							</if>
+						</if>
+							ORDER BY 
+								PRO_PLAN_CODE DESC
+				
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
 	</select>	
+	
+	
 	<select id="selectProPlanListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
 			SELECT COUNT(*) totcnt
 			FROM pro_plan m

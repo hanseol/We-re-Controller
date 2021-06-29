@@ -1,119 +1,218 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%
- /**
-  * @Class Name : ProPlanList.jsp
-  * @Description : ProPlan List 화면
-  * @Modification Information
-  * 
-  * @author dahee
-  * @since 20210628
-  * @version 1.0
-  * @see
-  *  
-  * Copyright (C) All right reserved.
-  */
-%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>목록</title>
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
-<script type="text/javaScript" language="javascript" defer="defer">
-<!--
-/* 글 수정 화면 function */
 
-function fn_egov_select(proPlanCode) {
-	document.getElementById("listForm").proPlanCode.value = proPlanCode;
-   	document.getElementById("listForm").action = "<c:url value='/proPlan/updateProPlanView.do'/>";
-   	document.getElementById("listForm").submit();
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
+
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<style>
+.my-panel {
+	text-align: right;
+	border-top: 1px solid gray;
+	padding: 10px;
+	margin-bottom: 10px;
+	background-color: white;
 }
+</style>
 
-/* 글 등록 화면 function */
-function fn_egov_addView() {
-   	document.getElementById("listForm").action = "<c:url value='/proPlan/addProPlanView.do'/>";
-   	document.getElementById("listForm").submit();		
-}
-
-/* pagination 페이지 링크 function */
-function fn_egov_link_page(pageNo){
-	document.getElementById("listForm").pageIndex.value = pageNo;
-	document.getElementById("listForm").action = "<c:url value='/proPlan/ProPlanList.do'/>";
-   	document.getElementById("listForm").submit();
-}
-
- // -->
-</script>
-</head>
-
-<body>
-<form:form commandName="searchVO" name="listForm" id="listForm" method="post">
-	<input type="hidden" name="proPlanCode" />
-<div id="content_pop">
-	<!-- 페이지 타이틀 -->
-	<div id="title">
-		<h2>
-			생산 계획 조회
-		</h2>
+<!-- 타이틀 -->
+<div class="content-fluid">
+	<div>
+		<h2>생산 계획 관리</h2>
 	</div>
-	
-	<!-- 디테일 테이블 -->
-	<!-- List -->
-	<div id="table">
-		<table width="95%" border="1" >
-			<colgroup>
-				<col/>				
-				<col/>				
-				<col/>				
-				<col/>				
-			</colgroup>		  
-			<tr>
-				<th align="center">계획일자</th>
-				<th align="center">계획번호</th>
-				<th align="center">고객사명</th>
-				<th align="center">제품코드</th>
-				<th align="center">제품명</th>
-				<th align="center">주문코드</th>
-				<th align="center">납기일자</th>
-				<th align="center">주문량</th>
-				<th align="center">작업계획량</th>
-				<th align="center">작업착수일</th>
-				<th align="center">작업우선순위</th>
-				
-			</tr>
-			<c:forEach var="result" items="${resultList}" varStatus="status">
-			<tr>
-				<td align="center" class="listtd"><c:out value="${result.proPlanDate}"/></a>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.proPlanCode}"/></a>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.erpCustomerCode}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.erpProductCode}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.erpProductName}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.erpOrderCode}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.erpProductDeadline}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.erpOrderQty}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.proPlanQty}"/></a>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.proWorkDate}"/>&nbsp;</td>
-				<td align="center" class="listtd"><c:out value="${result.proPlanSeq}"/>&nbsp;</td>
-   			</tr>
-			</c:forEach>
-		</table>
-	</div>
-	
-	
-	
-	<!-- paging -->
-	<div id="paging">
-		<ui:pagination paginationInfo = "${paginationInfo}"
-				   type="image"
-				   jsFunction="fn_egov_link_page"
-				   />
-		<form:hidden path="pageIndex" />
-	</div>	
 </div>
-</form:form>
-</body>
-</html>
+
+<!-- 마스터테이블의 CRUD 버튼 -->
+<div class="content-fluid">
+	<div>
+		<div class="my-panel">
+			<button type="button" class="btn btn-success">조회</button>
+			<button type="button" class="btn btn-danger">새자료</button>
+			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
+			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+		</div>
+	</div>
+</div>
+
+<!-- 마스터 테이블 -->
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<form>
+						* 계획일자 <input type="date" id="proPlanDate" name="proPlanDate">
+					</form>
+				</div>
+				<div class="col-md-6">* 미생산계획</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 디테일 테이블 -->
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-7">
+					<p class="panel-subtitle">Grid 테스트</p>
+				</div>
+				<div class="col-md-5" align="right">
+					<button type="button">조회</button>
+					<button type="button" id="appendRow">추가</button>
+					<button type="button" id="deleteRow">삭제</button>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="grid"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+
+		$(document).on("click", "button[id=appendRow]", function() {
+			var rowData = [ {
+				comProductCode : "",
+				comProductName : "",
+				proOrderCode : "",
+				erpProductDeadline : "",
+				erpOrderQty : "" ,
+				proOrderQty : "" ,
+				macHourQty : "" ,
+				dayQty : "" ,
+				dayCount : "" ,
+				proWorkDate : "" ,
+				proOrderSeq : ""
+			} ];
+			grid.appendRow(rowData, {
+				at : grid.getRowCount(),
+				focus : true
+			});
+			grid.enable();
+		});
+		
+		$(document).on("click", "button[id=insertRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('createData');
+		});
+		
+		$(document).on("click", "button[id=deleteRow]", function() {
+			grid.removeCheckedRows(true);
+			grid.request('deleteData');
+		});
+		
+		$(document).on("click", "button[id=updateRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('updateData');
+		});
+		
+		const dataSource = {
+			api : {
+				readData : {
+					url : '${pageContext.request.contextPath}/proPlan/ProdPlanView.do',
+					method : 'GET'
+				},
+				createData : {
+					url : '${pageContext.request.contextPath}/ajax/insertBoard',
+					method : 'POST'
+				},
+				deleteData : {
+					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
+					method : 'DELETE'
+				},
+				updateData : {
+					url : '${pageContext.request.contextPath}/ajax/updateBoard',
+					method : 'PUT'
+				}
+			},
+			contentType : "application/json"
+		};
+
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
+			rowHeaders : [ 'checkbox' ],
+			data : dataSource,
+			columns : [ {
+				header : '계획일자',
+				name : 'proPlanDate',
+				editor : 'text'
+			}, {
+				header : '계획번호',
+				name : 'proPlanCode',
+				editor : 'text'
+			}, {
+				header : '고객사명',
+				name : 'erpCustomerCode',
+				editor : 'text'
+			}, {
+				header : '제품코드',
+				name : 'erpProductCode',
+				editor : 'text'
+			}, {
+				header : '제품명',
+				name : 'erpProductName',
+				editor : 'text'
+			}, {
+				header : '주문코드',
+				name : 'erpOrderCode',
+				editor : 'text'
+			}, {
+				header : '납기일자',
+				name : 'erpProductDeadline',
+				editor : {
+					type : 'datePicker',
+					options : {
+						format : 'YYYY/MM/dd',
+						language: 'ko'
+					} 
+				}
+			}, {
+				header : '주문량',
+				name : 'erpOrderQty',
+				editor : 'text'
+			}, {
+				header : '작업계획량',
+				name : 'proPlanQty',
+				editor : 'text'
+			}, {
+				header : '작업착수일',
+				name : 'proWorkDate',
+				editor : 'text'
+			} , {
+				header : '작업순서',
+				name : 'proOrderSeq',
+				editor : 'text'
+			} ]
+		});
+		
+		
+	
+
+	
+	grid.on('response', ev => {
+		  const {response} = ev.xhr;
+		  const responseObj = JSON.parse(response);
+
+		  console.log('result : ', responseObj.result);
+		  console.log('data : ', responseObj.data);
+		});
+	
+	grid.on('check', (ev) => {
+		  alert(`check: ${ev.rowKey}`);
+	});
+	
+}); //end of document ready
+</script>
+
+
+
+
+
+
