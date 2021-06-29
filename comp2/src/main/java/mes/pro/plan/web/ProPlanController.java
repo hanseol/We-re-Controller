@@ -1,5 +1,7 @@
 package mes.pro.plan.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,8 @@ import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import mes.pro.plan.service.ProPlanService;
+import mes.board.service.BoardVO;
+import mes.board.service.GridDataVO;
 import mes.pro.plan.service.ProPlanDefaultVO;
 import mes.pro.plan.service.ProPlanVO;
 
@@ -41,11 +46,10 @@ import mes.pro.plan.service.ProPlanVO;
 @SessionAttributes(types=ProPlanVO.class)
 public class ProPlanController {
 	
-	
-//	@PutMapping("/ajax/updateCode")
+//  업데이트
+//	@PutMapping("/ajax/updatePlan")
 //	@ResponseBody
-//	public Map updateCode(@RequestBody GridData gridData) {
-//		System.out.println(gridData.u);
+//	public Map<String, Object> updatePlan(@RequestBody GridData gridData) {
 //	}
 	
 
@@ -101,6 +105,7 @@ public class ProPlanController {
         return "mes/pro/plan/prodPlanForm.page";
     }
     
+
     @RequestMapping("proPlan/addProPlan.do")
     public String addProPlan(
             ProPlanVO proPlanVO,

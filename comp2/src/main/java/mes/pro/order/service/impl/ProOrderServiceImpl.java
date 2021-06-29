@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.pro.order.service.ProOrderService;
+import mes.main.service.SearchVO;
 import mes.pro.order.service.ProOrderDefaultVO;
 import mes.pro.order.service.ProOrderVO;
 /**
@@ -101,7 +102,7 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return PRO_ORDER 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProOrderList(ProOrderDefaultVO searchVO) throws Exception {
+    public List<?> selectProOrderList(SearchVO searchVO) throws Exception {
         return proOrderDAO.selectProOrderList(searchVO);
     }
 
@@ -111,7 +112,7 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return PRO_ORDER 총 갯수
 	 * @exception
 	 */
-    public int selectProOrderListTotCnt(ProOrderDefaultVO searchVO) {
+    public int selectProOrderListTotCnt(SearchVO searchVO) {
 		return proOrderDAO.selectProOrderListTotCnt(searchVO);
 	}
     
