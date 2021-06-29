@@ -63,14 +63,24 @@
 	<select id="selectProOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
 SELECT * FROM (
 	SELECT A.*, ROWNUM RNUM FROM (
-				SELECT
-								PRO_ORDER_CODE
-								, PRO_ORDER_GUBUN
-								, PRO_ORDER_QTY
-								, PRO_ORDER_RANK
-								, PRO_ORDER_DATE
-						FROM PRO_ORDER
-				WHERE 1=1
+				SELECT c.com_product_code
+				     , c.com_product_name
+				     , p.erp_order_code
+				     , o.erp_product_deadline
+				     , p.erp_order_qty
+				     , o.pro_order_qty
+				     , m.mac_hour_qty
+				     , m.mac_hour_qty*24
+				     , p.pro_plan_qty/(m.mac_hour_qty*24)
+				     , o.pro_work_date
+				     , o.pro_order_seq
+				FROM com_product c
+				   , pro_order_detail o
+				   , pro_plan_detail p
+				   , mac m
+				WHERE p.erp_product_code = o.erp_product_code
+				      AND c.com_product_code = p.erp_product_code
+				      AND m.com_product_code = c.com_product_code
 				<if test="searchKeyword != null and searchKeyword != ''">
 					<if test="searchCondition == 0">AND
 						PRO_ORDER_CODE = #{searchKeyword}
@@ -84,7 +94,7 @@ SELECT * FROM (
 		
 		<![CDATA[					
 	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM > #{firstIndex}
+)WHERE RNUM >= #{firstIndex}
 ]]>
 	</select>	
 	<select id="selectProOrderListTotCnt" parameterType="mes.pro.order.service.ProOrderVO" resultType="int">

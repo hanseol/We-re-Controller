@@ -1,5 +1,6 @@
 package mes.pro.order.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import mes.pro.order.service.ProOrderService;
+import mes.main.service.SearchVO;
 import mes.pro.order.service.ProOrderDefaultVO;
 import mes.pro.order.service.ProOrderVO;
 
@@ -41,7 +43,7 @@ import mes.pro.order.service.ProOrderVO;
 public class ProOrderController {
 
     @Resource(name = "proOrderService")
-    private ProOrderService proOrderService;
+    private ProOrderService service;
     
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
@@ -50,30 +52,47 @@ public class ProOrderController {
     //테이블 목록 조회
     @RequestMapping("proOrder/ProdView")
     @ResponseBody
-    public Map<String, Object> readOrder(Model model, @ModelAttribute("searchVO") ProOrderDefaultVO searchVO ) throws Exception {
+    public Map<String, Object> readOrder(Model model, @ModelAttribute("searchVO") SearchVO searchVO ) throws Exception {
 
-    	int rowSize = proOrderService.selectProOrderListTotCnt(searchVO);
-    	searchVO.setLastIndex(rowSize);
-    	List<?> list = proOrderService.selectProOrderList(searchVO);
+    	int rowSize = 0;
+    	List<?> list = new ArrayList<>();
+    	
+    	//검색조건이 있을 경우
+    	if(!searchVO.getSearchKeyword().equals("")) {
+    	
+    		//mapper 조건에 따라 condition 설정 필요함.
+        	searchVO.setSearchCondition("0");
+    		
+    		rowSize = service.selectProOrderListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectProOrderList(searchVO);
+        //검색조건이 없을 경우
+    	}else {
+    		rowSize = service.selectProOrderListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectProOrderList(searchVO);
+    	}
     	
     	Map<String, Object> paging = new HashMap<>();
     	paging.put("page", searchVO.getPageIndex());
     	paging.put("totalCount", rowSize);
     	
-    	Map<String, Object> data = new HashMap<>();
+    	Map<String,Object> data = new HashMap<>();
     	data.put("contents", list);
-    	data.put("pagination", rowSize);
+    	data.put("pagination", paging);
     	
-    	Map<String, Object> map = new HashMap<>();
+    	Map<String,Object> map = new HashMap<>();
     	map.put("result", true);
-    	map.put("data", data);    	
-    	
+    	map.put("data", data);
+        
     	return map;
     }
     
     //생산지시 리스트 조회
     @RequestMapping(value="/proOrder/ProOrderList.do")
-    public String selectProOrderList(@ModelAttribute("searchVO") ProOrderDefaultVO searchVO, ModelMap model) throws Exception {
+    public String selectProOrderList(@ModelAttribute("searchVO") SearchVO searchVO, ModelMap model) throws Exception {
     	
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -89,10 +108,10 @@ public class ProOrderController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-        List<?> proOrderList = proOrderService.selectProOrderList(searchVO);
+        List<?> proOrderList = service.selectProOrderList(searchVO);
         model.addAttribute("resultList", proOrderList);
         
-        int totCnt = proOrderService.selectProOrderListTotCnt(searchVO);
+        int totCnt = service.selectProOrderListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
         
@@ -102,7 +121,7 @@ public class ProOrderController {
     
     //생산지시 폼 호출
     @RequestMapping("/proOrder/addProOrderView.do")
-    public String addProOrderView(@ModelAttribute("searchVO") ProOrderDefaultVO searchVO, Model model) throws Exception {
+    public String addProOrderView(@ModelAttribute("searchVO") SearchVO searchVO, Model model) throws Exception {
         model.addAttribute("proOrderVO", new ProOrderVO());
         return "mes/pro/order/prodForm.page";
     }
