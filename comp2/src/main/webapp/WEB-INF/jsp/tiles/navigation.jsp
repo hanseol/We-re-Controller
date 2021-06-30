@@ -10,7 +10,7 @@
 							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>공통</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages" class="collapse ">
 								<ul class="nav">
-									<li><a href="page-profile.html" class="">Profile</a></li>
+									<li><a href="comCode/ComCodeList.do" class="">공통코드관리</a></li>
 									<li><a href="page-login.html" class="">Login</a></li>
 									<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
 								</ul>

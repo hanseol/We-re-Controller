@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.board.service.BoardService;
 import mes.board.service.BoardVO;
 import mes.main.service.GridDataVO;
-import mes.main.service.SearchVO;
 
 /**
  * @Class Name : BoardController.java
@@ -103,11 +101,11 @@ public class BoardController {
     @ResponseBody
     public Map<String,Object> insertBoard(@RequestBody GridDataVO gd) throws Exception {
     
-    	List<BoardVO> list = new ArrayList<>();
+    	List<?> list = new ArrayList<>();
     	list = gd.getCreatedRows();
     	
     	for(int i=0;i<list.size();i++) {
-    		service.insertBoard(list.get(i));
+    		service.insertBoard((BoardVO) list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
@@ -127,9 +125,9 @@ public class BoardController {
     @ResponseBody
     public Map<String,Object> deleteBoard(@RequestBody GridDataVO gd) throws Exception {
     	
-    	List<BoardVO> list = gd.getDeletedRows();
+    	List<?> list = gd.getDeletedRows();
     	for(int i=0; i<list.size(); i++) {
-    		service.deleteBoard(list.get(i));
+    		service.deleteBoard((BoardVO) list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
@@ -148,10 +146,10 @@ public class BoardController {
     @ResponseBody
     public Map<String,Object> updateBoard(@RequestBody GridDataVO gd) throws Exception {
     	
-    	List<BoardVO> list = gd.getUpdatedRows();
+    	List<?> list = gd.getUpdatedRows();
     	//전달받은 데이터 수 만큼.
     	for(int i=0; i<list.size(); i++) {
-    		service.updateBoard(list.get(i));
+    		service.updateBoard((BoardVO) list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
