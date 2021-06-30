@@ -1,5 +1,6 @@
 package mes.board.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -47,7 +48,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public String insertBoard(BoardVO vo) throws Exception {
+    public String insertBoard(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */

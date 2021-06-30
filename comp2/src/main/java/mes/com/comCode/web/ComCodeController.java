@@ -2,6 +2,7 @@ package mes.com.comCode.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,11 +104,10 @@ public class ComCodeController {
      @ResponseBody
      public Map<String,Object> insertComeCode(@RequestBody GridDataVO gd) throws Exception {
      
-     	List<?> list = new ArrayList<>();
-     	list = gd.getCreatedRows();
+     	List<?> list = gd.getCreatedRows();
      	
      	for(int i=0;i<list.size();i++) {
-     		service.insertComCode((ComCodeVO) list.get(i));
+     		service.insertComCode((LinkedHashMap) list.get(i));
      	}
      	
      	Map<String, Object> data = new HashMap<>();
@@ -129,7 +129,7 @@ public class ComCodeController {
     	
     	List<?> list = gd.getDeletedRows();
     	for(int i=0; i<list.size(); i++) {
-    		service.deleteComCode((ComCodeVO) list.get(i));
+    		service.deleteComCode( (LinkedHashMap) list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
@@ -159,7 +159,7 @@ public class ComCodeController {
     	List<?> list = gd.getUpdatedRows();
     	//전달받은 데이터 수 만큼.
     	for(int i=0; i<list.size(); i++) {
-    		service.updateComCode((ComCodeVO) list.get(i));
+    		service.updateComCode( (LinkedHashMap) list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();

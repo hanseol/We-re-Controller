@@ -1,5 +1,6 @@
 package mes.com.comCode.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public interface ComCodeService {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    String insertComCode(ComCodeVO vo) throws Exception;
+    String insertComCode(LinkedHashMap vo) throws Exception;
     
     /**
 	 * COM_CODE을 수정한다.
@@ -30,7 +31,7 @@ public interface ComCodeService {
 	 * @return void형
 	 * @exception Exception
 	 */
-    void updateComCode(ComCodeVO vo) throws Exception;
+    void updateComCode(LinkedHashMap vo) throws Exception;
     
     /**
 	 * COM_CODE을 삭제한다.
@@ -38,7 +39,7 @@ public interface ComCodeService {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    void deleteComCode(ComCodeVO vo) throws Exception;
+    void deleteComCode(LinkedHashMap vo) throws Exception;
     
     /**
 	 * COM_CODE을 조회한다.

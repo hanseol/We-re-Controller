@@ -1,5 +1,6 @@
 package mes.com.comCode.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -46,7 +47,7 @@ public class ComCodeServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public String insertComCode(ComCodeVO vo) throws Exception {
+    public String insertComCode(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -57,7 +58,7 @@ public class ComCodeServiceImpl extends EgovAbstractServiceImpl implements
     	
     	comCodeDAO.insertComCode(vo);
     	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
+        return null;	
     }
 
     /**
@@ -66,7 +67,7 @@ public class ComCodeServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateComCode(ComCodeVO vo) throws Exception {
+    public void updateComCode(LinkedHashMap vo) throws Exception {
         comCodeDAO.updateComCode(vo);
     }
 
@@ -76,7 +77,7 @@ public class ComCodeServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteComCode(ComCodeVO vo) throws Exception {
+    public void deleteComCode(LinkedHashMap vo) throws Exception {
         comCodeDAO.deleteComCode(vo);
     }
 

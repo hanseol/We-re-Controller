@@ -1,5 +1,6 @@
 package mes.com.comCode.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -27,7 +28,7 @@ public interface ComCodeMapper {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public void insertComCode(ComCodeVO vo) throws Exception;
+    public void insertComCode(LinkedHashMap vo) throws Exception;
 
     /**
 	 * COM_CODE을 수정한다.
@@ -35,7 +36,7 @@ public interface ComCodeMapper {
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateComCode(ComCodeVO vo) throws Exception;
+    public void updateComCode(LinkedHashMap vo) throws Exception;
 
     /**
 	 * COM_CODE을 삭제한다.
@@ -43,7 +44,7 @@ public interface ComCodeMapper {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteComCode(ComCodeVO vo) throws Exception;
+    public void deleteComCode(LinkedHashMap vo) throws Exception;
 
     /**
 	 * COM_CODE을 조회한다.

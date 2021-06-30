@@ -1,7 +1,8 @@
 package mes.board.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import mes.board.service.BoardVO;
+
 import mes.main.service.SearchVO;
 
 /**
@@ -24,7 +25,7 @@ public interface BoardService {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    String insertBoard(BoardVO vo) throws Exception;
+    String insertBoard(LinkedHashMap vo) throws Exception;
     
     /**
 	 * BOARD을 수정한다.
@@ -56,7 +57,7 @@ public interface BoardService {
 	 * @return BOARD 목록
 	 * @exception Exception
 	 */
-    List selectBoardList(SearchVO searchVO) throws Exception;
+    List<?> selectBoardList(SearchVO searchVO) throws Exception;
     
     /**
 	 * BOARD 총 갯수를 조회한다.

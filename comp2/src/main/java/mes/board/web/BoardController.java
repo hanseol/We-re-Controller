@@ -2,6 +2,7 @@ package mes.board.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -97,15 +98,15 @@ public class BoardController {
 	 * @return "map"
 	 * @exception Exception
 	 */
-    @PostMapping("/ajax/insertBoard")
+	@PostMapping("/ajax/insertBoard")
     @ResponseBody
     public Map<String,Object> insertBoard(@RequestBody GridDataVO gd) throws Exception {
     
-    	List<?> list = new ArrayList<>();
-    	list = gd.getCreatedRows();
+    	List<?> list = gd.getCreatedRows();
+    	
     	
     	for(int i=0;i<list.size();i++) {
-    		service.insertBoard((BoardVO) list.get(i));
+    		service.insertBoard( (LinkedHashMap) list.get(i));
     	}
     	
     	Map<String, Object> data = new HashMap<>();
