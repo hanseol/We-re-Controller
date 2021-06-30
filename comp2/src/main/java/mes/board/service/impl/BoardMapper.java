@@ -1,10 +1,11 @@
 package mes.board.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.board.service.BoardVO;
 import mes.main.service.SearchVO;
-import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
 /**
  * @Class Name : BoardMapper.java
@@ -28,7 +29,7 @@ public interface BoardMapper {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public void insertBoard(BoardVO vo) throws Exception;
+    public void insertBoard(LinkedHashMap vo) throws Exception;
 
     /**
 	 * BOARD을 수정한다.
