@@ -44,6 +44,7 @@ $(document).ready(function() {
 		var chkRowKey = grid.getCheckedRowKeys();
 		console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 		var code = grid.getValue(chkRowKey,'comProductCode');
+		$("#no").val(code);
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
