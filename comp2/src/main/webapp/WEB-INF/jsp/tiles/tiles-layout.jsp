@@ -26,7 +26,9 @@
 	<link rel="icon" type="image/png" sizes="96x96" href="${pageContext.request.contextPath}/resources/images/favicon.png">
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-
+	<!-- JQuery Modal -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+   
 	<!-- JavaScript -->
 	<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -34,10 +36,13 @@
 	<script src="${pageContext.request.contextPath}/resources/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/vendor/chartist/js/chartist.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/scripts/klorofil-common.js"></script>
+	<!-- ToastUi Grid -->
 	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	<!-- jQuery Modal -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 </head>
-<body> 
+<body id="test"> 
 	<!-- WRAPPER -->
 	<div id="wrapper">
 		<tiles:insertAttribute name="header" />

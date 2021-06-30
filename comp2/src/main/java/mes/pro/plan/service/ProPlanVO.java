@@ -24,6 +24,9 @@ import mes.main.service.SearchVO;
 public class ProPlanVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
+    //김한설
+    private java.lang.String comProductCode;
+    private java.lang.String comProductName;
     
     //생산관리M 테이블
     private java.lang.String proPlanCode;

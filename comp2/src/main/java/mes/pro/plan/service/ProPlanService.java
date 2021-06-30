@@ -64,4 +64,16 @@ public interface ProPlanService {
 	 */
     int selectProPlanListTotCnt(ProPlanVO searchVO);
     
+    /*
+     * 제품명, 제품코드로 검색
+     * 모달창에서 사용
+     * 김한설
+     * */
+    List<?> selectProductList(ProPlanVO vo) throws Exception;
+    int selectProductTotCnt(ProPlanVO vo);
+    
+    
+    
+    
+    
 }

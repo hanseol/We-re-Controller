@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<!-- 20210630 김한설 모달창 출력-->
 
 <style>
 .my-panel {
@@ -9,6 +11,22 @@
 	margin-bottom: 10px;
 	background-color: white;
 }
+
+.modal{
+	-webkit-border-radius :0px;
+	border-radius:0px;
+	overflow: visible;
+	text-align: center;
+	max-width: 900px;
+	width: 900px;
+	height: 600px;
+	max-height: 600px;
+}
+
+.blocker{
+	z-index: 1200;
+}
+
 </style>
 
 <div class="content-fluid">
@@ -20,7 +38,15 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
+			
+			<!-- 모달창띄우기 -->
+			<p>
+			<a href="testModal.do" rel="modal:open" id="getData">
+			<button type="button" class="btn btn-success" id="showModal">조회</button>
+			</a>
+			</p>
+			
+			
 			<button type="button" class="btn btn-danger">새자료</button>
 			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
 			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
@@ -67,7 +93,9 @@
 
 <script>
 	$(document).ready(function() {
-
+		
+		
+		
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData = [ {
 				No : "",

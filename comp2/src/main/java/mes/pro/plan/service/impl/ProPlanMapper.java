@@ -69,5 +69,17 @@ public interface ProPlanMapper {
 	 * @exception
 	 */
     public int selectProPlanListTotCnt(ProPlanVO searchVO);
-
+    
+    /*
+     * PRODUCT 목록 조회
+     * 모달창에서 사용
+     * 김한설
+     * */
+    public List<?> selectProductList(ProPlanVO vo) throws Exception;
+    /*
+     * PRODUCT 총 갯수 조회
+     * 모달창에서 사용
+     * 김한설
+     * */
+    public int selectProductTotCnt(ProPlanVO vo);
 }

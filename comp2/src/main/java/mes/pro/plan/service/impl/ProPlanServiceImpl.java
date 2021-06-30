@@ -113,5 +113,26 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
     public int selectProPlanListTotCnt(ProPlanVO vo) {
 		return proPlanDAO.selectProPlanListTotCnt(vo);
 	}
+
+    
+    /*
+     * PRODUCT 목록조회
+     * 모달창에서 사용
+     * 김한설
+     * */
+	@Override
+	public List<?> selectProductList(ProPlanVO vo) throws Exception {
+		return proPlanDAO.selectProductList(vo);
+	}
+	
+	 /*
+     * PRODUCT 총 갯수 조회
+     * 모달창에서 사용
+     * 김한설
+     * */
+	@Override
+	public int selectProductTotCnt(ProPlanVO vo) {
+		return proPlanDAO.selectProductTotCnt(vo);
+	}
     
 }
