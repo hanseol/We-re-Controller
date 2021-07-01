@@ -65,7 +65,7 @@ public class HomeController {
     	List<?> list = service.selectProductList(searchVO);
     	
     	ComFunc comFunc = new ComFunc();
-    	return comFunc.sendResult(list,"select");
+    	return comFunc.sendResult(list);
 	}
 	
 

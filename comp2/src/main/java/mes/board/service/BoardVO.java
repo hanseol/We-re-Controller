@@ -28,7 +28,7 @@ public class BoardVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** NO */
-    private java.math.BigDecimal no;
+    private Integer no;
     
     /** TITLE */
     private java.lang.String title;

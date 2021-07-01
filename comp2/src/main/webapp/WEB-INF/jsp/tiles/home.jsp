@@ -50,6 +50,7 @@
 			<button type="button" class="btn btn-danger">새자료</button>
 			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
 			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 		</div>
 	</div>
 </div>
@@ -110,6 +111,11 @@
 			grid.enable();
 		});
 		
+		$(document).on("click", "button[id=modifyRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('modifyData');
+		});
+		
 		$(document).on("click", "button[id=insertRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('createData');
@@ -140,7 +146,7 @@
 					url : '${pageContext.request.contextPath}/mes/readBoard',
 					method : 'GET'
 				},
-				createData : {
+				/* createData : {
 					url : '${pageContext.request.contextPath}/ajax/insertBoard',
 					method : 'POST'
 				},
@@ -151,7 +157,8 @@
 				updateData : {
 					url : '${pageContext.request.contextPath}/ajax/updateBoard',
 					method : 'PUT'
-				}
+				}, */
+				modifyData: { url: '${pageContext.request.contextPath}/ajax/modifyBoard', method: 'PUT' },
 			},
 			contentType : "application/json"
 		};

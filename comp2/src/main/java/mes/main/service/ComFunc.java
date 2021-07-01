@@ -14,25 +14,21 @@ import java.util.Map;
 
 public class ComFunc {
 	
-	public Map<String, Object> sendResult(List<?> list, String cud){
+	public Map<String, Object> sendResult(List<?> list){
 
 		Map<String, Object> paging = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
     	Map<String,Object> map = new HashMap<>();
 		
-		if(cud.equals("select")) {
-			paging.put("page", 1);
-			paging.put("totalCount", 100);
-			
-			data.put("pagination", paging);
-		}
+    	paging.put("page", 1);
+		paging.put("totalCount", 100);
 		
+		data.put("pagination", paging);
 		data.put("contents", list);
 		
     	map.put("result", true);
 		map.put("data", data);
     	
-		
 		return map;
 	};
 	

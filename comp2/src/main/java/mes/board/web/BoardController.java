@@ -32,103 +32,82 @@ import mes.main.service.GridDataVO;
  * @since 20210629
  * @version 1.0
  * @see
- *  
- *  Copyright (C)  All right reserved.
+ * 
+ *      Copyright (C) All right reserved.
  */
 
 @Controller
 //@SessionAttributes(types=BoardVO.class)
 public class BoardController {
 
-    @Resource(name = "boardService")
-    private BoardService service;
-    
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
-	
-    
-    ComFunc comFunc = new ComFunc();
-    /*
-	 * 테이블 목록 조회.
-	 * @param searchVO - 조회할 정보가 담긴 BoardDefaultVO
-	 * @return "map"
-	 * @exception Exception
-	 */
-    @RequestMapping(value="/mes/readBoard")
-    @ResponseBody
-    public Map<String, Object> readBoard(Model model, 
-    		 @ModelAttribute("searchVO") BoardVO searchVO) throws Exception{
+	@Resource(name = "boardService")
+	private BoardService service;
 
-    	int rowSize = 0;
-    	List<?> list = new ArrayList<>();
-    	
-    	//검색조건이 있을 경우
-    	if(!searchVO.getSearchKeyword().equals("")) {
-    	
-    		//mapper 조건에 따라 condition 설정 필요함.
-        	searchVO.setSearchCondition("0");
-        	list = service.selectBoardList(searchVO);
-        	
-        //검색조건이 없을 경우
-    	}else {
-        	list = service.selectBoardList(searchVO);
-    	}
-    	
-    	return comFunc.sendResult(list, "select");
-    }
-    
-    /*
-	 * 테이블 행 추가.
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
+
+	/** 공통 함수 */
+	ComFunc comFunc = new ComFunc();
+
+	/*
+	 * 테이블 목록 조회.
+	 * 
+	 * @param searchVO - 조회할 정보가 담긴 BoardDefaultVO
+	 * 
 	 * @return "map"
+	 * 
 	 * @exception Exception
 	 */
-	@PostMapping("/ajax/insertBoard")
-    @ResponseBody
-    public Map<String,Object> insertBoard(@RequestBody GridDataVO gd) throws Exception {
-    
-    	List<?> list = gd.getCreatedRows();
-    	
-    	for(int i=0;i<list.size();i++) {
-    		service.insertBoard( (LinkedHashMap) list.get(i));
-    	}
-    	
-    	return comFunc.sendResult(list, "insert");
-    }
-    
-    
-    /*
-	 * 테이블 행 삭제.
-	 * @return "map"
+	@RequestMapping(value = "/mes/readBoard")
+	@ResponseBody
+	public Map<String, Object> readBoard(Model model, @ModelAttribute("searchVO") BoardVO searchVO) throws Exception {
+
+		List<?> list = new ArrayList<>();
+
+		// 검색조건이 있을 경우
+		if (!searchVO.getSearchKeyword().equals("")) {
+			// mapper 조건에 따라 condition 설정 필요함.
+			searchVO.setSearchCondition("0");
+			list = service.selectBoardList(searchVO);
+		// 검색조건이 없을 경우
+		} else {
+			list = service.selectBoardList(searchVO);
+		}
+
+		return comFunc.sendResult(list);
+	}
+
+	/*
+	 * 테이블 행 추가 수정 삭제.
+	 * 
 	 * @exception Exception
 	 */
-    @PostMapping("/ajax/deleteBoard")
-    @ResponseBody
-    public Map<String,Object> deleteBoard(@RequestBody GridDataVO gd) throws Exception {
-    	
-    	List<?> list = gd.getDeletedRows();
-    	for(int i=0; i<list.size(); i++) {
-    		service.deleteBoard((LinkedHashMap) list.get(i));
-    	}
-    	
-    	return comFunc.sendResult(list, "delete");
-    }
-    
-    /*
-	 * 테이블 행 업데이트.
-	 * @return "map"
-	 * @exception Exception
-	 */
-    @PutMapping("/ajax/updateBoard")
-    @ResponseBody
-    public Map<String,Object> updateBoard(@RequestBody GridDataVO gd) throws Exception {
-    	
-    	List<?> list = gd.getUpdatedRows();
-    	//전달받은 데이터 수 만큼.
-    	for(int i=0; i<list.size(); i++) {
-    		service.updateBoard((LinkedHashMap) list.get(i));
-    	}
-    	
-    	return comFunc.sendResult(list, "update");
-    }
+	@PutMapping("/ajax/modifyBoard")
+	@ResponseBody
+	public void modifyBoard(@RequestBody GridDataVO gd) throws Exception {
+
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+
+		if (updatedList.size() != 0) {
+			for (int i = 0; i < updatedList.size(); i++) {
+				service.updateBoard((LinkedHashMap) updatedList.get(i));
+			}
+		}
+
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				service.insertBoard((LinkedHashMap) createdList.get(i));
+			}
+		}
+
+		if (deletedList.size() != 0)
+		{
+			for (int i = 0; i < deletedList.size(); i++) {
+				service.deleteBoard((LinkedHashMap) deletedList.get(i));
+			}
+		}
+	}
 }
