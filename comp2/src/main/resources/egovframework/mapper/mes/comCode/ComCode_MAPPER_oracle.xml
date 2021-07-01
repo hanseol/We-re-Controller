@@ -98,7 +98,8 @@
 		, COM_CODE_DETAIL_SEQ
 		, COM_CODE_DETAIL_USEDCHK)
 		VALUES
-		( UPPER(#{comCodeId})
+		( 
+		UPPER(#{comCodeId})
 		, UPPER(#{comCodeDetailId})
 		, #{comCodeDetailName}
 		, #{comCodeDetailDesc}
@@ -109,7 +110,9 @@
 	
 	<delete id="deleteComCodeDetail" parameterType="mes.com.comCode.service.ComCodeVO">
 		DELETE FROM COM_CODE_DETAIL
+		<if test="(comCodeDetailId != null and comCodeDetailId != '')">
 		WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId})
+		</if>
 	</delete>
 
 
