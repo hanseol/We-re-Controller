@@ -1,5 +1,6 @@
 package mes.mat.inout.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -31,22 +32,10 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     private static final Logger LOGGER = LoggerFactory.getLogger(MatInoutServiceImpl.class);
 
     @Resource(name="matInoutMapper")
-    private MatInoutMapper matInoutDAO;
+    private MatInoutMapper matInoutMapper;
     
-    //@Resource(name="matInoutDAO")
-    //private MatInoutDAO matInoutDAO;
-    
-    /** ID Generation */
-    //@Resource(name="{egovMatInoutIdGnrService}")    
-    //private EgovIdGnrService egovIdGnrService;
-
-	/**
-	 * MAT_INOUT을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 MatInoutVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    public String insertMatInout(MatInoutVO vo) throws Exception {
+	//등록
+    public String insertMatInout(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -55,67 +44,29 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	//vo.setId(id);
     	LOGGER.debug(vo.toString());
     	
-    	matInoutDAO.insertMatInout(vo);
+    	matInoutMapper.insertMatInout(vo);
     	//TODO 해당 테이블 정보에 맞게 수정    	
         return null;
     }
 
-    /**
-	 * MAT_INOUT을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 MatInoutVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    public void updateMatInout(MatInoutVO vo) throws Exception {
-        matInoutDAO.updateMatInout(vo);
+    //수정
+    public void updateMatInout(LinkedHashMap vo) throws Exception {
+    	matInoutMapper.updateMatInout(vo);
     }
 
-    /**
-	 * MAT_INOUT을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 MatInoutVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    public void deleteMatInout(MatInoutVO vo) throws Exception {
-        matInoutDAO.deleteMatInout(vo);
+    //삭제
+    public void deleteMatInout(LinkedHashMap vo) throws Exception {
+    	matInoutMapper.deleteMatInout(vo);
     }
-
-    /**
-	 * MAT_INOUT을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 MatInoutVO
-	 * @return 조회한 MAT_INOUT
-	 * @exception Exception
-	 */
-    public MatInoutVO selectMatInout(MatInoutVO vo) throws Exception {
-        MatInoutVO resultVO = matInoutDAO.selectMatInout(vo);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
-        return resultVO;
-    }
-
-    /**
-	 * MAT_INOUT 목록을 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return MAT_INOUT 목록
-	 * @exception Exception
-	 */
-    public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception {
-        return matInoutDAO.selectMatInoutList(searchVO);
-    }
-
-    /**
-	 * MAT_INOUT 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return MAT_INOUT 총 갯수
-	 * @exception
-	 */
+    
+    //행 카운트
     public int selectMatInoutListTotCnt(MatInoutVO searchVO) {
-		return matInoutDAO.selectMatInoutListTotCnt(searchVO);
+		return matInoutMapper.selectMatInoutListTotCnt(searchVO);
 	}
     
-    //리스트 전체조회 맵퍼로 돌리기
-    public List<?> selectInoutList(MatInoutVO searchVO) throws Exception {
-    	return matInoutDAO.selectMatInoutList(searchVO);
+    //리스트 전체조회
+    public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception {
+    	return matInoutMapper.selectMatInoutList(searchVO);
     }
 
 }

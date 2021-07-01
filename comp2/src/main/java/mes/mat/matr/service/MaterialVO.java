@@ -1,5 +1,7 @@
 package mes.mat.matr.service;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import mes.main.service.SearchVO;
 
 /**
@@ -14,6 +16,8 @@ import mes.main.service.SearchVO;
  *  
  *  Copyright (C)  All right reserved.
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class MaterialVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -44,76 +48,6 @@ public class MaterialVO extends SearchVO{
     /** COM_MATERIAL_MAX */
     private java.lang.String comMaterialMax;
     
-    public java.lang.String getComMaterialCode() {
-        return this.comMaterialCode;
-    }
-    
-    public void setComMaterialCode(java.lang.String comMaterialCode) {
-        this.comMaterialCode = comMaterialCode;
-    }
-    
-    public java.lang.String getComMaterialName() {
-        return this.comMaterialName;
-    }
-    
-    public void setComMaterialName(java.lang.String comMaterialName) {
-        this.comMaterialName = comMaterialName;
-    }
-    
-    public java.lang.String getComMaterialBarcode() {
-        return this.comMaterialBarcode;
-    }
-    
-    public void setComMaterialBarcode(java.lang.String comMaterialBarcode) {
-        this.comMaterialBarcode = comMaterialBarcode;
-    }
-    
-    public java.lang.String getComMaterialSize() {
-        return this.comMaterialSize;
-    }
-    
-    public void setComMaterialSize(java.lang.String comMaterialSize) {
-        this.comMaterialSize = comMaterialSize;
-    }
-    
-    public java.lang.String getComMaterialUnit() {
-        return this.comMaterialUnit;
-    }
-    
-    public void setComMaterialUnit(java.lang.String comMaterialUnit) {
-        this.comMaterialUnit = comMaterialUnit;
-    }
-    
-    public java.lang.String getComMaterialVendorCode() {
-        return this.comMaterialVendorCode;
-    }
-    
-    public void setComMaterialVendorCode(java.lang.String comMaterialVendorCode) {
-        this.comMaterialVendorCode = comMaterialVendorCode;
-    }
-    
-    public java.lang.String getComMaterialSafetyStock() {
-        return this.comMaterialSafetyStock;
-    }
-    
-    public void setComMaterialSafetyStock(java.lang.String comMaterialSafetyStock) {
-        this.comMaterialSafetyStock = comMaterialSafetyStock;
-    }
-    
-    public java.lang.String getComMaterialMin() {
-        return this.comMaterialMin;
-    }
-    
-    public void setComMaterialMin(java.lang.String comMaterialMin) {
-        this.comMaterialMin = comMaterialMin;
-    }
-    
-    public java.lang.String getComMaterialMax() {
-        return this.comMaterialMax;
-    }
-    
-    public void setComMaterialMax(java.lang.String comMaterialMax) {
-        this.comMaterialMax = comMaterialMax;
-    }
+
     
 }

@@ -2,6 +2,8 @@ package mes.qua.chk.service;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import mes.main.service.SearchVO;
 
 /**
@@ -16,6 +18,8 @@ import mes.main.service.SearchVO;
  *  
  *  Copyright (C)  All right reserved.
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class QuaMaterialChkVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -48,76 +52,5 @@ public class QuaMaterialChkVO extends SearchVO{
     /** ERP_MATERIAL_ORDER_CODE */
     private java.lang.String erpMaterialOrderCode;
     
-    public java.lang.String getQuaMaterialStatement() {
-        return this.quaMaterialStatement;
-    }
-    
-    public void setQuaMaterialStatement(java.lang.String quaMaterialStatement) {
-        this.quaMaterialStatement = quaMaterialStatement;
-    }
-    
-    public java.lang.String getQuaMaterialDate() {
-        return this.quaMaterialDate;
-    }
-    
-    public void setQuaMaterialDate(java.lang.String quaMaterialDate) {
-        this.quaMaterialDate = quaMaterialDate;
-    }
-    
-    public java.lang.String getErpVendorCode() {
-        return this.erpVendorCode;
-    }
-    
-    public void setErpVendorCode(java.lang.String erpVendorCode) {
-        this.erpVendorCode = erpVendorCode;
-    }
-    
-    public java.lang.String getComMaterialCode() {
-        return this.comMaterialCode;
-    }
-    
-    public void setComMaterialCode(java.lang.String comMaterialCode) {
-        this.comMaterialCode = comMaterialCode;
-    }
-    
-    public java.lang.String getQuaMaterialChk() {
-        return this.quaMaterialChk;
-    }
-    
-    public void setQuaMaterialChk(java.lang.String quaMaterialChk) {
-        this.quaMaterialChk = quaMaterialChk;
-    }
-    
-    public java.math.BigDecimal getQuaMaterialPQty() {
-        return this.quaMaterialPQty;
-    }
-    
-    public void setQuaMaterialPQty(java.math.BigDecimal quaMaterialPQty) {
-        this.quaMaterialPQty = quaMaterialPQty;
-    }
-    
-    public java.math.BigDecimal getQuaMaterialFQty() {
-        return this.quaMaterialFQty;
-    }
-    
-    public void setQuaMaterialFQty(java.math.BigDecimal quaMaterialFQty) {
-        this.quaMaterialFQty = quaMaterialFQty;
-    }
-    
-    public java.lang.String getQuaMaterialChkDate() {
-        return this.quaMaterialChkDate;
-    }
-    
-    public void setQuaMaterialChkDate(java.lang.String quaMaterialChkDate) {
-        this.quaMaterialChkDate = quaMaterialChkDate;
-    }
-    
-    public java.lang.String getErpMaterialOrderCode() {
-        return this.erpMaterialOrderCode;
-    }
-    
-    public void setErpMaterialOrderCode(java.lang.String erpMaterialOrderCode) {
-        this.erpMaterialOrderCode = erpMaterialOrderCode;
-    }
     
 }

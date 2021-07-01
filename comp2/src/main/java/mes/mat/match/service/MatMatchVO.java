@@ -2,6 +2,8 @@ package mes.mat.match.service;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import mes.main.service.SearchVO;
 
 /**
@@ -16,6 +18,8 @@ import mes.main.service.SearchVO;
  *  
  *  Copyright (C)  All right reserved.
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class MatMatchVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -37,53 +41,5 @@ public class MatMatchVO extends SearchVO{
     /** MAT_MATCH_DATE */
     @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
     private java.lang.String matMatchDate;
-    
-    public java.lang.String getMatMatchStatement() {
-        return this.matMatchStatement;
-    }
-    
-    public void setMatMatchStatement(java.lang.String matMatchStatement) {
-        this.matMatchStatement = matMatchStatement;
-    }
-    
-    public java.lang.String getComMaterialCode() {
-        return this.comMaterialCode;
-    }
-    
-    public void setComMaterialCode(java.lang.String comMaterialCode) {
-        this.comMaterialCode = comMaterialCode;
-    }
-    
-    public java.lang.String getMatLotNo() {
-        return this.matLotNo;
-    }
-    
-    public void setMatLotNo(java.lang.String matLotNo) {
-        this.matLotNo = matLotNo;
-    }
-    
-    public java.lang.String getMatMatchInout() {
-        return this.matMatchInout;
-    }
-    
-    public void setMatMatchInout(java.lang.String matMatchInout) {
-        this.matMatchInout = matMatchInout;
-    }
-    
-    public java.math.BigDecimal getMatMatchQty() {
-        return this.matMatchQty;
-    }
-    
-    public void setMatMatchQty(java.math.BigDecimal matMatchQty) {
-        this.matMatchQty = matMatchQty;
-    }
-    
-    public java.lang.String getMatMatchDate() {
-        return this.matMatchDate;
-    }
-    
-    public void setMatMatchDate(java.lang.String matMatchDate) {
-        this.matMatchDate = matMatchDate;
-    }
-    
+
 }

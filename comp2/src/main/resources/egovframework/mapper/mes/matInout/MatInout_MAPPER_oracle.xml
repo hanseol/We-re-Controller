@@ -10,7 +10,8 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   c.com_material_code,
+		                              SELECT   TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
+		                              		   c.com_material_code,
 		                                       c.com_material_name,
 		                                       c.com_material_size,
 		                                       c.com_material_unit,
@@ -18,46 +19,69 @@
 		                                       m.mat_inout_quantity,
 		                                       m.mat_inout_unit_price,
 		                                       m.mat_inout_price,
-		                                       m.mat_lot_no <!--현재고는 계산(if) -->
+		                                       m.mat_lot_no,
+		                                       (q.qua_material_p_qty - CASE m.mat_inout_gubun
+                                                                    	WHEN 'PNS003'
+                                                                    	THEN mat_inout_quantity
+                                                                    	ELSE 0
+                                                                    	END						) as material_stock
+		                                       
 		                              FROM     erp_material_order e,
 		                                       com_material c,
-		                                       mat_inout m
+		                                       mat_inout m,
+		                                       qua_material_chk q
 		                              WHERE    e.com_material_code = c.com_material_code
 		                              AND      c.com_material_code = m.com_material_code
-		                              <if test="searchKeyword != null and searchKeyword != ''">
-		                              	<if test="searchCondition == 0"> AND
-		                              	      mat_inout_statement = #{searchKeyword}
-		                              	</if>
-		                              <if test="searchCondition == 1"> AND
-		                                    com_material_code LIKE '%'
-		                                                || #{searchKeyword}
-		                                                || '%'
-		                                </if>
+		                              AND	   q.com_material_code = m.com_material_code
+		                              <if test="comMaterialCode != null and comMaterialCode != ''">
+		                               	AND
+		                              	c.com_material_code = #{comMaterialCode}
 		                              </if>
-		                              ORDER BY mat_inout_statement DESC
-		                              <![CDATA[ ) a
+		                              ORDER BY mat_inout_statement DESC  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
-		WHERE  rnum > #{firstIndex}
+		WHERE  rnum >= #{firstIndex}
 		]]>
 	</select>
 
-	<!-- 행 카운트 -->
-	<select id="selectMatInoutListTotCnt" parameterType="mes.mat.inout.service.MatInoutVO" resultType="int">
-		SELECT Count(*) totcnt
-		FROM   erp_material_order e,
-		       com_material c,
-		       mat_inout m
-		WHERE  e.com_material_code = c.com_material_code
-		AND    c.com_material_code = m.com_material_code
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0">AND
-			    mat_inout_statement = #{searchKeyword}
-			</if>
-			<if test="searchCondition == 1">AND
-		    	com_material_code LIKE '%'
-		              || #{searchKeyword}
-		              || '%'
-			</if>
-		</if>
-	</select>
+	<!-- 입출고 등록 -->
+	<insert id="insertMatInout"	parameterType="mes.mat.inout.service.MatInoutVO">
+		INSERT INTO mat_inout (COM_MATERIAL_CODE,
+								COM_MATERIAL_NAME,
+								COM_MATERIAL_SIZE,
+								COM_MATERIAL_UNIT,
+								ERP_MATERIAL_ORDER_CODE,
+								MAT_INOUT_QUANTITY,
+								MAT_INOUT_UNIT_PRICE,
+								MAT_INOUT_PRICE,
+								MAT_LOT_NO)
+		VALUES      ( # {comMaterialCode},
+		              # {comMaterialName},
+		              # {comMaterialSize},
+		              # {comMaterialUnit},
+		              # {erpMaterialOrderCode},
+		              # {matInoutQuantity},
+		              # {matInoutUnitPrice},
+		              # {matInoutPrice},
+		              # {matLotNo}) 
+	</insert>
+
+	<!-- 입출고 수정 -->
+	<update id="updateSalProductInout" parameterType="mes.mat.inout.service.MatInoutVO">
+		UPDATE mat_inout
+		SET
+		       (
+		              com_material_unit = # {comMaterialUnit}),
+		              mat_inout_quantity = # {matInoutQuantity},
+		              mat_inout_unit_price = # {matInoutUnitPrice},
+		              mat_inout_price = # {matInoutPrice}
+		       )
+		WHERE	mat_inout_statement = # {matInoutStatement}
+	</update>
+	
+	<!-- 입출고 삭제 -->
+	<delete id="deleteSalProductInout" parameterType="mes.mat.inout.service.MatInoutVO">
+		DELETE FROM mat_inout
+		WHERE mat_inout_statement = #{matInoutStatement}
+	</delete>
+	
 </mapper>

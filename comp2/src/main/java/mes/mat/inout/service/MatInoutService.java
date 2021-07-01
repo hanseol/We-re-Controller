@@ -1,5 +1,6 @@
 package mes.mat.inout.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public interface MatInoutService {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    String insertMatInout(MatInoutVO vo) throws Exception;
+	String insertMatInout(LinkedHashMap vo) throws Exception;
     
     /**
 	 * MAT_INOUT을 수정한다.
@@ -30,7 +31,7 @@ public interface MatInoutService {
 	 * @return void형
 	 * @exception Exception
 	 */
-    void updateMatInout(MatInoutVO vo) throws Exception;
+    void updateMatInout(LinkedHashMap vo) throws Exception;
     
     /**
 	 * MAT_INOUT을 삭제한다.
@@ -38,7 +39,7 @@ public interface MatInoutService {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    void deleteMatInout(MatInoutVO vo) throws Exception;
+    void deleteMatInout(LinkedHashMap vo) throws Exception;
     
     /**
 	 * MAT_INOUT을 조회한다.
@@ -46,16 +47,10 @@ public interface MatInoutService {
 	 * @return 조회한 MAT_INOUT
 	 * @exception Exception
 	 */
-    MatInoutVO selectMatInout(MatInoutVO vo) throws Exception;
-    
-    /**
-	 * MAT_INOUT 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return MAT_INOUT 총 갯수
-	 * @exception
-	 */
+    //행 카운트
     int selectMatInoutListTotCnt(MatInoutVO searchVO);
     
+    //전체  리스트 출력
     List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;
 
 }
