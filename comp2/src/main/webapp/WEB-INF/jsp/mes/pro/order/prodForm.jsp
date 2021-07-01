@@ -22,6 +22,16 @@
 	</div>
 </div>
 
+<!-- 관리, 조회 탭 이동 -->
+<div id="tabs">
+   <ul class="nav nav-tabs" role="tablist">
+     <li class="active"><a onclick='location.href="prodForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
+     <li class=""><a onclick='location.href="prodView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
+   </ul>
+</div>
+
+
+
 <!-- 마스터테이블의 CRUD 버튼 -->
 <div class="content-fluid">
 	<div>
@@ -41,7 +51,8 @@
 			<div class="row">
 				<div class="col-md-6">
 					<form>
-						* 계획일자 <input type="date" id="proPlanDate" name="proPlanDate">
+						* 작업일자 <input type="date" id="proPlanDate" name="proPlanDate"><br><br>
+						* 제품코드 <input type="text" id="comProductCode " name="comProductCode">
 					</form>
 				</div>
 				<div class="col-md-6">* 미생산계획</div>

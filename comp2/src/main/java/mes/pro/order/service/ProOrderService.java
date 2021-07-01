@@ -1,5 +1,6 @@
 package mes.pro.order.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -19,27 +20,27 @@ public interface ProOrderService {
 	
 	/**
 	 * PRO_ORDER을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 ProOrderVO
+	 * @param linkedHashMap - 등록할 정보가 담긴 ProOrderVO
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    String insertProOrder(ProOrderVO vo) throws Exception;
+    String insertProOrder(LinkedHashMap linkedHashMap) throws Exception;
     
     /**
 	 * PRO_ORDER을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 ProOrderVO
+	 * @param linkedHashMap - 수정할 정보가 담긴 ProOrderVO
 	 * @return void형
 	 * @exception Exception
 	 */
-    void updateProOrder(ProOrderVO vo) throws Exception;
+    void updateProOrder(LinkedHashMap linkedHashMap) throws Exception;
     
     /**
 	 * PRO_ORDER을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 ProOrderVO
+	 * @param linkedHashMap - 삭제할 정보가 담긴 ProOrderVO
 	 * @return void형 
 	 * @exception Exception
 	 */
-    void deleteProOrder(ProOrderVO vo) throws Exception;
+    void deleteProOrder(LinkedHashMap linkedHashMap) throws Exception;
     
     /**
 	 * PRO_ORDER을 조회한다.
@@ -64,5 +65,6 @@ public interface ProOrderService {
 	 * @exception
 	 */
     int selectProOrderListTotCnt(ProOrderVO searchVO);
+
     
 }

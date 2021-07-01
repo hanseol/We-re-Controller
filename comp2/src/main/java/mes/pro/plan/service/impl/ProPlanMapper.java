@@ -1,5 +1,6 @@
 package mes.pro.plan.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import mes.pro.plan.service.ProPlanVO;
@@ -28,7 +29,7 @@ public interface ProPlanMapper {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public void insertProPlan(ProPlanVO vo) throws Exception;
+    public void insertProPlan(LinkedHashMap vo) throws Exception;
 
     /**
 	 * PRO_PLAN을 수정한다.
@@ -36,7 +37,7 @@ public interface ProPlanMapper {
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateProPlan(ProPlanVO vo) throws Exception;
+    public void updateProPlan(LinkedHashMap vo) throws Exception;
 
     /**
 	 * PRO_PLAN을 삭제한다.
@@ -44,7 +45,7 @@ public interface ProPlanMapper {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteProPlan(ProPlanVO vo) throws Exception;
+    public void deleteProPlan(LinkedHashMap vo) throws Exception;
 
     /**
 	 * PRO_PLAN을 조회한다.
