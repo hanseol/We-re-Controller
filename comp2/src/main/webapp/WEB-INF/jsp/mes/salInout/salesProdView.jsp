@@ -77,7 +77,12 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">완제품 입/출고 목록</p>
+					<p class="panel-subtitle">완제품 입출고 목록</p>
+				</div>
+				<div class="col-md-5" align="right">
+					<button type="button">조회</button>
+					<button type="button" id="appendRow">추가</button>
+					<button type="button" id="deleteRow">삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">

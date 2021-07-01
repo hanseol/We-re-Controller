@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
 
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
 .my-panel {
@@ -17,59 +21,43 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>주문관리조회</h2>
+		<h2>주문목록조회</h2>
 	</div>
 </div>
 
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+			<button type="button" class="btn btn-success" id="search">조회</button>
+			<button type="button" class="btn btn-danger" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
 
-
+<form id="option">
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-4">
-					<form id="date_gubun">
-						일자구분
-						<input type="radio" value="1" id="order_date" name="order_date" checked="checked">주문일자
-						<input type="radio" value="2" id="deadline" name="deadline"> 납기일자
-					</form>
+						주문일자
+						<input type="date" id="orderDate" name="erpProdcutOrderDate">
 				</div>
 				<div class="col-md-4">
-					<form id="date">
-						일자
-						<input type="date" id="orderDate" name="orderDate">
-					</form>
-				</div>
-				<div class="col-md-4">
-					<form id="productCode">
+						<a href="searchProductCode.do" rel="modal:open">
 						제품코드
-						<input type="text" id="text_productCode" name="text_productCode">
-						<button type="button" id="btn_productCode" name="btn_productCode">M</button>
-						<input type="text" id="readonly_productCode" name="readonly_productCode" readonly="true">
-					</form>
+						<input type="text" id="productCode" name="productCode">	
+											
 				</div>
 				<div class="col-md-4">
-					<form id="customerCode">
 						업체코드
-						<input type="text" id="text_customerCode" name="text_customerCode">
-						<button type="button" id="btn_customerCode" name="btn_customerCode">M</button>
-						<input type="text" id="readonly_customerCode" name="readonly_customerCode" readonly="true">
-					</form>
+						<input type="text" id="customerCode" name="customerCode">
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</form>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -77,11 +65,6 @@
 			<div class="row">
 				<div class="col-md-7">
 					<p class="panel-subtitle">전체 주문 목록</p>
-				</div>
-				<div class="col-md-5" align="right">
-					<button type="button">조회</button>
-					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -93,41 +76,23 @@
 
 <script>
 	$(document).ready(function() {
-		
-		//등록, 수정, 삭제할 때
-		/* $(document).on("click", "button[id=appendRow]", function() {
-			var rowData = [ {
-				No : "",
-				Title : "",
-				Content : "",
-				Date : ""
-			} ];
-			grid.appendRow(rowData, {
-				at : grid.getRowCount(),
-				focus : true
-			});
-			grid.enable();
-		}); */
-		
-		$(document).on("click", "button[id=insertRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('createData');
-		});
-		
-		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(true);
-			grid.request('deleteData');
-		});
-		
-		$(document).on("click", "button[id=updateRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('updateData');
-		});
+		$(document).on("click", "button[id=search]",
+				function() {
+					var orderDate = $("#orderDate").val();
+					var productCode = $("#productCode").val();
+					var customerCode = $("#customerCode").val();
+					var readParams = {
+						'erpProductOrderDate' : orderDate,
+						'erpProductCode' : productCode,
+						'erpCustomerCode' : customerCode
+					};
+					grid.readData(1, readParams, true);
+				});
 		
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/sal/inout/readSalesOrder',
+					url : '${pageContext.request.contextPath}/ajax/sal/readSalesOrder',
 					method : 'GET'
 				},
 				createData : {
@@ -143,6 +108,7 @@
 					method : 'PUT'
 				}
 			},
+			initialRequest: false, 
 			contentType : "application/json"
 		};
 
@@ -153,27 +119,21 @@
 			columns : [{
 				header : '주문코드',
 				name : 'erpOrderCode',
-				editor : 'text'
 			}, {
 				header : '업체코드',
 				name : 'erpCustomerCode',
-				editor : 'text'
 			}, {
 				header : '제품코드',
 				name : 'erpProductCode',
-				editor : 'text'
 			}, {
 				header : '제품명',
 				name : 'erpProductName',
-				editor : 'text'
 			}, {
 				header : '주문량',
 				name : 'erpOrderQty',
-				editor : 'text'
 			}, {
 				header : '개당단가',
 				name : 'erpProductUnitPrice',
-				editor : 'text'
 			}, {
 				header : '주문일자',
 				name : 'erpProductOrderDate',

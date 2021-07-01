@@ -20,9 +20,9 @@
 							<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>영업</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages2" class="collapse ">
 								<ul class="nav">
-									<li><a href="page-profile.html" class="">Profile</a></li>
-									<li><a href="page-login.html" class="">Login</a></li>
-									<li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+									<li><a href="salInout/salesOrderView.do" class="">주문내역조회</a></li>
+									<li><a href="salInout/salesProdForm.do" class="">완제품입출고관리</a></li>
+									<li><a href="salInout/salesProdView.do" class="">완제품입출고조회</a></li>
 								</ul>
 							</div>
 						</li>

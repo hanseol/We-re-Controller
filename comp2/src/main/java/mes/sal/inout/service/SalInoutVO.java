@@ -2,6 +2,11 @@ package mes.sal.inout.service;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import mes.main.service.SearchVO;
 
 /**
@@ -17,6 +22,9 @@ import mes.main.service.SearchVO;
  *  Copyright (C)  All right reserved.
  */
 
+@Data
+@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
 public class SalInoutVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -27,7 +35,7 @@ public class SalInoutVO extends SearchVO{
     private java.lang.String comProductCode;
     
     /** SAL_INOUT_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
     private java.lang.String salInoutDate;
     
     /** SAL_INOUT_QUANTITY */
@@ -48,65 +56,28 @@ public class SalInoutVO extends SearchVO{
     public java.lang.String getComProductName() {
 		return comProductName;
 	}
+    
+    //ERP
+    private java.lang.String erpOrderCode;
+    
+    private java.lang.String erpProductCode;
+    
+    private java.math.BigDecimal erpOrderQty;
+    
+    private java.lang.String erpCustomerCode;
+    
+    private java.math.BigDecimal erpProductUnitPrice;
+    
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private java.lang.String erpProductDeadline;
+    
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private java.lang.String erpProductOrderDate;
+    
+    private java.lang.String erpProductName;
 
-	public void setComProductName(java.lang.String comProductName) {
-		this.comProductName = comProductName;
-	}
 
-	public java.lang.String getSalInoutStatement() {
-        return this.salInoutStatement;
-    }
-    
-    public void setSalInoutStatement(java.lang.String salInoutStatement) {
-        this.salInoutStatement = salInoutStatement;
-    }
-    
-    public java.lang.String getComProductCode() {
-        return this.comProductCode;
-    }
-    
-    public void setComProductCode(java.lang.String comProductCode) {
-        this.comProductCode = comProductCode;
-    }
-    
-    public java.lang.String getSalInoutDate() {
-        return this.salInoutDate;
-    }
-    
-    public void setSalInoutDate(java.lang.String salInoutDate) {
-        this.salInoutDate = salInoutDate;
-    }
-    
-    public java.math.BigDecimal getSalInoutQuantity() {
-        return this.salInoutQuantity;
-    }
-    
-    public void setSalInoutQuantity(java.math.BigDecimal salInoutQuantity) {
-        this.salInoutQuantity = salInoutQuantity;
-    }
-    
-    public java.lang.String getSalInoutCode() {
-        return this.salInoutCode;
-    }
-    
-    public void setSalInoutCode(java.lang.String salInoutCode) {
-        this.salInoutCode = salInoutCode;
-    }
-    
-    public java.lang.String getSalInoutGubun() {
-        return this.salInoutGubun;
-    }
-    
-    public void setSalInoutGubun(java.lang.String salInoutGubun) {
-        this.salInoutGubun = salInoutGubun;
-    }
-    
-    public java.lang.String getProProcessLotNo() {
-        return this.proProcessLotNo;
-    }
-    
-    public void setProProcessLotNo(java.lang.String proProcessLotNo) {
-        this.proProcessLotNo = proProcessLotNo;
-    }
     
 }

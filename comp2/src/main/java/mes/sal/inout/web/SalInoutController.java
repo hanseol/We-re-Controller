@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import mes.main.service.ComFunc;
 import mes.sal.inout.service.SalInoutService;
 import mes.sal.inout.service.SalInoutVO;
 
@@ -44,6 +45,8 @@ public class SalInoutController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
+	ComFunc comFunc = new ComFunc();
+
 	/**
 	 * SAL_INOUT 목록을 조회한다. (pageing)
 	 * 
@@ -53,45 +56,15 @@ public class SalInoutController {
 	 */
 
 	// 주문목록조회 salesOrder grid
-	@RequestMapping("/sal/inout/readSalesOrder")
+	@RequestMapping("ajax/sal/readSalesOrder")
 	@ResponseBody
 	public Map<String, Object> readSalesOrder(Model model, @ModelAttribute("searchVO") SalInoutVO searchVO)
 			throws Exception {
+		
+		List<?> list = salInoutService.selectSalInoutList(searchVO);	
 
-		int rowSize = 0;
-		List<?> list = new ArrayList<>();
-
-		// 검색조건이 있을 경우
-		if (!searchVO.getSearchKeyword().equals("")) {
-
-			// mapper 조건에 따라 condition 설정 필요함.
-			searchVO.setSearchCondition("0");
-
-			rowSize = salInoutService.selectSalInoutListTotCnt(searchVO);
-			searchVO.setLastIndex(rowSize);
-
-			list = salInoutService.selectSalInoutList(searchVO);
-			// 검색조건이 없을 경우
-		} else {
-			rowSize = salInoutService.selectSalInoutListTotCnt(searchVO);
-			searchVO.setLastIndex(rowSize);
-
-			list = salInoutService.selectSalInoutList(searchVO);
-		}
-
-		Map<String, Object> paging = new HashMap<>();
-		paging.put("page", searchVO.getPageIndex());
-		paging.put("totalCount", rowSize);
-
-		Map<String, Object> data = new HashMap<>();
-		data.put("contents", list);
-		data.put("pagination", paging);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("result", true);
-		map.put("data", data);
-
-		return map;
+		ComFunc comFunc = new ComFunc();
+		return comFunc.sendResult(list);
 	}
 
 	// 주문목록조회 페이지
@@ -101,8 +74,15 @@ public class SalInoutController {
 
 		return "mes/salInout/salesOrderView.page";
 	}
-
 	
+	// 제품코드 조회 모달
+	@GetMapping("searchProductCode.do")
+	public String searchProductCode() {
+		
+		//모달창 띄워주는 페이지
+		return "mes/salInout/searchProductCode";
+	}
+
 	// 입출고목록조회 salesProduct grid
 	@RequestMapping("/sal/inout/readSalesProduct")
 	@ResponseBody
@@ -152,8 +132,8 @@ public class SalInoutController {
 
 		return "mes/salInout/salesProdView.page";
 	}
-	
-	//입출고관리 페이지
+
+	// 입출고관리 페이지
 	@RequestMapping("/salInout/salesProdForm.do")
 	public String selectSalesProductFormList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {

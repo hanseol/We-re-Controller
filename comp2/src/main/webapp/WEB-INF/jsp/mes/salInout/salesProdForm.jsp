@@ -125,7 +125,7 @@
 					url : '${pageContext.request.contextPath}/sal/inout/readSalesProduct',
 					method : 'GET'
 				},
-				createData : {
+				/* createData : {
 					url : '${pageContext.request.contextPath}/ajax/insertBoard',
 					method : 'POST'
 				},
@@ -135,6 +135,10 @@
 				},
 				updateData : {
 					url : '${pageContext.request.contextPath}/ajax/updateBoard',
+					method : 'PUT'
+				} */
+				modifyData : {
+					url : '${pageContext.request.contextPath}/ajax/modifyBoard',
 					method : 'PUT'
 				}
 			},

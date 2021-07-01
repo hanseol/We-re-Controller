@@ -12,9 +12,7 @@
 		<result property="salInoutCode" column="SAL_INOUT_CODE" />
 		<result property="salInoutGubun" column="SAL_INOUT_GUBUN" />
 		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
-	</resultMap>
-	
-	<resultMap id="erp" type="mes.sal.inout.service.ErpVO">
+		
 		<result property="erpOrderCode" column="ERP_ORDER_CODE" />
 		<result property="erpProductCode" column="ERP_PRODUCT_CODE" />
 		<result property="erpOrderQty" column="ERP_ORDER_QTY" />
@@ -47,31 +45,30 @@
 		FROM (
 				SELECT A.*,
 				ROWNUM RNUM FROM (
-									SELECT *
+									SELECT ERP_ORDER_CODE, ERP_PRODUCT_CODE,
+									ERP_ORDER_QTY, ERP_CUSTOMER_CODE, ERP_PRODUCT_UNIT_PRICE,
+									TO_CHAR(ERP_PRODUCT_DEADLINE, 'YYYY/MM/dd') AS ERP_PRODUCT_DEADLINE,
+									TO_CHAR(ERP_PRODUCT_ORDER_DATE, 'YYYY/MM/dd') AS ERP_PRODUCT_ORDER_DATE,
+									ERP_PRODUCT_NAME
 									FROM ERP_PRODUCT_ORDER
 				WHERE 1=1
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0">AND
-				ERP_PRODUCT_DEADLINE = #{ERP_PRODUCT_DEADLINE}
+			<if test="erpProductOrderDate != null and erpProductOrderDate != ''">AND
+				ERP_PRODUCT_ORDER_DATE = #{erpProductOrderDate}
 			</if>
-			<if test="searchCondition == 1">AND
-				ERP_PRODUCT_ORDER_DATE = #{ERP_PRODUCT_ORDER_DATE}
+			<if test="erpProductCode != null and erpProductCode != ''">AND
+				ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
 			</if>
-			<if test="searchCondition == 2">AND
-				ERP_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
+			<if test="erpCustomerCode != null and erpCustomerCode != ''">AND
+				ERP_CUSTOMER_CODE LIKE '%' || #{erpCustomerCode} || '%'
 			</if>
-			<if test="searchCondition == 3">AND
-				ERP_CUSTOMER_CODE LIKE '%' || #{searchKeyword} || '%'
-			</if>
-		</if>
-		ORDER BY ERP_PRODUCT_ORDER_DATE		
+		ORDER BY ERP_PRODUCT_ORDER_DATE	DESC
 			<![CDATA[						
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
 		]]>
 	</select>
 
-	<!-- 입출고목록 조회 + 관리 ... DATE 수정해야 함. 머리 터질 거 같아서 내중에 -->
+	<!-- 입출고목록 조회 + 관리 ... DATE 수정해야 함.-->
 	<select id="selectSalProductInoutList"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT *
