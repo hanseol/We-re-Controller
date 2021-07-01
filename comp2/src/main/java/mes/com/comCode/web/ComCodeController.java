@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import mes.com.comCode.service.ComCodeService;
 import mes.com.comCode.service.ComCodeVO;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
+import mes.pro.plan.service.ProPlanVO;
 
 /**
  * @Class Name : ComCodeController.java
@@ -110,6 +112,36 @@ public class ComCodeController {
 				service.deleteComCodeDetail((LinkedHashMap) deletedList.get(i));
 			}
 		}
+	}
+	
+	//	모달
+	//모달 창을 여는 버튼을 눌렀을 때 동작
+	@GetMapping("comCodeModal.do")
+	public String comCodeModal() {
+		
+		//모달창에 띄워줄 view페이지 전달.
+		return "mes/com/comCode/ComCodeModal";
+	}
+	
+	//모달창에 결과 값 전달
+	@RequestMapping("mes/comCode/ComCodeModal")
+	@ResponseBody
+	public Map<String, Object> searchComeCode(Model model, 
+   		@ModelAttribute("searchVO") ComCodeVO searchVO) throws Exception {
+		
+
+    	List<?> list = service.selectComCodeList(searchVO);
+    	
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+	}
+	
+	
+	// 뷰페이지만 넘겨준다.
+	@RequestMapping(value = "comCode/ComCodeList.do")
+	public String selectErpMaterialOrderList(@ModelAttribute("searchVO") ComCodeVO searchVO, ModelMap model) {
+
+		return "mes/com/comCode/ComCodeList.page";
 	}
 
 }

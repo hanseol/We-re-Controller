@@ -9,6 +9,21 @@
 	margin-bottom: 10px;
 	background-color: white;
 }
+
+.modal {
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	overflow: visible;
+	text-align: center;
+	max-width: 900px;
+	width: 900px;
+	height: 600px;
+	max-height: 600px;
+}
+
+.blocker {
+	z-index: 1200;
+}
 </style>
 
 <div class="content-fluid">
@@ -22,10 +37,11 @@
 	<div class="content-fluid">
 		<div>
 			<div class="my-panel">
-				<button type="button" class="btn btn-success">조회</button>
+				<a href="comCodeModal.do" rel="modal:open" id="getData">
+					<button type="button" class="btn btn-success" id="showModal">조회</button>
+				</a>
 				<button type="button" class="btn btn-danger">새자료</button>
-				<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-				<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+				<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 			</div>
 		</div>
 	</div>
@@ -47,8 +63,7 @@
 			<div class="row">
 				<div class="col-md-7"></div>
 				<div class="col-md-5" align="right">
-					<button type="button" id="findRow">조회</button>
-					<button type="button" id="appendRow">추가</button>
+					<button type="button" id=appendRow>추가</button>
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
 			</div>
@@ -76,30 +91,6 @@
 	$(document)
 			.ready(
 					function() {
-						$(document).on("click", "button[id=appendRow]",
-								function() {
-									var rowData = [ {
-										//여기 수정 해야함.
-										공통코드 : "",
-										공통코드명 : "",
-									} ];
-									grid.appendRow(rowData, {
-										at : grid.getRowCount(),
-										focus : true
-									});
-									grid.enable();
-						});
-
-						$(document).on("click", "button[id=findRow]",
-								function() {
-									//데이터를 변수에 담아서 parameter로 만들기.
-									var no = $("#no").val();
-									console.log(no);
-									var readParams = {
-										'searchKeyword' : no
-									};
-									grid.readData(1, readParams, true);
-								});
 						
 						const dataSource = {
 							api : {
@@ -122,10 +113,8 @@
 								name : 'comCodeName',
 							} ]
 						});
-						
-						
-						/*  */
-						
+						/* 디테일코드 */
+						//행추가
 						$(document).on("click", "button[id=appendRow]", function() {
 								var rowData = [ {
 									//여기 수정 해야함.
@@ -135,18 +124,43 @@
 									표시순번 : "",
 									사용여부 : "",
 								} ];
-								grid.appendRow(rowData, {
-									at : grid.getRowCount(),
+								gridDetail.appendRow(rowData, {
+									at : gridDetail.getRowCount(),
 									focus : true
 								});
-								grid.enable();
+								gridDetail.enable();
 						});
+						
+						//CRUD
+						$(document).on("click", "button[id=modifyRow]", function() {
+							gridDetail.finishEditing('rowKey','columnName');
+							gridDetail.request('modifyData');
+						});
+						
+						//행삭제
+						$(document).on("click", "button[id=deleteRow]", function() {
+							gridDetail.removeCheckedRows(false);
+						});
+						
+						//체크박스에 데이터 전달
+						$(document).on("click", "button[id=findRow]", function() {
+							var comCodeDetailId = $("#comCodeDetailId").val();
+							var readParams = {
+									'comCodeDetailId' : comCodeDetailId
+								};
+							gridDetail.readData(1, readParams, true);
+						});
+						
+						
 
 						const dataSourceDetail = {
 							api : {
 								readData : {
 									url : '${pageContext.request.contextPath}/comCode/ComCodeDetailList',
 									method : 'GET'
+								}, modifyData: { 
+									url: '${pageContext.request.contextPath}/ajax/modifyComCodeDetail',
+									method: 'PUT'
 								},
 							},
 							initialRequest : false,
@@ -180,6 +194,7 @@
 							} ]
 						});
 						
+						//마스터테이블 클릭시 데이터 전달
 						grid.on('click', (ev) => {
 							var comCodeId = grid.getValue(ev.rowKey, "comCodeId");
 							console.log(comCodeId);
@@ -188,6 +203,8 @@
 							};
 						gridDetail.readData(1, readParams, true);
 					   });
+						
+
 					});//end of ready
 
 </script>
