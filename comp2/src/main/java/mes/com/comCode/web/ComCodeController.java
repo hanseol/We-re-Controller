@@ -1,7 +1,6 @@
 package mes.com.comCode.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
-import mes.board.service.BoardVO;
 import mes.com.comCode.service.ComCodeService;
 import mes.com.comCode.service.ComCodeVO;
 import mes.main.service.ComFunc;
@@ -71,7 +69,7 @@ public class ComCodeController {
 			list = service.selectComCodeList(searchVO);
 		}
 
-		return comFunc.sendResult(list, "select");
+		return comFunc.sendResult(list);
 	}
 
 	// 디테일코드 조회
@@ -80,60 +78,38 @@ public class ComCodeController {
 	public Map<String, Object> readComeCodeDetail(Model model, @ModelAttribute("searchVO") ComCodeVO searchVO)
 			throws Exception {
 
-		System.out.println("******************" + searchVO.getComCodeId());
 		List<?> list = new ArrayList<>();
 
 		list = service.selectComCodeDetailList(searchVO);
 
-		return comFunc.sendResult(list, "select");
+		return comFunc.sendResult(list);
 	}
 
-	// 디테일코드 행 추가.
-	@PostMapping("/ajax/insertComeCodeDetail")
+	@PutMapping("/ajax/modifyComCodeDetail")
 	@ResponseBody
-	public Map<String, Object> insertComeCodeDetail(@RequestBody GridDataVO gd) throws Exception {
+	public void modifyComCodeDetail(@RequestBody GridDataVO gd) throws Exception {
 
-		List<?> list = gd.getCreatedRows();
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
 
-		for (int i = 0; i < list.size(); i++) {
-			service.insertComCodeDetail((LinkedHashMap) list.get(i));
+		if (updatedList.size() != 0) {
+			for (int i = 0; i < updatedList.size(); i++) {
+				service.updateComCodeDetail((LinkedHashMap) updatedList.get(i));
+			}
 		}
 
-		return comFunc.sendResult(list, "insert");
-	}
-
-	// 디테일코드 행 삭제.
-	@PostMapping("/ajax/deleteComCodeDetail")
-	@ResponseBody
-	public Map<String, Object> deleteComCodeDetail(@RequestBody GridDataVO gd) throws Exception {
-
-		List<?> list = gd.getDeletedRows();
-		for (int i = 0; i < list.size(); i++) {
-			service.deleteComCodeDetail((LinkedHashMap) list.get(i));
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				service.insertComCodeDetail((LinkedHashMap) createdList.get(i));
+			}
 		}
 
-		return comFunc.sendResult(list, "delete");
-	}
-
-	// 디테일코드 업데이트
-	@PutMapping("/ajax/updateComCodeDetail")
-	@ResponseBody
-	public Map<String, Object> updateComCodeDetail(@RequestBody GridDataVO gd) throws Exception {
-
-		List<?> list = gd.getUpdatedRows();
-		// 전달받은 데이터 수 만큼.
-		for (int i = 0; i < list.size(); i++) {
-			service.updateComCodeDetail((LinkedHashMap) list.get(i));
+		if (deletedList.size() != 0) {
+			for (int i = 0; i < deletedList.size(); i++) {
+				service.deleteComCodeDetail((LinkedHashMap) deletedList.get(i));
+			}
 		}
-
-		return comFunc.sendResult(list, "update");
-	}
-
-	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "comCode/ComCodeList.do")
-	public String selectErpMaterialOrderList(@ModelAttribute("searchVO") ComCodeVO searchVO, ModelMap model) {
-
-		return "mes/com/comCode/ComCodeList.page";
 	}
 
 }

@@ -53,19 +53,11 @@ public class HomeController {
 	public Map<String, Object> searchProduct(Model model, 
    		@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
 		
-		if(!"".equals(searchVO.getComProductCode())) {
-			searchVO.setSearchCondition("0");
-		}else if(!"".equals(searchVO.getComProductName())) {
-			searchVO.setSearchCondition("1");
-		}else if(!searchVO.getComProductCode().equals("") && 
-					!searchVO.getComProductName().equals("")) {
-			searchVO.setSearchCondition("2");
-		}
-		
+
     	List<?> list = service.selectProductList(searchVO);
     	
     	ComFunc comFunc = new ComFunc();
-    	return comFunc.sendResult(list,"select");
+    	return comFunc.sendResult(list);
 	}
 	
 
