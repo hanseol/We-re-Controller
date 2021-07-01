@@ -69,19 +69,12 @@ public class ProPlanController {
     @RequestMapping("proPlan/ProdPlanView")
     @ResponseBody
     public Map<String, Object> readBoard(Model model, @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
-
+    	
     	List<?> list = new ArrayList<>();
     	
-    	//검색조건이 있을 경우
-    	if(!searchVO.getSearchKeyword().equals("")) {
-    		//mapper 조건에 따라 condition 설정 필요함.
-        	searchVO.setSearchCondition("0");
-        	list = service.selectProPlanList(searchVO);
-        //검색조건이 없을 경우
-    	}else {
-        	list = service.selectProPlanList(searchVO);
-    	}
-    	return comFunc.sendResult(list);
+        list = service.selectProPlanList(searchVO);
+    	
+        return comFunc.sendResult(list);
     }
 
     

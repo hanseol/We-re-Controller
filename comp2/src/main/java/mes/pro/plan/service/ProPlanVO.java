@@ -47,4 +47,6 @@ public class ProPlanVO extends SearchVO{
     private java.math.BigDecimal proPlanSeq;
     private java.math.BigDecimal erpOrderQty;
     private java.math.BigDecimal proPlanQty;
+    
+    private String erpProductCode;
 }

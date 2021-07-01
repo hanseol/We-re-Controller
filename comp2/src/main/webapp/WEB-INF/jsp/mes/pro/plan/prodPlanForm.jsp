@@ -82,7 +82,7 @@
 				</div>
 				<div class="col-md-6">
 					* 미생산계획 검색 <br/><br/>
-					납기일자 &nbsp;&nbsp;&nbsp; <input type="date" id="startNotWorkDate" name="startNotWorkDate">
+						납기일자 &nbsp;&nbsp;&nbsp; <input type="date" id="startNotWorkDate" name="startNotWorkDate">
 						~ <input type="date" id="endNotWorkDate" name="endNotWorkDate">
 				</div>
 			</div>

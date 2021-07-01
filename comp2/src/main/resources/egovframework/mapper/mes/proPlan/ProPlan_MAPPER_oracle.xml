@@ -75,14 +75,17 @@
 						   , pro_plan m
 						WHERE d.erp_order_code = e.erp_order_code
 						  AND m.pro_plan_code = d.pro_plan_code
-						<if test="searchKeyword != null and searchKeyword != ''">
-							<if test="searchCondition == 0">AND
-								PRO_PLAN_CODE = #{searchKeyword}
+						<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+							<if test="searchCondition == 1"> AND
+								m.pro_plan_date BETWEEN #{startDate} AND #{endDate} 
 							</if>
-							<if test="searchCondition == 1">AND
-								PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+							<if test="searchCondition == 2"> AND
+								e.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
 							</if>
 						</if>
+							<if test="erpProductCode != null and erpProductCode != ''"> AND
+								e.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+							</if>
 							ORDER BY 
 								m.PRO_PLAN_CODE DESC
 				
@@ -121,8 +124,7 @@
 								COM_PRODUCT_SIZE
 						FROM COM_PRODUCT
 						WHERE 1=1
-						<if test="comProductCode != null and comProductCode!=''">
-							AND
+						<if test="comProductCode != null and comProductCode!=''"> AND
 							COM_PRODUCT_CODE = #{comProductCode}
 						</if>
 						<if test="comProductName != null and comProductCode!=''">AND
