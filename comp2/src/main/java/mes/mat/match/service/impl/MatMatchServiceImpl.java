@@ -4,17 +4,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import mes.mat.match.service.MatMatchService;
-import mes.mat.match.service.MatMatchDefaultVO;
 import mes.mat.match.service.MatMatchVO;
-import mes.mat.match.service.impl.MatMatchMapper;
 /**
  * @Class Name : MatMatchServiceImpl.java
  * @Description : MatMatch Business Implement class
@@ -103,7 +99,7 @@ public class MatMatchServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return MAT_MATCH 목록
 	 * @exception Exception
 	 */
-    public List<?> selectMatMatchList(MatMatchDefaultVO searchVO) throws Exception {
+    public List<?> selectMatMatchList(MatMatchVO searchVO) throws Exception {
         return matMatchDAO.selectMatMatchList(searchVO);
     }
 
@@ -113,7 +109,7 @@ public class MatMatchServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return MAT_MATCH 총 갯수
 	 * @exception
 	 */
-    public int selectMatMatchListTotCnt(MatMatchDefaultVO searchVO) {
+    public int selectMatMatchListTotCnt(MatMatchVO searchVO) {
 		return matMatchDAO.selectMatMatchListTotCnt(searchVO);
 	}
     

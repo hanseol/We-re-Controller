@@ -1,8 +1,6 @@
 package mes.mat.match.service;
 
 import java.util.List;
-import mes.mat.match.service.MatMatchDefaultVO;
-import mes.mat.match.service.MatMatchVO;
 
 /**
  * @Class Name : MatMatchService.java
@@ -56,7 +54,7 @@ public interface MatMatchService {
 	 * @return MAT_MATCH 목록
 	 * @exception Exception
 	 */
-    List selectMatMatchList(MatMatchDefaultVO searchVO) throws Exception;
+    List selectMatMatchList(MatMatchVO searchVO) throws Exception;
     
     /**
 	 * MAT_MATCH 총 갯수를 조회한다.
@@ -64,6 +62,6 @@ public interface MatMatchService {
 	 * @return MAT_MATCH 총 갯수
 	 * @exception
 	 */
-    int selectMatMatchListTotCnt(MatMatchDefaultVO searchVO);
+    int selectMatMatchListTotCnt(MatMatchVO searchVO);
     
 }

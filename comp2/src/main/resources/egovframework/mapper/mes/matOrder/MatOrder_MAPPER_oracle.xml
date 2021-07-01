@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.mat.order.service.impl.MaterialOrderMapper">
+	
+	<!-- 자재발주조회페이지 전체 리스트 출력 -->
+	<select id="selectMatOrderList" parameterType="mes.mat.order.service.MaterialOrderVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   TO_CHAR(e.erp_material_order_date,'YYYY/MM/DD') erp_material_order_date,
+		                                       e.erp_material_order_code,
+		                                       c.com_material_code,
+		                                       c.com_material_name,
+		                                       TO_CHAR(m.mat_inout_date,'YYYY/MM/DD') mat_inout_date,
+		                                       e.erp_material_order_qty,
+		                                       e.erp_vendor_code,
+		                                       m.mat_lot_no,
+		                                       m.mat_inout_quantity
+		                              FROM     erp_material_order e,
+		                                       com_material c,
+		                                       mat_inout m
+		                              WHERE    e.com_material_code = c.com_material_code
+		                              AND      c.com_material_code = m.com_material_code
+		                              ORDER BY erp_material_order_code DESC
+		              <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>
+	</select>
+	<!-- 행 카운트 -->
+	<select id="selectMatOrderListTotCnt" parameterType="mes.mat.order.service.MaterialOrderVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM		erp_material_order e,
+						com_material c,
+						mat_inout m
+			WHERE		e.com_material_code = c.com_material_code
+			AND			c.com_material_code = m.com_material_code
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					ERP_MATERIAL_ORDER_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+	
+</mapper>

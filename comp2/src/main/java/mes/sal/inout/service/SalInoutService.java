@@ -2,7 +2,6 @@ package mes.sal.inout.service;
 
 import java.util.List;
 
-import mes.sal.inout.service.SalInoutDefaultVO;
 import mes.sal.inout.service.SalInoutVO;
 
 /**
@@ -57,7 +56,7 @@ public interface SalInoutService {
 	 * @return SAL_INOUT 목록
 	 * @exception Exception
 	 */
-    List selectSalInoutList(SalInoutDefaultVO searchVO) throws Exception;
+    List selectSalInoutList(SalInoutVO searchVO) throws Exception;
     
     /**
 	 * SAL_INOUT 총 갯수를 조회한다.
@@ -65,6 +64,15 @@ public interface SalInoutService {
 	 * @return SAL_INOUT 총 갯수
 	 * @exception
 	 */
-    int selectSalInoutListTotCnt(SalInoutDefaultVO searchVO);
+    
+  //입출고 조회 페이지
+    List selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
+    
+    
+   
+    
+    int selectSalInoutListTotCnt(SalInoutVO searchVO);
+    
+    
     
 }

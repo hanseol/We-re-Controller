@@ -1,6 +1,9 @@
 package mes.mat.inout.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -10,12 +13,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import mes.mat.inout.service.MatInoutDefaultVO;
 import mes.mat.inout.service.MatInoutService;
 import mes.mat.inout.service.MatInoutVO;
 
@@ -24,7 +26,7 @@ import mes.mat.inout.service.MatInoutVO;
  * @Description : MatInout Controller class
  * @Modification Information
  *
- * @author sungwon
+ * @author sungwon  
  * @since 20210625
  * @version 1.0
  * @see
@@ -33,108 +35,67 @@ import mes.mat.inout.service.MatInoutVO;
  */
 
 @Controller
-@SessionAttributes(types=MatInoutVO.class)
 public class MatInoutController {
 
     @Resource(name = "matInoutService")
-    private MatInoutService matInoutService;
+    private MatInoutService service;
     
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-	
-    /**
-	 * MAT_INOUT 목록을 조회한다. (pageing)
-	 * @param searchVO - 조회할 정보가 담긴 MatInoutDefaultVO
-	 * @return "/matInout/MatInoutList"
-	 * @exception Exception
-	 */
+    
+    
+    
+    @RequestMapping(value="/mat/inout/readMatInoutOrder")
+    @ResponseBody
+    public Map<String, Object> matOrder(Model model, 
+    		 @ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception{
+
+    	int rowSize = 0;
+    	List<?> list = new ArrayList<>();
+    	
+    	//검색조건이 있을 경우
+    	if(!searchVO.getSearchKeyword().equals("")) {
+    	
+    		//mapper 조건에 따라 condition 설정 필요함.
+        	searchVO.setSearchCondition("0");
+    		
+    		rowSize = service.selectMatInoutListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectMatInoutList(searchVO);
+        //검색조건이 없을 경우
+    	}else {
+    		rowSize = service.selectMatInoutListTotCnt(searchVO);
+        	searchVO.setLastIndex(rowSize);
+        	
+        	list = service.selectMatInoutList(searchVO);
+    	}
+    	
+    	Map<String, Object> paging = new HashMap<>();
+    	paging.put("page", searchVO.getPageIndex());
+    	paging.put("totalCount", rowSize);
+    	
+    	Map<String,Object> data = new HashMap<>();
+    	data.put("contents", list);
+    	data.put("pagination", paging);
+    	
+    	Map<String,Object> map = new HashMap<>();
+    	map.put("result", true);
+    	map.put("data", data);
+        
+    	return map;
+    }
+    
+    //뷰페이지만 넘겨준다.
     @RequestMapping(value="/matInout/matrInoutView.do")
-    public String selectMatInoutList(@ModelAttribute("searchVO") MatInoutDefaultVO searchVO, 
-    		ModelMap model)
-            throws Exception {
-    	
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
-    	
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-        List<?> matInoutList = matInoutService.selectInoutList(searchVO);
-        model.addAttribute("selectInoutList", matInoutList);
-        
-        int totCnt = matInoutService.selectMatInoutListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
-        
+    public String selectMatInoutList(@ModelAttribute("searchVO") MatInoutVO searchVO, 
+    		ModelMap model) {
+
         return "mes/matInout/matrInoutView.page";
-    }
-    
-    @RequestMapping("/matInout/addMatInoutView.do")
-    public String addMatInoutView(
-            @ModelAttribute("searchVO") MatInoutDefaultVO searchVO, Model model)
-            throws Exception {
-        model.addAttribute("matInoutVO", new MatInoutVO());
-        return "mes/matInout/MatInoutRegister.page";
-    }
-    
-    @RequestMapping("/matInout/addMatInout.do")
-    public String addMatInout(
-            MatInoutVO matInoutVO,
-            @ModelAttribute("searchVO") MatInoutDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        matInoutService.insertMatInout(matInoutVO);
-        status.setComplete();
-        return "forward:/matInout/MatInoutList.do";
-    }
-    
-    @RequestMapping("/matInout/updateMatInoutView.do")
-    public String updateMatInoutView(
-            @RequestParam("matInoutStatement") java.lang.String matInoutStatement ,
-            @ModelAttribute("searchVO") MatInoutDefaultVO searchVO, Model model)
-            throws Exception {
-        MatInoutVO matInoutVO = new MatInoutVO();
-        matInoutVO.setMatInoutStatement(matInoutStatement);
-        // 변수명은 CoC 에 따라 matInoutVO
-        model.addAttribute(selectMatInout(matInoutVO, searchVO));
-        return "mes/matInout/MatInoutRegister.page";
-    }
+    } 
 
-    @RequestMapping("/matInout/selectMatInout.do")
-    public @ModelAttribute("matInoutVO")
-    MatInoutVO selectMatInout(
-            MatInoutVO matInoutVO,
-            @ModelAttribute("searchVO") MatInoutDefaultVO searchVO) throws Exception {
-        return matInoutService.selectMatInout(matInoutVO);
-    }
 
-    @RequestMapping("/matInout/updateMatInout.do")
-    public String updateMatInout(
-            MatInoutVO matInoutVO,
-            @ModelAttribute("searchVO") MatInoutDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        matInoutService.updateMatInout(matInoutVO);
-        status.setComplete();
-        return "forward:/matInout/MatInoutList.do";
-    }
-    
-    @RequestMapping("/matInout/deleteMatInout.do")
-    public String deleteMatInout(
-            MatInoutVO matInoutVO,
-            @ModelAttribute("searchVO") MatInoutDefaultVO searchVO, SessionStatus status)
-            throws Exception {
-        matInoutService.deleteMatInout(matInoutVO);
-        status.setComplete();
-        return "forward:/matInout/MatInoutList.do";
-    }
     
     
 

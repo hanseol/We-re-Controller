@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.board.service.BoardService;
 import mes.board.service.BoardVO;
+import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
 
 /**
@@ -46,6 +47,8 @@ public class BoardController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 	
+    
+    ComFunc comFunc = new ComFunc();
     /*
 	 * 테이블 목록 조회.
 	 * @param searchVO - 조회할 정보가 담긴 BoardDefaultVO
@@ -65,32 +68,14 @@ public class BoardController {
     	
     		//mapper 조건에 따라 condition 설정 필요함.
         	searchVO.setSearchCondition("0");
-    		
-    		rowSize = service.selectBoardListTotCnt(searchVO);
-        	searchVO.setLastIndex(rowSize);
-        	
         	list = service.selectBoardList(searchVO);
+        	
         //검색조건이 없을 경우
     	}else {
-    		rowSize = service.selectBoardListTotCnt(searchVO);
-        	searchVO.setLastIndex(rowSize);
-        	
         	list = service.selectBoardList(searchVO);
     	}
     	
-    	Map<String, Object> paging = new HashMap<>();
-    	paging.put("page", searchVO.getPageIndex());
-    	paging.put("totalCount", rowSize);
-    	
-    	Map<String,Object> data = new HashMap<>();
-    	data.put("contents", list);
-    	data.put("pagination", paging);
-    	
-    	Map<String,Object> map = new HashMap<>();
-    	map.put("result", true);
-    	map.put("data", data);
-        
-    	return map;
+    	return comFunc.sendResult(list, "select");
     }
     
     /*
@@ -104,16 +89,11 @@ public class BoardController {
     
     	List<?> list = gd.getCreatedRows();
     	
-    	
     	for(int i=0;i<list.size();i++) {
     		service.insertBoard( (LinkedHashMap) list.get(i));
     	}
     	
-    	Map<String, Object> data = new HashMap<>();
-    	data.put("result", true);
-    	data.put("data", list);
-    	
-    	return data;
+    	return comFunc.sendResult(list, "insert");
     }
     
     
@@ -128,14 +108,10 @@ public class BoardController {
     	
     	List<?> list = gd.getDeletedRows();
     	for(int i=0; i<list.size(); i++) {
-    		service.deleteBoard((BoardVO) list.get(i));
+    		service.deleteBoard((LinkedHashMap) list.get(i));
     	}
     	
-    	Map<String, Object> data = new HashMap<>();
-    	data.put("result", true);
-    	data.put("data", list);
-    	
-    	return data;
+    	return comFunc.sendResult(list, "delete");
     }
     
     /*
@@ -150,13 +126,9 @@ public class BoardController {
     	List<?> list = gd.getUpdatedRows();
     	//전달받은 데이터 수 만큼.
     	for(int i=0; i<list.size(); i++) {
-    		service.updateBoard((BoardVO) list.get(i));
+    		service.updateBoard((LinkedHashMap) list.get(i));
     	}
     	
-    	Map<String, Object> data = new HashMap<>();
-    	data.put("result", true);
-    	data.put("data", list);
-    	
-    	return data;
+    	return comFunc.sendResult(list, "update");
     }
 }

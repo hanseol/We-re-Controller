@@ -10,14 +10,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
 import mes.mat.match.service.MatMatchService;
-import mes.mat.match.service.MatMatchDefaultVO;
 import mes.mat.match.service.MatMatchVO;
 
 /**
@@ -34,7 +31,6 @@ import mes.mat.match.service.MatMatchVO;
  */
 
 @Controller
-@SessionAttributes(types=MatMatchVO.class)
 public class MatMatchController {
 
     @Resource(name = "matMatchService")
@@ -51,7 +47,7 @@ public class MatMatchController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="/matMatch/MatMatchList.do")
-    public String selectMatMatchList(@ModelAttribute("searchVO") MatMatchDefaultVO searchVO, 
+    public String selectMatMatchList(@ModelAttribute("searchVO") MatMatchVO searchVO, 
     		ModelMap model)
             throws Exception {
     	
@@ -81,7 +77,7 @@ public class MatMatchController {
     
     @RequestMapping("/matMatch/addMatMatchView.do")
     public String addMatMatchView(
-            @ModelAttribute("searchVO") MatMatchDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") MatMatchVO searchVO, Model model)
             throws Exception {
         model.addAttribute("matMatchVO", new MatMatchVO());
         return "mes/matMatch/MatMatchRegister.page";
@@ -90,7 +86,7 @@ public class MatMatchController {
     @RequestMapping("/matMatch/addMatMatch.do")
     public String addMatMatch(
             MatMatchVO matMatchVO,
-            @ModelAttribute("searchVO") MatMatchDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") MatMatchVO searchVO, SessionStatus status)
             throws Exception {
         matMatchService.insertMatMatch(matMatchVO);
         status.setComplete();
@@ -100,7 +96,7 @@ public class MatMatchController {
     @RequestMapping("/matMatch/updateMatMatchView.do")
     public String updateMatMatchView(
             @RequestParam("matMatchStatement") java.lang.String matMatchStatement ,
-            @ModelAttribute("searchVO") MatMatchDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") MatMatchVO searchVO, Model model)
             throws Exception {
         MatMatchVO matMatchVO = new MatMatchVO();
         matMatchVO.setMatMatchStatement(matMatchStatement);
@@ -113,14 +109,14 @@ public class MatMatchController {
     public @ModelAttribute("matMatchVO")
     MatMatchVO selectMatMatch(
             MatMatchVO matMatchVO,
-            @ModelAttribute("searchVO") MatMatchDefaultVO searchVO) throws Exception {
+            @ModelAttribute("searchVO") MatMatchVO searchVO) throws Exception {
         return matMatchService.selectMatMatch(matMatchVO);
     }
 
     @RequestMapping("/matMatch/updateMatMatch.do")
     public String updateMatMatch(
             MatMatchVO matMatchVO,
-            @ModelAttribute("searchVO") MatMatchDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") MatMatchVO searchVO, SessionStatus status)
             throws Exception {
         matMatchService.updateMatMatch(matMatchVO);
         status.setComplete();
@@ -130,7 +126,7 @@ public class MatMatchController {
     @RequestMapping("/matMatch/deleteMatMatch.do")
     public String deleteMatMatch(
             MatMatchVO matMatchVO,
-            @ModelAttribute("searchVO") MatMatchDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") MatMatchVO searchVO, SessionStatus status)
             throws Exception {
         matMatchService.deleteMatMatch(matMatchVO);
         status.setComplete();

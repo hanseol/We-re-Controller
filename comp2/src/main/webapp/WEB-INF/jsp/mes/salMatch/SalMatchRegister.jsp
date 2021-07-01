@@ -5,12 +5,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
  /**
-  * @Class Name : ProOrderDetailRegister.jsp
-  * @Description : ProOrderDetail Register 화면
+  * @Class Name : SalMatchRegister.jsp
+  * @Description : SalMatch Register 화면
   * @Modification Information
   * 
-  * @author dahee
-  * @since 20210628
+  * @author hk
+  * @since 2021-06-29
   * @version 1.0
   * @see
   *  
@@ -22,26 +22,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<c:set var="registerFlag" value="${empty proOrderDetailVO.proOrderDetailCode ? '등록' : '수정'}"/>
+<c:set var="registerFlag" value="${empty salMatchVO.salMatchStatement ? '등록' : '수정'}"/>
 
 <title> <c:out value="${registerFlag}"/> </title>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
 
 <!--For Commons Validator Client Side-->
 <!-- script type="text/javascript" src="<c:url value='/cmmn/validator.do'/>"></script -->
-<!-- validator:javascript formName="proOrderDetailVO" staticJavascript="false" xhtml="true" cdata="false"/ -->
+<!-- validator:javascript formName="salMatchVO" staticJavascript="false" xhtml="true" cdata="false"/ -->
 
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 /* 글 목록 화면 function */
 function fn_egov_selectList() {
-   	document.getElementById("detailForm").action = "<c:url value='/proOrderDetail/ProOrderDetailList.do'/>";
+   	document.getElementById("detailForm").action = "<c:url value='/salMatch/SalMatchList.do'/>";
    	document.getElementById("detailForm").submit();		
 }
 
 /* 글 삭제 function */
 function fn_egov_delete() {
-   	document.getElementById("detailForm").action = "<c:url value='/proOrderDetail/deleteProOrderDetail.do'/>";
+   	document.getElementById("detailForm").action = "<c:url value='/salMatch/deleteSalMatch.do'/>";
    	document.getElementById("detailForm").submit();		
 }
 
@@ -51,7 +51,7 @@ function fn_egov_save() {
 
 	/* TODO Validation기능 보완 */
 	
-  	frm.action = "<c:url value="${registerFlag == '등록' ? '/proOrderDetail/addProOrderDetail.do' : '/proOrderDetail/updateProOrderDetail.do'}"/>";
+  	frm.action = "<c:url value="${registerFlag == '등록' ? '/salMatch/addSalMatch.do' : '/salMatch/updateSalMatch.do'}"/>";
     frm.submit();
 
 }
@@ -61,7 +61,7 @@ function fn_egov_save() {
 </head>
 <body>
 
-<form:form commandName="proOrderDetailVO" name="detailForm" id="detailForm" >
+<form:form commandName="salMatchVO" name="detailForm" id="detailForm" >
 <div id="content_pop">
 	<!-- 타이틀 -->
 	<div id="title">
@@ -79,88 +79,53 @@ function fn_egov_save() {
 			
 		<c:if test="${registerFlag == '수정'}">
 	   <tr>
-			<th>PRO_ORDER_DETAIL_CODE *</th>
+			<th>SAL_MATCH_STATEMENT *</th>
 			<td>
-				<form:input path="proOrderDetailCode" cssClass="essentiality" readonly="true" />
+				<form:input path="salMatchStatement" cssClass="essentiality" readonly="true" />
 			</td>			
 		</tr>	
 		</c:if>
 		<c:if test="${registerFlag == '등록'}">
 	   <tr>
-			<th>PRO_ORDER_DETAIL_CODE *</th>
+			<th>SAL_MATCH_STATEMENT *</th>
 			<td>
-				<form:input path="proOrderDetailCode" cssClass="txt" readonly="false" />
+				<form:input path="salMatchStatement" cssClass="txt" readonly="false" />
 			</td>			
 		</tr>	
 		</c:if>		
 		<tr>
-			<th>PRO_ORDER_CODE</th>
+			<th>SAL_MATCH_INOUT</th>
 			<td>
-				<form:input path="proOrderCode" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderCode" />
+				<form:input path="salMatchInout" cssClass="txt"/>
+				&nbsp;<form:errors path="salMatchInout" />
 			</td>
 		</tr>	
 		<tr>
-			<th>PRO_PLAN_DETAIL_CODE</th>
+			<th>SAL_MATCH_DATE</th>
 			<td>
-				<form:input path="proPlanDetailCode" cssClass="txt"/>
-				&nbsp;<form:errors path="proPlanDetailCode" />
+				<form:input path="salMatchDate" cssClass="txt"/>
+				&nbsp;<form:errors path="salMatchDate" />
 			</td>
 		</tr>	
 		<tr>
-			<th>ERP_PRODUCT_DEADLINE</th>
+			<th>SAL_MATCH_QTY</th>
 			<td>
-				<form:input path="erpProductDeadline" cssClass="txt"/>
-				&nbsp;<form:errors path="erpProductDeadline" />
+				<form:input path="salMatchQty" cssClass="txt"/>
+				&nbsp;<form:errors path="salMatchQty" />
 			</td>
 		</tr>	
 		<tr>
-			<th>PRO_ORDER_DATE</th>
+			<th>COM_PRODUCT_CODE</th>
 			<td>
-				<form:input path="proOrderDate" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderDate" />
+				<form:input path="comProductCode" cssClass="txt"/>
+				&nbsp;<form:errors path="comProductCode" />
 			</td>
 		</tr>	
 		<tr>
-			<th>ERP_CUSTOMER_CODE</th>
+			<th>PRO_PROCESS_LOT_NO</th>
 			<td>
-				<form:input path="erpCustomerCode" cssClass="txt"/>
-				&nbsp;<form:errors path="erpCustomerCode" />
-			</td>
-		</tr>	
-		<tr>
-			<th>PRO_ORDER_EXPECT_QTY</th>
-			<td>
-				<form:input path="proOrderExpectQty" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderExpectQty" />
-			</td>
-		</tr>	
-		<tr>
-			<th>PRO_ORDER_DAY_QTY</th>
-			<td>
-				<form:input path="proOrderDayQty" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderDayQty" />
-			</td>
-		</tr>	
-		<tr>
-			<th>PRO_ORDER_SEQ</th>
-			<td>
-				<form:input path="proOrderSeq" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderSeq" />
-			</td>
-		</tr>	
-		<tr>
-			<th>PRO_ORDER_ORDER_QTY</th>
-			<td>
-				<form:input path="proOrderOrderQty" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderOrderQty" />
-			</td>
-		</tr>	
-		<tr>
-			<th>PRO_ORDER_QTY</th>
-			<td>
-				<form:input path="proOrderQty" cssClass="txt"/>
-				&nbsp;<form:errors path="proOrderQty" />
+				<form:input path="proProcessLotNo" cssClass="txt"/>
+				&nbsp;<form:errors path="proProcessLotNo" />
 			</td>
 		</tr>	
 	</table>

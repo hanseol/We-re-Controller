@@ -68,7 +68,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateBoard(BoardVO vo) throws Exception {
+    public void updateBoard(LinkedHashMap vo) throws Exception {
         boardDAO.updateBoard(vo);
     }
 
@@ -78,7 +78,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteBoard(BoardVO vo) throws Exception {
+    public void deleteBoard(LinkedHashMap vo) throws Exception {
         boardDAO.deleteBoard(vo);
     }
 

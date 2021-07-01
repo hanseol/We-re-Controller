@@ -1,5 +1,9 @@
 package mes.mat.match.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import mes.main.service.SearchVO;
+
 /**
  * @Class Name : MatMatchVO.java
  * @Description : MatMatch VO class
@@ -12,7 +16,7 @@ package mes.mat.match.service;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class MatMatchVO extends MatMatchDefaultVO{
+public class MatMatchVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** MAT_MATCH_STATEMENT */
@@ -31,7 +35,8 @@ public class MatMatchVO extends MatMatchDefaultVO{
     private java.math.BigDecimal matMatchQty;
     
     /** MAT_MATCH_DATE */
-    private java.sql.Date matMatchDate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String matMatchDate;
     
     public java.lang.String getMatMatchStatement() {
         return this.matMatchStatement;
@@ -73,11 +78,11 @@ public class MatMatchVO extends MatMatchDefaultVO{
         this.matMatchQty = matMatchQty;
     }
     
-    public java.sql.Date getMatMatchDate() {
+    public java.lang.String getMatMatchDate() {
         return this.matMatchDate;
     }
     
-    public void setMatMatchDate(java.sql.Date matMatchDate) {
+    public void setMatMatchDate(java.lang.String matMatchDate) {
         this.matMatchDate = matMatchDate;
     }
     

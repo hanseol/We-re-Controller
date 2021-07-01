@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import mes.sal.inout.service.SalInoutDefaultVO;
 import mes.sal.inout.service.SalInoutService;
 import mes.sal.inout.service.SalInoutVO;
 import mes.sal.inout.service.impl.SalInoutMapper;
@@ -103,7 +102,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return SAL_INOUT 목록
 	 * @exception Exception
 	 */
-    public List<?> selectSalInoutList(SalInoutDefaultVO searchVO) throws Exception {
+    public List<?> selectSalInoutList(SalInoutVO searchVO) throws Exception {
         return salInoutDAO.selectSalInoutList(searchVO);
     }
 
@@ -113,8 +112,16 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return SAL_INOUT 총 갯수
 	 * @exception
 	 */
-    public int selectSalInoutListTotCnt(SalInoutDefaultVO searchVO) {
-		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
+    
+    //입출고목록 조회
+	public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.selectSalProductInoutList(searchVO);
 	}
     
+    
+    public int selectSalInoutListTotCnt(SalInoutVO searchVO) {
+		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
+	}
+
+	
 }

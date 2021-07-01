@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.mat.matr.service.impl.MaterialMapper">
+	
+	<!-- 자재재고조회페이지 전체 리스트 출력 -->
+	<select id="selectMatList" parameterType="mes.mat.order.service.MaterialOrderVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   c.com_material_code,
+		                                       c.com_material_name,
+		                                       c.com_material_safety_stock,
+		                                       <!--이월량 계산-->
+		                                       m.mat_inout_quantity,
+		                                       m.mat_inout_quantity
+		                                       <!--현재고 계산-->
+		                                       <!--미달량 계산-->
+		                              FROM     com_material c,
+		                                       mat_inout m
+		                              WHERE    c.com_material_code = m.com_material_code
+		                              <if test="searchKeyword != null and searchKeyword != ''">
+		                              	<if test="searchCondition == 0"> AND
+		                                    com_material_code = #{searchKeyword}
+		                              	</if>
+		                              	<if test="searchCondition == 1"> AND
+		                                    com_material_code LIKE '%'
+		                                                || #{searchKeyword}
+		                                                || '%'
+		                              	</if>
+		                              </if>
+		                              ORDER BY erp_material_order_code DESC
+		                              <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 행 카운트 -->
+	<select id="selectComMaterialListTotCnt" parameterType="mes.mat.matr.service.MaterialVO" resultType="int">
+		SELECT	Count(*) totcnt
+		FROM    com_material c,
+		        mat_inout m
+		WHERE   c.com_material_code = m.com_material_code
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0"> AND
+			    com_material_code = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1"> AND
+			    com_material_name LIKE '%'
+		              || #{searchKeyword}
+		              || '%'
+			</if>
+		</if>
+	</select>
+</mapper>

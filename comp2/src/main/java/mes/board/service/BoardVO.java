@@ -1,7 +1,12 @@
 package mes.board.service;
 
+import java.util.Date;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import mes.main.service.SearchVO;
 //test
 /**
@@ -16,6 +21,9 @@ import mes.main.service.SearchVO;
  *  
  *  Copyright (C)  All right reserved.
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
 public class BoardVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -29,39 +37,7 @@ public class BoardVO extends SearchVO{
     private java.lang.String content;
     
     /** WDATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
-    private java.lang.String wdate;
-    
-    public java.math.BigDecimal getNo() {
-        return this.no;
-    }
-    
-    public void setNo(java.math.BigDecimal no) {
-        this.no = no;
-    }
-    
-    public java.lang.String getTitle() {
-        return this.title;
-    }
-    
-    public void setTitle(java.lang.String title) {
-        this.title = title;
-    }
-    
-    public java.lang.String getContent() {
-        return this.content;
-    }
-    
-    public void setContent(java.lang.String content) {
-        this.content = content;
-    }
-    
-    public java.lang.String getWdate() {
-        return this.wdate;
-    }
-    
-    public void setWdate(java.lang.String wdate) {
-        this.wdate = wdate;
-    }
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:mm:SS")
+    private Date wdate;
     
 }

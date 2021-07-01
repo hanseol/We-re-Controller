@@ -3,7 +3,6 @@ package mes.sal.inout.service.impl;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import mes.sal.inout.service.SalInoutDefaultVO;
 import mes.sal.inout.service.SalInoutVO;
 
 /**
@@ -60,7 +59,7 @@ public interface SalInoutMapper {
 	 * @return SAL_INOUT 목록
 	 * @exception Exception
 	 */
-    public List<?> selectSalInoutList(SalInoutDefaultVO searchVO) throws Exception;
+    public List<?> selectSalInoutList(SalInoutVO searchVO) throws Exception;
 
     /**
 	 * SAL_INOUT 총 갯수를 조회한다.
@@ -68,6 +67,7 @@ public interface SalInoutMapper {
 	 * @return SAL_INOUT 총 갯수
 	 * @exception
 	 */
-    public int selectSalInoutListTotCnt(SalInoutDefaultVO searchVO);
+    public int selectSalInoutListTotCnt(SalInoutVO searchVO);
 
+    public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
 }

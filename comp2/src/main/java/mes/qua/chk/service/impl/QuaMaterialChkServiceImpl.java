@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import mes.qua.chk.service.QuaMaterialChkDefaultVO;
 import mes.qua.chk.service.QuaMaterialChkService;
 import mes.qua.chk.service.QuaMaterialChkVO;
 /**
@@ -100,8 +99,8 @@ public class QuaMaterialChkServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return QUA_MATERIAL_CHK 목록
 	 * @exception Exception
 	 */
-    public List<?> selectQuaMaterialChkList(QuaMaterialChkDefaultVO searchVO) throws Exception {
-        return quaMaterialChkDAO.selectQuaMaterialChkList(searchVO);
+    public List<?> selectQuaMaterialChkList(QuaMaterialChkVO searchVO) throws Exception {
+        return quaMaterialChkDAO.selectQuaMatrChkList(searchVO);
     }
 
     /**
@@ -110,7 +109,7 @@ public class QuaMaterialChkServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return QUA_MATERIAL_CHK 총 갯수
 	 * @exception
 	 */
-    public int selectQuaMaterialChkListTotCnt(QuaMaterialChkDefaultVO searchVO) {
+    public int selectQuaMaterialChkListTotCnt(QuaMaterialChkVO searchVO) {
 		return quaMaterialChkDAO.selectQuaMaterialChkListTotCnt(searchVO);
 	}
     

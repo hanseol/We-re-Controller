@@ -1,5 +1,9 @@
 package mes.sal.inout.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import mes.main.service.SearchVO;
+
 /**
  * @Class Name : SalInoutVO.java
  * @Description : SalInout VO class
@@ -13,7 +17,7 @@ package mes.sal.inout.service;
  *  Copyright (C)  All right reserved.
  */
 
-public class SalInoutVO extends SalInoutDefaultVO{
+public class SalInoutVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** SAL_INOUT_STATEMENT */
@@ -23,7 +27,8 @@ public class SalInoutVO extends SalInoutDefaultVO{
     private java.lang.String comProductCode;
     
     /** SAL_INOUT_DATE */
-    private java.sql.Date salInoutDate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String salInoutDate;
     
     /** SAL_INOUT_QUANTITY */
     private java.math.BigDecimal salInoutQuantity;
@@ -37,7 +42,18 @@ public class SalInoutVO extends SalInoutDefaultVO{
     /** PRO_PROCESS_LOT_NO */
     private java.lang.String proProcessLotNo;
     
-    public java.lang.String getSalInoutStatement() {
+    //제품명
+    private java.lang.String comProductName;
+    
+    public java.lang.String getComProductName() {
+		return comProductName;
+	}
+
+	public void setComProductName(java.lang.String comProductName) {
+		this.comProductName = comProductName;
+	}
+
+	public java.lang.String getSalInoutStatement() {
         return this.salInoutStatement;
     }
     
@@ -53,11 +69,11 @@ public class SalInoutVO extends SalInoutDefaultVO{
         this.comProductCode = comProductCode;
     }
     
-    public java.sql.Date getSalInoutDate() {
+    public java.lang.String getSalInoutDate() {
         return this.salInoutDate;
     }
     
-    public void setSalInoutDate(java.sql.Date salInoutDate) {
+    public void setSalInoutDate(java.lang.String salInoutDate) {
         this.salInoutDate = salInoutDate;
     }
     

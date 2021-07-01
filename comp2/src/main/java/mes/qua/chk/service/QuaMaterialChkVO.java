@@ -1,5 +1,9 @@
 package mes.qua.chk.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import mes.main.service.SearchVO;
+
 /**
  * @Class Name : QuaMaterialChkVO.java
  * @Description : QuaMaterialChk VO class
@@ -12,14 +16,15 @@ package mes.qua.chk.service;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class QuaMaterialChkVO extends QuaMaterialChkDefaultVO{
+public class QuaMaterialChkVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** QUA_MATERIAL_STATEMENT */
     private java.lang.String quaMaterialStatement;
     
     /** QUA_MATERIAL_DATE */
-    private java.sql.Date quaMaterialDate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String quaMaterialDate;
     
     /** ERP_VENDOR_CODE */
     private java.lang.String erpVendorCode;
@@ -37,7 +42,8 @@ public class QuaMaterialChkVO extends QuaMaterialChkDefaultVO{
     private java.math.BigDecimal quaMaterialFQty;
     
     /** QUA_MATERIAL_CHK_DATE */
-    private java.sql.Date quaMaterialChkDate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String quaMaterialChkDate;
     
     /** ERP_MATERIAL_ORDER_CODE */
     private java.lang.String erpMaterialOrderCode;
@@ -50,11 +56,11 @@ public class QuaMaterialChkVO extends QuaMaterialChkDefaultVO{
         this.quaMaterialStatement = quaMaterialStatement;
     }
     
-    public java.sql.Date getQuaMaterialDate() {
+    public java.lang.String getQuaMaterialDate() {
         return this.quaMaterialDate;
     }
     
-    public void setQuaMaterialDate(java.sql.Date quaMaterialDate) {
+    public void setQuaMaterialDate(java.lang.String quaMaterialDate) {
         this.quaMaterialDate = quaMaterialDate;
     }
     
@@ -98,11 +104,11 @@ public class QuaMaterialChkVO extends QuaMaterialChkDefaultVO{
         this.quaMaterialFQty = quaMaterialFQty;
     }
     
-    public java.sql.Date getQuaMaterialChkDate() {
+    public java.lang.String getQuaMaterialChkDate() {
         return this.quaMaterialChkDate;
     }
     
-    public void setQuaMaterialChkDate(java.sql.Date quaMaterialChkDate) {
+    public void setQuaMaterialChkDate(java.lang.String quaMaterialChkDate) {
         this.quaMaterialChkDate = quaMaterialChkDate;
     }
     

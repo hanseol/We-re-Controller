@@ -2,10 +2,8 @@ package mes.mat.inout.service.impl;
 
 import java.util.List;
 
-import mes.mat.inout.service.MatInoutVO;
-import mes.mat.inout.service.MatInoutDefaultVO;
-
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import mes.mat.inout.service.MatInoutVO;
 
 /**
  * @Class Name : MatInoutMapper.java
@@ -61,17 +59,16 @@ public interface MatInoutMapper {
 	 * @return MAT_INOUT 목록
 	 * @exception Exception
 	 */
-    public List<?> selectMatInoutList(MatInoutDefaultVO searchVO) throws Exception;
-
     /**
 	 * MAT_INOUT 총 갯수를 조회한다.
 	 * @param searchMap - 조회할 정보가 담긴 Map
 	 * @return MAT_INOUT 총 갯수
 	 * @exception
 	 */
-    public int selectMatInoutListTotCnt(MatInoutDefaultVO searchVO);
+    
+    public int selectMatInoutListTotCnt(MatInoutVO searchVO);
     
     //입출고조회페이지 리스트 조회
-    public List<?> selectInoutList(MatInoutDefaultVO searchVO) throws Exception;
-    
+    public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;
+
 }

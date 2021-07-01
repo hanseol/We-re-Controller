@@ -1,8 +1,6 @@
 package mes.qua.chk.service;
 
 import java.util.List;
-import mes.qua.chk.service.QuaMaterialChkDefaultVO;
-import mes.qua.chk.service.QuaMaterialChkVO;
 
 /**
  * @Class Name : QuaMaterialChkService.java
@@ -56,7 +54,7 @@ public interface QuaMaterialChkService {
 	 * @return QUA_MATERIAL_CHK 목록
 	 * @exception Exception
 	 */
-    List selectQuaMaterialChkList(QuaMaterialChkDefaultVO searchVO) throws Exception;
+    List selectQuaMaterialChkList(QuaMaterialChkVO searchVO) throws Exception;
     
     /**
 	 * QUA_MATERIAL_CHK 총 갯수를 조회한다.
@@ -64,6 +62,6 @@ public interface QuaMaterialChkService {
 	 * @return QUA_MATERIAL_CHK 총 갯수
 	 * @exception
 	 */
-    int selectQuaMaterialChkListTotCnt(QuaMaterialChkDefaultVO searchVO);
+    int selectQuaMaterialChkListTotCnt(QuaMaterialChkVO searchVO);
     
 }

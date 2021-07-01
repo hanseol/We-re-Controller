@@ -2,176 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mes.mat.inout.service.impl.MatInoutMapper">
-
-
-	<resultMap id="erpMaterialOrder" type="mes.mat.order.service.ErpMaterialOrderVO">
-		<result property="erpMaterialOrderCode"	column="ERP_MATERIAL_ORDER_CODE" />
-		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
-		<result property="erpMaterialOrderQty" column="ERP_MATERIAL_ORDER_QTY" />
-		<result property="erpVendorCode" column="ERP_VENDOR_CODE" />
-		<result property="erpMaterialUnitPrice"	column="ERP_MATERIAL_UNIT_PRICE" />
-		<result property="erpMaterialOrderDate" column="ERP_MATERIAL_ORDER_DATE" />
-		<result property="erpMaterialRequestDate" column="ERP_MATERIAL_REQUEST_DATE" />
-	</resultMap>
-	<resultMap id="matInout" type="mes.mat.inout.service.MatInoutVO">
-		<result property="matInoutStatement" column="MAT_INOUT_STATEMENT" />
-		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
-		<result property="matInoutDate" column="MAT_INOUT_DATE" />
-		<result property="matInoutGubun" column="MAT_INOUT_GUBUN" />
-		<result property="matInoutQuantity" column="MAT_INOUT_QUANTITY" />
-		<result property="matLotNo" column="MAT_LOT_NO" />
-		<result property="comProcessCode" column="COM_PROCESS_CODE" />
-		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
-		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
-	</resultMap>
-	<resultMap id="comMaterial"
-		type="mes.mat.matr.service.ComMaterialVO">
-		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
-		<result property="comMaterialName" column="COM_MATERIAL_NAME" />
-		<result property="comMaterialBarcode" column="COM_MATERIAL_BARCODE" />
-		<result property="comMaterialSize" column="COM_MATERIAL_SIZE" />
-		<result property="comMaterialUnit" column="COM_MATERIAL_UNIT" />
-		<result property="comMaterialVendorCode" column="COM_MATERIAL_VENDOR_CODE" />
-		<result property="comMaterialSafetyStock" column="COM_MATERIAL_SAFETY_STOCK" />
-		<result property="comMaterialMin" column="COM_MATERIAL_MIN" />
-		<result property="comMaterialMax" column="COM_MATERIAL_MAX" />
-	</resultMap>
-	<resultMap type="mes.main.map.ResultMapVO" id="resultMaps">
-		<collection property="orderVO" resultMap="erpMaterialOrder" />
-		<collection property="matInoutVO" resultMap="matInout" />
-		<collection property="matrVO" resultMap="comMaterial" />
-	</resultMap>
-
-	<insert id="insertMatInout">
-		<![CDATA[
-			INSERT INTO MAT_INOUT 
-				( MAT_INOUT_STATEMENT
-				  , COM_MATERIAL_CODE
-				  , MAT_INOUT_DATE
-				  , MAT_INOUT_GUBUN
-				  , MAT_INOUT_QUANTITY
-				  , MAT_LOT_NO
-				  , COM_PROCESS_CODE
-				  , MAT_INOUT_UNIT_PRICE
-				  , MAT_INOUT_PRICE )
-			VALUES ( #{matInoutStatement}
-				  , #{comMaterialCode}
-				  , #{matInoutDate}
-				  , #{matInoutGubun}
-				  , #{matInoutQuantity}
-				  , #{matLotNo}
-				  , #{comProcessCode}
-				  , #{matInoutUnitPrice}
-				  , #{matInoutPrice} )
+	
+	<!-- 자재입출고조회페이지 전체조회 -->
+	<select id="selectMatInoutList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   c.com_material_code,
+		                                       c.com_material_name,
+		                                       c.com_material_size,
+		                                       c.com_material_unit,
+		                                       e.erp_material_order_code,
+		                                       m.mat_inout_quantity,
+		                                       m.mat_inout_unit_price,
+		                                       m.mat_inout_price,
+		                                       m.mat_lot_no <!--현재고는 계산(if) -->
+		                              FROM     erp_material_order e,
+		                                       com_material c,
+		                                       mat_inout m
+		                              WHERE    e.com_material_code = c.com_material_code
+		                              AND      c.com_material_code = m.com_material_code
+		                              <if test="searchKeyword != null and searchKeyword != ''">
+		                              	<if test="searchCondition == 0"> AND
+		                              	      mat_inout_statement = #{searchKeyword}
+		                              	</if>
+		                              <if test="searchCondition == 1"> AND
+		                                    com_material_code LIKE '%'
+		                                                || #{searchKeyword}
+		                                                || '%'
+		                                </if>
+		                              </if>
+		                              ORDER BY mat_inout_statement DESC
+		                              <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum > #{firstIndex}
 		]]>
-	</insert>
-
-	<update id="updateMatInout">
-		<![CDATA[
-			UPDATE MAT_INOUT
-			SET MAT_INOUT_STATEMENT=#{matInoutStatement}
-				, COM_MATERIAL_CODE=#{comMaterialCode}
-				, MAT_INOUT_DATE=#{matInoutDate}
-				, MAT_INOUT_GUBUN=#{matInoutGubun}
-				, MAT_INOUT_QUANTITY=#{matInoutQuantity}
-				, MAT_LOT_NO=#{matLotNo}
-				, COM_PROCESS_CODE=#{comProcessCode}
-				, MAT_INOUT_UNIT_PRICE=#{matInoutUnitPrice}
-				, MAT_INOUT_PRICE=#{matInoutPrice}
-						WHERE MAT_INOUT_STATEMENT=#{matInoutStatement}
-				]]>
-	</update>
-
-	<delete id="deleteMatInout">
-		<![CDATA[
-			DELETE FROM MAT_INOUT 
-						WHERE MAT_INOUT_STATEMENT=#{matInoutStatement}
-				]]>
-	</delete>
-
-	<select id="selectMatInout" resultMap="matInout">
-		<![CDATA[
-			SELECT
-				MAT_INOUT_STATEMENT
-				, COM_MATERIAL_CODE
-				, MAT_INOUT_DATE
-				, MAT_INOUT_GUBUN
-				, MAT_INOUT_QUANTITY
-				, MAT_LOT_NO
-				, COM_PROCESS_CODE
-				, MAT_INOUT_UNIT_PRICE
-				, MAT_INOUT_PRICE
-			FROM MAT_INOUT
-						WHERE MAT_INOUT_STATEMENT=#{matInoutStatement}
-				]]>
 	</select>
 
-	<select id="selectMatInoutList"
-		parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
-		SELECT * FROM (
-		SELECT A.*, ROWNUM RNUM FROM (
-		SELECT
-		MAT_INOUT_STATEMENT
-		, COM_MATERIAL_CODE
-		, MAT_INOUT_DATE
-		,
-		MAT_INOUT_GUBUN
-		, MAT_INOUT_QUANTITY
-		, MAT_LOT_NO
-		, COM_PROCESS_CODE
-		,
-		MAT_INOUT_UNIT_PRICE
-		, MAT_INOUT_PRICE
-		FROM MAT_INOUT
-		WHERE 1=1
+	<!-- 행 카운트 -->
+	<select id="selectMatInoutListTotCnt" parameterType="mes.mat.inout.service.MatInoutVO" resultType="int">
+		SELECT Count(*) totcnt
+		FROM   erp_material_order e,
+		       com_material c,
+		       mat_inout m
+		WHERE  e.com_material_code = c.com_material_code
+		AND    c.com_material_code = m.com_material_code
 		<if test="searchKeyword != null and searchKeyword != ''">
 			<if test="searchCondition == 0">AND
-				MAT_INOUT_STATEMENT = #{searchKeyword}
+			    mat_inout_statement = #{searchKeyword}
 			</if>
 			<if test="searchCondition == 1">AND
-				COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
-			</if>
-		</if>
-		ORDER BY
-		MAT_INOUT_STATEMENT DESC
-		
-		<![CDATA[					
-	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM > #{firstIndex}
-]]>
-	</select>
-	<select id="selectMatInoutListTotCnt"
-		parameterType="mes.mat.inout.service.MatInoutVO" resultType="int">
-		SELECT COUNT(*) totcnt
-		FROM MAT_INOUT
-		WHERE 1=1
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0">AND
-				MAT_INOUT_STATEMENT = #{searchKeyword}
-			</if>
-			<if test="searchCondition == 1">AND
-				COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
+		    	com_material_code LIKE '%'
+		              || #{searchKeyword}
+		              || '%'
 			</if>
 		</if>
 	</select>
-	<!-- 입출고조회페이지 전체조회 쿼리 -->
-	<select id="selectInoutList" resultMap="resultMaps">
-		SELECT c.com_material_code,
-		c.com_material_name,
-		c.com_material_size,
-		c.com_material_unit,
-		e.erp_material_order_code,
-		m.mat_inout_quantity,
-		m.mat_inout_unit_price,
-		m.mat_inout_price,
-		m.mat_lot_no
-		<!--현재고는 계산(if) -->
-		FROM erp_material_order e,
-		com_material c,
-		mat_inout m
-		WHERE e.com_material_code = c.com_material_code
-		AND
-		c.com_material_code = m.com_material_code
-	</select>
-
 </mapper>

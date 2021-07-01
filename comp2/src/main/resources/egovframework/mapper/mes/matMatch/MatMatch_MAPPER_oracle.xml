@@ -2,97 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mes.mat.match.service.impl.MatMatchMapper">
+
 	
 
-	<resultMap id="matMatch" type="mes.mat.match.service.MatMatchVO">
-		<result property="matMatchStatement" column="MAT_MATCH_STATEMENT" />
-		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
-		<result property="matLotNo" column="MAT_LOT_NO" />
-		<result property="matMatchInout" column="MAT_MATCH_INOUT" />
-		<result property="matMatchQty" column="MAT_MATCH_QTY" />
-		<result property="matMatchDate" column="MAT_MATCH_DATE" />
-	</resultMap>
-	
-	<insert id="insertMatMatch">
-		<![CDATA[
-			INSERT INTO MAT_MATCH 
-				( MAT_MATCH_STATEMENT
-				  , COM_MATERIAL_CODE
-				  , MAT_LOT_NO
-				  , MAT_MATCH_INOUT
-				  , MAT_MATCH_QTY
-				  , MAT_MATCH_DATE )
-			VALUES ( #{matMatchStatement}
-				  , #{comMaterialCode}
-				  , #{matLotNo}
-				  , #{matMatchInout}
-				  , #{matMatchQty}
-				  , #{matMatchDate} )
+	<select id="selectMatMatchList" parameterType="mes.mat.match.service.MatMatchVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   mat_match_statement ,
+		                                       com_material_code ,
+		                                       mat_lot_no ,
+		                                       mat_match_inout ,
+		                                       mat_match_qty ,
+		                                       TO_CHAR(mat_match_date,'YYYY/MM/DD') mat_match_date
+		                              FROM     mat_match
+		                              WHERE    1=1 <if test="searchKeyword != null and searchKeyword != ''"> <if test="searchCondition == 0">
+		                              AND      mat_match_statement = #{searchKeyword} </if> <if test="searchCondition == 1">
+		                              AND      com_material_code LIKE '%'
+		                                                || #{searchKeyword}
+		                                                || '%' </if> </if>
+		                              ORDER BY mat_match_statement DESC
+		                              <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum > #{firstIndex}
 		]]>
-	</insert>
-	
-	<update id="updateMatMatch">
-		<![CDATA[
-			UPDATE MAT_MATCH
-			SET MAT_MATCH_STATEMENT=#{matMatchStatement}
-				, COM_MATERIAL_CODE=#{comMaterialCode}
-				, MAT_LOT_NO=#{matLotNo}
-				, MAT_MATCH_INOUT=#{matMatchInout}
-				, MAT_MATCH_QTY=#{matMatchQty}
-				, MAT_MATCH_DATE=#{matMatchDate}
-						WHERE MAT_MATCH_STATEMENT=#{matMatchStatement}
-				]]>
-	</update>
-	
-	<delete id="deleteMatMatch">
-		<![CDATA[
-			DELETE FROM MAT_MATCH 
-						WHERE MAT_MATCH_STATEMENT=#{matMatchStatement}
-				]]>
-	</delete>
-	
-	<select id="selectMatMatch" resultMap="matMatch">
-		<![CDATA[
-			SELECT
-				MAT_MATCH_STATEMENT
-				, COM_MATERIAL_CODE
-				, MAT_LOT_NO
-				, MAT_MATCH_INOUT
-				, MAT_MATCH_QTY
-				, MAT_MATCH_DATE
-			FROM MAT_MATCH
-						WHERE MAT_MATCH_STATEMENT=#{matMatchStatement}
-				]]>
 	</select>
 	
-	<select id="selectMatMatchList" parameterType="mes.mat.match.service.MatMatchVO" resultType="egovMap">
-SELECT * FROM (
-	SELECT A.*, ROWNUM RNUM FROM (
-				SELECT
-								MAT_MATCH_STATEMENT
-								, COM_MATERIAL_CODE
-								, MAT_LOT_NO
-								, MAT_MATCH_INOUT
-								, MAT_MATCH_QTY
-								, MAT_MATCH_DATE
-						FROM MAT_MATCH
-				WHERE 1=1
-				<if test="searchKeyword != null and searchKeyword != ''">
-					<if test="searchCondition == 0">AND
-						MAT_MATCH_STATEMENT = #{searchKeyword}
-					</if>
-					<if test="searchCondition == 1">AND
-						COM_MATERIAL_CODE LIKE '%' || #{searchKeyword} || '%'
-					</if>
-				</if>
-					ORDER BY 
-						MAT_MATCH_STATEMENT DESC
-		
-		<![CDATA[					
-	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM > #{firstIndex}
-]]>
-	</select>	
 	<select id="selectMatMatchListTotCnt" parameterType="mes.mat.match.service.MatMatchVO" resultType="int">
 			SELECT COUNT(*) totcnt
 			FROM MAT_MATCH

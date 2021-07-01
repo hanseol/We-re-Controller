@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.sal.match.service.impl.SalMatchMapper">
+	
+
+	<resultMap id="salMatch" type="mes.sal.match.service.SalMatchVO">
+		<result property="salMatchStatement" column="SAL_MATCH_STATEMENT" />
+		<result property="salMatchInout" column="SAL_MATCH_INOUT" />
+		<result property="salMatchDate" column="SAL_MATCH_DATE" />
+		<result property="salMatchQty" column="SAL_MATCH_QTY" />
+		<result property="comProductCode" column="COM_PRODUCT_CODE" />
+		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
+	</resultMap>
+	
+	<!-- 한 건 조회 -->
+	<select id="selectSalMatch" resultMap="salMatch">
+		<![CDATA[  
+			SELECT
+				SAL_MATCH_STATEMENT
+				, SAL_MATCH_INOUT
+				, SAL_MATCH_DATE
+				, SAL_MATCH_QTY
+				, COM_PRODUCT_CODE
+				, PRO_PROCESS_LOT_NO
+			FROM SAL_MATCH
+						WHERE SAL_MATCH_STATEMENT=#{salMatchStatement}
+				]]>
+	</select>
+	
+	<!-- 정산입출고 조회 -->
+	<select id="selectSalMatchList"
+		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+		SELECT
+		SAL_MATCH_STATEMENT
+		, COM_PRODUCT_CODE
+		, SAL_MATCH_INOUT
+		, SAL_MATCH_QTY
+		, SAL_MATCH_DATE
+		, COM_PRODUCT_CODE
+		, PRO_PROCESS_LOT_NO
+		FROM SAL_MATCH
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				SAL_MATCH_DATE = #{SAL_MATCH_DATE}
+			</if>
+			<if test="searchCondition == 1">AND
+				SAL_MATCH_INOUT = #{SAL_MATCH_INOUT}
+			</if>
+			<if test="searchCondition == 2">AND
+				COM_PRODUCT_CODE LIKE '%v' || #{searchKeyword} || '%'
+			</if>
+		</if>
+		ORDER BY
+		SAL_MATCH_STATEMENT DESC	
+				<![CDATA[						
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 정산입출고 삽입 -->
+	<insert id="insertSalMatch"
+		parameterType="mes.sal.match.service.SalMatchVO">
+		INSERT INTO SAL_MATCH
+		VALUES (#{SAL_MATCH_STATEMENT}
+		, #{SAL_MATCH_INOUT}
+		, #{SAL_MATCH_DATE}
+		, #{SAL_MATCH_QTY}
+		, #{COM_PRODUCT_CODE}
+		, #{PRO_PROCESS_LOT_NO});
+	</insert>
+	
+	<!-- 정산입출고목록 수정 -->
+	<update id="updateSalMatch" parameterType="mes.sal.match.service.SalMatchVO">
+		UPDATE SAL_MATCH SET
+		SAL_MATCH_STATEMENT = #{SAL_MATCH_STATEMENT}
+		, SAL_MATCH_INOUT = #{SAL_MATCH_INOUT}
+		, COM_PRODUCT_CODE = #{COM_PRODUCT_CODE}
+		, SAL_INOUT_DATE = #{SAL_INOUT_DATE}
+		, SAL_INOUT_QUANTITY = #{SAL_INOUT_QUANTITY}
+		, SAL_INOUT_CODE = #{SAL_INOUT_CODE}
+		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+	</update>
+	
+	<!-- 정산입출고목록 삭제 -->
+	<delete id="deleteSalMatch" parameterType="mes.sal.match.service.SalMatchVO">
+		DELETE FROM SAL_MATCH
+		WHERE SAL_MATCH_STATEMENT=#{SAL_INOUT_STATEMENT}
+	</delete>
+	
+	<select id="selectSalMatchListTotCnt" parameterType="mes.sal.match.service.SalMatchVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM SAL_MATCH
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					SAL_MATCH_STATEMENT = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					SAL_MATCH_INOUT LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>

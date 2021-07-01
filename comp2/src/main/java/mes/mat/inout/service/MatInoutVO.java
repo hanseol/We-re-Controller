@@ -1,5 +1,9 @@
 package mes.mat.inout.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import mes.main.service.SearchVO;
+
 /**
  * @Class Name : MatInoutVO.java
  * @Description : MatInout VO class
@@ -12,7 +16,7 @@ package mes.mat.inout.service;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class MatInoutVO extends MatInoutDefaultVO{
+public class MatInoutVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** MAT_INOUT_STATEMENT */
@@ -22,7 +26,8 @@ public class MatInoutVO extends MatInoutDefaultVO{
     private java.lang.String comMaterialCode;
     
     /** MAT_INOUT_DATE */
-    private java.sql.Date matInoutDate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
+    private java.lang.String matInoutDate;
     
     /** MAT_INOUT_GUBUN */
     private java.lang.String matInoutGubun;
@@ -58,11 +63,11 @@ public class MatInoutVO extends MatInoutDefaultVO{
         this.comMaterialCode = comMaterialCode;
     }
     
-    public java.sql.Date getMatInoutDate() {
+    public java.lang.String getMatInoutDate() {
         return this.matInoutDate;
     }
     
-    public void setMatInoutDate(java.sql.Date matInoutDate) {
+    public void setMatInoutDate(java.lang.String matInoutDate) {
         this.matInoutDate = matInoutDate;
     }
     

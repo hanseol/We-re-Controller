@@ -2,10 +2,8 @@ package mes.qua.chk.service.impl;
 
 import java.util.List;
 
-import mes.qua.chk.service.QuaMaterialChkVO;
-import mes.qua.chk.service.QuaMaterialChkDefaultVO;
-
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import mes.qua.chk.service.QuaMaterialChkVO;
 
 /**
  * @Class Name : QuaMaterialChkMapper.java
@@ -61,7 +59,7 @@ public interface QuaMaterialChkMapper {
 	 * @return QUA_MATERIAL_CHK 목록
 	 * @exception Exception
 	 */
-    public List<?> selectQuaMaterialChkList(QuaMaterialChkDefaultVO searchVO) throws Exception;
+    public List<?> selectQuaMatrChkList(QuaMaterialChkVO searchVO) throws Exception;
 
     /**
 	 * QUA_MATERIAL_CHK 총 갯수를 조회한다.
@@ -69,6 +67,6 @@ public interface QuaMaterialChkMapper {
 	 * @return QUA_MATERIAL_CHK 총 갯수
 	 * @exception
 	 */
-    public int selectQuaMaterialChkListTotCnt(QuaMaterialChkDefaultVO searchVO);
-
+    public int selectQuaMaterialChkListTotCnt(QuaMaterialChkVO searchVO);
+    
 }

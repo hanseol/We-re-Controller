@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mes.mat.lot.service.impl.MatLotMapper">
-	<resultMap id="erpMaterialOrder" type="mes.mat.order.service.ErpMaterialOrderVO">
+	<resultMap id="erpMaterialOrder" type="mes.mat.order.service.MaterialOrderVO">
 		<result property="erpMaterialOrderCode"	column="ERP_MATERIAL_ORDER_CODE" />
 		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
 		<result property="erpMaterialOrderQty" column="ERP_MATERIAL_ORDER_QTY" />
@@ -21,7 +21,7 @@
 		<result property="matInoutUnitPrice" column="MAT_INOUT_UNIT_PRICE" />
 		<result property="matInoutPrice" column="MAT_INOUT_PRICE" />
 	</resultMap>
-	<resultMap id="comMaterial"	type="mes.mat.matr.service.ComMaterialVO">
+	<resultMap id="comMaterial"	type="mes.mat.matr.service.MaterialVO">
 		<result property="comMaterialCode" column="COM_MATERIAL_CODE" />
 		<result property="comMaterialName" column="COM_MATERIAL_NAME" />
 		<result property="comMaterialBarcode" column="COM_MATERIAL_BARCODE" />
@@ -37,14 +37,54 @@
 		<collection property="matInoutVO" resultMap="matInout" />
 		<collection property="matrVO" resultMap="comMaterial" />
 	</resultMap>
+	<!-- 자재LOT 조회페이지 전체 조회 -->
 	<select id="selectMatLotList" resultMap="resultMaps">
-		SELECT  c.com_material_code,
-        		c.com_material_name,
-        		c.com_material_size,
-        		m.mat_lot_no,
-        		m.mat_inout_quantity
-		FROM    com_material c,
-        		mat_inout m
-		WHERE   c.com_material_code = m.com_material_code
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   c.com_material_code,
+		                                       c.com_material_name,
+		                                       c.com_material_size,
+		                                       m.mat_lot_no,
+		                                       m.mat_inout_quantity
+		                              FROM     com_material c,
+		                                       mat_inout m
+		                              WHERE    c.com_material_code = m.com_material_code
+		                              <if test="searchKeyword != null and searchKeyword != ''">
+		                              	<if test="searchCondition == 0"> AND
+		                              	      mat_inout_statement = #{searchKeyword}
+		                              	</if>
+		                              	<if test="searchCondition == 1"> AND
+		                              	      com_material_code LIKE '%'
+		                                                || #{searchKeyword}
+		                                                || '%'
+		                                </if>
+		                              </if>
+		                              ORDER BY mat_inout_statement DESC
+		                              <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum > #{firstIndex} ]]>
+	</select>
+	
+	<!-- 행 카운트 -->
+	<select id="selectMatInoutListTotCnt" parameterType="mes.mat.inout.service.MatInoutVO" resultType="int">
+		SELECT Count(*) totcnt
+		FROM   erp_material_order e,
+		       com_material c,
+		       mat_inout m
+		WHERE  e.com_material_code = c.com_material_code
+		AND    c.com_material_code = m.com_material_code
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+			    mat_inout_statement = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1">AND
+		    	com_material_code LIKE '%'
+		              || #{searchKeyword}
+		              || '%'
+			</if>
+		</if>
 	</select>
 </mapper>

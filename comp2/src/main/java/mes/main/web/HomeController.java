@@ -1,6 +1,5 @@
 package mes.main.web;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
+import mes.main.service.ComFunc;
 import mes.pro.plan.service.ProPlanService;
 import mes.pro.plan.service.ProPlanVO;
 
@@ -39,7 +39,6 @@ public class HomeController {
 		return "tiles/home.page";
 	}
 	
-	
 	//모달 창을 여는 버튼을 눌렀을 때 동작
 	@GetMapping("testModal.do")
 	public String testModal() {
@@ -58,48 +57,16 @@ public class HomeController {
 			searchVO.setSearchCondition("0");
 		}else if(!"".equals(searchVO.getComProductName())) {
 			searchVO.setSearchCondition("1");
-		}else if(!searchVO.getComProductCode().equals("") && !searchVO.getComProductName().equals("")) {
+		}else if(!searchVO.getComProductCode().equals("") && 
+					!searchVO.getComProductName().equals("")) {
 			searchVO.setSearchCondition("2");
 		}
 		
-		int rowSize = service.selectProductTotCnt(searchVO);
-    	searchVO.setLastIndex(rowSize);
-		
     	List<?> list = service.selectProductList(searchVO);
-        
-    	Map<String, Object> paging = new HashMap<>();
-    	paging.put("page", searchVO.getPageIndex());
-    	paging.put("totalCount", searchVO.getLastIndex());
     	
-    	Map<String,Object> data = new HashMap<>();
-    	data.put("contents", list);
-    	data.put("pagination", paging);
-    	
-    	Map<String,Object> map = new HashMap<>();
-    	map.put("result", true);
-    	map.put("data", data);
-    	
-    	return map;
-    	
-    	
-    	//return sendResult(searchVO, list);
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list,"select");
 	}
 	
-	
-//	public Map<String, Object> sendResult(ProPlanVO searchVO, List<?> list){
-//    	
-//		Map<String, Object> paging = new HashMap<>();
-//    	paging.put("page", searchVO.getPageIndex());
-//    	paging.put("totalCount", searchVO.getLastIndex());
-//    	
-//    	Map<String,Object> data = new HashMap<>();
-//    	data.put("contents", list);
-//    	data.put("pagination", paging);
-//    	
-//    	Map<String,Object> map = new HashMap<>();
-//    	map.put("result", true);
-//    	map.put("data", data);
-//		
-//		return map;
-//	};
+
 }

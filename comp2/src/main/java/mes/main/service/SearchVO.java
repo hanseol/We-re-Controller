@@ -41,7 +41,7 @@ public class SearchVO implements Serializable {
     private int firstIndex = 1;
 
     /** lastIndex */
-    private int lastIndex = 1;
+    private int lastIndex = 100;
 
     /** recordCountPerPage */
     private int recordCountPerPage = 10;

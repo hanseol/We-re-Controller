@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mes.sal.inout.service.impl.SalInoutMapper">
-	
+
 
 	<resultMap id="salInout" type="mes.sal.inout.service.SalInoutVO">
 		<result property="salInoutStatement" column="SAL_INOUT_STATEMENT" />
@@ -14,6 +14,17 @@
 		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
 	</resultMap>
 	
+	<resultMap id="erp" type="mes.sal.inout.service.ErpVO">
+		<result property="erpOrderCode" column="ERP_ORDER_CODE" />
+		<result property="erpProductCode" column="ERP_PRODUCT_CODE" />
+		<result property="erpOrderQty" column="ERP_ORDER_QTY" />
+		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
+		<result property="erpProductUnitPrice" column="ERP_PRODUCT_UNIT_PRICE" />
+		<result property="erpProductDeadline" column="ERP_PRODUCT_DEADLINE" />
+		<result property="erpProductOrderDate" column="ERP_PRODUCT_ORDER_DATE" />
+		<result property="erpProductName" column="ERP_PRODUCT_NAME" />
+	</resultMap>
+
 	<!-- 한 건 조회 -->
 	<select id="selectSalInout" resultMap="salInout">
 		<![CDATA[
@@ -28,56 +39,179 @@
 			WHERE SAL_INOUT_STATEMENT=#{salInoutStatement}
 				]]>
 	</select>
-	
-	<!-- 전체 조회 -->
-	<select id="selectSalInoutList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
-		SELECT * FROM (
-			SELECT A.*, ROWNUM RNUM FROM (
-				SELECT
-						SAL_INOUT_STATEMENT
-						, COM_PRODUCT_CODE
-						, SAL_INOUT_DATE
-						, SAL_INOUT_QUANTITY
-						, SAL_INOUT_CODE
-						, SAL_INOUT_GUBUN
-						, PRO_PROCESS_LOT_NO
-				FROM SAL_INOUT
+
+	<!-- 주문관리참조 조회 -->
+	<select id="selectSalInoutList"
+		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT *
+		FROM (
+				SELECT A.*,
+				ROWNUM RNUM FROM (
+									SELECT *
+									FROM ERP_PRODUCT_ORDER
 				WHERE 1=1
-					<if test="searchKeyword != null and searchKeyword != ''">
-						<if test="searchCondition == 0">AND
-							SAL_INOUT_STATEMENT = #{searchKeyword}
-						</if>
-						<if test="searchCondition == 1">AND
-							COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
-						</if>
-					</if>
-						ORDER BY 
-							SAL_INOUT_STATEMENT DESC	
-				<![CDATA[						
-			) A WHERE ROWNUM <= #{lastIndex}
-		)WHERE RNUM > #{firstIndex}
-		]]>
-	</select>	
-	
-	<!-- 전체 수 조회하여 페이지 -->
-	<select id="selectSalInoutListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
-			SELECT COUNT(*) totcnt
-			FROM SAL_INOUT
-			WHERE 1=1
-			<if test="searchKeyword != null and searchKeyword != ''">
-				<if test="searchCondition == 0">AND
-					SAL_INOUT_STATEMENT = #{searchKeyword}
-				</if>
-				<if test="searchCondition == 1">AND
-					COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
-				</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				ERP_PRODUCT_DEADLINE = #{ERP_PRODUCT_DEADLINE}
 			</if>
+			<if test="searchCondition == 1">AND
+				ERP_PRODUCT_ORDER_DATE = #{ERP_PRODUCT_ORDER_DATE}
+			</if>
+			<if test="searchCondition == 2">AND
+				ERP_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 3">AND
+				ERP_CUSTOMER_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+		ORDER BY ERP_PRODUCT_ORDER_DATE		
+			<![CDATA[						
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+
+	<!-- 입출고목록 조회 + 관리 ... DATE 수정해야 함. 머리 터질 거 같아서 내중에 -->
+	<select id="selectSalProductInoutList"
+		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT *
+		FROM (
+				SELECT A.*,
+				ROWNUM RNUM FROM (
+									SELECT *
+									FROM SAL_INOUT I
+									RIGHT
+									JOIN (
+									SELECT P.PRO_PROCESS_LOT_NO, C.COM_PRODUCT_NAME
+									FROM PRO_PROCESS P, SAL_INOUT I, COM_PRODUCT C
+									WHERE SAL_INOUT_GUBUN NOT IN('SALES001')
+									AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
+									AND I.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE) M
+									ON I.PRO_PROCESS_LOT_NO = M.PRO_PROCESS_LOT_NO
+				WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				SAL_INOUT_DATE = #{SAL_INOUT_DATE}
+			</if>
+			<if test="searchCondition == 1">AND
+				SAL_INOUT_GUBUN LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 2">AND
+				COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 3">AND
+				SAL_INOUT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+		ORDER BY I.PRO_PROCESS_LOT_NO		
+			<![CDATA[						
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
 	</select>
 	
+	<!-- 입출고목록 삽입 -->
+	<insert id="insertSalProductInout"
+		parameterType="mes.sal.inout.service.SalInoutVO">
+		INSERT INTO SAL_INOUT
+		VALUES (#{SAL_INOUT_STATEMENT}, #{COM_PRODUCT_CODE}, #{SAL_INOUT_DATE}, #{SAL_INOUT_QUANTITY}
+		, #{SAL_INOUT_CODE}, #{SAL_INOUT_GUBUN}, #{PRO_PROCESS_LOT_NO})
+	</insert>
 	
-
-	<!-- 입출고목록 조회 -->
-	<select id="selectSalProductInoutList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
-		
+	<!-- 입출고목록 수정 -->
+	<update id="updateSalProductInout" parameterType="mes.sal.inout.service.SalInoutVO">
+		UPDATE SAL_INOUT SET
+		SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		, COM_PRODUCT_CODE = #{COM_PRODUCT_CODE}
+		, SAL_INOUT_DATE = #{SAL_INOUT_DATE}
+		, SAL_INOUT_QUANTITY = #{SAL_INOUT_QUANTITY}
+		, SAL_INOUT_CODE = #{SAL_INOUT_CODE}
+		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+	</update>
+	
+	<!-- 입출고목록 삭제 -->
+	<delete id="deleteSalProductInout" parameterType="mes.sal.inout.service.SalInoutVO">
+		DELETE FROM SAL_INOUT
+		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+	</delete>
+	
+	<!-- 반품입고목록 조회 -->
+	<select id="selectSalReturnList"
+		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT *
+		FROM SAL_INOUT I
+		RIGHT
+		JOIN (
+				SELECT P.PRO_PROCESS_LOT_NO
+				FROM PRO_PROCESS P, SAL_INOUT I
+				WHERE SAL_INOUT_GUBUN = 'SALES001'
+ 				AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO) M
+		ON I.PRO_PROCESS_LOT_NO = M.PRO_PROCESS_LOT_NO
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				SAL_INOUT_DATE = #{SAL_INOUT_DATE}
+			</if>
+			<if test="searchCondition == 1">AND
+				COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 2">AND
+				SAL_INOUT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			AND SAL_INOUT_GUBUN = 'SALES001'
+		</if>
+		ORDER BY I.PRO_PROCESS_LOT_NO	
+				<![CDATA[						
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 반품입고목록 삽입 -->
+	<insert id="insertSalProductReturn"
+		parameterType="mes.sal.inout.service.SalInoutVO">
+		INSERT INTO SAL_INOUT
+		VALUES (#{SAL_INOUT_STATEMENT}
+		, #{COM_PRODUCT_CODE}
+		, #{SAL_INOUT_DATE}
+		, #{SAL_INOUT_QUANTITY}
+		, #{SAL_INOUT_CODE}
+		, 'SALES001' <!-- 반품 = SALES001 -->
+		, #{PRO_PROCESS_LOT_NO})
+	</insert>
+	
+	<!-- 반품입고목록 수정 -->
+	<update id="updateSalProductReturn" parameterType="mes.sal.inout.service.SalInoutVO">
+		UPDATE SAL_INOUT SET
+		SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		, COM_PRODUCT_CODE = #{COM_PRODUCT_CODE}
+		, SAL_INOUT_DATE = #{SAL_INOUT_DATE}
+		, SAL_INOUT_QUANTITY = #{SAL_INOUT_QUANTITY}
+		, SAL_INOUT_CODE = #{SAL_INOUT_CODE}
+		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		AND SAL_INOUT_GUBUN = 'SALES001'
+	</update>
+	
+	<!-- 반품입고목록 삭제 -->
+	<delete id="deleteSalProductReturn" parameterType="mes.sal.inout.service.SalInoutVO">
+		DELETE FROM SAL_INOUT
+		WHERE SAL_INOUT_STATEMENT=#{SAL_INOUT_STATEMENT}
+		AND SAL_INOUT_GUBUN = 'SALES001'
+	</delete>	
+	
+	<!-- 페이지 -->
+	<select id="selectSalInoutListTotCnt"
+		parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM SAL_INOUT
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				SAL_INOUT_STATEMENT LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 1">AND
+				COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
 	</select>
 </mapper>

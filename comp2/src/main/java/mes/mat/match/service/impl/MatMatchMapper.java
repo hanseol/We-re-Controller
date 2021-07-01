@@ -2,10 +2,8 @@ package mes.mat.match.service.impl;
 
 import java.util.List;
 
-import mes.mat.match.service.MatMatchVO;
-import mes.mat.match.service.MatMatchDefaultVO;
-
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import mes.mat.match.service.MatMatchVO;
 
 /**
  * @Class Name : MatMatchMapper.java
@@ -61,7 +59,7 @@ public interface MatMatchMapper {
 	 * @return MAT_MATCH 목록
 	 * @exception Exception
 	 */
-    public List<?> selectMatMatchList(MatMatchDefaultVO searchVO) throws Exception;
+    public List<?> selectMatMatchList(MatMatchVO searchVO) throws Exception;
 
     /**
 	 * MAT_MATCH 총 갯수를 조회한다.
@@ -69,6 +67,6 @@ public interface MatMatchMapper {
 	 * @return MAT_MATCH 총 갯수
 	 * @exception
 	 */
-    public int selectMatMatchListTotCnt(MatMatchDefaultVO searchVO);
+    public int selectMatMatchListTotCnt(MatMatchVO searchVO);
 
 }

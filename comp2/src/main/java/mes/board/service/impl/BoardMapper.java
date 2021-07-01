@@ -37,7 +37,7 @@ public interface BoardMapper {
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateBoard(BoardVO vo) throws Exception;
+    public void updateBoard(LinkedHashMap vo) throws Exception;
 
     /**
 	 * BOARD을 삭제한다.
@@ -45,7 +45,7 @@ public interface BoardMapper {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteBoard(BoardVO vo) throws Exception;
+    public void deleteBoard(LinkedHashMap vo) throws Exception;
 
     /**
 	 * BOARD을 조회한다.

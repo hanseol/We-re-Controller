@@ -5,12 +5,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
  /**
-  * @Class Name : ProOrderDetailList.jsp
-  * @Description : ProOrderDetail List 화면
+  * @Class Name : SalMatchList.jsp
+  * @Description : SalMatch List 화면
   * @Modification Information
   * 
-  * @author dahee
-  * @since 20210628
+  * @author hk
+  * @since 2021-06-29
   * @version 1.0
   * @see
   *  
@@ -28,22 +28,22 @@
 /* 글 수정 화면 function */
 
 
-function fn_egov_select(proOrderDetailCode) {
-	document.getElementById("listForm").proOrderDetailCode.value = proOrderDetailCode;
-   	document.getElementById("listForm").action = "<c:url value='/proOrderDetail/updateProOrderDetailView.do'/>";
+function fn_egov_select(salMatchStatement) {
+	document.getElementById("listForm").salMatchStatement.value = salMatchStatement;
+   	document.getElementById("listForm").action = "<c:url value='/salMatch/updateSalMatchView.do'/>";
    	document.getElementById("listForm").submit();
 }
 
 /* 글 등록 화면 function */
 function fn_egov_addView() {
-   	document.getElementById("listForm").action = "<c:url value='/proOrderDetail/addProOrderDetailView.do'/>";
+   	document.getElementById("listForm").action = "<c:url value='/salMatch/addSalMatchView.do'/>";
    	document.getElementById("listForm").submit();		
 }
 
 /* pagination 페이지 링크 function */
 function fn_egov_link_page(pageNo){
 	document.getElementById("listForm").pageIndex.value = pageNo;
-	document.getElementById("listForm").action = "<c:url value='/proOrderDetail/ProOrderDetailList.do'/>";
+	document.getElementById("listForm").action = "<c:url value='/salMatch/SalMatchList.do'/>";
    	document.getElementById("listForm").submit();
 }
 
@@ -52,7 +52,7 @@ function fn_egov_link_page(pageNo){
 </head>
 <body>
 <form:form commandName="searchVO" name="listForm" id="listForm" method="post">
-	<input type="hidden" name="proOrderDetailCode" />
+	<input type="hidden" name="salMatchStatement" />
 <div id="content_pop">
 	<!-- 타이틀 -->
 	<div id="title">
@@ -71,38 +71,23 @@ function fn_egov_link_page(pageNo){
 								<col/>				
 								<col/>				
 								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
 							</colgroup>		  
 			<tr>
-								<th align="center">ProOrderDetailCode</th>
-								<th align="center">ProOrderCode</th>
-								<th align="center">ProPlanDetailCode</th>
-								<th align="center">ErpProductDeadline</th>
-								<th align="center">ProOrderDate</th>
-								<th align="center">ErpCustomerCode</th>
-								<th align="center">ProOrderExpectQty</th>
-								<th align="center">ProOrderDayQty</th>
-								<th align="center">ProOrderSeq</th>
-								<th align="center">ProOrderOrderQty</th>
-								<th align="center">ProOrderQty</th>
+								<th align="center">SalMatchStatement</th>
+								<th align="center">SalMatchInout</th>
+								<th align="center">SalMatchDate</th>
+								<th align="center">SalMatchQty</th>
+								<th align="center">ComProductCode</th>
+								<th align="center">ProProcessLotNo</th>
 							</tr>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 			<tr>
-													<td align="center" class="listtd"><a href="javascript:fn_egov_select('<c:out value="${result.proOrderDetailCode}"/>')"><c:out value="${result.proOrderDetailCode}"/></a>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderCode}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proPlanDetailCode}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.erpProductDeadline}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderDate}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.erpCustomerCode}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderExpectQty}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderDayQty}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderSeq}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderOrderQty}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proOrderQty}"/>&nbsp;</td>
+													<td align="center" class="listtd"><a href="javascript:fn_egov_select('<c:out value="${result.salMatchStatement}"/>')"><c:out value="${result.salMatchStatement}"/></a>&nbsp;</td>
+						<td align="center" class="listtd"><c:out value="${result.salMatchInout}"/>&nbsp;</td>
+						<td align="center" class="listtd"><c:out value="${result.salMatchDate}"/>&nbsp;</td>
+						<td align="center" class="listtd"><c:out value="${result.salMatchQty}"/>&nbsp;</td>
+						<td align="center" class="listtd"><c:out value="${result.comProductCode}"/>&nbsp;</td>
+						<td align="center" class="listtd"><c:out value="${result.proProcessLotNo}"/>&nbsp;</td>
 				    			</tr>
 			</c:forEach>
 		</table>

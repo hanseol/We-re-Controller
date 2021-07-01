@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import mes.mat.inout.service.MatInoutDefaultVO;
 import mes.mat.inout.service.MatInoutService;
 import mes.mat.inout.service.MatInoutVO;
 /**
@@ -100,7 +99,7 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return MAT_INOUT 목록
 	 * @exception Exception
 	 */
-    public List<?> selectMatInoutList(MatInoutDefaultVO searchVO) throws Exception {
+    public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception {
         return matInoutDAO.selectMatInoutList(searchVO);
     }
 
@@ -110,13 +109,13 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return MAT_INOUT 총 갯수
 	 * @exception
 	 */
-    public int selectMatInoutListTotCnt(MatInoutDefaultVO searchVO) {
+    public int selectMatInoutListTotCnt(MatInoutVO searchVO) {
 		return matInoutDAO.selectMatInoutListTotCnt(searchVO);
 	}
     
     //리스트 전체조회 맵퍼로 돌리기
-    public List<?> selectInoutList(MatInoutDefaultVO searchVO) throws Exception {
-    	return matInoutDAO.selectInoutList(searchVO);
+    public List<?> selectInoutList(MatInoutVO searchVO) throws Exception {
+    	return matInoutDAO.selectMatInoutList(searchVO);
     }
-    
+
 }
