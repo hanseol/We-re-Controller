@@ -13,44 +13,39 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>페이지 명</h2>
+		<h2>공통자료 관리</h2>
 	</div>
 </div>
 
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
-		</div>
-	</div>
-</div>
-
-
-<div class="content-fluid">
-	<div class="panel panel-headline">
-		<div class="panel-body">
-			<div class="row">
-				<div class="col-md-6">
-					<form>
-						* 계획일자 <input type="date" id="proPlanDate" name="proPlanDate">
-					</form>
-				</div>
+<div class="search-area search-area-border grid-option-area">
+	<!--  -->
+	<div class="content-fluid">
+		<div>
+			<div class="my-panel">
+				<button type="button" class="btn btn-success">조회</button>
+				<button type="button" class="btn btn-danger">새자료</button>
+				<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
+				<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
 			</div>
 		</div>
 	</div>
 </div>
 
+<!--  -->
+
+<div>
+	<div>
+		<h2>코드</h2>
+	</div>
+
+</div>
+
+
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
-				<div class="col-md-7">
-					<p class="panel-subtitle">Grid 테스트</p>
-					<input type="text" id="no" name="no">
-				</div>
+				<div class="col-md-7"></div>
 				<div class="col-md-5" align="right">
 					<button type="button" id="findRow">조회</button>
 					<button type="button" id="appendRow">추가</button>
@@ -58,48 +53,42 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="grid"></div>
+				<div class="row">
+					<div>
+						<label for="selCodeIdNm">코드ID명</label> <input type="text"
+							id="getComCodeID"> <input type="button"
+							onClick="comCodeId.value" value="Click" />
+						<button>검색</button>
+					</div>
+					<!-- 마스터데이터 호출 -->
+					<div class="col-md-4" id="grid"></div>
+					<!-- Detail 표현 -->
+					<div class="col-md-8" id="gridDetail"></div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<script>
-	$(document).ready(function() {
 
+<!-- 마스터데이터 -->
+<script>
+	$(document)
+			.ready(
+					function() {
 						$(document).on("click", "button[id=appendRow]",
 								function() {
 									var rowData = [ {
 										//여기 수정 해야함.
 										공통코드 : "",
 										공통코드명 : "",
-										공통코드순서 : "",
-										공통코드사용여부 : ""
 									} ];
 									grid.appendRow(rowData, {
 										at : grid.getRowCount(),
 										focus : true
 									});
 									grid.enable();
-								});
-
-						$(document).on("click", "button[id=insertRow]",
-								function() {
-									grid.finishEditing('rowKey', 'columnName');
-									grid.request('createData');
-								});
-
-						$(document).on("click", "button[id=deleteRow]",
-								function() {
-									grid.removeCheckedRows(false);
-									grid.request('deleteData');
-								});
-
-						$(document).on("click", "button[id=updateRow]",
-								function() {
-									grid.finishEditing('rowKey', 'columnName');
-									grid.request('updateData');
-								});
+						});
 
 						$(document).on("click", "button[id=findRow]",
 								function() {
@@ -111,51 +100,94 @@
 									};
 									grid.readData(1, readParams, true);
 								});
-
+						
 						const dataSource = {
 							api : {
 								readData : {
 									url : '${pageContext.request.contextPath}/comCode/ComCodeList',
 									method : 'GET'
 								},
-								createData : {
-									url : '${pageContext.request.contextPath}/ajax/insertComeCode',
-									method : 'POST'
-								},
-								deleteData : {
-									url : '${pageContext.request.contextPath}/ajax/deleteComeCode',
-									method : 'POST'
-								},
-								updateData : {
-									url : '${pageContext.request.contextPath}/ajax/updateComeCode',
-									method : 'PUT'
-								}
 							},
 							contentType : "application/json"
 						};
-
+						
 						const grid = new tui.Grid({
 							el : document.getElementById('grid'),
-							rowHeaders : [ 'checkbox' ],
 							data : dataSource,
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
-								editor : 'text'
 							}, {
 								header : '공통코드명',
 								name : 'comCodeName',
+							} ]
+						});
+						
+						
+						/*  */
+						
+						$(document).on("click", "button[id=appendRow]", function() {
+								var rowData = [ {
+									//여기 수정 해야함.
+									코드 : "",
+									코드명 : "",
+									코드설명 : "",
+									표시순번 : "",
+									사용여부 : "",
+								} ];
+								grid.appendRow(rowData, {
+									at : grid.getRowCount(),
+									focus : true
+								});
+								grid.enable();
+						});
+
+						const dataSourceDetail = {
+							api : {
+								readData : {
+									url : '${pageContext.request.contextPath}/comCode/ComCodeDetailList',
+									method : 'GET'
+								},
+							},
+							initialRequest : false,
+							contentType : "application/json"
+						};
+						
+						const gridDetail = new tui.Grid({
+							el : document.getElementById('gridDetail'),
+							rowHeaders : [ 'checkbox' ],
+							data : dataSourceDetail,
+							columns : [ {
+								header : '코드',
+								name : 'comCodeDetailId',
 								editor : 'text'
 							}, {
-								header : '공통코드순서',
-								name : 'comCodeDesc',
+								header : '코드명',
+								name : 'comCodeDetailName',
 								editor : 'text'
 							}, {
-								header : '공통코드사용여부',
-								name : 'comCodeDesc',
+								header : '코드설명',
+								name : 'comCodeDetailDesc',
+								editor : 'text'
+							}, {
+								header : '표시순번',
+								name : 'comCodeDetailSeq',
+								editor : 'text'
+							}, {
+								header : '사용여부',
+								name : 'comCodeDetailUsedchk',
 								editor : 'text'
 							} ]
 						});
-					});
-</script>
+						
+						grid.on('click', (ev) => {
+							var comCodeId = grid.getValue(ev.rowKey, "comCodeId");
+							console.log(comCodeId);
+					   	var readParams = {
+								'comCodeId' : comCodeId
+							};
+						gridDetail.readData(1, readParams, true);
+					   });
+					});//end of ready
 
+</script>

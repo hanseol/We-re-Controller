@@ -56,43 +56,61 @@
 	</select>
 	
 	<select id="selectComCodeList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
-SELECT * FROM (
-	SELECT A.*, ROWNUM RNUM FROM (
-				SELECT
-								COM_CODE_ID
-								, COM_CODE_NAME
-								, COM_CODE_DESC
-								, COM_CODE_USEDCHK
-						FROM COM_CODE
-				WHERE 1=1
-				<if test="searchKeyword != null and searchKeyword != ''">
-					<if test="searchCondition == 0">AND
-						COM_CODE_ID = #{searchKeyword}
-					</if>
-					<if test="searchCondition == 1">AND
-						COM_CODE_NAME LIKE '%' || #{searchKeyword} || '%'
-					</if>
-				</if>
-					ORDER BY 
-						COM_CODE_ID DESC
+				SELECT COM_CODE_ID
+					, COM_CODE_NAME
+					, COM_CODE_DESC
+					, COM_CODE_USEDCHK
+				FROM COM_CODE
+	</select>
 		
-		<![CDATA[					
-	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM >= #{firstIndex}
-]]>
-	</select>	
 	<select id="selectComCodeListTotCnt" parameterType="mes.com.comCode.service.ComCodeVO" resultType="int">
 			SELECT COUNT(*) totcnt
 			FROM COM_CODE
-			WHERE 1=1
-			<if test="searchKeyword != null and searchKeyword != ''">
-				<if test="searchCondition == 0">AND
-					COM_CODE_ID = #{searchKeyword}
-				</if>
-				<if test="searchCondition == 1">AND
-					COM_CODE_NAME LIKE '%' || #{searchKeyword} || '%'
-				</if>
-			</if>
 	</select>
+	
+	<select id="selectComCodeDetailList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+			SELECT COM_CODE_DETAIL_ID
+			, COM_CODE_DETAIL_NAME
+			, COM_CODE_DETAIL_DESC
+			, COM_CODE_DETAIL_SEQ
+			, COM_CODE_DETAIL_USEDCHK
+			FROM COM_CODE_DETAIL
+			<if test="(comCodeId != null and comCodeId != '')  ">
+			WHERE COM_CODE_ID LIKE UPPER(#{comCodeId})
+			</if>
+	</select>	
+
+	<update id="updateComCodeDetail">
+		UPDATE COM_CODE_DETAIL
+		SET COM_CODE_DETAIL_NAME = #{comCodeDetailName}
+		, COM_CODE_DETAIL_DESC = #{comCodeDetailDesc}
+		, COM_CODE_DETAIL_SEQ = #{comCodeDetailSeq}
+		, COM_CODE_DETAIL_USEDCHK = #{comCodeDetailUsedchk}
+		WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId})
+	</update>
+	
+	<insert id="insertComCodeDetail">
+		INSERT INTO COM_CODE_DETAIL
+		(COM_CODE_ID
+		, COM_CODE_DETAIL_ID
+		, COM_CODE_DETAIL_NAME
+		, COM_CODE_DETAIL_DESC
+		, COM_CODE_DETAIL_SEQ
+		, COM_CODE_DETAIL_USEDCHK)
+		VALUES
+		( UPPER(#{comCodeId})
+		, UPPER(#{comCodeDetailId})
+		, #{comCodeDetailName}
+		, #{comCodeDetailDesc}
+		, #{comCodeDetailSeq}
+		, #{comCodeDetailUsedchk})
+	
+	</insert>
+	
+	<delete id="deleteComCodeDetail" parameterType="mes.com.comCode.service.ComCodeVO">
+		DELETE FROM COM_CODE_DETAIL
+		WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId})
+	</delete>
+
 
 </mapper>

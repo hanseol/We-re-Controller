@@ -22,52 +22,19 @@ import mes.com.comCode.service.ComCodeVO;
 @Mapper("comCodeMapper")
 public interface ComCodeMapper {
 
-	/**
-	 * COM_CODE을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 ComCodeVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    public void insertComCode(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * COM_CODE을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 ComCodeVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    public void updateComCode(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * COM_CODE을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 ComCodeVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    public void deleteComCode(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * COM_CODE을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 ComCodeVO
-	 * @return 조회한 COM_CODE
-	 * @exception Exception
-	 */
-    public ComCodeVO selectComCode(ComCodeVO vo) throws Exception;
-
-    /**
-	 * COM_CODE 목록을 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return COM_CODE 목록
-	 * @exception Exception
-	 */
+	// 마스터테이블 조회
     public List<?> selectComCodeList(ComCodeVO searchVO) throws Exception;
-
-    /**
-	 * COM_CODE 총 갯수를 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return COM_CODE 총 갯수
-	 * @exception
-	 */
-    public int selectComCodeListTotCnt(ComCodeVO searchVO);
+    
+    //디테일 코드 조회
+    public List<?> selectComCodeDetailList(ComCodeVO searchVO) throws Exception;
+    
+    //디테일코드 삽입
+    public void insertComCodeDetail(LinkedHashMap vo) throws Exception;
+    
+    //디테일코드 삭제
+    public void deleteComCodeDetail(LinkedHashMap vo) throws Exception;
+    
+    //디테일코드 수정
+    public void updateComCodeDetail(LinkedHashMap vo) throws Exception;
 
 }

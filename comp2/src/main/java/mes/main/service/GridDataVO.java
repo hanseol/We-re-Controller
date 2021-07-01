@@ -16,11 +16,4 @@ public class GridDataVO {
 	List<?> updatedRows;
 	List<?> createdRows;
 	List<?> deletedRows;
-	
-	
-
-	
-	
-	
-	
 }
