@@ -122,20 +122,14 @@
 								COM_PRODUCT_SIZE
 						FROM COM_PRODUCT
 						WHERE 1=1
-						<if test="(comProductCode != null and comProductCode != '')
-								|| (comProductName !=null and comProductName != '')">
-							<if test="searchCondition == 0">AND
-								COM_PRODUCT_CODE = #{comProductCode}
-							</if>
-							<if test="searchCondition == 1">AND
-								COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
-							</if>
-							<if test="searchCondition == 2">AND
-								COM_PRODUCT_CODE = #{comProductCode} AND
-								COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
-							</if>
+						<if test="comProductCode != null and comProductCode!=''">
+							AND
+							COM_PRODUCT_CODE = #{comProductCode}
 						</if>
-							ORDER BY 
+						<if test="comProductName != null and comProductCode!=''">AND
+							COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+						</if>
+						ORDER BY 
 								COM_PRODUCT_NAME
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}

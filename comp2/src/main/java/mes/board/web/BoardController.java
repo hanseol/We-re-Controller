@@ -59,7 +59,7 @@ public class BoardController {
 	 * 
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/mes/readBoard")
+	@RequestMapping(value = "/ajax/readBoard")
 	@ResponseBody
 	public Map<String, Object> readBoard(Model model, @ModelAttribute("searchVO") BoardVO searchVO) throws Exception {
 
@@ -67,7 +67,6 @@ public class BoardController {
 
 		// 검색조건이 있을 경우
 		if (!searchVO.getSearchKeyword().equals("")) {
-			// mapper 조건에 따라 condition 설정 필요함.
 			searchVO.setSearchCondition("0");
 			list = service.selectBoardList(searchVO);
 		// 검색조건이 없을 경우
