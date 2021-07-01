@@ -1,5 +1,7 @@
 package mes.com.comCode.service;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import mes.main.service.SearchVO;
 
 /**
@@ -14,6 +16,8 @@ import mes.main.service.SearchVO;
  *  
  *  Copyright (C)  All right reserved.
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class ComCodeVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -29,36 +33,10 @@ public class ComCodeVO extends SearchVO{
     /** COM_CODE_USEDCHK */
     private java.lang.String comCodeUsedchk;
     
-    public java.lang.String getComCodeId() {
-        return this.comCodeId;
-    }
-    
-    public void setComCodeId(java.lang.String comCodeId) {
-        this.comCodeId = comCodeId;
-    }
-    
-    public java.lang.String getComCodeName() {
-        return this.comCodeName;
-    }
-    
-    public void setComCodeName(java.lang.String comCodeName) {
-        this.comCodeName = comCodeName;
-    }
-    
-    public java.lang.String getComCodeDesc() {
-        return this.comCodeDesc;
-    }
-    
-    public void setComCodeDesc(java.lang.String comCodeDesc) {
-        this.comCodeDesc = comCodeDesc;
-    }
-    
-    public java.lang.String getComCodeUsedchk() {
-        return this.comCodeUsedchk;
-    }
-    
-    public void setComCodeUsedchk(java.lang.String comCodeUsedchk) {
-        this.comCodeUsedchk = comCodeUsedchk;
-    }
+    private java.lang.String comCodeDetailId;
+    private java.lang.String comCodeDetailName;
+    private java.lang.String comCodeDetailDesc;
+    private java.math.BigDecimal comCodeDetailSeq;
+    private java.lang.String comCodeDetailUsedchk;
     
 }

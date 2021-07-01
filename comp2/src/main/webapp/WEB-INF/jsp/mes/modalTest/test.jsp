@@ -3,11 +3,6 @@
     
 <!-- 20210630 김한설 모달창에 넣을 뷰 페이지 출력-->
    
-    
-<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-<!-- ToastUi Grid -->
-	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>    
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<h3>제품 검색</h3>
@@ -40,10 +35,16 @@ $(document).ready(function() {
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
 	$(document).on("click","button[id=ok]", function(){
-		console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
-		var chkRowKey = grid.getCheckedRowKeys();
-		console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
-		var code = grid.getValue(chkRowKey,'comProductCode');
+		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
+		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
+
+		var chkRowKeys = grid.getCheckedRowKeys();
+		var code = [];
+		for(var i=0; i<chkRowKeys.length; i++){
+			code = grid.getValue(chkRowKeys[i],'comProductCode');
+			console.log(code);
+		}
+		
 		$("#no").val(code);
 	});
 	
@@ -84,6 +85,6 @@ $(document).ready(function() {
 			name : 'comProductSize'
 		} ]
 	});
-
+	
 }); //end of document ready
 </script>

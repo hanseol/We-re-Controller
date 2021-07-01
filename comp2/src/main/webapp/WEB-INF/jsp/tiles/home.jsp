@@ -40,16 +40,13 @@
 		<div class="my-panel">
 			
 			<!-- 모달창띄우기 -->
-			<p>
+			
 			<a href="testModal.do" rel="modal:open" id="getData">
 			<button type="button" class="btn btn-success" id="showModal">조회</button>
 			</a>
-			</p>
-			
-			
 			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+			<!-- <button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
+			<button type="button" class="btn btn-info" id="updateRow">수정저장</button> -->
 			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 		</div>
 	</div>
@@ -116,7 +113,7 @@
 			grid.request('modifyData');
 		});
 		
-		$(document).on("click", "button[id=insertRow]", function() {
+		/* $(document).on("click", "button[id=insertRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('createData');
 		});
@@ -129,7 +126,7 @@
 		$(document).on("click", "button[id=updateRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('updateData');
-		});
+		}); */
 		
 		$(document).on("click", "button[id=findRow]", function() {
 			var no = $("#no").val();
@@ -143,7 +140,7 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/mes/readBoard',
+					url : '${pageContext.request.contextPath}/ajax/readBoard',
 					method : 'GET'
 				},
 				/* createData : {
@@ -192,6 +189,10 @@
 			} ]
 		});
 	
+
+		grid.on('click', (ev) => {
+			  alert(ev.rowKey);
+		});
 /* 	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);
