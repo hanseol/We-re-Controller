@@ -1,5 +1,7 @@
 package mes.pro.plan.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -31,12 +33,14 @@ public class ProPlanVO extends SearchVO{
     //생산관리M 테이블
     private java.lang.String proPlanCode;
     private java.lang.String proPlanName;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private java.sql.Date proPlanDate;
     private java.lang.String erpCustomerCode;
 
     //생산관리D 테이블
     private java.lang.String proPlanDetailCode;
     private java.lang.String erpOrderCode;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private java.sql.Date erpProductDeadline;
     private java.math.BigDecimal proPlanExpectQty;
     private java.math.BigDecimal proPlanDayQty;

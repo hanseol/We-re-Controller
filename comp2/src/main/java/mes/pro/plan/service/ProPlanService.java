@@ -1,5 +1,6 @@
 package mes.pro.plan.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -18,27 +19,27 @@ public interface ProPlanService {
 	
 	/**
 	 * PRO_PLAN을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 ProPlanVO
+	 * @param linkedHashMap - 등록할 정보가 담긴 ProPlanVO
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    String insertProPlan(ProPlanVO vo) throws Exception;
+    String insertProPlan(LinkedHashMap linkedHashMap) throws Exception;
     
     /**
 	 * PRO_PLAN을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 ProPlanVO
+	 * @param linkedHashMap - 수정할 정보가 담긴 ProPlanVO
 	 * @return void형
 	 * @exception Exception
 	 */
-    void updateProPlan(ProPlanVO vo) throws Exception;
+    void updateProPlan(LinkedHashMap linkedHashMap) throws Exception;
     
     /**
 	 * PRO_PLAN을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 ProPlanVO
+	 * @param linkedHashMap - 삭제할 정보가 담긴 ProPlanVO
 	 * @return void형 
 	 * @exception Exception
 	 */
-    void deleteProPlan(ProPlanVO vo) throws Exception;
+    void deleteProPlan(LinkedHashMap linkedHashMap) throws Exception;
     
     /**
 	 * PRO_PLAN을 조회한다.

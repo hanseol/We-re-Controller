@@ -59,23 +59,22 @@
 	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT m.pro_plan_date
-						     , m.pro_plan_code
-						     , d.erp_customer_code
+						SELECT  TO_CHAR(m.pro_plan_date) as pro_plan_date
+							 , e.erp_customer_code
+							 , m.pro_plan_code
 						     , e.erp_product_code
 						     , e.erp_product_name 
-						     , d.erp_order_code
-						     , d.erp_product_deadline
-						     , d.erp_order_qty
+						     , e.erp_order_code
+						     , TO_CHAR(e.erp_product_deadline) as erp_product_deadline
+						     , e.erp_order_qty
 						     , d.pro_plan_qty
-						     , d.pro_work_date
+						     , TO_CHAR(d.pro_work_date) as pro_work_date
 						     , d.pro_plan_seq
-						FROM pro_plan m
-						   , pro_plan_detail d
+						FROM pro_plan_detail d
 						   , erp_product_order e
-						WHERE m.pro_plan_code = d.pro_plan_code
-						  AND d.erp_order_code = e.erp_order_code
-						  AND 1=1
+						   , pro_plan m
+						WHERE d.erp_order_code = e.erp_order_code
+						  AND m.pro_plan_code = d.pro_plan_code
 						<if test="searchKeyword != null and searchKeyword != ''">
 							<if test="searchCondition == 0">AND
 								PRO_PLAN_CODE = #{searchKeyword}
@@ -85,7 +84,7 @@
 							</if>
 						</if>
 							ORDER BY 
-								PRO_PLAN_CODE DESC
+								m.PRO_PLAN_CODE DESC
 				
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
@@ -100,8 +99,8 @@
 				   , pro_plan_detail d
 				   , erp_product_order e
 			WHERE m.pro_plan_code = d.pro_plan_code
-			AND d.erp_order_code = e.erp_order_code
-			AND 1=1
+			  AND d.erp_order_code = e.erp_order_code
+			  AND 1=1
 			<if test="searchKeyword != null and searchKeyword != ''">
 				<if test="searchCondition == 0">AND
 					PRO_PLAN_CODE = #{searchKeyword}

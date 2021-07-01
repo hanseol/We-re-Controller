@@ -1,5 +1,6 @@
 package mes.pro.plan.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -47,7 +48,7 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public String insertProPlan(ProPlanVO vo) throws Exception {
+    public String insertProPlan(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -67,7 +68,7 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateProPlan(ProPlanVO vo) throws Exception {
+    public void updateProPlan(LinkedHashMap vo) throws Exception {
         proPlanDAO.updateProPlan(vo);
     }
 
@@ -77,7 +78,7 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteProPlan(ProPlanVO vo) throws Exception {
+    public void deleteProPlan(LinkedHashMap vo) throws Exception {
         proPlanDAO.deleteProPlan(vo);
     }
 
@@ -134,5 +135,6 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	public int selectProductTotCnt(ProPlanVO vo) {
 		return proPlanDAO.selectProductTotCnt(vo);
 	}
-    
+
+
 }
