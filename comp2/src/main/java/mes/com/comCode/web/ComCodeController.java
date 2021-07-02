@@ -87,6 +87,7 @@ public class ComCodeController {
 		return comFunc.sendResult(list);
 	}
 
+	//모디파이
 	@PutMapping("/ajax/modifyComCodeDetail")
 	@ResponseBody
 	public void modifyComCodeDetail(@RequestBody GridDataVO gd) throws Exception {
@@ -124,7 +125,7 @@ public class ComCodeController {
 	}
 	
 	//모달창에 결과 값 전달
-	@RequestMapping("mes/comCode/ComCodeModal")
+	@RequestMapping("mes/com/comCode/ComCodeModal")
 	@ResponseBody
 	public Map<String, Object> searchComeCode(Model model, 
    		@ModelAttribute("searchVO") ComCodeVO searchVO) throws Exception {

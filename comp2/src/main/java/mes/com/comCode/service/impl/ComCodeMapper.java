@@ -29,12 +29,12 @@ public interface ComCodeMapper {
     public List<?> selectComCodeDetailList(ComCodeVO searchVO) throws Exception;
     
     //디테일코드 삽입
-    public void insertComCodeDetail(LinkedHashMap vo) throws Exception;
+    public void insertComCodeDetail(LinkedHashMap searchVO) throws Exception;
     
     //디테일코드 삭제
-    public void deleteComCodeDetail(LinkedHashMap vo) throws Exception;
+    public void deleteComCodeDetail(LinkedHashMap searchVO) throws Exception;
     
     //디테일코드 수정
-    public void updateComCodeDetail(LinkedHashMap vo) throws Exception;
+    public void updateComCodeDetail(LinkedHashMap searchVO) throws Exception;
 
 }

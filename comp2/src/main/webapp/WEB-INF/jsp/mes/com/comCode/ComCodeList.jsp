@@ -17,8 +17,6 @@
 	text-align: center;
 	max-width: 900px;
 	width: 900px;
-	height: 600px;
-	max-height: 600px;
 }
 
 .blocker {
@@ -37,9 +35,7 @@
 	<div class="content-fluid">
 		<div>
 			<div class="my-panel">
-				<a href="comCodeModal.do" rel="modal:open" id="getData">
-					<button type="button" class="btn btn-success" id="showModal">조회</button>
-				</a>
+
 				<button type="button" class="btn btn-danger">새자료</button>
 				<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 			</div>
@@ -70,9 +66,11 @@
 			<div class="panel-body">
 				<div class="row">
 					<div>
-						<label for="selCodeIdNm">코드ID명</label> <input type="text"
-							id="getComCodeID"> <input type="button"
-							onClick="comCodeId.value" value="Click" />
+						<label for="selCodeIdNm">코드ID명</label>
+						 <input type="text"
+							id="getComCodeID"> 
+							<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData"> <i class="fa fa-search"></i>
+						</a>
 						<button>검색</button>
 					</div>
 					<!-- 마스터데이터 호출 -->
@@ -92,6 +90,7 @@
 			.ready(
 					function() {
 						
+						//마스터테이블 controller 연결
 						const dataSource = {
 							api : {
 								readData : {
@@ -102,9 +101,14 @@
 							contentType : "application/json"
 						};
 						
+						//마스터테이블 그리드
 						const grid = new tui.Grid({
 							el : document.getElementById('grid'),
 							data : dataSource,
+						    scrollX: true,
+						    scrollY: true,
+						     bodyHeight :480,
+						     rowHeight: 30,
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
@@ -113,11 +117,11 @@
 								name : 'comCodeName',
 							} ]
 						});
+						
 						/* 디테일코드 */
 						//행추가
 						$(document).on("click", "button[id=appendRow]", function() {
 								var rowData = [ {
-									//여기 수정 해야함.
 									코드 : "",
 									코드명 : "",
 									코드설명 : "",
@@ -142,9 +146,10 @@
 							gridDetail.removeCheckedRows(false);
 						});
 						
-						//체크박스에 데이터 전달
+						//검색
 						$(document).on("click", "button[id=findRow]", function() {
 							var comCodeDetailId = $("#comCodeDetailId").val();
+							console.log(comCodeDetailId);
 							var readParams = {
 									'comCodeDetailId' : comCodeDetailId
 								};
@@ -152,25 +157,32 @@
 						});
 						
 						
-
+						//디테일코드 controller 연결
 						const dataSourceDetail = {
 							api : {
 								readData : {
 									url : '${pageContext.request.contextPath}/comCode/ComCodeDetailList',
 									method : 'GET'
-								}, modifyData: { 
+								}, 
+								modifyData: { 
 									url: '${pageContext.request.contextPath}/ajax/modifyComCodeDetail',
 									method: 'PUT'
 								},
 							},
+							// 바로 값 나오지않게함
 							initialRequest : false,
 							contentType : "application/json"
 						};
 						
+						//디테일코드 그리드 설정
 						const gridDetail = new tui.Grid({
 							el : document.getElementById('gridDetail'),
 							rowHeaders : [ 'checkbox' ],
 							data : dataSourceDetail,
+						    scrollX: true,
+						    scrollY: true,
+						     bodyHeight : 480,
+						     rowHeight: 30,
 							columns : [ {
 								header : '코드',
 								name : 'comCodeDetailId',
