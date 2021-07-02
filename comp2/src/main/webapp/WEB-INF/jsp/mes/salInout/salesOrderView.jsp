@@ -17,6 +17,21 @@
 	margin-bottom: 10px;
 	background-color: white;
 }
+
+.modal{
+	-webkit-border-radius :0px;
+	border-radius:0px;
+	overflow: visible;
+	text-align: center;
+	max-width: 900px;
+	width: 900px;
+	/* height: 600px;
+	max-height: 600px; */
+}
+
+.blocker{
+	z-index: 1200;
+}
 </style>
 
 <div class="content-fluid">
@@ -41,17 +56,20 @@
 			<div class="row">
 				<div class="col-md-4">
 						주문일자
-						<input type="date" id="orderDate" name="erpProdcutOrderDate">
+						<input type="date" id="orderDate" name="erpProdcutOrderDate">					
 				</div>
-				<div class="col-md-4">
-						<a href="searchProductCode.do" rel="modal:open">
+				<div class="col-md-4">			
 						제품코드
 						<input type="text" id="productCode" name="productCode">	
-											
+						<a href="searchProductCode.do" rel="modal:open">						
+                     	<i class="fa fa-search"></i></a>
+                  </a>											
 				</div>
 				<div class="col-md-4">
 						업체코드
 						<input type="text" id="customerCode" name="customerCode">
+						<a href="searchCustomerCode.do" rel="modal:open">					
+						<i class="fa fa-search"></i></a>
 				</div>
 			</div>
 		</div>
@@ -94,18 +112,6 @@
 				readData : {
 					url : '${pageContext.request.contextPath}/ajax/sal/readSalesOrder',
 					method : 'GET'
-				},
-				createData : {
-					url : '${pageContext.request.contextPath}/ajax/insertBoard',
-					method : 'POST'
-				},
-				deleteData : {
-					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
-					method : 'DELETE'
-				},
-				updateData : {
-					url : '${pageContext.request.contextPath}/ajax/updateBoard',
-					method : 'PUT'
 				}
 			},
 			initialRequest: false, 
@@ -164,6 +170,15 @@
 		  console.log('result : ', responseObj.result);
 		  console.log('data : ', responseObj.data);
 		});
+	
+	// option form reset  
+	 $(document).ready(function() {  
+	    $("#reset").click(function() {  
+	         $("form").each(function() {  
+	                if(this.id == "option") this.reset();  
+	             });  
+	    });  
+	 });  
 	
 }); //end of document ready
 </script>

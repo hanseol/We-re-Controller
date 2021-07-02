@@ -69,5 +69,21 @@ public interface SalInoutMapper {
 	 */
     public int selectSalInoutListTotCnt(SalInoutVO searchVO);
 
+    //완제품 웅엥
     public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
+
+    
+    
+    //모달 : 제품코드 조회
+  	public List<?> searchProductList(SalInoutVO searchVO) throws Exception;
+  	public int searchProductListTotCnt(SalInoutVO searchVO);
+  	
+  	//모달 : 고객코드 조회
+  	public List<?> searchCustomerList(SalInoutVO searchVO) throws Exception;
+  	public int searchCustomerListTotCnt(SalInoutVO searchVO);
+  	
+  	//모달 : 완제품 LOT_NO 조회
+	public List<?> searchProductLotNoList(SalInoutVO searchVO) throws Exception;
+	public int searchProductLotNoListTotCnt(SalInoutVO searchVO);
+
 }

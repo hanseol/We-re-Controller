@@ -23,9 +23,9 @@ import mes.main.service.SearchVO;
  *      Copyright (C) All right reserved.
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-public class BoardVO extends SearchVO{
+public class BoardVO extends SearchVO {
 	private static final long serialVersionUID = 1L;
 
 	/** NO */
