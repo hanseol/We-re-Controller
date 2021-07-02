@@ -24,11 +24,11 @@ public interface ComCodeService {
 	List selectComCodeDetailList(ComCodeVO searchVO) throws Exception;
 
 	//디테일코드 삽입
-	String insertComCodeDetail(LinkedHashMap vo) throws Exception;
+	String insertComCodeDetail(LinkedHashMap searchVO) throws Exception;
 	
 	//디테일코드 수정
-	void updateComCodeDetail(LinkedHashMap vo) throws Exception;
+	void updateComCodeDetail(LinkedHashMap searchVO) throws Exception;
 
 	//디테일코드 삭제
-	void deleteComCodeDetail(LinkedHashMap vo) throws Exception;
+	void deleteComCodeDetail(LinkedHashMap searchVO) throws Exception;
 }

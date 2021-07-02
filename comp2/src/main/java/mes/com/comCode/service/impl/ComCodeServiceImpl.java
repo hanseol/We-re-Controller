@@ -44,19 +44,19 @@ public class ComCodeServiceImpl extends EgovAbstractServiceImpl implements ComCo
 	}
 
 	// 디테일코드 수정
-	public void updateComCodeDetail(LinkedHashMap vo) throws Exception {
-		comCodeDAO.updateComCodeDetail(vo);
+	public void updateComCodeDetail(LinkedHashMap searchVO) throws Exception {
+		comCodeDAO.updateComCodeDetail(searchVO);
 	}
 
 	// 디테일코드 삭제
-	public void deleteComCodeDetail(LinkedHashMap vo) throws Exception {
-		comCodeDAO.deleteComCodeDetail(vo);
+	public void deleteComCodeDetail(LinkedHashMap searchVO) throws Exception {
+		comCodeDAO.deleteComCodeDetail(searchVO);
 	}
 
 	// 디테일코드 삽입
-	public String insertComCodeDetail(LinkedHashMap vo) throws Exception {
+	public String insertComCodeDetail(LinkedHashMap searchVO) throws Exception {
 
-		comCodeDAO.insertComCodeDetail(vo);
+		comCodeDAO.insertComCodeDetail(searchVO);
 
 		return null;
 	}
