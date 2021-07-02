@@ -1,4 +1,4 @@
-package mes.pro.plan.service.impl;
+		package mes.pro.plan.service.impl;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -134,6 +134,27 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public int selectProductTotCnt(ProPlanVO vo) {
 		return proPlanDAO.selectProductTotCnt(vo);
+	}
+
+	
+	/*
+	 * erp_order테이블에서 제품리스트 가져오기 
+	 * 생산계획관리 페이지의 모달창에서 사용
+	 * 김다희
+     * */
+	@Override
+	public List<?> selectErpPordList(ProPlanVO vo) {
+		return proPlanDAO.selectErpPordList(vo);
+	}
+
+	/*
+	 * erp_order테이블에서 가져온 리스트 갯수
+	 * 생산계획관리 페이지의 모달창에서 사용
+	 * 김다희
+     * */
+	@Override
+	public int selectErpProdCnt(ProPlanVO vo) {
+		return proPlanDAO.selectErpProdCnt(vo);
 	}
 
 

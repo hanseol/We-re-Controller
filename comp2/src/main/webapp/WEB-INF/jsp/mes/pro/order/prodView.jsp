@@ -18,7 +18,7 @@
 <!-- 타이틀 -->
 <div class="content-fluid">
 	<div>
-		<h2>생산 지시 관리</h2>
+		<h2>생산 지시 조회</h2>
 	</div>
 </div>
 
@@ -36,10 +36,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
+			<button type="button" class="btn btn-success" id="findRow">조회</button>
 			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
 		</div>
 	</div>
 </div>
@@ -49,13 +47,18 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-6">
-					<form>
-						* 작업일자 <input type="date" id="proPlanDate" name="proPlanDate" /><br><br>
-						* 제품코드 <input type="text" id="comProductCode " name="comProductCode" />
+				<div class="col-md-12">
+					<form action="">
+						* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
+							~ <input type="date" id="endDate" name="endDate"> 
+							<input type="radio" id="gubun1" name="gubun" value="1" checked> 작업일자
+							<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
+							<br/><br/>
+						* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
+						* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
+						
 					</form>
 				</div>
-				<div class="col-md-6">* 미생산계획</div>
 			</div>
 		</div>
 	</div>
@@ -68,12 +71,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">Grid 테스트</p>
-				</div>
-				<div class="col-md-5" align="right">
-					<button type="button">조회</button>
-					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
+					<p class="panel-subtitle">생산지시조회</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -84,60 +82,33 @@
 </div>
 <script>
 	$(document).ready(function() {
+		
+		//M 조회 버튼	
+		$(document).on("click", "button[id=findRow]",
+		      function() {
+		 	   var gubun = $("input[name=gubun]:checked").val();
+		 	   console.log(gubun);
+		         var startDate = $("#startDate").val();
+		         var endDate = $("#endDate").val();
+		         var erpProductCode = $("#erpProductCode").val();
+		         var erpCustomerCode = $("#erpCustomerCode").val();
+		         var readParams = {
+		      	  'searchCondition' : gubun,
+		            'startDate' : startDate,
+		            'endDate' : endDate,
+		            'erpProductCode' : erpProductCode,
+		            'erpCustomerCode' : erpCustomerCode
+		         };
+		         grid.readData(1, readParams, true);
+		      });
 
-		$(document).on("click", "button[id=appendRow]", function() {
-			var rowData = [ {
-				comProductCode : "",
-				comProductName : "",
-				proOrderCode : "",
-				erpProductDeadline : "",
-				erpOrderQty : "" ,
-				proOrderQty : "" ,
-				macHourQty : "" ,
-				dayQty : "" ,
-				dayCount : "" ,
-				proWorkDate : "" ,
-				proOrderSeq : ""
-			} ];
-			grid.appendRow(rowData, {
-				at : grid.getRowCount(),
-				focus : true
-			});
-			grid.enable();
-		});
 		
-		$(document).on("click", "button[id=insertRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('createData');
-		});
-		
-		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(true);
-			grid.request('deleteData');
-		});
-		
-		$(document).on("click", "button[id=updateRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('updateData');
-		});
-		
+		//dataSource	
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/proOrder/ProdView',
+					url : '${pageContext.request.contextPath}/proOrder/prodView',
 					method : 'GET'
-				},
-				createData : {
-					url : '${pageContext.request.contextPath}/ajax/insertBoard',
-					method : 'POST'
-				},
-				deleteData : {
-					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
-					method : 'DELETE'
-				},
-				updateData : {
-					url : '${pageContext.request.contextPath}/ajax/updateBoard',
-					method : 'PUT'
 				}
 			},
 			contentType : "application/json"
@@ -148,55 +119,35 @@
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			columns : [ {
+				header : '작업일자',
+				name : 'proWorkDate'
+			}, {
+				header : '생산지시코드',
+				name : 'erpOrderCode'
+			}, {
+				header : '고객사코드',
+				name : 'erpCustomerCode'
+			},{
 				header : '제품코드',
-				name : 'comProductCode',
-				editor : 'text'
+				name : 'erpProductCode'
 			}, {
 				header : '제품명',
-				name : 'comProductName',
-				editor : 'text'
+				name : 'erpProductName'
 			}, {
 				header : '주문번호',
-				name : 'proOrderCode',
-				editor : 'text'
+				name : 'erpOrderCode'
 			}, {
 				header : '납기일자',
-				name : 'erpProductDeadline',
-				editor : {
-					type : 'datePicker',
-					options : {
-						format : 'YYYY/MM/dd',
-						language: 'ko'
-					} 
-				}
+				name : 'erpProductDeadline'
 			}, {
 				header : '주문량',
-				name : 'erpOrderQty',
-				editor : 'text'
-			}, {
+				name : 'erpOrderQty'
+			},{
 				header : '지시량',
-				name : 'proOrderQty',
-				editor : 'text'
-			}, {
-				header : 'UPH',
-				name : 'macHourQty',
-				editor : 'text'
-			}, {
-				header : '일생산량',
-				name : 'dayQty',
-				editor : 'text'
-			}, {
-				header : '일수',
-				name : 'dayCount',
-				editor : 'text'
-			}, {
-				header : '작업일자',
-				name : 'proWorkDate',
-				editor : 'text'
-			} , {
+				name : 'proOrderQty'
+			},{
 				header : '작업순서',
-				name : 'proOrderSeq',
-				editor : 'text'
+				name : 'proOrderSeq'
 			} ]
 		});
 	

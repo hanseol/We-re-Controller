@@ -52,20 +52,12 @@
 							~ <input type="date" id="endDate" name="endDate"> 
 							<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
 							<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
-							
 							<br/><br/>
 						* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
-						* 고객사코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
+						* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
 						
 					</form>
 				</div>
-				<!--<div class="col-md-6">
-					<form action="">
-					* 미생산계획 검색 <br/><br/>
-					납기일자 &nbsp;&nbsp;&nbsp; <input type="date" id="startNotWorkDate" name="startNotWorkDate">
-						~ <input type="date" id="endNotWorkDate" name="endNotWorkDate">
-					</form>
-				</div> -->
 			</div>
 		</div>
 	</div>
@@ -91,24 +83,26 @@
 <script>
 	$(document).ready(function() {
 		
-		
-		      $(document).on("click", "button[id=findRow]",
-		            function() {
-		    	  	   var gubun = $("input[name=gubun]:checked").val();
-		    	  	   console.log(gubun);
-		               var startDate = $("#startDate").val();
-		               var endDate = $("#endDate").val();
-		               var erpProductCode = $("#erpProductCode").val();
-		               var readParams = {
-		            	  'searchCondition' : gubun,
-		                  'startDate' : startDate,
-		                  'endDate' : endDate,
-		                  'erpProductCode' : erpProductCode
-		               };
-		               grid.readData(1, readParams, true);
-		            });
+		//M 조회 버튼	
+		$(document).on("click", "button[id=findRow]",
+		      function() {
+		 	   var gubun = $("input[name=gubun]:checked").val();
+		 	   console.log(gubun);
+		         var startDate = $("#startDate").val();
+		         var endDate = $("#endDate").val();
+		         var erpProductCode = $("#erpProductCode").val();
+		         var erpCustomerCode = $("#erpCustomerCode").val();
+		         var readParams = {
+		      	  'searchCondition' : gubun,
+		            'startDate' : startDate,
+		            'endDate' : endDate,
+		            'erpProductCode' : erpProductCode,
+		            'erpCustomerCode' : erpCustomerCode
+		         };
+		         grid.readData(1, readParams, true);
+		      });
 
-			
+		//dataSource	
 		const dataSource = {
 			api : {
 				readData : {
@@ -159,10 +153,6 @@
 			} ]
 		});
 		
-		
-	
-
-	
 	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);

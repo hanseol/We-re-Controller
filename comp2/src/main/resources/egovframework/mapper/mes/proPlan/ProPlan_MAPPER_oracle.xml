@@ -55,52 +55,54 @@
 				]]>
 	</select>
 	
+	
+	
 	<!-- 전체 목록 조회 -->
 	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT  TO_CHAR(m.pro_plan_date) as pro_plan_date
+						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy/MM/dd') as pro_plan_date
 							 , e.erp_customer_code
 							 , m.pro_plan_code
 						     , e.erp_product_code
 						     , e.erp_product_name 
 						     , e.erp_order_code
-						     , TO_CHAR(e.erp_product_deadline) as erp_product_deadline
+						     , TO_CHAR(e.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
 						     , e.erp_order_qty
 						     , d.pro_plan_qty
-						     , TO_CHAR(d.pro_work_date) as pro_work_date
+						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
 						     , d.pro_plan_seq
 						FROM pro_plan_detail d
 						   , erp_product_order e
 						   , pro_plan m
 						WHERE d.erp_order_code = e.erp_order_code
 						  AND m.pro_plan_code = d.pro_plan_code
-						<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
-							<if test="searchCondition == 1"> AND
-								m.pro_plan_date BETWEEN #{startDate} AND #{endDate} 
+							<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+								<if test="searchCondition == 1"> AND
+									m.pro_plan_date BETWEEN #{startDate} AND #{endDate} 
+								</if>
+								<if test="searchCondition == 2"> AND
+									e.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
+								</if>
 							</if>
-							<if test="searchCondition == 2"> AND
-								e.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
-							</if>
-						</if>
-							<if test="erpProductCode != null and erpProductCode != ''"> AND
-								e.erp_product_code LIKE '%' || #{erpProductCode} || '%'
-							</if>
+								<if test="erpProductCode != null and erpProductCode != ''"> AND
+									e.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+								</if>
+								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
+									e.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
+								</if>
 							ORDER BY 
 								m.PRO_PLAN_CODE DESC
-				
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
 		]]>
 	</select>	
-	
-	
 	<select id="selectProPlanListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
 			SELECT COUNT(*) totcnt
 			FROM pro_plan m
-				   , pro_plan_detail d
-				   , erp_product_order e
+			   , pro_plan_detail d
+			   , erp_product_order e
 			WHERE m.pro_plan_code = d.pro_plan_code
 			  AND d.erp_order_code = e.erp_order_code
 			  AND 1=1
@@ -116,6 +118,48 @@
 	</select>
 	
 	
+	<!-- erp_order테이블에서 제품리스트 가져오기 -->
+	<select id="selectErpPordList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT erp_order_code
+						     , erp_product_code
+						     , erp_product_name
+						     , erp_order_qty
+						FROM erp_product_order
+						WHERE 1=1
+						 <if test="erpProductCode != null and erpProductCode!=''"> AND
+							erp_product_code LIKE '%' || #{erpProductCode} || '%'
+						</if>
+						<if test="erpProductName != null and erpProductName !=''">AND
+							erp_product_name LIKE '%' || #{erpProductName} || '%'
+						</if>
+						ORDER BY 
+							erp_product_code
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	
+	</select>
+	<select id="selectErpProdCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM erp_product_order
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				erp_product_code = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1">AND
+				erp_product_name LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+	
+	</select>
+	
+	
+	
+	<!-- 제품명, 제품코드로 검색(한설) -->
 	<select id="selectProductList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
@@ -137,7 +181,6 @@
 		)WHERE RNUM >= #{firstIndex}
 		]]>
 	</select>
-	
 	<select id="selectProductTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
 		SELECT COUNT(*)
 		FROM COM_PRODUCT

@@ -73,6 +73,14 @@ public interface ProPlanService {
     List<?> selectProductList(ProPlanVO vo) throws Exception;
     int selectProductTotCnt(ProPlanVO vo);
     
+	/* 
+	 * erp_order테이블에서 제품리스트 가져오기 
+	 * 생산계획관리 페이지의 모달창에서 사용
+	 * 김다희
+	 * */
+    List<?> selectErpPordList(ProPlanVO vo);
+    int selectErpProdCnt(ProPlanVO vo);
+    
     
     
     

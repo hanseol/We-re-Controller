@@ -5,6 +5,7 @@
 
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
 <style>
 .my-panel {
 	text-align: right;
@@ -21,8 +22,8 @@
 	text-align: center;
 	max-width: 900px;
 	width: 900px;
-	height: 600px;
-	max-height: 600px;
+	/*height: 600px;
+	max-height: 600px;*/
 }
 
 .blocker{
@@ -38,13 +39,7 @@
 </div>
 
 
-<!--  모달창띄우기
-<p>
-<a href="testModal.do" rel="modal:open" id="getData">
-<button type="button" class="btn btn-success" id="showModal">조회</button>
-</a>
-</p>
- -->
+
 
 <!-- 관리, 조회 탭 이동 -->
 <div id="tabs">
@@ -61,13 +56,14 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
+			<button type="button" class="btn btn-success" id="findRow">조회</button>
 			<button type="button" class="btn btn-danger">새자료</button>
 			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
 			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
 		</div>
 	</div>
 </div>
+
 
 <!-- 마스터 테이블 -->
 <div class="content-fluid">
@@ -76,15 +72,19 @@
 			<div class="row">
 				<div class="col-md-6">
 					<form>
-						* 계획일자 &nbsp;&nbsp;<input type="date" id="proPlanDate" name="proPlanDate"><br/><br/>
-						* 계획이름 &nbsp;&nbsp;<input type="text" id="proPlanName" name="proPlanName">
+						* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
+							~ <input type="date" id="endDate" name="endDate"> 
+							<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
+							<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
+							<br/><br/>
+						* 생산계획명  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">  &nbsp;&nbsp;
+						<!-- 모달창 -->
+						<a href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open">
+							<i class="fa fa-search" ></i>
+						</a>
 					</form>
 				</div>
-				<div class="col-md-6">
-					* 미생산계획 검색 <br/><br/>
-						납기일자 &nbsp;&nbsp;&nbsp; <input type="date" id="startNotWorkDate" name="startNotWorkDate">
-						~ <input type="date" id="endNotWorkDate" name="endNotWorkDate">
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -97,7 +97,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">Grid 테스트</p>
+					<p class="panel-subtitle">생산계획관리</p>
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button">조회</button>
@@ -111,9 +111,49 @@
 		</div>
 	</div>
 </div>
+
+
 <script>
 	$(document).ready(function() {
 
+		//M 조회 버튼
+		$(document).on("click", "button[id=findRow]",
+	            function() {
+	    	  	   var gubun = $("input[name=gubun]:checked").val();
+	    	  	   console.log(gubun);
+	               var startDate = $("#startDate").val();
+	               var endDate = $("#endDate").val();
+	               var erpProductCode = $("#erpProductCode").val();
+	               var erpCustomerCode = $("#erpCustomerCode").val();
+	               var readParams = {
+	            	  'searchCondition' : gubun,
+	                  'startDate' : startDate,
+	                  'endDate' : endDate,
+	                  'erpProductCode' : erpProductCode,
+	                  'erpCustomerCode' : erpCustomerCode
+	               };
+	               grid.readData(1, readParams, true);
+	            });
+
+		//M 추가저장 버튼
+		$(document).on("click", "button[id=insertRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('createData');
+		});
+		
+		//M 수정저장 버튼 
+		$(document).on("click", "button[id=updateRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('updateData');
+		});
+		
+		//D 삭제 버튼 
+		$(document).on("click", "button[id=deleteRow]", function() {
+			grid.removeCheckedRows(true);
+			grid.request('deleteData');
+		});
+		
+		//D 추가 버튼
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData = [ {
 				erpCustomerCode : "",
@@ -133,21 +173,8 @@
 			grid.enable();
 		});
 		
-		$(document).on("click", "button[id=insertRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('createData');
-		});
 		
-		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(true);
-			grid.request('deleteData');
-		});
-		
-		$(document).on("click", "button[id=updateRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('updateData');
-		});
-		
+		//dataSource		
 		const dataSource = {
 			api : {
 				readData : {
@@ -158,6 +185,8 @@
 			},
 			contentType : "application/json"
 		};
+		
+		
 
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
@@ -202,7 +231,7 @@
 		
 	
 
-	
+	/* 	
 	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);
@@ -210,7 +239,8 @@
 		  console.log('result : ', responseObj.result);
 		  console.log('data : ', responseObj.data);
 		});
-	
+	 */
+	 
 	grid.on('check', (ev) => {
 		  alert(`check: ${ev.rowKey}`);
 	});

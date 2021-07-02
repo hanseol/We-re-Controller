@@ -64,18 +64,8 @@ public class ProOrderController {
     @RequestMapping("proOrder/prodView")
     @ResponseBody
     public Map<String, Object> readOrder(Model model, @ModelAttribute("proOrderVO") ProOrderVO proOrderVO ) throws Exception {
-
     	List<?> list = new ArrayList<>();
-    	
-    	//검색조건이 있을 경우
-    	if(!proOrderVO.getSearchKeyword().equals("")) {
-    		//mapper 조건에 따라 condition 설정 필요함.
-    		proOrderVO.setSearchCondition("0");
-        	list = service.selectProOrderList(proOrderVO);
-        //검색조건이 없을 경우
-    	}else {
-        	list = service.selectProOrderList(proOrderVO);
-    	}
+        list = service.selectProOrderList(proOrderVO);
     	return comFunc.sendResult(list);
     }
     

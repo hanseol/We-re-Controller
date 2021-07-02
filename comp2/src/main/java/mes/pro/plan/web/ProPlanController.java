@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.jms.Session;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,18 +67,31 @@ public class ProPlanController {
         return "mes/pro/plan/prodPlanView.page";
     }
     
-    //생산계획조회
+    //생산계획리스트 조회
     @RequestMapping("proPlan/ProdPlanView")
     @ResponseBody
-    public Map<String, Object> readBoard(Model model, @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
-    	
+    public Map<String, Object> readPlan(Model model, @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
     	List<?> list = new ArrayList<>();
-    	
         list = service.selectProPlanList(searchVO);
-    	
         return comFunc.sendResult(list);
     }
-
+    
+    //생산계획관리 (erp제품모달 페이지 호출)
+    @GetMapping("erpProductSearch.do")
+    public String erpProductSearch() {
+    	return "mes/pro/modal/erpProductSearch";
+    }
+    
+    //생산계획관리 (erp제품모달 페이지 결과 값 가져오기)
+    @RequestMapping("erpProductSearch")
+    @ResponseBody
+    public Map<String, Object> erpProductSearch(Model model, @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
+    	
+    	List<?> list = service.selectErpPordList(searchVO);
+    	
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
     
     //생산계획리스트 추가, 수정, 삭제 (****수정하기)
 	@PutMapping("proOrder/modifyProdPlan")

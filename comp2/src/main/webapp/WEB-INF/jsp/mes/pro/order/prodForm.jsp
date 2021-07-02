@@ -124,7 +124,7 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/proOrder/ProdView',
+					url : '${pageContext.request.contextPath}/proOrder/prodView',
 					method : 'GET'
 				},
 				createData : {
@@ -183,7 +183,7 @@
 				editor : 'text'
 			}, {
 				header : '일생산량',
-				name : 'dayQty',
+				name : 'macHourQty',
 				editor : 'text'
 			}, {
 				header : '일수',
