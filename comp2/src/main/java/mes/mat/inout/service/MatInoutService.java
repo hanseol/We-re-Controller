@@ -52,5 +52,7 @@ public interface MatInoutService {
     
     //전체  리스트 출력
     List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;
-
+    
+    //모달 리스트 출력
+    List<?> searchFormList(MatInoutVO searchVO) throws Exception;
 }

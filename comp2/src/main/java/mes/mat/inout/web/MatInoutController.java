@@ -1,7 +1,6 @@
 package mes.mat.inout.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +10,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,12 +72,9 @@ public class MatInoutController {
     public Map<String, Object> matInout(Model model, 
     		 @ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception{
 
-    	int rowSize = 0;
     	List<?> list = new ArrayList<>();
     	
-    
         list = service.selectMatInoutList(searchVO);
-    	
     	
     	return comFunc.sendResult(list);
     }
@@ -87,7 +83,7 @@ public class MatInoutController {
     @PutMapping("/ajax/modifyMatInout")
 	@ResponseBody
 	public void modifyMatInout(@RequestBody GridDataVO gd) throws Exception {
-
+    	
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -99,7 +95,7 @@ public class MatInoutController {
 		}
 		
 		if (createdList.size() != 0) {
-			//전표번호 부여해야함
+			//전표번호 부여해야함 MAT-날짜(MMDD)-순서(서브스트링 후 붙히기)
 			for (int i = 0; i < createdList.size(); i++) {
 				service.insertMatInout((LinkedHashMap) createdList.get(i));
 			}
@@ -112,6 +108,29 @@ public class MatInoutController {
 			}
 		}
 	}
+    
+    //업체검색 모달창 오픈
+    @GetMapping("mes/matInout/searchVendorCode.do")
+  	public String testModal() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/matInout/searchVendorCode";
+  	}
+  	
+  	//모달창에 결과 값 전달
+  	@RequestMapping("ajax/matInout/searchVendorCode")
+  	@ResponseBody
+  	public Map<String, Object> searchVendorCode(Model model, 
+     		@ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.selectMatInoutList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
+  	
+  	
 
     
     

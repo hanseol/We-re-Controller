@@ -68,5 +68,10 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception {
     	return matInoutMapper.selectMatInoutList(searchVO);
     }
+    
+    //모달 리스트 출력
+	public List<?> searchFormList(MatInoutVO searchVO) throws Exception {
+		return matInoutMapper.searchFormList(searchVO);
+	}
 
 }

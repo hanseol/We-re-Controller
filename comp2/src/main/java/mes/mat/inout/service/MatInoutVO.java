@@ -50,5 +50,11 @@ public class MatInoutVO extends SearchVO{
     
     /** MAT_INOUT_PRICE */
     private java.math.BigDecimal matInoutPrice;
+    
+    //거래처코드 추가
+    private java.lang.String erpVendorCode;
+    
+    
+    
 
 }

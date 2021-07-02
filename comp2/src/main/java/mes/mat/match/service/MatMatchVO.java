@@ -41,5 +41,5 @@ public class MatMatchVO extends SearchVO{
     /** MAT_MATCH_DATE */
     @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
     private java.lang.String matMatchDate;
-
+    
 }

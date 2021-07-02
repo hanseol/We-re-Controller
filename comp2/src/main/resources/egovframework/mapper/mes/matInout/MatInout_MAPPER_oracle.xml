@@ -3,85 +3,137 @@
 
 <mapper namespace="mes.mat.inout.service.impl.MatInoutMapper">
 	
-	<!-- 자재입출고조회페이지 전체조회 -->
+	<!-- 자재입출고 전체조회 -->
 	<select id="selectMatInoutList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
 		SELECT *
 		FROM   (
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
+		                              SELECT   
+		                              		   m.mat_inout_statement,
+		                              		   TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
+		                              		   q.erp_vendor_code,
 		                              		   c.com_material_code,
+		                              		   m.mat_lot_no,
 		                                       c.com_material_name,
 		                                       c.com_material_size,
 		                                       c.com_material_unit,
-		                                       e.erp_material_order_code,
+		                                       m.mat_inout_gubun,
 		                                       m.mat_inout_quantity,
 		                                       m.mat_inout_unit_price,
 		                                       m.mat_inout_price,
-		                                       m.mat_lot_no,
 		                                       (q.qua_material_p_qty - CASE m.mat_inout_gubun
                                                                     	WHEN 'PNS003'
                                                                     	THEN mat_inout_quantity
                                                                     	ELSE 0
                                                                     	END						) as material_stock
-		                                       
-		                              FROM     erp_material_order e,
-		                                       com_material c,
+		                              FROM     com_material c,
 		                                       mat_inout m,
 		                                       qua_material_chk q
-		                              WHERE    e.com_material_code = c.com_material_code
-		                              AND      c.com_material_code = m.com_material_code
-		                              AND	   q.com_material_code = m.com_material_code
-		                              <if test="comMaterialCode != null and comMaterialCode != ''">
+		                              WHERE    c.com_material_code = m.com_material_code
+		                              AND	   m.com_material_code = q.com_material_code
+		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                               	AND
-		                              	c.com_material_code = #{comMaterialCode}
+		                              	m.mat_inout_date = #{matInoutDate}
+		                              </if>
+		                              <if test="erpVendorCode != null and erpVendorCode != ''">
+		                              	AND
+		                              	q.erp_vendor_code = #{erpVendorCode}
+		                              </if>
+		                              <if test="matInoutGubun != null and matInoutGubun != ''">
+		                              	AND
+		                              	m.mat_inout_gubun = #{matInoutGubun}
 		                              </if>
 		                              ORDER BY mat_inout_statement DESC  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
 	</select>
-
-	<!-- 입출고 등록 -->
-	<insert id="insertMatInout"	parameterType="mes.mat.inout.service.MatInoutVO">
-		INSERT INTO mat_inout (COM_MATERIAL_CODE,
-								COM_MATERIAL_NAME,
-								COM_MATERIAL_SIZE,
-								COM_MATERIAL_UNIT,
-								ERP_MATERIAL_ORDER_CODE,
-								MAT_INOUT_QUANTITY,
-								MAT_INOUT_UNIT_PRICE,
-								MAT_INOUT_PRICE,
-								MAT_LOT_NO)
-		VALUES      ( # {comMaterialCode},
-		              # {comMaterialName},
-		              # {comMaterialSize},
-		              # {comMaterialUnit},
-		              # {erpMaterialOrderCode},
-		              # {matInoutQuantity},
-		              # {matInoutUnitPrice},
-		              # {matInoutPrice},
-		              # {matLotNo}) 
+	
+	<!-- 자재입출고 관리페이지 등록 -->
+	<insert id="insertMatInout">
+		INSERT INTO mat_inout 	(mat_inout_date,
+								 mat_lot_no,
+								 mat_inout_gubun,
+								 mat_inout_quantity,
+								 mat_inout_unit_price,
+								 mat_inout_price)
+		VALUES      			( #{matInoutDate},
+					              #{matLotNo},
+					              #{matInoutGubun},
+					              #{matInoutQuantity},
+					              #{matInoutUnitPrice},
+					              #{matInoutPrice})
+							              
 	</insert>
 
-	<!-- 입출고 수정 -->
-	<update id="updateSalProductInout" parameterType="mes.mat.inout.service.MatInoutVO">
+	<!-- 자재입출고 관리페이지 수정 -->
+	<update id="updateMatInout">
 		UPDATE mat_inout
 		SET
-		       (
-		              com_material_unit = # {comMaterialUnit}),
-		              mat_inout_quantity = # {matInoutQuantity},
-		              mat_inout_unit_price = # {matInoutUnitPrice},
-		              mat_inout_price = # {matInoutPrice}
-		       )
-		WHERE	mat_inout_statement = # {matInoutStatement}
+		              mat_inout_quantity = #{matInoutQuantity},
+		              mat_inout_unit_price = #{matInoutUnitPrice},
+		              mat_inout_price = #{matInoutPrice}
+		       
+		WHERE	mat_inout_statement = #{matInoutStatement}
 	</update>
 	
-	<!-- 입출고 삭제 -->
-	<delete id="deleteSalProductInout" parameterType="mes.mat.inout.service.MatInoutVO">
-		DELETE FROM mat_inout
-		WHERE mat_inout_statement = #{matInoutStatement}
+	<!-- 자재입출고 관리페이지 삭제 -->
+	<delete id="deleteMatInout">
+		DELETE FROM	mat_inout
+		WHERE		mat_inout_statement = #{matInoutStatement}
 	</delete>
+	
+	<!-- 업체검색 -->
+	<select id="searchVendorCode" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+		SELECT com_code_detail_id,
+		       com_code_detail_name,
+		       com_code_detail_desc
+		FROM   com_code_detail
+		<if test="comCodeDetailId != null and comCodeDetailId != '')  ">
+			WHERE
+			com_code_detail_id LIKE '%' || UPPER(#{comCodeDetailId}) || '%'
+		</if>
+		<if test="comCodeDetailName != null and comCodeDetailName != ''">
+        	AND
+        	com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
+        </if>
+	</select>
+	
+	<select id="searchFormList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+		SELECT * FROM (
+         SELECT A.*, ROWNUM RNUM FROM (
+                  SELECT com_code_detail_id
+                       , com_code_detail_name
+                       , com_code_detail_desc
+                  FROM com_code_detail
+                  WHERE 1=1
+                  <if test="erpProductCode != null and erpProductCode!=''"> AND
+                     com_code_detail_id LIKE '%' || #{comCodeDetailId} || '%'
+                  </if>
+                  <if test="erpProductName != null and erpProductName !=''">AND
+                     com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
+                  </if>
+                  ORDER BY 
+                     com_code_detail_id
+            <![CDATA[               
+         ) A WHERE ROWNUM <= #{lastIndex}
+      )WHERE RNUM >= #{firstIndex}
+      ]]>                  
+	</select>
+	<!-- <select id="searchVendorFormListCnt" parameterType="mes.com.comCode.service.ComCodeVO" resultType="int">
+      SELECT COUNT(*) totcnt
+      FROM com_code_detail
+      WHERE 1=1
+      <if test="searchKeyword != null and searchKeyword != ''">
+         <if test="searchCondition == 0">AND
+            com_code_detail_id = #{comCodeDetailId}
+         </if>
+         <if test="searchCondition == 1">AND
+            com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
+         </if>
+      </if>
+   </select> -->
 	
 </mapper>

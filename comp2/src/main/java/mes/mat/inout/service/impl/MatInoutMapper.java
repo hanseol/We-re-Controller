@@ -5,6 +5,7 @@ import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.mat.inout.service.MatInoutVO;
+import mes.pro.plan.service.ProPlanVO;
 
 /**
  * @Class Name : MatInoutMapper.java
@@ -36,5 +37,18 @@ public interface MatInoutMapper {
     
     //입출고조회페이지 리스트 조회
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;
-
+    
+    /*
+     * 목록 조회
+     * 모달창에서 사용
+     * 김한설
+     * */
+    public List<?> searchFormList(MatInoutVO searchVO) throws Exception;
+    /*
+     * 총 갯수 조회
+     * 모달창에서 사용
+     * 김한설
+     * */
+    public int searchVendorFormListCnt(MatInoutVO vo);
+    
 }
