@@ -16,7 +16,7 @@ import java.util.List;
  *      Copyright (C) All right reserved.
  */
 public interface ComCodeService {
-	
+
 	// 마스터 테이블 조회
 	List selectComCodeList(ComCodeVO searchVO) throws Exception;
 

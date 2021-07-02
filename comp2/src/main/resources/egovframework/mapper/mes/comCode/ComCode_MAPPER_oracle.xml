@@ -3,43 +3,32 @@
 
 <mapper namespace="mes.com.comCode.service.impl.ComCodeMapper">
 	
-
-	<resultMap id="comCode" type="mes.com.comCode.service.ComCodeVO">
-		<result property="comCodeId" column="COM_CODE_ID" />
-		<result property="comCodeName" column="COM_CODE_NAME" />
-		<result property="comCodeDesc" column="COM_CODE_DESC" />
-		<result property="comCodeUsedchk" column="COM_CODE_USEDCHK" />
-	</resultMap>
-	
-	
-	
-	<!-- 마스터코드 검색 조회 -->
-	<select id="selectComCode" resultMap="comCode">
-
-			SELECT
+	<!-- 마스터코드 조회 -->
+	<select id="selectComCodeList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
 			COM_CODE_ID
 			, COM_CODE_NAME
 			, COM_CODE_DESC
 			, COM_CODE_USEDCHK
 			FROM COM_CODE
-			<if test="(comCodeId != null and comCodeId != '')  ">
-			WHERE COM_CODE_ID=#{comCodeId}
-			</if>
-
-	</select>
-	
-	<!-- 마스터코드 전체 조회 -->
-	<select id="selectComCodeList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
-				SELECT COM_CODE_ID
-					, COM_CODE_NAME
-					, COM_CODE_DESC
-					, COM_CODE_USEDCHK
-				FROM COM_CODE
+				<if test="comCodeId != null and comCodeId != ''">
+					WHERE COM_CODE_ID LIKE UPPER('%' || #{comCodeId} || '%')
+					</if>
+					ORDER BY 
+						COM_CODE_ID ASC
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM >= #{firstIndex}
+]]>
 	</select>
 		
 	<!-- 디테일코드 조회 -->
 	<select id="selectComCodeDetailList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
-			SELECT COM_CODE_DETAIL_ID
+			SELECT 
+			COM_CODE_ID
+			, COM_CODE_DETAIL_ID
 			, COM_CODE_DETAIL_NAME
 			, COM_CODE_DETAIL_DESC
 			, COM_CODE_DETAIL_SEQ
@@ -48,6 +37,7 @@
 			<if test="(comCodeId != null and comCodeId != '')  ">
 			WHERE COM_CODE_ID LIKE UPPER(#{comCodeId})
 			</if>
+			ORDER BY COM_CODE_DETAIL_SEQ ASC
 	</select>	
 
 	<!-- 디테일코드 업데이트 -->

@@ -34,6 +34,7 @@ public class ComCodeServiceImpl extends EgovAbstractServiceImpl implements ComCo
 	@Resource(name = "comCodeMapper")
 	private ComCodeMapper comCodeDAO;
 
+	// 마스터테이블 조회
 	public List<?> selectComCodeList(ComCodeVO searchVO) throws Exception {
 		return comCodeDAO.selectComCodeList(searchVO);
 	}
