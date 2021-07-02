@@ -33,9 +33,7 @@
 		<result property="comMaterialMax" column="COM_MATERIAL_MAX" />
 	</resultMap>
 	<resultMap type="mes.main.map.ResultMapVO" id="resultMaps">
-		<collection property="orderVO" resultMap="erpMaterialOrder" />
 		<collection property="matInoutVO" resultMap="matInout" />
-		<collection property="matrVO" resultMap="comMaterial" />
 	</resultMap>
 	<!-- 자재LOT 조회페이지 전체 조회 -->
 	<select id="selectMatLotList" resultMap="resultMaps">
