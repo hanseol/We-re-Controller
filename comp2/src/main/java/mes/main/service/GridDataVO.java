@@ -11,8 +11,7 @@ import lombok.Data;
  * 
  * */
 
-@Data
-public class GridDataVO {
+@Datapublic class GridDataVO {
 	List<?> updatedRows;
 	List<?> createdRows;
 	List<?> deletedRows;

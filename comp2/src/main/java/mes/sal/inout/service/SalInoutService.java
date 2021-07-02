@@ -64,14 +64,25 @@ public interface SalInoutService {
 	 * @return SAL_INOUT 총 갯수
 	 * @exception
 	 */
-    
+
   //입출고 조회 페이지
     List selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
-    
-    
-   
-    
     int selectSalInoutListTotCnt(SalInoutVO searchVO);
+
+    
+    
+    //모달 : 제품코드 조회
+    List<?> searchProductList(SalInoutVO searchVO) throws Exception;
+    int searchProductListTotCnt(SalInoutVO searchVO);
+    
+    //모달 : 고객코드 조회
+    List<?> searchCustomerList(SalInoutVO searchVO) throws Exception;
+    int searchCustomerListTotCnt(SalInoutVO searchVO);
+    
+    //모달 : 완제품 LOT_NO 조회
+	List<?> searchProductLotNoList(SalInoutVO searchVO) throws Exception;
+	int searchProductLotNoListTotCnt(SalInoutVO searchVO);
+	
     
     
     

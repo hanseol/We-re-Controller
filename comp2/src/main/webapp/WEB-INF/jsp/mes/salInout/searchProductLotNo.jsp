@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
-<!-- 210701 김현경 제품검색 모달창 -->
+<!-- 210701 김현경 LOT_NO 검색 모달창 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>제품 검색</h3>
+		<h3>완제품 LOT_NO 검색</h3>
 	</div>
 </div>
 
@@ -14,8 +14,9 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" /> &nbsp;
 					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" />
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
+					<br> 제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
 					<button id="findRow">검색</button>
 					<br>
 				<div id="modalGrid"></div>
@@ -41,7 +42,7 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'comProductCode');
+			code = grid.getValue(chkRowKeys[i],'proProductLotNo');
 			console.log(code);
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
@@ -49,11 +50,14 @@ $(document).ready(function() {
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
+		var no = $("#proProcessLotNo").val();
+		console.log(no);
 		var code = $("#comProductCode").val();
 		console.log(code);
 		var name = $("#comProductName").val();
 		console.log(name);
 		var readParams = {
+				'proProcessLotNo' : no,
 				'comProductCode' : code,
 				'comProductName' : name
 			};
@@ -63,7 +67,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/mes/salInout/searchProductCode',
+				url : '${pageContext.request.contextPath}/mes/salInout/searchProductLotNo',
 				method : 'GET'
 			}
 		},
@@ -79,6 +83,9 @@ $(document).ready(function() {
 	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
+			header : '완제품 LOT_NO',
+			name : 'proProcessLotNo'
+		}, {
 			header : '제품코드',
 			name : 'comProductCode'
 		}, {

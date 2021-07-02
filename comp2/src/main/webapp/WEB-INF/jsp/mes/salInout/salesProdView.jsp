@@ -13,6 +13,21 @@
 	margin-bottom: 10px;
 	background-color: white;
 }
+
+.modal{
+	-webkit-border-radius :0px;
+	border-radius:0px;
+	overflow: visible;
+	text-align: center;
+	max-width: 900px;
+	width: 900px;
+	/* height: 600px;
+	max-height: 600px; */
+}
+
+.blocker{
+	z-index: 1200;
+}
 </style>
 
 <div class="content-fluid">
@@ -33,56 +48,50 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+			<button type="button" class="btn btn-success" id="search">조회</button>
+			<button type="button" class="btn btn-danger" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
 
-
+<form id="option">
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-4">
-					<form>
+				<div class="col-md-3">
 						일자
-						<input type="date" id="salesDate" name="salesDate">
-					</form>
+						<input type="date" id="date" name="date">
 				</div>
-				<div class="col-md-4">
-					<form>
-						입/출고구분
-						<input type="checkbox" id="inGubun" name="inGubun" value="1" checked="checked">입고
-						<input type="checkbox" id="outGubun" name="outGubun" value="2">출고
-					</form>
+				<div class="col-md-3">
+						입/출고구분 &nbsp;
+						<input type="checkbox" id="inGubun" name="gubun" value="1" checked="checked">입고
+						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
 				</div>
-				<div class="col-md-4">
-					<form>
+				<div class="col-md-3">
 						제품코드
-						<input type="text" id="text_productCode" name="text_productCode">
-						<button type="button" id="btn_productCode" name="btn_productCode">돋</button>
-						<input type="text" id="readonly_productCode" name="readonly_productCode" readonly="true">
-					</form>
+						<input type="text" id="productCode" name="productCode">	
+						<a href="searchProductCode.do" rel="modal:open">						
+                     	<i class="fa fa-search"></i></a>
+				</div>
+				<div class="col-md-3">
+						완제품 LOT_NO
+						<input type="text" id="productLotNo" name="productLotNo">	
+						<a href="searchProductLotNo.do" rel="modal:open">						
+                     	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</form>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">완제품 입출고 목록</p>
-				</div>
-				<div class="col-md-5" align="right">
-					<button type="button">조회</button>
-					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
+					<p class="panel-subtitle">완제품 입/출고 목록</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -93,55 +102,27 @@
 </div>
 
 <script>
-	$(document).ready(function() {
-		
-		//등록, 수정, 삭제할 때
-		$(document).on("click", "button[id=appendRow]", function() {
-			var rowData = [ {
-				No : "",
-				Title : "",
-				Content : "",
-				Date : ""
-			} ];
-			grid.appendRow(rowData, {
-				at : grid.getRowCount(),
-				focus : true
-			});
-			grid.enable();
-		});
-		
-		$(document).on("click", "button[id=insertRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('createData');
-		});
-		
-		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(true);
-			grid.request('deleteData');
-		});
-		
-		$(document).on("click", "button[id=updateRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('updateData');
-		});
+	$(document).ready(function() {	
+		$(document).on("click", "button[id=search]",
+				function() {
+					var date = $("#date").val();
+					var gubun = $("#gubun").val();
+					var productCode = $("#productCode").val();
+					var productLotNo = $("#productLotNo").val();
+					var readParams = {
+						'salInoutDate' : date,
+						'salInoutGubun' : gubun,
+						'comProductCode' : productCode,
+						'proProcessLotNo' : productLotNo
+					};
+					grid.readData(1, readParams, true);
+				});
 		
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/sal/inout/readSalesProduct',
+					url : '${pageContext.request.contextPath}/ajax/sal/readSalesProduct',
 					method : 'GET'
-				},
-				createData : {
-					url : '${pageContext.request.contextPath}/ajax/insertBoard',
-					method : 'POST'
-				},
-				deleteData : {
-					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
-					method : 'DELETE'
-				},
-				updateData : {
-					url : '${pageContext.request.contextPath}/ajax/updateBoard',
-					method : 'PUT'
 				}
 			},
 			contentType : "application/json"
@@ -199,6 +180,15 @@
 		  console.log('result : ', responseObj.result);
 		  console.log('data : ', responseObj.data);
 		});
+	
+	// option form reset  
+	 $(document).ready(function() {  
+	    $("#reset").click(function() {  
+	         $("form").each(function() {  
+	                if(this.id == "option") this.reset();  
+	             });  
+	    });  
+	 });  
 	
 }); //end of document ready
 </script>

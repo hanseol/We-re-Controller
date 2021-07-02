@@ -21,6 +21,9 @@
 		<result property="erpProductDeadline" column="ERP_PRODUCT_DEADLINE" />
 		<result property="erpProductOrderDate" column="ERP_PRODUCT_ORDER_DATE" />
 		<result property="erpProductName" column="ERP_PRODUCT_NAME" />
+		
+		<result property="comCodeDetailId" column="COM_CODE_DETAIL_ID" />
+		<result property="comCodeDetailName" column="COM_CODE_DETAIL_NAME" />
 	</resultMap>
 
 	<!-- 한 건 조회 -->
@@ -67,7 +70,7 @@
 		)WHERE RNUM >= #{firstIndex}
 		]]>
 	</select>
-
+	
 	<!-- 입출고목록 조회 + 관리 ... DATE 수정해야 함.-->
 	<select id="selectSalProductInoutList"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
@@ -208,6 +211,159 @@
 			</if>
 			<if test="searchCondition == 1">AND
 				COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 모달  -->
+	<!-- 모달 : 제품 목록 -->
+	<select id="searchProductList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT COM_PRODUCT_CODE,
+								COM_PRODUCT_NAME,
+								COM_PRODUCT_SIZE
+						FROM COM_PRODUCT
+						WHERE 1=1
+						<if test="comProductCode != null and comProductCode!=''"> AND
+							COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+						</if>
+						<if test="comProductName != null and comProductName!=''">AND
+							COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+						</if>
+						ORDER BY 
+								COM_PRODUCT_NAME
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 모달 : 제품 목록 총 갯수 -->
+	<select id="searchProductListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
+		SELECT COUNT(*)
+		FROM COM_PRODUCT
+		<if test="(comProductCode != null and comProductCode != '')
+					|| (comProductName !=null and comProductName != '')">
+			<if test="searchCondition == 0">WHERE
+				COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+			</if>
+			<if test="searchCondition == 1">WHERE
+				COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+			</if>
+			<if test="searchCondition == 2">WHERE
+				COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+				AND COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 모달 : 고객사 목록 -->
+	<select id="searchCustomerList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT COM_CODE_DETAIL_ID,
+								COM_CODE_DETAIL_NAME,
+								COM_CODE_DETAIL_DESC
+						FROM COM_CODE_DETAIL
+						WHERE 1=1
+						AND COM_CODE_DETAIL_ID LIKE '%CUSTOMER%'
+						<if test="comCodeDetailId != null and comCodeDetailId != ''"> AND
+							COM_CODE_DETAIL_ID LIKE '%' || #{comCodeDetailId} || '%'
+						</if>
+						<if test="comCodeDetailName != null and comCodeDetailName != ''">AND
+							COM_CODE_DETAIL_NAME LIKE '%' || #{comCodeDetailName} || '%'
+						</if>
+						ORDER BY 
+								COM_CODE_DETAIL_ID
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 모달 : 고객사 목록 총 갯수 -->
+	<select id="searchCustomerListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
+		SELECT COUNT(*)
+		FROM COM_CODE_DETAIL
+		WHERE COM_CODE_DETAIL_ID LIKE '%CUSTOMER%' AND
+		<if test="comCodeDetailId != null and comCodeDetailId != '')
+					|| comCodeDetailName !=null and comCodeDetailName != '')">
+			<if test="searchCondition == 0">
+				COM_CODE_DETAIL_ID LIKE '%' || #{comCodeDetailId} || '%'
+			</if>
+			<if test="searchCondition == 1">
+				COM_CODE_DETAIL_NAME LIKE '%' || #{comCodeDetailName} || '%'
+			</if>
+			<if test="searchCondition == 2">
+				COM_CODE_DETAIL_ID LIKE '%' || #{comCodeDetailId} || '%'
+				AND COM_CODE_DETAIL_NAME LIKE '%' || #{comCodeDetailName} || '%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 모달 : 완제품 LOT_NO 목록 -->
+	<select id="searchProductLotNoList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT P.PRO_PROCESS_LOT_NO, C.COM_PRODUCT_NAME, C.COM_PRODUCT_CODE
+						FROM PRO_PROCESS P, COM_PRODUCT C
+						WHERE 1=1
+						AND P.ERP_PRODUCT_NAME = C.COM_PRODUCT_NAME
+						AND P.PRO_PROCESS_LOT_NO IS NOT NULL
+						<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
+							PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+						</if>
+						<if test="comProductName != null and comProductName != ''">AND
+							COM_PRODUCT_NAME LIKE '%' || #{comCodeDetailName} || '%'
+						</if>
+						<if test="comProductCode != null and comProductCode != ''">AND
+							COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+						</if>
+						ORDER BY 
+								P.PRO_PROCESS_LOT_NO
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 모달 : 완제품 LOT_NO 목록 총 갯수 -->
+	<select id="searchProductLotNoListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
+		SELECT COUNT(*)
+		FROM PRO_PROCESS P, COM_PRODUCT C
+		WHERE P.ERP_PRODUCT_NAME = C.COM_PRODUCT_NAME
+		AND P.PRO_PROCESS_LOT_NO IS NOT NULL
+		<if test="proProcessLotNo != null and proProcessLotNo != '')
+					|| comProductName !=null and comProductName != '')
+					|| comProductCode !=null and comProductCode != '')">
+			<if test="searchCondition == 0">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+			</if>
+			<if test="searchCondition == 1">
+				COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+			</if>
+			<if test="searchCondition == 2">
+				COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+			</if>
+			
+			<if test="searchCondition == 3">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+				AND COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+			</if>
+			<if test="searchCondition == 4">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+				AND COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+			</if>
+			<if test="searchCondition == 5">
+				COM_PRODUCT_NAME LIKE '%' || #{comCodeDetailId} || '%'
+				AND COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+			</if>
+			
+			<if test="searchCondition == 6">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+				AND COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+				AND COM_PRODUCT_CODE LIKE '%' || #{comProductCode} '%'
 			</if>
 		</if>
 	</select>

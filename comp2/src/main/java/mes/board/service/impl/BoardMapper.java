@@ -29,8 +29,11 @@ public interface BoardMapper {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
+	
+	public int getBoardNo();
+	
     public void insertBoard(LinkedHashMap vo) throws Exception;
-
+    public void insertBoard(BoardVO vo);
     /**
 	 * BOARD을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 BoardVO
@@ -70,5 +73,7 @@ public interface BoardMapper {
 	 * @exception
 	 */
     public int selectBoardListTotCnt(SearchVO searchVO);
+
+ 
 
 }

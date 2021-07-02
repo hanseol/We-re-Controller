@@ -1,7 +1,6 @@
 package mes.board.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,11 +94,23 @@ public class BoardController {
 			}
 		}
 
-		if (createdList.size() != 0) {
-			for (int i = 0; i < createdList.size(); i++) {
-				service.insertBoard((LinkedHashMap) createdList.get(i));
-			}
+		
+		//시퀀스번호 가져와서 넣는 방법.
+//		if (createdList.size() != 0) {
+//			for (int i = 0; i < createdList.size(); i++) {
+//				//시퀀스 번호 가져오기
+//				int no = service.getBoardNo();
+//				((LinkedHashMap)createdList.get(i)).put("no", no);
+//				//insert해야함.
+//				service.insertBoard((LinkedHashMap) createdList.get(i));
+//			}
+//		}
+		
+		//별도의 input태그에서 가져와서 넣는 방법.
+		if(createdList.size()!=0) {
+			
 		}
+		
 
 		if (deletedList.size() != 0)
 		{

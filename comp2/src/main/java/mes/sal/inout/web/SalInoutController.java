@@ -19,6 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
+import mes.pro.plan.service.ProPlanVO;
 import mes.sal.inout.service.SalInoutService;
 import mes.sal.inout.service.SalInoutVO;
 
@@ -75,55 +76,58 @@ public class SalInoutController {
 		return "mes/salInout/salesOrderView.page";
 	}
 	
-	// 제품코드 조회 모달
-	@GetMapping("searchProductCode.do")
+	// 모달 : 제품코드 조회
+	@GetMapping("/salInout/searchProductCode.do")
 	public String searchProductCode() {
 		
 		//모달창 띄워주는 페이지
 		return "mes/salInout/searchProductCode";
 	}
+	
+	// 모달 : 제품코드 조회값 전달
+	@RequestMapping("mes/salInout/searchProductCode")
+	@ResponseBody
+	public Map<String, Object> searchProduct(Model model, 
+   		@ModelAttribute("searchVO") SalInoutVO searchVO) throws Exception {
+		
+    	List<?> list = salInoutService.searchProductList(searchVO);
+    	
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+	}
 
+	// 모달 : 고객코드 조회
+	@GetMapping("/salInout/searchCustomerCode.do")
+	public String searchCustomerCode() {
+
+		// 모달창 띄워주는 페이지
+		return "mes/salInout/searchCustomerCode";
+	}
+
+	// 모달 : 고객코드 조회값 전달
+	@RequestMapping("mes/salInout/searchCustomerCode")
+	@ResponseBody
+	public Map<String, Object> searchCustomer(Model model, @ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+
+		List<?> list = salInoutService.searchCustomerList(searchVO);
+
+		ComFunc comFunc = new ComFunc();
+		return comFunc.sendResult(list);
+	}
+			
 	// 입출고목록조회 salesProduct grid
-	@RequestMapping("/sal/inout/readSalesProduct")
+	@RequestMapping("/ajax/sal/readSalesProduct")
 	@ResponseBody
 	public Map<String, Object> readSalesProduct(Model model, @ModelAttribute("searchVO") SalInoutVO searchVO)
 			throws Exception {
 
-		int rowSize = 0;
 		List<?> list = new ArrayList<>();
 
-		// 검색조건이 있을 경우
-		if (!searchVO.getSearchKeyword().equals("")) {
-
-			// mapper 조건에 따라 condition 설정 필요함.
-			searchVO.setSearchCondition("0");
-
-			rowSize = salInoutService.selectSalInoutListTotCnt(searchVO);
-			searchVO.setLastIndex(rowSize);
-
-			list = salInoutService.selectSalProductInoutList(searchVO);
-			// 검색조건이 없을 경우
-		} else {
-			rowSize = salInoutService.selectSalInoutListTotCnt(searchVO);
-			searchVO.setLastIndex(rowSize);
-
-			list = salInoutService.selectSalProductInoutList(searchVO);
-		}
-
-		Map<String, Object> paging = new HashMap<>();
-		paging.put("page", searchVO.getPageIndex());
-		paging.put("totalCount", rowSize);
-
-		Map<String, Object> data = new HashMap<>();
-		data.put("contents", list);
-		data.put("pagination", paging);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("result", true);
-		map.put("data", data);
-
-		return map;
+		ComFunc comFunc = new ComFunc();
+		return comFunc.sendResult(list);
 	}
+
 
 	// 입출고조회 페이지
 	@RequestMapping("/salInout/salesProdView.do")
@@ -139,6 +143,26 @@ public class SalInoutController {
 			throws Exception {
 
 		return "mes/salInout/salesProdForm.page";
+	}
+	
+	// 모달 : 완제품 LOT_NO 조회
+	@GetMapping("/salInout/searchProductLotNo.do")
+	public String searchProductLotNoView() {
+
+		// 모달창 띄워주는 페이지
+		return "mes/salInout/searchProductLotNo";
+	}
+
+	// 모달 : 완제품 LOT_NO 조회값 전달
+	@RequestMapping("mes/salInout/searchProductLotNo")
+	@ResponseBody
+	public Map<String, Object> searchProductLotNo(Model model, @ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+
+		List<?> list = salInoutService.searchProductLotNoList(searchVO);
+
+		ComFunc comFunc = new ComFunc();
+		return comFunc.sendResult(list);
 	}
 
 	// 반품 조회 (수정해야 함)

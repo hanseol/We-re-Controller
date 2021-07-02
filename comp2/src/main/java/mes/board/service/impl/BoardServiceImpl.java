@@ -48,6 +48,9 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
+    public int getBoardNo() {
+    	return boardDAO.getBoardNo();
+    }
     public String insertBoard(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
@@ -61,7 +64,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
     	//TODO 해당 테이블 정보에 맞게 수정    	
         return null;
     }
-
+    
     /**
 	 * BOARD을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 BoardVO
@@ -114,5 +117,11 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements
     public int selectBoardListTotCnt(SearchVO searchVO) {
 		return boardDAO.selectBoardListTotCnt(searchVO);
 	}
+	@Override
+	public void insertBoard(BoardVO vo) {
+		// TODO Auto-generated method stub
+		boardDAO.insertBoard(vo);
+	}
+
     
 }
