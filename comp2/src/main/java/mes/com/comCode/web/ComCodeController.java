@@ -73,7 +73,7 @@ public class ComCodeController {
 
 		return comFunc.sendResult(list);
 	}
-
+	
 	// 디테일코드 조회
 	@RequestMapping(value = "/comCode/ComCodeDetailList")
 	@ResponseBody

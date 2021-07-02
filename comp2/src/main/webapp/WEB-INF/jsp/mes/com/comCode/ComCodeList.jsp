@@ -67,8 +67,8 @@
 				<div class="row">
 					<div>
 						<label for="selCodeIdNm">코드ID명</label>
-						 <input type="text"
-							id="getComCodeID"> 
+						<!-- 체크박스 값 input에 받기 -->
+						 <input type="text" id="comCodeId"> 
 							<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData"> <i class="fa fa-search"></i>
 						</a>
 						<button>검색</button>
@@ -89,7 +89,7 @@
 	$(document)
 			.ready(
 					function() {
-						
+						var comCodeIdclick = 0;
 						//마스터테이블 controller 연결
 						const dataSource = {
 							api : {
@@ -119,21 +119,7 @@
 						});
 						
 						/* 디테일코드 */
-						//행추가
-						$(document).on("click", "button[id=appendRow]", function() {
-								var rowData = [ {
-									코드 : "",
-									코드명 : "",
-									코드설명 : "",
-									표시순번 : "",
-									사용여부 : "",
-								} ];
-								gridDetail.appendRow(rowData, {
-									at : gridDetail.getRowCount(),
-									focus : true
-								});
-								gridDetail.enable();
-						});
+						
 						
 						//CRUD
 						$(document).on("click", "button[id=modifyRow]", function() {
@@ -184,6 +170,10 @@
 						     bodyHeight : 480,
 						     rowHeight: 30,
 							columns : [ {
+								header : '공통코드',
+								name : 'comCodeId',
+								editor : 'text'
+							},{
 								header : '코드',
 								name : 'comCodeDetailId',
 								editor : 'text'
@@ -208,13 +198,31 @@
 						
 						//마스터테이블 클릭시 데이터 전달
 						grid.on('click', (ev) => {
-							var comCodeId = grid.getValue(ev.rowKey, "comCodeId");
-							console.log(comCodeId);
+							comCodeIdclick = grid.getValue(ev.rowKey, "comCodeId");
+							console.log(comCodeIdclick);
 					   	var readParams = {
-								'comCodeId' : comCodeId
+								'comCodeId' : comCodeIdclick
 							};
 						gridDetail.readData(1, readParams, true);
 					   });
+					
+						//행추가
+						$(document).on("click", "button[id=appendRow]", function() {
+							console.log(comCodeIdclick);
+							var rowData = [ {
+									공통코드 : comCodeIdclick,
+									코드 : "",
+									코드명 : "",
+									코드설명 : "",
+									표시순번 : "",
+									사용여부 : "",
+								} ];
+								gridDetail.appendRow(rowData, {
+									at : gridDetail.getRowCount(),
+									focus : true
+								});
+								gridDetail.enable();
+						});
 						
 
 					});//end of ready

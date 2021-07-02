@@ -16,9 +16,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					공통코드 <input type="text" id="comCodeId" name="comCodeId" placeholder="공통코드" /> 
-					코드명 <input type="text" id="comCodeName" name="comCodeName" placeholder="코드명" />
-					<button id="findRow">검색</button>
+					공통코드 <input type="text" id="comCodeId"  placeholder="공통코드" /> 
+					<button id="findRowComCode">검색</button>
 				</div>
 				<div id="modalGrid"></div>
 			</div>
@@ -33,13 +32,9 @@
 
 <script>
 $(document).ready(function() {
-	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
-	//일딴 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
-		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
-		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
-		
 	
+	//체크박스 값 변수 저장
+	$(document).on("click","button[id=ok]", function(){
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
@@ -50,14 +45,11 @@ $(document).ready(function() {
 		$("#comCodeId").val(code);
 	});
 	
-	$(document).on("click", "button[id=findRow]", function() {
-		var code = $("#comCodeId").val();
-		console.log(code);
-		var name = $("#comCodeName").val();
-		console.log(name);
+	$(document).on("click", "button[id=findRowComCode]", function() {
+		var comCodeId = $("#comCodeId").val();
+		console.log(comCodeId);
 		var readParams = {
 				'comCodeId' : comCodeId,
-				'comCodeName' : comCodeName
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -74,6 +66,7 @@ $(document).ready(function() {
 		
 		const grid = new tui.Grid({
 			el : document.getElementById('modalGrid'),
+			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 		    scrollX: true,
 		    scrollY: true,
