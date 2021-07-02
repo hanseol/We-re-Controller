@@ -3,7 +3,8 @@
 
 <mapper namespace="mes.board.service.impl.BoardMapper">
 	
-
+	<select id="getBoardNo" resultType="int">SELECT MAX(NVL(no,0))+1 AS "NO" FROM board</select>
+	
 	<resultMap id="board" type="mes.board.service.BoardVO">
 		<result property="no" column="NO" />
 		<result property="title" column="TITLE" />

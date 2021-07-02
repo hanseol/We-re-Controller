@@ -38,32 +38,12 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			
 			<!-- 모달창띄우기 -->
-			
 			<a href="testModal.do" rel="modal:open" id="getData">
-			<button type="button" class="btn btn-success" id="showModal">조회</button>
+			<i class="fa fa-search" ></i>
 			</a>
 			<button type="button" class="btn btn-danger">새자료</button>
-			<!-- <button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button> -->
 			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-		</div>
-	</div>
-</div>
-
-
-<div class="content-fluid">
-	<div class="panel panel-headline">
-		<div class="panel-body">
-			<div class="row">
-				<div class="col-md-6">
-					<form>
-						* 계획일자 <input type="date" id="proPlanDate" name="proPlanDate">
-					</form>
-				</div>
-				<div class="col-md-6">* 미생산계획</div>
-			</div>
 		</div>
 	</div>
 </div>
@@ -74,10 +54,11 @@
 			<div class="row">
 				<div class="col-md-7">
 					<p class="panel-subtitle">Grid 테스트</p>
-					<input type="text" id="no" name="no">
+					<form action="test.do" id="frm">
+						<input type="text" id="no" name="no">
+					</form>
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button" id="findRow">조회</button>
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
@@ -91,8 +72,6 @@
 
 <script>
 	$(document).ready(function() {
-		
-		
 		
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData = [ {
@@ -110,23 +89,9 @@
 		
 		$(document).on("click", "button[id=modifyRow]", function() {
 			grid.finishEditing('rowKey','columnName');
+			$("#frm").submit();
 			grid.request('modifyData');
 		});
-		
-		/* $(document).on("click", "button[id=insertRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('createData');
-		});
-		
-		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(false);
-			grid.request('deleteData');
-		});
-		
-		$(document).on("click", "button[id=updateRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('updateData');
-		}); */
 		
 		$(document).on("click", "button[id=findRow]", function() {
 			var no = $("#no").val();
@@ -143,18 +108,6 @@
 					url : '${pageContext.request.contextPath}/ajax/readBoard',
 					method : 'GET'
 				},
-				/* createData : {
-					url : '${pageContext.request.contextPath}/ajax/insertBoard',
-					method : 'POST'
-				},
-				deleteData : {
-					url : '${pageContext.request.contextPath}/ajax/deleteBoard',
-					method : 'POST'
-				},
-				updateData : {
-					url : '${pageContext.request.contextPath}/ajax/updateBoard',
-					method : 'PUT'
-				}, */
 				modifyData: { url: '${pageContext.request.contextPath}/ajax/modifyBoard', method: 'PUT' },
 			},
 			contentType : "application/json"
@@ -166,8 +119,8 @@
 			data : dataSource,
 			columns : [ {
 				header : 'No',
-				name : 'no',
-				editor : 'text'
+				hidden:'true',
+				name: 'no'
 			}, {
 				header : 'Title',
 				name : 'title',
@@ -190,9 +143,9 @@
 		});
 	
 
-		grid.on('click', (ev) => {
-			  alert(ev.rowKey);
-		});
+		//grid.on('click', (ev) => {
+		//	  alert(ev.rowKey);
+		//});
 /* 	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);

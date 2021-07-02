@@ -25,8 +25,9 @@ public interface BoardService {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
+	int getBoardNo();
+	
     String insertBoard(LinkedHashMap vo) throws Exception;
-    
     /**
 	 * BOARD을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 BoardVO
@@ -66,5 +67,9 @@ public interface BoardService {
 	 * @exception
 	 */
     int selectBoardListTotCnt(SearchVO searchVO);
+
+	void insertBoard(BoardVO vo);
+
+	
     
 }
