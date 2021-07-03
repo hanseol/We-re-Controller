@@ -3,6 +3,7 @@ package mes.main.service;
 import java.util.List;
 
 import lombok.Data;
+import mes.board.service.BoardVO;
 
 /*
  * ToastUi Grid
@@ -15,4 +16,5 @@ import lombok.Data;
 	List<?> updatedRows;
 	List<?> createdRows;
 	List<?> deletedRows;
+	private Integer no;
 }

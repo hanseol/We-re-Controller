@@ -31,7 +31,7 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>페이지 명</h2>
+		<h2>기능 연구 페이지</h2>
 	</div>
 </div>
 
@@ -53,10 +53,8 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">Grid 테스트</p>
-					<form action="test.do" id="frm">
-						<input type="text" id="no" name="no">
-					</form>
+					<p class="panel-subtitle">그리드 테이블 밖에서 값을 입력할 때도 insert 가능.</p>
+					<input type="text" id="no" name="no">
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button" id="appendRow">추가</button>
@@ -72,24 +70,33 @@
 
 <script>
 	$(document).ready(function() {
-		
 		$(document).on("click", "button[id=appendRow]", function() {
-			var rowData = [ {
-				No : "",
-				Title : "",
-				Content : "",
-				Date : ""
-			} ];
-			grid.appendRow(rowData, {
-				at : grid.getRowCount(),
+			var rowData = {
+				title : "",
+				content : "",
+				date : ""
+			} ;
+			grid.appendRow( rowData, {
+				at : 0,
+				/*at : grid.getRowCount(),*/
 				focus : true
 			});
 			grid.enable();
 		});
 		
-		$(document).on("click", "button[id=modifyRow]", function() {
+		$(document).on("click", "button[id=deleteRow]", function() {
 			grid.finishEditing('rowKey','columnName');
-			$("#frm").submit();
+			grid.removeCheckedRows(false);
+		});
+		
+		$(document).on("click", "button[id=modifyRow]", function() {
+			var no = $("#no").val();
+			console.log(no);
+			grid.finishEditing('rowKey','columnName');
+			var requestParams = { 
+				"no": no
+			};
+			grid.setRequestParams(requestParams);
 			grid.request('modifyData');
 		});
 		
@@ -112,23 +119,29 @@
 			},
 			contentType : "application/json"
 		};
-
+		
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :30, 
+	        rowHeight: 30,
 			columns : [ {
 				header : 'No',
-				hidden:'true',
+				hidden:'true', 
 				name: 'no'
 			}, {
 				header : 'Title',
 				name : 'title',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			}, {
 				header : 'Content',
 				name : 'content',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			}, {
 				header : 'Date',
 				name : 'wdate',
@@ -138,11 +151,25 @@
 						format : 'YYYY/MM/dd',
 						language: 'ko'
 					} 
-				}
+				},
+				align : 'center'
 			} ]
 		});
 	
-
+		tui.Grid.applyTheme('clean', 
+			{
+				row: {
+	        		hover: {
+	        			background: "#d5dae1"
+	        		}
+				},
+				cell: {
+					header: {
+						background: "#003458",
+						text: "white"
+					}
+				}
+			});
 		//grid.on('click', (ev) => {
 		//	  alert(ev.rowKey);
 		//});

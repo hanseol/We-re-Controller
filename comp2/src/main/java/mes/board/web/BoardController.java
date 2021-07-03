@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,18 +58,11 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/ajax/readBoard")
 	@ResponseBody
-	public Map<String, Object> readBoard(Model model, @ModelAttribute("searchVO") BoardVO searchVO) throws Exception {
+	public Map<String, Object> readBoard(@ModelAttribute("searchVO") BoardVO searchVO) throws Exception {
 
 		List<?> list = new ArrayList<>();
 
-		// 검색조건이 있을 경우
-		if (!searchVO.getSearchKeyword().equals("")) {
-			searchVO.setSearchCondition("0");
-			list = service.selectBoardList(searchVO);
-		// 검색조건이 없을 경우
-		} else {
-			list = service.selectBoardList(searchVO);
-		}
+		list = service.selectBoardList(searchVO);
 
 		return comFunc.sendResult(list);
 	}
@@ -82,7 +74,9 @@ public class BoardController {
 	 */
 	@PutMapping("/ajax/modifyBoard")
 	@ResponseBody
-	public void modifyBoard(@RequestBody GridDataVO gd) throws Exception {
+	public void modifyBoard( @RequestBody GridDataVO gd) throws Exception{
+		
+		System.out.println("=========================================="+ gd.getNo());
 
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
@@ -95,7 +89,7 @@ public class BoardController {
 		}
 
 		
-		//시퀀스번호 가져와서 넣는 방법.
+//		//시퀀스번호 가져와서 넣는 방법.
 //		if (createdList.size() != 0) {
 //			for (int i = 0; i < createdList.size(); i++) {
 //				//시퀀스 번호 가져오기
@@ -106,11 +100,16 @@ public class BoardController {
 //			}
 //		}
 		
-		//별도의 input태그에서 가져와서 넣는 방법.
-		if(createdList.size()!=0) {
-			
+		//페이지에서 값 넘겨주는 방법.
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				//시퀀스 번호 requestParam 가져오기
+//				System.out.println("=======requestParam" + gd.getVo().getNo());
+				((LinkedHashMap)createdList.get(i)).put("no", gd.getNo());
+				//insert해야함.
+				service.insertBoard((LinkedHashMap) createdList.get(i));
+			}
 		}
-		
 
 		if (deletedList.size() != 0)
 		{
