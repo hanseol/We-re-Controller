@@ -41,6 +41,29 @@
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 	<!-- jQuery Modal -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	
+	<style>
+	.my-panel {
+		text-align: right;
+		border-top: 1px solid gray;
+		padding: 10px;
+		margin-bottom: 10px;
+		background-color: white;
+	}
+	
+	.modal {
+		-webkit-border-radius: 0px;
+		border-radius: 0px;
+		overflow: visible;
+		text-align: center;
+		max-width: 900px;
+		width: 900px;
+	}
+	
+	.blocker {
+		z-index: 1200;
+	}
+</style>
 </head>
 <body id="test"> 
 	<!-- WRAPPER -->

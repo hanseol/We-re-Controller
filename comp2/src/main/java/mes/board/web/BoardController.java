@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.board.service.BoardService;
 import mes.board.service.BoardVO;
@@ -44,6 +45,8 @@ public class BoardController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
+	@Resource(name = "egovMesNoIdGnrService")
+	protected EgovIdGnrService mesNoIdGnrService;
 	/** 공통 함수 */
 	ComFunc comFunc = new ComFunc();
 
@@ -75,8 +78,6 @@ public class BoardController {
 	@PutMapping("/ajax/modifyBoard")
 	@ResponseBody
 	public void modifyBoard( @RequestBody GridDataVO gd) throws Exception{
-		
-		System.out.println("=========================================="+ gd.getNo());
 
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
@@ -88,28 +89,29 @@ public class BoardController {
 			}
 		}
 
-		
-//		//시퀀스번호 가져와서 넣는 방법.
-//		if (createdList.size() != 0) {
-//			for (int i = 0; i < createdList.size(); i++) {
-//				//시퀀스 번호 가져오기
-//				int no = service.getBoardNo();
-//				((LinkedHashMap)createdList.get(i)).put("no", no);
-//				//insert해야함.
-//				service.insertBoard((LinkedHashMap) createdList.get(i));
-//			}
-//		}
-		
-		//페이지에서 값 넘겨주는 방법.
+		//시퀀스 포맷팅
+		//각 전표번호랑 LOT번호 부여할 때 필요한 기능.
+		//월요일에 공유 필요.
+		//EgovIdGnrStrategyImpl, resources/egovframework/spring/com/idgn/context-idgn-*.xml
 		if (createdList.size() != 0) {
 			for (int i = 0; i < createdList.size(); i++) {
-				//시퀀스 번호 requestParam 가져오기
-//				System.out.println("=======requestParam" + gd.getVo().getNo());
-				((LinkedHashMap)createdList.get(i)).put("no", gd.getNo());
-				//insert해야함.
+				((LinkedHashMap)createdList.get(i)).put("no", mesNoIdGnrService.getNextStringId());
 				service.insertBoard((LinkedHashMap) createdList.get(i));
 			}
 		}
+		
+		//페이지에서 값 넘겨주는 방법.
+		//관리 페이지에서 계획이나 지시 입력할 때 필요한 기능.
+		//월요일에 공유 필요.
+		//GridDataVO.
+//		if (createdList.size() != 0) {
+//			for (int i = 0; i < createdList.size(); i++) {
+//				//시퀀스 번호 requestParam 가져오기 -> GridDataVO에 변수 선언
+//		//		System.out.println("=======requestParam" + gd.getVo().getNo());
+//				((LinkedHashMap)createdList.get(i)).put("no", gd.getNo());
+//				service.insertBoard((LinkedHashMap) createdList.get(i));
+//			}
+//		}
 
 		if (deletedList.size() != 0)
 		{
