@@ -7,17 +7,20 @@
 	<select id="selectComCodeList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
 SELECT * FROM (
 	SELECT A.*, ROWNUM RNUM FROM (
-				SELECT
+			SELECT
 			COM_CODE_ID
 			, COM_CODE_NAME
 			, COM_CODE_DESC
 			, COM_CODE_USEDCHK
 			FROM COM_CODE
-				<if test="comCodeId != null and comCodeId != ''">
-					WHERE COM_CODE_ID LIKE UPPER('%' || #{comCodeId} || '%')
-					</if>
-					ORDER BY 
-						COM_CODE_ID ASC
+			WHERE 1=1
+			<if test="comCodeId != null and comCodeId != ''  ">
+			AND COM_CODE_ID LIKE '%' || UPPER(#{comCodeId}) || '%'
+			</if>
+			<if test="comCodeName != null and comCodeName != ''  ">
+			AND COM_CODE_NAME LIKE '%' || UPPER(#{comCodeName}) || '%'
+			</if>
+			ORDER BY COM_CODE_ID ASC
 		<![CDATA[					
 	) A WHERE ROWNUM <= #{lastIndex}
 )WHERE RNUM >= #{firstIndex}

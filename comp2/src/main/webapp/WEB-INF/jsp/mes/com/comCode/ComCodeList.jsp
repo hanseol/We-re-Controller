@@ -68,10 +68,11 @@
 					<div>
 						<label for="selCodeIdNm">코드ID명</label>
 						<!-- 체크박스 값 input에 받기 -->
-						 <input type="text" id="comCodeId"> 
-							<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData"> <i class="fa fa-search"></i>
+						<input type="text" id="comCodeId"> <a
+							href="${pageContext.request.contextPath}/comCodeModal.do"
+							rel="modal:open" id="getData"> <i class="fa fa-search"></i>
 						</a>
-						<button>검색</button>
+						<button id="findRowCodeId">검색</button>
 					</div>
 					<!-- 마스터데이터 호출 -->
 					<div class="col-md-4" id="grid"></div>
@@ -90,6 +91,17 @@
 			.ready(
 					function() {
 						var comCodeIdclick = 0;
+						
+						//코드명 검색
+						$(document).on("click", "button[id=findRowCodeId]", function() {
+							var comCode = $("#comCodeId").val();
+							console.log(comCode);
+							var readParams = {
+									'comCodeId' : comCode
+								};
+							gridDetail.readData(1, readParams, true);
+						});
+						
 						//마스터테이블 controller 연결
 						const dataSource = {
 							api : {
@@ -132,17 +144,6 @@
 							gridDetail.removeCheckedRows(false);
 						});
 						
-						//검색
-						$(document).on("click", "button[id=findRow]", function() {
-							var comCodeDetailId = $("#comCodeDetailId").val();
-							console.log(comCodeDetailId);
-							var readParams = {
-									'comCodeDetailId' : comCodeDetailId
-								};
-							gridDetail.readData(1, readParams, true);
-						});
-						
-						
 						//디테일코드 controller 연결
 						const dataSourceDetail = {
 							api : {
@@ -172,7 +173,7 @@
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
-								editor : 'text'
+								hidden : true
 							},{
 								header : '코드',
 								name : 'comCodeDetailId',
@@ -209,14 +210,14 @@
 						//행추가
 						$(document).on("click", "button[id=appendRow]", function() {
 							console.log(comCodeIdclick);
-							var rowData = [ {
-									공통코드 : comCodeIdclick,
-									코드 : "",
-									코드명 : "",
-									코드설명 : "",
-									표시순번 : "",
-									사용여부 : "",
-								} ];
+							var rowData =  {
+									comCodeId : comCodeIdclick,
+									comCodeDetailId : "",
+									comCodeDetailName : "",
+									comCodeDetailDesc : "",
+									comCodeDetailSeq : "",
+									comCodeDetailUsedchk : "",
+								} ;
 								gridDetail.appendRow(rowData, {
 									at : gridDetail.getRowCount(),
 									focus : true

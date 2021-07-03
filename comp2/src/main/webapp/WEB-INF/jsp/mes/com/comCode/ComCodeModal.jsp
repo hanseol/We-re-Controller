@@ -16,10 +16,11 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					공통코드 <input type="text" id="comCodeId"  placeholder="공통코드" /> 
-					<button id="findRowComCode">검색</button>
+					공통코드 <input type="text" id="comCodeId" placeholder="공통코드"/>
+					공통코드명 <input type="text" id="comCodeName" placeholder="공통코드명"/>
+					<button id="findRowComCodeModal">검색</button>
 				</div>
-				<div id="modalGrid"></div>
+				<div id="Grid"></div>
 			</div>
 		</div>
 	</div>
@@ -45,11 +46,14 @@ $(document).ready(function() {
 		$("#comCodeId").val(code);
 	});
 	
-	$(document).on("click", "button[id=findRowComCode]", function() {
-		var comCodeId = $("#comCodeId").val();
-		console.log(comCodeId);
+	$(document).on("click", "button[id=findRowComCodeModal]", function() {
+		var comCode1 = $("#comCodeId").val();
+		console.log(comCode1);
+		var comName = $("#comCodeName").val();
+		console.log(comName);
 		var readParams = {
-				'comCodeId' : comCodeId,
+				'comCodeId' : comCode1,
+				'comCodeName' : comName
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -65,7 +69,7 @@ $(document).ready(function() {
 		};
 		
 		const grid = new tui.Grid({
-			el : document.getElementById('modalGrid'),
+			el : document.getElementById('Grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 		    scrollX: true,
@@ -74,10 +78,10 @@ $(document).ready(function() {
 		    rowHeight: 30,
 			columns : [ {
 				header : '공통코드',
-				name : 'comCodeId',
+				name : 'comCodeId'
 			}, {
 				header : '공통코드명',
-				name : 'comCodeName',
+				name : 'comCodeName'
 			} ]
 		});
 }); //end of document ready

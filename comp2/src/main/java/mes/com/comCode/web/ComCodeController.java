@@ -56,22 +56,26 @@ public class ComCodeController {
 	public Map<String, Object> readComeCode(Model model, @ModelAttribute("searchVO") ComCodeVO searchVO)
 			throws Exception {
 
-		int rowSize = 0;
-		List<?> list = new ArrayList<>();
-
-		// 검색조건이 있을 경우
-		if (!searchVO.getSearchKeyword().equals("")) {
-
-			// mapper 조건에 따라 condition 설정 필요함.
-			searchVO.setSearchCondition("0");
-			list = service.selectComCodeList(searchVO);
-
-			// 검색조건이 없을 경우
-		} else {
-			list = service.selectComCodeList(searchVO);
-		}
-
-		return comFunc.sendResult(list);
+//		int rowSize = 0;
+//		List<?> list = new ArrayList<>();
+//
+//		// 검색조건이 있을 경우
+//		if (!searchVO.getSearchKeyword().equals("")) {
+//
+//			// mapper 조건에 따라 condition 설정 필요함.
+//			searchVO.setSearchCondition("0");
+//			list = service.selectComCodeList(searchVO);
+//
+//			// 검색조건이 없을 경우
+//		} else {
+//			list = service.selectComCodeList(searchVO);
+//		}
+//
+//		return comFunc.sendResult(list);
+		
+    	List<?> list = service.selectComCodeList(searchVO);
+    	
+    	return comFunc.sendResult(list);
 	}
 	
 	// 디테일코드 조회
@@ -130,10 +134,24 @@ public class ComCodeController {
 	public Map<String, Object> searchComeCode(Model model, 
    		@ModelAttribute("searchVO") ComCodeVO searchVO) throws Exception {
 		
-
+//		int rowSize = 0;
+//		List<?> list = new ArrayList<>();
+//
+//		// 검색조건이 있을 경우
+//		if (!searchVO.getSearchKeyword().equals("")) {
+//
+//			// mapper 조건에 따라 condition 설정 필요함.
+//			searchVO.setSearchCondition("0");
+//			list = service.selectComCodeList(searchVO);
+//
+//			// 검색조건이 없을 경우
+//		} else {
+//			list = service.selectComCodeList(searchVO);
+//		}
+//		
+//		return comFunc.sendResult(list);
     	List<?> list = service.selectComCodeList(searchVO);
     	
-    	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
 	}
 	
