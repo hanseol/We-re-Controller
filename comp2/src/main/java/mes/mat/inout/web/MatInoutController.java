@@ -1,6 +1,5 @@
 package mes.mat.inout.web;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +37,10 @@ import mes.mat.inout.service.MatInoutVO;
 
 @Controller
 public class MatInoutController {
-	
 	//공통함수 객체 생성
 	ComFunc comFunc = new ComFunc();
 
+	
     @Resource(name = "matInoutService")
     private MatInoutService service;
     
@@ -49,37 +48,85 @@ public class MatInoutController {
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
+
+//--------------------------------------조회 페이지-------------------------------------
     
-    //자재입출고 [조회] 페이지
-    @RequestMapping(value="/matInout/matrInoutView.do")
+    //페이지 넘겨주기
+    @RequestMapping("/matInout/matrInoutView.do")
     public String selectMatInoutList(@ModelAttribute("searchVO") MatInoutVO searchVO, 
     		ModelMap model) {
 
         return "mes/matInout/matrInoutView.page";
     }
+    //자재입출고조회 리스트
+    @RequestMapping("/ajax/readMatInout")
+    @ResponseBody
+    public Map<String, Object> matInout(Model model, 
+    		 @ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception{
+
+    	List<?> list = service.selectMatInoutList(searchVO);
+    	
+    	//공통함수 객체 생성
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
+  	
+
     
-    //자재입출고 [관리] 페이지
+    
+    //자재코드 검색창 오픈
+    @GetMapping("searchMaterialCode.do")
+  	public String searchMaterialCode() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/matInout/searchMaterialCode";
+  	}
+  	
+  	//자재코드 결과 값 전달
+  	@RequestMapping("/ajax/searchMaterial")
+  	@ResponseBody
+  	public Map<String, Object> searchMaterial(Model model, 
+     		@ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchMaterialCodeList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
+  	
+    //입고업체 검색창 오픈
+    @GetMapping("searchVendorCode.do")
+  	public String searchVendorCode() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/matInout/searchVendorCode";
+  	}
+  	
+  	//입고업체 결과 값 전달
+  	@RequestMapping("/ajax/searchVendor")
+  	@ResponseBody
+  	public Map<String, Object> searchVendor(Model model, 
+     		@ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchVendorCodeList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
+
+//--------------------------------------관리 페이지--------------------------------------    
+    
+  	//자재입출고 [관리] 페이지
     @RequestMapping(value="/matInout/matrInoutForm.do")
     public String selectMatInoutForm(@ModelAttribute("searchVO") MatInoutVO searchVO, 
     		ModelMap model) {
 
         return "mes/matInout/matrInoutForm.page";
     }
-    
-    //리스트 조회
-    @RequestMapping(value="/mat/inout/readMatInout")
-    @ResponseBody
-    public Map<String, Object> matInout(Model model, 
-    		 @ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception{
-
-    	List<?> list = new ArrayList<>();
-    	
-        list = service.selectMatInoutList(searchVO);
-    	
-    	return comFunc.sendResult(list);
-    }
-    
-    //자재입출고 [관리] 등록 수정 삭제 
+  	
+  	//자재입출고 [관리] 등록 수정 삭제 
     @PutMapping("/ajax/modifyMatInout")
 	@ResponseBody
 	public void modifyMatInout(@RequestBody GridDataVO gd) throws Exception {
@@ -108,7 +155,7 @@ public class MatInoutController {
 			}
 		}
 	}
-    
+
     //업체검색 모달창 오픈
     @GetMapping("mes/matInout/searchVendorCode.do")
   	public String testModal() {
@@ -130,7 +177,26 @@ public class MatInoutController {
       	return comFunc.sendResult(list);
   	}
   	
+    //자재LOT_NO 검색창 오픈
+    @GetMapping("searchMatOrderCode.do")
+  	public String searchMatOrderCode() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/matInout/searchMatOrderCode";
+  	}
   	
+  	//자재LOT_NO 결과 값 전달
+  	@RequestMapping("mes/matInout/searchMatOrder")
+  	@ResponseBody
+  	public Map<String, Object> searchMatOrder(Model model, 
+     		@ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.selectMatInoutList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
 
     
     

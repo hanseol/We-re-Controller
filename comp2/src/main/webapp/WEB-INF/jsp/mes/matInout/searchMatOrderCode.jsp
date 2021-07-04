@@ -15,8 +15,9 @@
 			<div class="panel-body">
 				<div>
 					업체코드 <input type="text" id="comCodeDetailId" name="comCodeDetailId" placeholder="업체코드"/>
-				    업체명 <input type="text" id="comCodeDetailName" name="comCodeDetailName" placeholder="업체명"/>
-				    <button id="findRow">검색</button>
+					<button type="button" id="findRow"><i class="fa fa-search"></i></button>
+				        업체명 <input type="text" id="comCodeDetailName" name="comCodeDetailName" placeholder="업체명"/>
+				    <button type="button" id="findRow"><i class="fa fa-search"></i></button>
 				</div>
 				<div id="modalGrid"></div>
 			</div>
@@ -55,10 +56,14 @@ $(document).ready(function() {
 		
 		var comCodeDetailName = $("#comCodeDetailName").val();
 		console.log(comCodeDetailName);
+		
+		var comCodeDetailDesc = $("#comCodeDetailDesc").val();
+		console.log(comCodeDetailDesc);
 	
 		var readParams = {
 				'comCodeDetailId' : comCodeDetailId,
-				'comCodeDetailName' : comCodeDetailName
+				'comCodeDetailName' : comCodeDetailName,
+				'comCodeDetailDesc' : comCodeDetailDesc
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -66,7 +71,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/ajax/searchVendor',
+				url : '${pageContext.request.contextPath}/ajax/matInout/searchVendorCode',
 				method : 'GET'
 			}
 		},
@@ -77,10 +82,6 @@ $(document).ready(function() {
 		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
-		scrollX: true,
-		scrollY: true,
-		bodyHeight :300,
-		rowHeight: 30,
 		columns : [ {
 			header : '업체코드',
 			name : 'comCodeDetailId'

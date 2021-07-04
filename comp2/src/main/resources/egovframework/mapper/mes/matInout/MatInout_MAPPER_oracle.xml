@@ -3,14 +3,15 @@
 
 <mapper namespace="mes.mat.inout.service.impl.MatInoutMapper">
 	
-	<!-- 자재입출고 전체조회 -->
+	<!-- 자재입출고 전체리스트 -->
 	<select id="selectMatInoutList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
 		SELECT *
 		FROM   (
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   
+		                              SELECT   d.com_code_detail_id,
+		                              		   d.com_code_detail_name,
 		                              		   m.mat_inout_statement,
 		                              		   TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
 		                              		   q.erp_vendor_code,
@@ -30,22 +31,29 @@
                                                                     	END						) as material_stock
 		                              FROM     com_material c,
 		                                       mat_inout m,
-		                                       qua_material_chk q
+		                                       qua_material_chk q,
+		                                       com_code_detail d
 		                              WHERE    c.com_material_code = m.com_material_code
 		                              AND	   m.com_material_code = q.com_material_code
+		                              AND	   q.erp_vendor_code = d.com_code_detail_id
 		                              <if test="matInoutDate != null and matInoutDate != ''">
-		                               	AND
-		                              	m.mat_inout_date = #{matInoutDate}
+		                              	AND
+							        	m.mat_inout_date = #{matInoutDate}
 		                              </if>
 		                              <if test="erpVendorCode != null and erpVendorCode != ''">
-		                              	AND
-		                              	q.erp_vendor_code = #{erpVendorCode}
+		                                AND
+							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
 		                              </if>
-		                              <if test="matInoutGubun != null and matInoutGubun != ''">
+		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-		                              	m.mat_inout_gubun = #{matInoutGubun}
+							        	c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
-		                              ORDER BY mat_inout_statement DESC  <![CDATA[ ) a
+									  <if test="matInoutGubun != null and matInoutGubun != ''">
+									  	AND
+									  	m.mat_inout_gubun = #{matInoutGubun}
+									  </if>
+									  
+		                              ORDER BY mat_inout_date DESC  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -53,25 +61,28 @@
 	
 	<!-- 자재입출고 관리페이지 등록 -->
 	<insert id="insertMatInout">
-		INSERT INTO mat_inout 	(mat_inout_date,
-								 mat_lot_no,
-								 mat_inout_gubun,
+		INSERT INTO mat_inout 	(mat_inout_gubun,
+								 mat_inout_date,
+								 erp_vendor_code,
+								 
+								 com_material_unit,
+								 
 								 mat_inout_quantity,
 								 mat_inout_unit_price,
 								 mat_inout_price)
 		VALUES      			( #{matInoutDate},
+								  #{comMaterialUnit},
 					              #{matLotNo},
-					              #{matInoutGubun},
 					              #{matInoutQuantity},
-					              #{matInoutUnitPrice},
-					              #{matInoutPrice})
+					              #{matInoutUnitPrice})
 							              
 	</insert>
 
 	<!-- 자재입출고 관리페이지 수정 -->
 	<update id="updateMatInout">
 		UPDATE mat_inout
-		SET
+		SET				mat_inout_gubun,
+						
 		              mat_inout_quantity = #{matInoutQuantity},
 		              mat_inout_unit_price = #{matInoutUnitPrice},
 		              mat_inout_price = #{matInoutPrice}
@@ -79,48 +90,61 @@
 		WHERE	mat_inout_statement = #{matInoutStatement}
 	</update>
 	
-	<!-- 자재입출고 관리페이지 삭제 -->
+	<!-- 자재입출고 관리 삭제 -->
 	<delete id="deleteMatInout">
 		DELETE FROM	mat_inout
 		WHERE		mat_inout_statement = #{matInoutStatement}
+<!-- 		<if test="(comCodeDetailId != null and comCodeDetailId != '')">
+			WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId}) 
+			OR COM_CODE_DETAIL_ID = LOWER(#{comCodeDetailId})
+		</if> -->
 	</delete>
 	
-	<!-- 업체검색 -->
-	<select id="searchVendorCode" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
-		SELECT com_code_detail_id,
-		       com_code_detail_name,
-		       com_code_detail_desc
-		FROM   com_code_detail
-		<if test="comCodeDetailId != null and comCodeDetailId != '')  ">
-			WHERE
-			com_code_detail_id LIKE '%' || UPPER(#{comCodeDetailId}) || '%'
-		</if>
-		<if test="comCodeDetailName != null and comCodeDetailName != ''">
-        	AND
-        	com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
-        </if>
+
+	
+	<!-- 모달 자재검색 리스트  -->
+	<select id="searchMaterialCodeList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   com_material_code,
+		                                       com_material_name
+		                              FROM     com_material
+		                              WHERE	   1=1
+					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
+					                     com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                  </if>
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     com_material_name LIKE '%' || #{comMaterialName} || '%'
+					                  </if>
+                  					  ORDER BY com_material_code <![CDATA[ ) A
+					  WHERE ROWNUM <= #{lastIndex} )
+		WHERE RNUM >= #{firstIndex}]]>
 	</select>
 	
-	<select id="searchFormList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
-		SELECT * FROM (
-         SELECT A.*, ROWNUM RNUM FROM (
-                  SELECT com_code_detail_id
-                       , com_code_detail_name
-                       , com_code_detail_desc
-                  FROM com_code_detail
-                  WHERE 1=1
-                  <if test="erpProductCode != null and erpProductCode!=''"> AND
-                     com_code_detail_id LIKE '%' || #{comCodeDetailId} || '%'
-                  </if>
-                  <if test="erpProductName != null and erpProductName !=''">AND
-                     com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
-                  </if>
-                  ORDER BY 
-                     com_code_detail_id
-            <![CDATA[               
-         ) A WHERE ROWNUM <= #{lastIndex}
-      )WHERE RNUM >= #{firstIndex}
-      ]]>                  
+	<!-- 모달 업체검색 리스트 -->
+	<select id="searchVendorCodeList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		          	SELECT a.*,
+		                     ROWNUM rnum
+		            FROM   (
+		                              SELECT   com_code_detail_id,
+		                                       com_code_detail_name,
+		                                       com_code_detail_desc
+		                              FROM     com_code_detail
+		                              WHERE    com_code_id = 'MES009'
+					                  <if test="comCodeDetailId != null and comCodeDetailId !=''"> AND
+					                     com_code_detail_id LIKE '%' || #{comCodeDetailId} || '%'
+					                  </if>
+					                  <if test="comCodeDetailName != null and comCodeDetailName !=''">AND
+					                     com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
+					                  </if>
+									  ORDER BY com_code_detail_id <![CDATA[ ) A
+         			WHERE ROWNUM <= #{lastIndex})
+		WHERE RNUM >= #{firstIndex}]]>
 	</select>
 	<!-- <select id="searchVendorFormListCnt" parameterType="mes.com.comCode.service.ComCodeVO" resultType="int">
       SELECT COUNT(*) totcnt

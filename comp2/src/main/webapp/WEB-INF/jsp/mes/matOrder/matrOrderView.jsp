@@ -9,6 +9,21 @@
 	margin-bottom: 10px;
 	background-color: white;
 }
+
+.modal{
+	-webkit-border-radius :0px;
+	border-radius:0px;
+	overflow: visible;
+	text-align: center;
+	max-width: 900px;
+	width: 900px;
+	/* height: 600px;
+	max-height: 600px; */
+}
+
+.blocker{
+	z-index: 1200;
+}
 </style>
 
 <div class="content-fluid">
@@ -20,42 +35,45 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+			<button type="button" class="btn btn-success" id="search">조회</button>
+			<button type="button" class="btn btn-danger" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
 
-
+<form id="option">
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-6">
-					<form>
-						* 계획일자 <input type="date" id="proPlanDate" name="proPlanDate">
-					</form>
+				<div class="col-md-4">
+						발주일자
+						<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">					
 				</div>
-				<div class="col-md-6">* 미생산계획</div>
+				<div class="col-md-4">			
+						발주코드
+						<input type="text" id="erpMaterialOrderCode" name="erpMaterialOrderCode">	
+						<a href="searchMatOrderCode.do" rel="modal:open">						
+                     	<i class="fa fa-search"></i></a>
+				</div>
+				<div class="col-md-4">
+						자재코드
+						<input type="text" id="comMaterialCode" name="comMaterialCode">
+						<a href="searchMaterialCode.do" rel="modal:open">					
+						<i class="fa fa-search"></i></a>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</form>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">Grid 테스트</p>
-					<input type="text" id="no" name="no">
-				</div>
-				<div class="col-md-5" align="right">
-					<button type="button" id="findRow">조회</button>
-					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
+					<p class="panel-subtitle">자재 발주 목록</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -112,20 +130,8 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/mat/order/readMatOrder',
+					url : '${pageContext.request.contextPath}/ajax/matOrder/readMatOrder',
 					method : 'GET'
-				},
-				createData : {
-					url : '${pageContext.request.contextPath}/mat/order/insertMatOrder',
-					method : 'POST'
-				},
-				deleteData : {
-					url : '${pageContext.request.contextPath}/mat/order/deleteMatOrder',
-					method : 'POST'
-				},
-				updateData : {
-					url : '${pageContext.request.contextPath}/mat/order/updateMatOrder',
-					method : 'PUT'
 				}
 			},
 			contentType : "application/json"
@@ -146,7 +152,7 @@
 					} 
 				}
 			},{
-				header : '발주번호',
+				header : '발주코드',
 				name : 'erpMaterialOrderCode',
 				editor : 'text'
 			}, {
