@@ -108,7 +108,7 @@
 					var date = $("#date").val();
 					var gubun = $("#gubun").val();
 					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
+					var productLotNo = $("#productLotNo").val(); 
 					var readParams = {
 						'salInoutDate' : date,
 						'salInoutGubun' : gubun,

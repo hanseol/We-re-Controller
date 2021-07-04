@@ -123,6 +123,10 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
 	}
 
+    
+    
+    
+    
     //모달 : 제품코드 조회
 	@Override
 	public List<?> searchProductList(SalInoutVO searchVO) throws Exception {
