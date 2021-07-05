@@ -29,7 +29,7 @@ public class BoardVO extends SearchVO {
 	private static final long serialVersionUID = 1L;
 
 	/** NO */
-	private Integer no;
+	private java.lang.String no;
 
 	/** TITLE */
 	private java.lang.String title;
