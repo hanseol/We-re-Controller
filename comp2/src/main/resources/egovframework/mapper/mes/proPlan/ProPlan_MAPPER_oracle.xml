@@ -72,6 +72,7 @@
 						     , d.pro_plan_qty
 						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
 						     , d.pro_plan_seq
+						     <!-- , m.pro_plan_name -->
 						FROM pro_plan_detail d
 						   , erp_product_order e
 						   , pro_plan m
@@ -91,6 +92,9 @@
 								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
 									e.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
 								</if>
+								<!-- <if test="proPlanName != null and proPlanName != ''"> AND
+									m.pro_plan_name LIKE '%' || #{proPlanName} || '%'
+								</if> -->
 							ORDER BY 
 								m.PRO_PLAN_CODE DESC
 				<![CDATA[					
@@ -113,6 +117,7 @@
 				<if test="searchCondition == 1">AND
 					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
 				</if>
+				
 			</if>
 			
 	</select>

@@ -211,6 +211,7 @@
 			}, {
 				header : '작업계획량',
 				name : 'proPlanQty',
+				editor : 'text'
 			}, {
 				header : '작업착수일',
 				name : 'proWorkDate',

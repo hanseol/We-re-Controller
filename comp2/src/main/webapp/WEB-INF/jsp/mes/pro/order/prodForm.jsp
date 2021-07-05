@@ -52,10 +52,9 @@
 				<div class="col-md-6">
 					<form>
 						* 작업일자 <input type="date" id="proPlanDate" name="proPlanDate"><br><br>
-						* 제품코드 <input type="text" id="comProductCode " name="comProductCode">
+						* 작업지시명 <input type="text" id="comProductCode " name="comProductCode">
 					</form>
 				</div>
-				<div class="col-md-6">* 미생산계획</div>
 			</div>
 		</div>
 	</div>
@@ -68,7 +67,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">Grid 테스트</p>
+					<p class="panel-subtitle">생산지시관리</p>
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button">조회</button>
@@ -149,42 +148,42 @@
 			data : dataSource,
 			columns : [ {
 				header : '제품코드',
-				name : 'comProductCode',
+				name : 'erpProductCode',
 				editor : 'text'
 			}, {
 				header : '제품명',
-				name : 'comProductName',
-				editor : 'text'
+				name : 'erpProductName'
 			}, {
 				header : '주문번호',
-				name : 'proOrderCode',
-				editor : 'text'
+				name : 'erpOrderCode'
+			}, {
+				header : '구분',
+				name : 'proOrderGubun',
+				editor: {
+		            type: 'select',
+		            options: {
+		              listItems: [
+		                { text: '정상', value: '1' },
+		                { text: '재작업', value: '2' }
+		              ]
+		            }
+		          }
 			}, {
 				header : '납기일자',
-				name : 'erpProductDeadline',
-				editor : {
-					type : 'datePicker',
-					options : {
-						format : 'YYYY/MM/dd',
-						language: 'ko'
-					} 
-				}
+				name : 'erpProductDeadline'
 			}, {
 				header : '주문량',
-				name : 'erpOrderQty',
-				editor : 'text'
+				name : 'erpOrderQty'
 			}, {
 				header : '지시량',
 				name : 'proOrderQty',
 				editor : 'text'
 			}, {
 				header : 'UPH',
-				name : 'macHourQty',
-				editor : 'text'
+				name : 'macHourQty'
 			}, {
 				header : '일생산량',
-				name : 'macHourQty',
-				editor : 'text'
+				name : 'dayQty'
 			}, {
 				header : '일수',
 				name : 'dayCount',
