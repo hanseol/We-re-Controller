@@ -119,46 +119,46 @@ public class ComCodeController {
 		}
 	}
 	
-	//	모달
-	//모달 창을 여는 버튼을 눌렀을 때 동작
-	@GetMapping("comCodeModal.do")
-	public String comCodeModal() {
-		
-		//모달창에 띄워줄 view페이지 전달.
-		return "mes/com/comCode/ComCodeModal";
-	}
-	
-	//모달창에 결과 값 전달
-	@RequestMapping("mes/com/comCode/ComCodeModal")
-	@ResponseBody
-	public Map<String, Object> searchComeCode(Model model, 
-   		@ModelAttribute("searchVO") ComCodeVO searchVO) throws Exception {
-		
-//		int rowSize = 0;
-//		List<?> list = new ArrayList<>();
-//
-//		// 검색조건이 있을 경우
-//		if (!searchVO.getSearchKeyword().equals("")) {
-//
-//			// mapper 조건에 따라 condition 설정 필요함.
-//			searchVO.setSearchCondition("0");
-//			list = service.selectComCodeList(searchVO);
-//
-//			// 검색조건이 없을 경우
-//		} else {
-//			list = service.selectComCodeList(searchVO);
-//		}
+//	//	모달(현재 페이지 모달 사용x)
+//	//모달 창을 여는 버튼을 눌렀을 때 동작
+//	@GetMapping("comCodeModal.do")
+//	public String comCodeModal() {
 //		
-//		return comFunc.sendResult(list);
-    	List<?> list = service.selectComCodeList(searchVO);
-    	
-    	return comFunc.sendResult(list);
-	}
+//		//모달창에 띄워줄 view페이지 전달.
+//		return "mes/com/comCode/ComCodeModal";
+//	}
+//	
+//	//모달창에 결과 값 전달
+//	@RequestMapping("mes/com/comCode/ComCodeModal")
+//	@ResponseBody
+//	public Map<String, Object> searchComeCode(Model model, 
+//   		@ModelAttribute("searchVO") ComCodeVO searchVO) throws Exception {
+//		
+////		int rowSize = 0;
+////		List<?> list = new ArrayList<>();
+////
+////		// 검색조건이 있을 경우
+////		if (!searchVO.getSearchKeyword().equals("")) {
+////
+////			// mapper 조건에 따라 condition 설정 필요함.
+////			searchVO.setSearchCondition("0");
+////			list = service.selectComCodeList(searchVO);
+////
+////			// 검색조건이 없을 경우
+////		} else {
+////			list = service.selectComCodeList(searchVO);
+////		}
+////		
+////		return comFunc.sendResult(list);
+//    	List<?> list = service.selectComCodeList(searchVO);
+//    	
+//    	return comFunc.sendResult(list);
+//	}
 	
 	
 	// 뷰페이지만 넘겨준다.
 	@RequestMapping(value = "comCode/ComCodeList.do")
-	public String selectErpMaterialOrderList(@ModelAttribute("searchVO") ComCodeVO searchVO, ModelMap model) {
+	public String selectComCodeList(@ModelAttribute("searchVO") ComCodeVO searchVO, ModelMap model) {
 
 		return "mes/com/comCode/ComCodeList.page";
 	}

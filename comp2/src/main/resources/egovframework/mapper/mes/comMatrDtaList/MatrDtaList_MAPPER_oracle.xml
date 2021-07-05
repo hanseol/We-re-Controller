@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.matrDtaList.service.impl.MatrDtaListMapper">
+	
+	<!-- 마스터코드 조회 -->
+	<select id="selectMatrDtaList" parameterType="mes.com.matrDtaList.service.MatrDtaListVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT a.COM_CODE_DETAIL_ID
+							, a.COM_CODE_DETAIL_NAME
+							, b.COM_MATERIAL_SIZE
+					FROM COM_CODE_DETAIL a
+							, COM_MATERIAL b
+					WHERE 1=1 
+					AND a.COM_CODE_DETAIL_ID = b.COM_MATERIAL_CODE
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+		
+	<!-- 디테일코드 조회 -->
+	<select id="selectMatrDtaListDetailList" parameterType="mes.com.matrDtaList.service.MatrDtaListVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT b.COM_CODE_DETAIL_ID
+							, a.COM_MATERIAL_NAME
+							, a.COM_MATERIAL_BARCODE
+							, a.COM_MATERIAL_SIZE
+							, a.COM_MATERIAL_UNIT
+							, a.COM_MATERIAL_VENDOR_CODE
+							, b.COM_CODE_DETAIL_NAME
+							, a.COM_MATERIAL_SAFETY_STOCK
+					FROM COM_MATERIAL a
+						, COM_CODE_DETAIL b
+					WHERE a.COM_MATERIAL_CODE = b.COM_CODE_DETAIL_ID
+					AND 1=1
+					<if test="(comCodeDetailId != null and comCodeDetailId != '')  ">
+					AND b.COM_CODE_DETAIL_ID LIKE UPPER(#{comCodeDetailId})
+					</if>
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>	
+
+	<!-- 디테일코드 업데이트 -->
+	<update id="updateMatrDtaListDetail">
+	</update>
+	
+	<!-- 디테일코드 삽입 -->
+	<insert id="insertMatrDtaListDetail">
+	</insert>
+	
+	<!-- 디테일코드 삭제 -->
+	<delete id="deleteMatrDtaListDetail" parameterType="mes.com.matrDtaList.service.MatrDtaListVO">
+	</delete>
+
+
+</mapper>
