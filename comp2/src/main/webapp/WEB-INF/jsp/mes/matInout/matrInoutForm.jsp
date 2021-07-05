@@ -54,12 +54,12 @@ max-height: 600px; */
 						<input type="checkbox" id="outGubun" name="gubunChkBox">출고
 					</div>
 					<div class="col-md-2">
-						자재코드<a href="${pageContext.request.contextPath}/searchMaterialCode.do" rel="modal:open">
+						자재코드<a id="showMaterialModal" href="${pageContext.request.contextPath}/searchMaterialCode.do" rel="modal:open">
 							<input type="text" id="comMaterialCode" name="comMaterialCode">
 							<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						입고업체<a href="${pageContext.request.contextPath}/searchVendorCode.do" rel="modal:open">
+						입고업체<a id="showVendorModal" href="${pageContext.request.contextPath}/searchVendorCode.do" rel="modal:open">
 							<input type="text" id="erpVendorCode" name="erpVendorCode">
 							<i class="fa fa-search"></i></a>
 					</div>
@@ -105,7 +105,7 @@ max-height: 600px; */
 			}
 		});
 
-
+		//추가버튼 (행 추가)
 		$(document).on("click", "button[id=appendRow]",
 			function () {
 				var rowData = [{
@@ -130,12 +130,15 @@ max-height: 600px; */
 				});
 				grid.enable();
 			});
-
+		//저장버튼 (등록, 수정, 삭제)
 		$(document).on("click", "button[id=modifyRow]",
 			function () {
+				
 				grid.finishEditing('rowKey', 'columnName');
+				
 				grid.request('modifyData');
 			});
+		//삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=deleteRow]",
 			function () {
 				grid.removeCheckedRows(false);
@@ -155,12 +158,9 @@ max-height: 600px; */
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 
-					var matInoutDate = $(
-						"#matInoutDate").val();
-					var erpVendorCode = $(
-						"#erpVendorCode").val();
-					var matInoutGubun = $(
-						"#matInoutGubun").val();
+					var matInoutDate = $("#matInoutDate").val();
+					var erpVendorCode = $("#erpVendorCode").val();
+					var matInoutGubun = $("#matInoutGubun").val();
 
 					var readParams = {
 						'matInoutDate': matInoutDate,
@@ -218,12 +218,12 @@ max-height: 600px; */
 				name: 'comMaterialCode',
 				editor: 'text'
 			}, {
-				header: '자재LOT_NO',
-				name: 'matLotNo',
-				editor: 'text'
-			}, {
 				header: '자재명',
 				name: 'comMaterialName',
+				editor: 'text'
+			}, {
+				header: '자재LOT_NO',
+				name: 'matLotNo',
 				editor: 'text'
 			}, {
 				header: '규격',
@@ -251,6 +251,14 @@ max-height: 600px; */
 				editor: 'text'
 			}]
 		});
+		grid.on('dblclick', ev => {
+			if(ev.columnName == 'erpVendorCode'){
+		         $('#showVendorModal').click();
+			} else if(ev.columnName == 'comMaterialCode'){
+		    	  $('#showMaterialModal').click();
+			}
+		});
+		   
 
 		grid.on('response', ev => {
 			const { response } = ev.xhr;

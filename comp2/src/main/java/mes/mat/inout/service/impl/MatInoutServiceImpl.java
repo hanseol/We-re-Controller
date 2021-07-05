@@ -45,6 +45,7 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	LOGGER.debug(vo.toString());
     	
     	matInoutMapper.insertMatInout(vo);
+
     	//TODO 해당 테이블 정보에 맞게 수정    	
         return null;
     }

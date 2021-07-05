@@ -25,7 +25,7 @@ public interface MatInoutMapper {
 
 	//등록
     public void insertMatInout(LinkedHashMap vo) throws Exception;
-
+    
     //수정
     public void updateMatInout(LinkedHashMap vo) throws Exception;
 

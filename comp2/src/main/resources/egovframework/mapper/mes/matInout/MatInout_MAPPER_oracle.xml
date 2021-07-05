@@ -53,7 +53,7 @@
 									  	m.mat_inout_gubun = #{matInoutGubun}
 									  </if>
 									  
-		                              ORDER BY mat_inout_date DESC  <![CDATA[ ) a
+		                              ORDER BY mat_inout_date  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -61,31 +61,42 @@
 	
 	<!-- 자재입출고 관리페이지 등록 -->
 	<insert id="insertMatInout">
-		INSERT INTO mat_inout 	(mat_inout_gubun,
-								 mat_inout_date,
-								 erp_vendor_code,
-								 
-								 com_material_unit,
-								 
-								 mat_inout_quantity,
-								 mat_inout_unit_price,
-								 mat_inout_price)
-		VALUES      			( #{matInoutDate},
-								  #{comMaterialUnit},
-					              #{matLotNo},
-					              #{matInoutQuantity},
-					              #{matInoutUnitPrice})
-							              
-	</insert>
+		INSERT INTO mat_inout (com_material_code,
+							   com_process_code,
+							   mat_inout_statement,
+							   mat_inout_gubun,
+							   mat_inout_date,
+							   mat_lot_no,
+							   mat_inout_quantity,
+							   mat_inout_unit_price,
+							   mat_inout_price)
+		VALUES  (#{comMaterialCode},
+			   	(select	DISTINCT(com_process_code)
+				 from	com_bom
+				 where	com_material_code = #{comMaterialCode}),
+			   #{matInoutStatement},
+			   #{matInoutGubun},
+			   #{matInoutDate},
+			   #{matLotNo},
+			   #{matInoutQuantity},
+			   #{matInoutUnitPrice},
+			   #{matInoutPrice})
 
+	</insert>
+	
+		
 	<!-- 자재입출고 관리페이지 수정 -->
 	<update id="updateMatInout">
 		UPDATE mat_inout
-		SET				mat_inout_gubun,
-						
-		              mat_inout_quantity = #{matInoutQuantity},
-		              mat_inout_unit_price = #{matInoutUnitPrice},
-		              mat_inout_price = #{matInoutPrice}
+		SET			mat_inout_gubun = #{matInoutGubun},
+					mat_inout_date = #{matInoutDate},
+					<!-- (select	DISTINCT(erp_vendor_code)
+				 	 from	qua_material_chk
+				 	 where	com_material_code = #{comMaterialCode}) as erp_vendor_code = #{erpVendorCode}, -->
+					com_material_code = #{comMaterialCode},
+		            mat_inout_quantity = #{matInoutQuantity},
+		            mat_inout_unit_price = #{matInoutUnitPrice},
+		            mat_inout_price = #{matInoutPrice}
 		       
 		WHERE	mat_inout_statement = #{matInoutStatement}
 	</update>
@@ -94,7 +105,7 @@
 	<delete id="deleteMatInout">
 		DELETE FROM	mat_inout
 		WHERE		mat_inout_statement = #{matInoutStatement}
-<!-- 		<if test="(comCodeDetailId != null and comCodeDetailId != '')">
+<!-- <if test="(comCodeDetailId != null and comCodeDetailId != '')">
 			WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId}) 
 			OR COM_CODE_DETAIL_ID = LOWER(#{comCodeDetailId})
 		</if> -->

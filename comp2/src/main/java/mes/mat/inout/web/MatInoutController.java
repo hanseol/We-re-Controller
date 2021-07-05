@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
@@ -26,7 +27,7 @@ import mes.mat.inout.service.MatInoutVO;
  * @Class Name : MatInoutController.java
  * @Description : MatInout Controller class
  * @Modification Information
- *
+ * 
  * @author sungwon  
  * @since 20210625
  * @version 1.0
@@ -39,7 +40,14 @@ import mes.mat.inout.service.MatInoutVO;
 public class MatInoutController {
 	//공통함수 객체 생성
 	ComFunc comFunc = new ComFunc();
-
+	
+	//입고전표번호 객체 선언
+	@Resource(name = "mesMatInStatementIdGnrService")
+	protected EgovIdGnrService matInStatementIdGnrService;
+	//출고전표번호
+	//전표번호 객체 선언
+	@Resource(name = "mesMatOutStatementIdGnrService")
+	protected EgovIdGnrService matOutStatementIdGnrService;
 	
     @Resource(name = "matInoutService")
     private MatInoutService service;
@@ -142,8 +150,15 @@ public class MatInoutController {
 		}
 		
 		if (createdList.size() != 0) {
-			//전표번호 부여해야함 MAT-날짜(MMDD)-순서(서브스트링 후 붙히기)
 			for (int i = 0; i < createdList.size(); i++) {
+				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("matInoutGubun");
+				
+				//전표번호 부여
+				if(gubun.equals("PNS002")) {
+				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", matInStatementIdGnrService.getNextStringId());
+				}else if(gubun.equals("PNS003")){
+					((LinkedHashMap)createdList.get(i)).put("matInoutStatement", matOutStatementIdGnrService.getNextStringId());
+				}
 				service.insertMatInout((LinkedHashMap) createdList.get(i));
 			}
 		}
@@ -199,6 +214,7 @@ public class MatInoutController {
   	}
 
     
+
     
 
 }

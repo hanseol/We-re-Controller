@@ -23,7 +23,7 @@ import mes.main.service.SearchVO;
 public class MatInoutVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
-    /** MAT_INOUT_STATEMENT */
+    /** MAT_INOUT_STATEMENT 전표번호 */
     private java.lang.String matInoutStatement;
     
     /** COM_MATERIAL_CODE */
@@ -33,7 +33,7 @@ public class MatInoutVO extends SearchVO{
     @DateTimeFormat(pattern ="yyyy/MM/dd")
     private java.lang.String matInoutDate;
     
-    /** MAT_INOUT_GUBUN */
+    /** MAT_INOUT_GUBUN 입출고 구분*/
     private java.lang.String matInoutGubun;
     
     /** MAT_INOUT_QUANTITY */
