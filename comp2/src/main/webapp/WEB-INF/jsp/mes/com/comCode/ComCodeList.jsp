@@ -68,8 +68,8 @@
 					<div>
 						<label for="selCodeIdNm">코드ID명</label>
 						<!-- 체크박스 값 input에 받기 -->
-						<input type="text" id="comCodeId"> <a
-							href="${pageContext.request.contextPath}/comCodeModal.do"
+						<input type="text" id="comCodeId"> 
+						<a href="${pageContext.request.contextPath}/comCodeModal.do"
 							rel="modal:open" id="getData"> <i class="fa fa-search"></i>
 						</a>
 						<button id="findRowCodeId">검색</button>
