@@ -294,13 +294,12 @@
 	   });
 
 	 //모달 : 지시/거래처코드 구분
-	 var inoutGubun = $('input[name=salInoutGubun]').val();
 	 grid.on('dblclick', ev => {
 	      if(ev.columnName == 'salInoutCode') {    
-	         if(inoutGubun == 'SALES002') { //입고 -> 지시 모달 오픈
-	        	$('#searchOrderCode').click();	  
-	         } else if (inoutGubun == 'SALES003') { //출고 -> 거래처 모달 오픈
-	    		$('#searchCustomerCode').click();
+	         if(grid.getColumnsValues('salInoutGubun') == 'SALES002') { //입고 -> 지시 모달 오픈
+	        	 $('#searchOrderCode').click();	  
+	         } else if (grid.getColumnsValues('salInoutGubun') == 'SALES003') { //출고 -> 거래처 모달 오픈
+	        	 $('#searchCustomerCode').click();
 	      	 } else {
 		    	  alert('입고/출고를 먼저 구분해주세요.');
 		    	  return;
