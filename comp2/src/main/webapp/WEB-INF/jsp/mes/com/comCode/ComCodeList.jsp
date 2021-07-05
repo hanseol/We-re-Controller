@@ -23,37 +23,29 @@
 	z-index: 1200;
 }
 </style>
-
 <div class="content-fluid">
 	<div>
 		<h2>공통자료 관리</h2>
 	</div>
 </div>
 
-<!--  -->
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
+<div class="search-area search-area-border grid-option-area">
+	<!--  -->
+	<div class="content-fluid">
+		<div>
+			<div class="my-panel">
+				<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				<button type="button" class="btn btn-info" id="modifyRow">저장</button>
+			</div>
 		</div>
 	</div>
-</div>
 
-<!--  -->
-<form id="option">
-	<div class="content-fluid">
-		<div class="panel panel-headline">
-			<div class="panel-heading">
-				<div class="row">
-					<div>
-						<label for="selCodeIdNm">코드ID명</label>
-						<!-- 체크박스 값 input에 받기 -->
-						<input type="text" id="comCodeId"> <a
-							href="${pageContext.request.contextPath}/comCodeModal.do"
-							rel="modal:open" id="getData"> <i class="fa fa-search"></i>
-						</a>
-						<button id="findRowCodeId">검색</button>
+	<!--  -->
+	<form id="option">
+		<div class="content-fluid">
+			<div class="panel panel-headline">
+				<div class="panel-heading">
+					<div class="row">
 						<div class="col-md-7"></div>
 						<div class="col-md-5" align="right">
 							<button type="button" id=appendRow>추가</button>
@@ -65,7 +57,6 @@
 							<div>
 								<label>공통코드명</label>
 								<!-- 체크박스 값 input에 받기 -->
-
 								<input id="comCodeName" />
 								<!-- 모달창 사용x -->
 								<%-- 					<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData">
@@ -73,21 +64,76 @@
 						</a> 
 --%>
 								<button id="findRowCodeId" type="button">검색</button>
-
 							</div>
 							<!-- 마스터데이터 호출 -->
 							<div class="col-md-4" id="grid"></div>
 							<!-- Detail 표현 -->
 							<div class="col-md-8" id="gridDetail"></div>
 						</div>
+						<!-- 마스터데이터 호출 -->
+						<div class="col-md-4" id="grid"></div>
+						<!-- Detail 표현 -->
+						<div class="col-md-8" id="gridDetail"></div>
 					</div>
 				</div>
 			</div>
 		</div>
+</div>
 </form>
 
 <!-- 마스터데이터 -->
 <script>
+/* 체크박스 */
+ class CustomCheckboxRenderer {
+    constructor(props) {
+        const { grid, rowKey,columnInfo, value } = props;
+        const label = document.createElement('checkbox');
+/*         const { disabled } = props.columnInfo.renderer.options; */
+        label.className = 'checkbox';
+        //label.setAttribute('for', String(rowKey));
+
+        const hiddenInput = document.createElement('input');
+        hiddenInput.className = 'hidden-input';
+        hiddenInput.id = String(rowKey);
+
+        hiddenInput.setAttribute( 'data-check-val', '0' );
+        
+        label.appendChild(hiddenInput);
+
+        hiddenInput.type = 'checkbox';
+        hiddenInput.addEventListener('change', () => {
+            if (hiddenInput.checked) {
+                hiddenInput.setAttribute( 'data-check-val', '1' );
+                grid.setValue(rowKey, columnInfo.name, "1");
+            } else {
+                hiddenInput.setAttribute( 'data-check-val', '0' );
+                grid.setValue(rowKey, columnInfo.name, "0");
+            }
+            try {
+                fnCustomChkboxChange();
+            } catch(e) {
+                
+            }
+            
+        });
+
+        this.el = label;
+
+        this.render(props);
+    }
+
+    getElement() {
+        return this.el;
+    }
+
+    render(props) {
+    const hiddenInput = this.el.querySelector('.hidden-input');
+    const checked = Boolean(props.value == '1');
+    hiddenInput.checked = checked;
+   const disabled = props.columnInfo.renderer.disabled;
+    hiddenInput.disabled = disabled; 
+    }
+};
 
 	$(document)
 			.ready(
@@ -127,9 +173,16 @@
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
+								validation: {
+									required:true
+								},
+								filter : 'text'
 							}, {
 								header : '공통코드명',
-								name : 'comCodeName',
+								name : 'comCodeName',validation: {
+									required:true
+								},
+								filter : 'text'
 							} ]
 						});
 						
@@ -196,8 +249,10 @@
 							}, {
 								header : '사용여부',
 								name : 'comCodeDetailUsedchk',
-								editor : 'text'
-							} ]
+								editor : 'text',
+								renderer: { type: CustomCheckboxRenderer},
+								align : 'center'
+								} ]
 						});
 						
 						//마스터테이블 클릭시 데이터 전달
