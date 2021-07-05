@@ -157,5 +157,21 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 		return proPlanDAO.selectErpProdCnt(vo);
 	}
 
+	
+	/* 
+	 * pro_plan테이블에서 계획리스트 가져오기 
+	 * 생산계획관리 페이지의 모달창에서 사용
+	 * 김다희
+	 * */
+	@Override
+	public List<?> selectPlanList(ProPlanVO vo) {
+		return proPlanDAO.selectPlanList(vo);
+	}
+
+	@Override
+	public int selectPlanListCnt(ProPlanVO vo) {
+		return proPlanDAO.selectPlanListCnt(vo);
+	}
+
 
 }

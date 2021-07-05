@@ -98,6 +98,16 @@ public interface ProPlanMapper {
 	 * 김다희
      * */
     public int selectErpProdCnt(ProPlanVO vo);
+
+    
+    /* 
+	 * pro_plan테이블에서 계획리스트 가져오기 
+	 * 생산계획관리 페이지의 모달창에서 사용
+	 * 김다희
+	 * */
+	public List<?> selectPlanList(ProPlanVO vo);
+
+	public int selectPlanListCnt(ProPlanVO vo);
     
     
     

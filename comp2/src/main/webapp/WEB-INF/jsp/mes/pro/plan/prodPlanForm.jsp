@@ -51,15 +51,16 @@
 
 
 
-
 <!-- 마스터테이블의 CRUD 버튼 -->
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
+	
 			<button type="button" class="btn btn-success" id="findRow">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-			<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-			<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
+			<!-- <button type="button" class="btn btn-info" id="updateRow">수정저장</button> -->
+			
 		</div>
 	</div>
 </div>
@@ -72,16 +73,14 @@
 			<div class="row">
 				<div class="col-md-6">
 					<form>
-						* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
-							~ <input type="date" id="endDate" name="endDate"> 
-							<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
-							<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
-							<br/><br/>
+						* 계획일자   &nbsp;&nbsp;&nbsp;<input type="date" id="date" name="date" > <br/><br/>
+							
 						* 생산계획명  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">  &nbsp;&nbsp;
+						<a href="${pageContext.request.contextPath}/proPlanName.do" rel="modal:open">						
+                     		<i class="fa fa-search"></i>
+                  		</a>
 						<!-- 모달창 -->
-						<a href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open">
-							<i class="fa fa-search" ></i>
-						</a>
+						<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a> 
 					</form>
 				</div>
 				
@@ -89,6 +88,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 <!-- 디테일 테이블 -->
@@ -100,7 +100,7 @@
 					<p class="panel-subtitle">생산계획관리</p>
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button">조회</button>
+					<!-- <button type="button">조회</button> -->
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
@@ -114,11 +114,22 @@
 
 
 <script>
+	var proPlanGrid;
 	$(document).ready(function() {
-
+		
+ 		
+		/*//M 새자료버튼 
+		$(document).ready(function() {  
+		       $("#reset").click(function() {  
+		            $("form").each(function() {  
+		                   if(this.id == "option") this.reset();  
+		                });  
+		       });  
+		    });  */ 
+		
+		
 		//M 조회 버튼
-		$(document).on("click", "button[id=findRow]",
-	            function() {
+		$(document).on("click", "button[id=findRow]", function() {
 	    	  	   var gubun = $("input[name=gubun]:checked").val();
 	    	  	   console.log(gubun);
 	               var startDate = $("#startDate").val();
@@ -132,25 +143,35 @@
 	                  'erpProductCode' : erpProductCode,
 	                  'erpCustomerCode' : erpCustomerCode
 	               };
-	               grid.readData(1, readParams, true);
+	               proPlanGrid.readData(1, readParams, true);
 	            });
-
-		//M 추가저장 버튼
+		 
+		//M 저장 버튼
+		$(document).on("click", "button[id=modifyRow]", function () {
+			proPlanGrid.finishEditing('rowKey', 'columnName');
+			proPlanGrid.request('modifyData');
+		});
+		    
+		    
+		/* //M 추가저장 버튼
 		$(document).on("click", "button[id=insertRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('createData');
+			proPlanGrid.finishEditing('rowKey','columnName');
+			proPlanGrid.request('createData');
 		});
 		
 		//M 수정저장 버튼 
 		$(document).on("click", "button[id=updateRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('updateData');
-		});
+			proPlanGrid.finishEditing('rowKey','columnName');
+			proPlanGrid.request('updateData');
+		}); */
+		
+
+		
 		
 		//D 삭제 버튼 
 		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(true);
-			grid.request('deleteData');
+			proPlanGrid.removeCheckedRows(true);
+			proPlanGrid.request('deleteData');
 		});
 		
 		//D 추가 버튼
@@ -166,12 +187,17 @@
 				proWorkDate : "" ,
 				proPlanSeq : "" 
 			} ];
-			grid.appendRow(rowData, {
-				at : grid.getRowCount(),
+			proPlanGrid.appendRow(rowData, {
+				at : proPlanGrid.getRowCount(),
 				focus : true
 			});
-			grid.enable();
+			proPlanGrid.enable();
 		});
+		
+		
+		
+		
+		
 		
 		
 		//dataSource		
@@ -181,33 +207,36 @@
 					url : '${pageContext.request.contextPath}/proPlan/ProdPlanView',
 					method : 'GET'
 				},  
-				modifyData: { url: '${pageContext.request.contextPath}/ajax/modifyBoard', method: 'PUT' }
+				modifyData: { url: '${pageContext.request.contextPath}/proOrder/modifyProdPlan', method: 'PUT' }
 			},
+			initialRequest : false,
 			contentType : "application/json"
 		};
 		
 		
 
-		const grid = new tui.Grid({
+		proPlanGrid = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			columns : [ {
 				header : '제품코드',
 				name : 'erpProductCode',
-				editor : 'text'
+				validation: {
+		               required:true
+		            }
 			}, {
 				header : '제품명',
-				name : 'erpProductName',
+				name : 'erpProductName'
 			}, {
 				header : '주문코드',
-				name : 'erpOrderCode',
+				name : 'erpOrderCode'
 			}, {
 				header : '납기일자',
-				name : 'erpProductDeadline',
+				name : 'erpProductDeadline'
 			}, {
 				header : '주문량',
-				name : 'erpOrderQty',
+				name : 'erpOrderQty'
 			}, {
 				header : '작업계획량',
 				name : 'proPlanQty',
@@ -229,11 +258,21 @@
 			} ]
 		});
 		
-		
+	//디테일의 제품코드cell 더블클릭으로 모달창 띄우기	
+	proPlanGrid.on('dblclick', ev => {
+		if(ev.columnName == 'erpProductCode'){
+			
+			$('#showModal').click();
+			
+		}
+	});
+	
+
+	
 	
 
 	/* 	
-	grid.on('response', ev => {
+	proPlanGrid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);
 
@@ -242,9 +281,10 @@
 		});
 	 */
 	 
-	grid.on('check', (ev) => {
+	 //체크박스 클릭시 alert 띄우기
+	/* proPlanGrid.on('check', (ev) => {
 		  alert(`check: ${ev.rowKey}`);
-	});
+	}); */
 	
 }); //end of document ready
 </script>

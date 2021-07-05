@@ -82,6 +82,14 @@ public interface ProPlanService {
     int selectErpProdCnt(ProPlanVO vo);
     
     
+	/* 
+	 * pro_plan테이블에서 계획리스트 가져오기 
+	 * 생산계획관리 페이지의 모달창에서 사용
+	 * 김다희
+	 * */
+    List<?> selectPlanList(ProPlanVO vo);
+    int selectPlanListCnt(ProPlanVO vo);
+    
     
     
     

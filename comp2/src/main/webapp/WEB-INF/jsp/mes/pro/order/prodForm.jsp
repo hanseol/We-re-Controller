@@ -163,8 +163,8 @@
 		            type: 'select',
 		            options: {
 		              listItems: [
-		                { text: '정상', value: '1' },
-		                { text: '재작업', value: '2' }
+		                { text: '정상', value: '정상' },
+		                { text: '재작업', value: '재작업' }
 		              ]
 		            }
 		          }
