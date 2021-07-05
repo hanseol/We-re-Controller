@@ -110,6 +110,7 @@
 					method : 'GET'
 				}
 			},
+			initialRequest : false,
 			contentType : "application/json"
 		};
 

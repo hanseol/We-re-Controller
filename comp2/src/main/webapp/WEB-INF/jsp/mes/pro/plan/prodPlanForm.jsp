@@ -130,16 +130,9 @@
 		
 		//M 조회 버튼
 		$(document).on("click", "button[id=findRow]", function() {
-	    	  	   var gubun = $("input[name=gubun]:checked").val();
-	    	  	   console.log(gubun);
-	               var startDate = $("#startDate").val();
-	               var endDate = $("#endDate").val();
 	               var erpProductCode = $("#erpProductCode").val();
 	               var erpCustomerCode = $("#erpCustomerCode").val();
 	               var readParams = {
-	            	  'searchCondition' : gubun,
-	                  'startDate' : startDate,
-	                  'endDate' : endDate,
 	                  'erpProductCode' : erpProductCode,
 	                  'erpCustomerCode' : erpCustomerCode
 	               };
@@ -188,7 +181,7 @@
 				proPlanSeq : "" 
 			} ];
 			proPlanGrid.appendRow(rowData, {
-				at : proPlanGrid.getRowCount(),
+				at : 0,
 				focus : true
 			});
 			proPlanGrid.enable();

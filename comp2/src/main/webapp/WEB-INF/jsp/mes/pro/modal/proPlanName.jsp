@@ -40,25 +40,30 @@ $(document).ready(function() {
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
 			proPlanName = gridModal.getValue(chkRowKeys[i],'proPlanName');
+			proPlanDate = gridModal.getValue(chkRowKeys[i],'proPlanDate');
 			console.log(proPlanName);
+			console.log(proPlanDate);
 		}
 		$("#proPlanName").val(proPlanName);
+		$("#date").val(proPlanDate);
 	});
 	
 	
 	
 	
 	$(document).on("click", "a[id=findRow]", function() {
-		var erpOrderCode = $("#proPlanName").val();
-		var startDate = $("#startDate").val();
-		var endDate = $("#endDate").val();
-		var readParams = {
-				'proPlanName' : proPlanName,
-				'startDate' : startDate,
-				'endDate' : endDate
-			};
-		gridModal.readData(1, readParams, true);
-	});
+				var proPlanName = $("#proPlanName").val();
+				var startDate = $("#startDate").val();
+				var endDate = $("#endDate").val();
+				var proPlanDate = $("#proPlanDate").val();
+				var readParams = {
+						'proPlanName' : proPlanName,
+						'startDate' : startDate,
+						'endDate' : endDate,
+						'proPlanDate' : proPlanDate
+					};
+				gridModal.readData(1, readParams, true);
+			});
 	
 	const dataSource = {
 		api : {
