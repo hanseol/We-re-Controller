@@ -25,7 +25,7 @@ public interface MatInoutMapper {
 
 	//등록
     public void insertMatInout(LinkedHashMap vo) throws Exception;
-
+    
     //수정
     public void updateMatInout(LinkedHashMap vo) throws Exception;
 
@@ -35,20 +35,14 @@ public interface MatInoutMapper {
     //행 카운트
     public int selectMatInoutListTotCnt(MatInoutVO searchVO);
     
-    //입출고조회페이지 리스트 조회
+    //전체 입출고 리스트
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;
     
-    /*
-     * 목록 조회
-     * 모달창에서 사용
-     * 김한설
-     * */
-    public List<?> searchFormList(MatInoutVO searchVO) throws Exception;
-    /*
-     * 총 갯수 조회
-     * 모달창에서 사용
-     * 김한설
-     * */
-    public int searchVendorFormListCnt(MatInoutVO vo);
+    //모달 자재코드 리스트
+    public List<?> searchMaterialCodeList(MatInoutVO searchVO) throws Exception;
+    
+    //모달 입고업체 리스트
+    public List<?> searchVendorCodeList(MatInoutVO searchVO) throws Exception;
+
     
 }

@@ -1,8 +1,7 @@
 package mes.sal.inout.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-
-import mes.sal.inout.service.SalInoutVO;
 
 /**
  * @Class Name : SalInoutService.java
@@ -24,7 +23,7 @@ public interface SalInoutService {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    String insertSalInout(SalInoutVO vo) throws Exception;
+    String insertSalInout(LinkedHashMap vo) throws Exception;
     
     /**
 	 * SAL_INOUT을 수정한다.
@@ -32,7 +31,7 @@ public interface SalInoutService {
 	 * @return void형
 	 * @exception Exception
 	 */
-    void updateSalInout(SalInoutVO vo) throws Exception;
+    void updateSalInout(LinkedHashMap vo) throws Exception;
     
     /**
 	 * SAL_INOUT을 삭제한다.
@@ -40,7 +39,7 @@ public interface SalInoutService {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    void deleteSalInout(SalInoutVO vo) throws Exception;
+    void deleteSalInout(LinkedHashMap vo) throws Exception;
     
     /**
 	 * SAL_INOUT을 조회한다.
@@ -67,7 +66,7 @@ public interface SalInoutService {
 
   //입출고 조회 페이지
     List selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
-    int selectSalInoutListTotCnt(SalInoutVO searchVO);
+    int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
 
     
     
@@ -82,7 +81,11 @@ public interface SalInoutService {
     //모달 : 완제품 LOT_NO 조회
 	List<?> searchProductLotNoList(SalInoutVO searchVO) throws Exception;
 	int searchProductLotNoListTotCnt(SalInoutVO searchVO);
-	
+
+
+	//모달 : 생산 지시 디테일 코드 조회
+	List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception;
+	int searchProductCodeListTotCnt(SalInoutVO searchVO);
     
     
     

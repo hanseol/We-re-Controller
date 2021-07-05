@@ -15,8 +15,8 @@
 			<div class="panel-body">
 				<div>
 					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" />
-					<br> 제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
+					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" /> <br>
+					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
 					<button id="findRow">검색</button>
 					<br>
 				<div id="modalGrid"></div>
@@ -42,11 +42,11 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'proProductLotNo');
+			code = grid.getValue(chkRowKeys[i],'proProcessLotNo');
 			console.log(code);
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
-		$("#productCode").val(code);
+		$("#productLotNo").val(code);
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {

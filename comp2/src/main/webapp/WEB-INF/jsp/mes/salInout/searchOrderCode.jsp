@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
-<!-- 210701 김현경 제품검색 모달창 -->
+<!-- 210705 김현경 지시/고객사구분 모달창 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>제품 검색</h3>
+		<h3>지시 코드</h3>
 	</div>
 </div>
 
@@ -14,8 +14,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" />
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
+					생산지시디테일코드 <input type="text" id="proOrderDetailCode" name="proOrderDetailCode" placeholder="생산지시디테일코드" />
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" />
 					<button id="findRow">검색</button>
 					<br>
 				<div id="modalGrid"></div>
@@ -41,23 +41,21 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'comProductCode');
-			console.log(code);
+			code = grid.getValue(chkRowKeys[i],'salInoutCode');
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
-		 $("#productCode").val(code);
+		 $("#gridInoutCode").val(code);
 	
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
-		var code = $("#comProductCode").val();
-		console.log(code);
-		var name = $("#comProductName").val();
-		console.log(name);
-		var readParams = {
-				'comProductCode' : code,
-				'comProductName' : name
+		var code = $("#proOrderDetailCode").val();
+		var no = $("#proProcessLotNo").val();
+		console.log(code, no);
+		var readParams = { //실제컬럼명 : ~
+				'proOrderDetailCode' : code,
+				'proProcessLotNo' : no
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -65,7 +63,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/mes/salInout/searchProductCode',
+				url : '${pageContext.request.contextPath}/mes/salInout/searchOrderCode',
 				method : 'GET'
 			}
 		},
@@ -81,11 +79,20 @@ $(document).ready(function() {
 	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
-			header : '제품코드',
-			name : 'comProductCode'
+			header : '생산지시디테일코드',
+			name : 'proOrderDetailCode'
 		}, {
-			header : '제품명',
-			name : 'comProductName'
+			header : '납기일자',
+			name : 'erpProductDeadline'
+		}, {
+			header : '고객사',
+			name : 'erpCustomerCode'
+		}, {
+			header : '제품코드',
+			name : 'erpProductCode'
+		}, {
+			header : '완제품 LOT_NO',
+			name : 'proProcessLotNo'
 		}]
 	});
 });

@@ -23,17 +23,17 @@ import mes.main.service.SearchVO;
 public class MatInoutVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
-    /** MAT_INOUT_STATEMENT */
+    /** MAT_INOUT_STATEMENT 전표번호 */
     private java.lang.String matInoutStatement;
     
     /** COM_MATERIAL_CODE */
-    private java.lang.String comMaterialCode;
+    private String comMaterialCode;
     
     /** MAT_INOUT_DATE */
     @DateTimeFormat(pattern ="yyyy/MM/dd")
     private java.lang.String matInoutDate;
     
-    /** MAT_INOUT_GUBUN */
+    /** MAT_INOUT_GUBUN 입출고 구분*/
     private java.lang.String matInoutGubun;
     
     /** MAT_INOUT_QUANTITY */
@@ -51,10 +51,16 @@ public class MatInoutVO extends SearchVO{
     /** MAT_INOUT_PRICE */
     private java.math.BigDecimal matInoutPrice;
     
-    //거래처코드 추가
-    private java.lang.String erpVendorCode;
+    //업체코드 추가
+    private String erpVendorCode;
     
+    //자재명 추가
+    private String comMaterialName;
     
+    //공통 업체코드(VENDOR---) 추가
+    private String comCodeDetailId;
     
+    //입고업체명 추가
+    private String comCodeDetailName;
 
 }

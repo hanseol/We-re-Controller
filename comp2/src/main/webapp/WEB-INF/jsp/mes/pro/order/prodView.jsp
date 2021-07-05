@@ -146,6 +146,12 @@
 				header : '지시량',
 				name : 'proOrderQty'
 			},{
+				header : '작업구분',
+				name : 'proOrderGubun'
+			},{
+				header : '제품LOT_NO',
+				name : 'proMaterialLot'
+			},{
 				header : '작업순서',
 				name : 'proOrderSeq'
 			} ]

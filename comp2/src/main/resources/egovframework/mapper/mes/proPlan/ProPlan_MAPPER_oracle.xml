@@ -11,6 +11,7 @@
 		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
 	</resultMap>
 	
+	<!-- INSERT (prodPlanForm.jsp에서 작성한 내용) --> 
 	<insert id="insertProPlan">
 		<![CDATA[
 			INSERT INTO PRO_PLAN 
@@ -22,6 +23,30 @@
 				  , #{proPlanName}
 				  , #{proPlanDate}
 				  , #{erpCustomerCode} )
+			
+			INSERT INTO PRO_PLAN_DETAIL 
+				( PRO_PLAN_DETAIL_CODE
+				  , PRO_PLAN_CODE
+				  , ERP_ORDER_CODE
+				  , ERP_PRODUCT_DEADLINE
+				  , PRO_PLAN_DATE
+				  , ERP_CUSTOMER_CODE
+				  , PRO_PLAN_EXPECT_QTY
+				  , PRO_PLAN_DAY_QTY
+				  , PRO_PLAN_SEQ
+				  , ERP_ORDER_QTY
+				  , PRO_PLAN_QTY )
+			VALUES ( 'PPD-' || TO_CHAR(
+				  , #{proPlanCode}
+				  , #{erpOrderCode}
+				  , #{erpProductDeadline}
+				  , #{proPlanDate}
+				  , #{erpCustomerCode}
+				  , #{proPlanExpectQty}
+				  , #{proPlanDayQty}
+				  , #{proPlanSeq}
+				  , #{erpOrderQty}
+				  , #{proPlanQty} )
 		]]>
 	</insert>
 	
@@ -72,6 +97,7 @@
 						     , d.pro_plan_qty
 						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
 						     , d.pro_plan_seq
+						     <!-- , m.pro_plan_name -->
 						FROM pro_plan_detail d
 						   , erp_product_order e
 						   , pro_plan m
@@ -91,6 +117,9 @@
 								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
 									e.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
 								</if>
+								<!-- <if test="proPlanName != null and proPlanName != ''"> AND
+									m.pro_plan_name LIKE '%' || #{proPlanName} || '%'
+								</if> -->
 							ORDER BY 
 								m.PRO_PLAN_CODE DESC
 				<![CDATA[					
@@ -113,6 +142,7 @@
 				<if test="searchCondition == 1">AND
 					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
 				</if>
+				
 			</if>
 			
 	</select>
@@ -122,12 +152,16 @@
 	<select id="selectErpPordList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT erp_order_code
-						     , erp_product_code
+						SELECT erp_product_code
 						     , erp_product_name
+						     , erp_order_code
+						     , TO_CHAR(erp_product_deadline, 'yyyy/MM/dd' ) as erp_product_deadline
 						     , erp_order_qty
 						FROM erp_product_order
-						WHERE 1=1
+						WHERE erp_order_code NOT IN(SELECT e.erp_order_code            
+                           FROM erp_product_order e
+                              , pro_plan_detail d
+                           WHERE e.erp_order_code = d.erp_order_code)
 						 <if test="erpProductCode != null and erpProductCode!=''"> AND
 							erp_product_code LIKE '%' || #{erpProductCode} || '%'
 						</if>
@@ -154,8 +188,59 @@
 				erp_product_name LIKE '%' || #{searchKeyword} || '%'
 			</if>
 		</if>
-	
 	</select>
+	
+	
+
+
+	 <!-- pro_plan테이블에서 계획리스트 가져오기 -->
+	<select id="selectPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT pro_plan_date
+						     , pro_plan_code
+						     , pro_plan_name     
+						FROM pro_plan
+						WHERE 1=1
+					 	<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+							<if test="searchCondition == 1"> AND
+								pro_plan_date BETWEEN #{startDate} AND #{endDate} 
+							</if>
+						</if>
+						ORDER BY 
+							erp_product_code
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+
+	</select> 
+	 <select id="selectPlanListCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM pro_plan
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				pro_plan_date = #{searchKeyword}
+			</if>
+		</if>
+	</select>
+
+
+	
+	
+	<!-- erp_order테이블에서 가져온 제품리스트 중 하나 선택 -->
+	<select id="selectOneErpProd" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT erp_product_code
+		     , erp_product_name
+		     , erp_order_code
+		     , TO_CHAR(erp_product_deadline, 'yyyy/MM/dd' ) as erp_product_deadline
+		     ,erp_order_qty
+		FROM erp_product_order
+		WHERE erp_order_code = 'EO-0627-001';
+	</select>
+	
+	
 	
 	
 	

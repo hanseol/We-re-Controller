@@ -51,6 +51,9 @@ public class ProOrderVO extends SearchVO{
     private java.sql.Date proWorkDate;
     private String erpProductCode;
     
+    //추가
+    private String proMaterialLot;
+    
     
 
 }

@@ -1,5 +1,6 @@
 package mes.sal.inout.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -27,7 +28,7 @@ public interface SalInoutMapper {
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public void insertSalInout(SalInoutVO vo) throws Exception;
+    public void insertSalInout(LinkedHashMap vo) throws Exception;
 
     /**
 	 * SAL_INOUT을 수정한다.
@@ -35,7 +36,7 @@ public interface SalInoutMapper {
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateSalInout(SalInoutVO vo) throws Exception;
+    public void updateSalInout(LinkedHashMap vo) throws Exception;
 
     /**
 	 * SAL_INOUT을 삭제한다.
@@ -43,7 +44,7 @@ public interface SalInoutMapper {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteSalInout(SalInoutVO vo) throws Exception;
+    public void deleteSalInout(LinkedHashMap vo) throws Exception;
 
     /**
 	 * SAL_INOUT을 조회한다.
@@ -69,8 +70,9 @@ public interface SalInoutMapper {
 	 */
     public int selectSalInoutListTotCnt(SalInoutVO searchVO);
 
-    //완제품 웅엥
+    //완제품입출고목록 조회
     public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
+    public int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
 
     
     
@@ -85,5 +87,10 @@ public interface SalInoutMapper {
   	//모달 : 완제품 LOT_NO 조회
 	public List<?> searchProductLotNoList(SalInoutVO searchVO) throws Exception;
 	public int searchProductLotNoListTotCnt(SalInoutVO searchVO);
+
+	//모달 : 생산지시디테일코드 조회
+	public List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception;
+	public int searchProductCodeListTotCnt(SalInoutVO searchVO);
+
 
 }

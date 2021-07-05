@@ -45,6 +45,7 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	LOGGER.debug(vo.toString());
     	
     	matInoutMapper.insertMatInout(vo);
+
     	//TODO 해당 테이블 정보에 맞게 수정    	
         return null;
     }
@@ -69,9 +70,14 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	return matInoutMapper.selectMatInoutList(searchVO);
     }
     
-    //모달 리스트 출력
-	public List<?> searchFormList(MatInoutVO searchVO) throws Exception {
-		return matInoutMapper.searchFormList(searchVO);
+    //모달 자재코드 리스트 출력
+	public List<?> searchMaterialCodeList(MatInoutVO searchVO) throws Exception {
+		return matInoutMapper.searchMaterialCodeList(searchVO);
+	}
+	
+	//모달 입고업체 리스트 출력
+	public List<?> searchVendorCodeList(MatInoutVO searchVO) throws Exception {
+		return matInoutMapper.searchVendorCodeList(searchVO);
 	}
 
 }

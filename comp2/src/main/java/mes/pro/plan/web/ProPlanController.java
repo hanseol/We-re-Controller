@@ -70,28 +70,52 @@ public class ProPlanController {
     //생산계획리스트 조회
     @RequestMapping("proPlan/ProdPlanView")
     @ResponseBody
-    public Map<String, Object> readPlan(Model model, @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
+    public Map<String, Object> readPlan(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
     	List<?> list = new ArrayList<>();
         list = service.selectProPlanList(searchVO);
         return comFunc.sendResult(list);
     }
     
-    //생산계획관리 (erp제품모달 페이지 호출)
+    
+    //생산계획관리_모달(생산계획명 검색 페이지 호출)
+    @GetMapping("proPlanName.do")
+    public String proPlanName() {
+    	return "mes/pro/modal/proPlanName";
+    }
+    
+    //생산계획관리_모달(생산계획명 검색 페이지 결과 값 뿌리기)
+    @RequestMapping("proPlanName")
+    @ResponseBody
+    public Map<String, Object> proPlanName(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
+    	List<?> list = service.selectPlanList(searchVO);
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
+    
+    //생산계획관리_모달(erp제품모달 페이지 호출)
     @GetMapping("erpProductSearch.do")
     public String erpProductSearch() {
     	return "mes/pro/modal/erpProductSearch";
     }
     
-    //생산계획관리 (erp제품모달 페이지 결과 값 가져오기)
+    //생산계획관리_모달(erp제품모달 페이지 결과 값 뿌리기)
     @RequestMapping("erpProductSearch")
     @ResponseBody
-    public Map<String, Object> erpProductSearch(Model model, @ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
-    	
+    public Map<String, Object> erpProductSearch(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
     	List<?> list = service.selectErpPordList(searchVO);
-    	
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
+    
+    //생산계획관리_모달(제품리스트에서 한개의 제품정보 가져오기)
+    @RequestMapping("SelectErpProduct")
+    @ResponseBody
+    public Map<String, Object> SelectErpProduct(){
+    	
+		return null;
+    }
+    
+    
     
     //생산계획리스트 추가, 수정, 삭제 (****수정하기)
 	@PutMapping("proOrder/modifyProdPlan")
@@ -114,11 +138,11 @@ public class ProPlanController {
 			}
 		}
 
-		if (deletedList.size() != 0)
-		{
+		if (deletedList.size() != 0) {
 			for (int i = 0; i < deletedList.size(); i++) {
 				service.deleteProPlan((LinkedHashMap) deletedList.get(i));
 			}
 		}
+		
 	}
 }

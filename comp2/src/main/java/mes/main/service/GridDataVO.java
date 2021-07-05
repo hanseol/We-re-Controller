@@ -17,4 +17,5 @@ import mes.board.service.BoardVO;
 	List<?> createdRows;
 	List<?> deletedRows;
 	private Integer no;
+	private String matInoutStatus;
 }

@@ -30,63 +30,65 @@
 	</div>
 </div>
 
-<div class="search-area search-area-border grid-option-area">
-	<!--  -->
-	<div class="content-fluid">
-		<div>
-			<div class="my-panel">
-
-				<button type="button" class="btn btn-danger">새자료</button>
-				<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-			</div>
+<!--  -->
+<div class="content-fluid">
+	<div>
+		<div class="my-panel">
+			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 		</div>
 	</div>
 </div>
 
 <!--  -->
-
-<div>
-	<div>
-		<h2>코드</h2>
-	</div>
-
-</div>
-
-
-<div class="content-fluid">
-	<div class="panel panel-headline">
-		<div class="panel-heading">
-			<div class="row">
-				<div class="col-md-7"></div>
-				<div class="col-md-5" align="right">
-					<button type="button" id=appendRow>추가</button>
-					<button type="button" id="deleteRow">삭제</button>
-				</div>
-			</div>
-			<div class="panel-body">
+<form id="option">
+	<div class="content-fluid">
+		<div class="panel panel-headline">
+			<div class="panel-heading">
 				<div class="row">
 					<div>
 						<label for="selCodeIdNm">코드ID명</label>
 						<!-- 체크박스 값 input에 받기 -->
-						<input type="text" id="comCodeId"> 
-						<a href="${pageContext.request.contextPath}/comCodeModal.do"
+						<input type="text" id="comCodeId"> <a
+							href="${pageContext.request.contextPath}/comCodeModal.do"
 							rel="modal:open" id="getData"> <i class="fa fa-search"></i>
 						</a>
 						<button id="findRowCodeId">검색</button>
+						<div class="col-md-7"></div>
+						<div class="col-md-5" align="right">
+							<button type="button" id=appendRow>추가</button>
+							<button type="button" id="deleteRow">삭제</button>
+						</div>
 					</div>
-					<!-- 마스터데이터 호출 -->
-					<div class="col-md-4" id="grid"></div>
-					<!-- Detail 표현 -->
-					<div class="col-md-8" id="gridDetail"></div>
+					<div class="panel-body">
+						<div class="row">
+							<div>
+								<label>공통코드명</label>
+								<!-- 체크박스 값 input에 받기 -->
+
+								<input id="comCodeName" />
+								<!-- 모달창 사용x -->
+								<%-- 					<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData">
+						<i class="fa fa-search"></i>
+						</a> 
+--%>
+								<button id="findRowCodeId" type="button">검색</button>
+
+							</div>
+							<!-- 마스터데이터 호출 -->
+							<div class="col-md-4" id="grid"></div>
+							<!-- Detail 표현 -->
+							<div class="col-md-8" id="gridDetail"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-
+</form>
 
 <!-- 마스터데이터 -->
 <script>
+
 	$(document)
 			.ready(
 					function() {
@@ -94,12 +96,13 @@
 						
 						//코드명 검색
 						$(document).on("click", "button[id=findRowCodeId]", function() {
-							var comCode = $("#comCodeId").val();
-							console.log(comCode);
+							var comName = $("#comCodeName").val();
+							console.log(comName);
 							var readParams = {
-									'comCodeId' : comCode
+									'comCodeName' : comName
 								};
-							gridDetail.readData(1, readParams, true);
+							//보낼 grid 이름 지정
+							grid.readData(1, readParams, true);
 						});
 						
 						//마스터테이블 controller 연결
@@ -224,6 +227,15 @@
 								});
 								gridDetail.enable();
 						});
+						
+						// option form reset  
+						 $(document).ready(function() {  
+						    $("#reset").click(function() {  
+						         $("form").each(function() {  
+						                if(this.id == "option") this.reset();  
+						             });  
+						    });  
+						 });  
 						
 
 					});//end of ready

@@ -45,7 +45,7 @@ public class BoardController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
-	@Resource(name = "egovMesNoIdGnrService")
+	@Resource(name = "mesNoIdGnrService")
 	protected EgovIdGnrService mesNoIdGnrService;
 	/** 공통 함수 */
 	ComFunc comFunc = new ComFunc();

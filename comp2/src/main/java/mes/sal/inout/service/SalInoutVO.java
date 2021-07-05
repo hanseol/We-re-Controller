@@ -50,6 +50,10 @@ public class SalInoutVO extends SearchVO{
     /** PRO_PROCESS_LOT_NO */
     private java.lang.String proProcessLotNo;
     
+    //작성일자
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private java.lang.String salWriteDate;
+    
     //제품명
     private java.lang.String comProductName;
     
@@ -79,6 +83,10 @@ public class SalInoutVO extends SearchVO{
     private java.lang.String erpProductOrderDate;
     
     private java.lang.String erpProductName;
+    
+    //생산지시디테일코드
+    private java.lang.String proOrderDetailCode;
+    
 
 
     

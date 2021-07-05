@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<!-- 20210702 주성원 업체검색 모달창 -->
+<!-- 20210703 주성원 자재검색 모달창 -->
    
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>업체 검색</h3>
+		<h3>자재 검색</h3>
 	</div>
 </div>
 
@@ -14,8 +14,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					업체코드 <input type="text" id="comCodeDetailId" name="comCodeDetailId" placeholder="업체코드"/>
-				    업체명 <input type="text" id="comCodeDetailName" name="comCodeDetailName" placeholder="업체명"/>
+					자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" placeholder="자재코드"/>
+				    자재명 <input type="text" id="comMaterialName" name="comMaterialName" placeholder="자재명"/>
 				    <button id="findRow">검색</button>
 				</div>
 				<div id="modalGrid"></div>
@@ -41,24 +41,22 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
+			code = grid.getValue(chkRowKeys[i],'comMaterialCode');
 			console.log(code);
 		}
 		
-		$("#comCodeDetailId").val(code);
+		$("#comMaterialCode").val(code);
 	});
 
 	
 	$(document).on("click", "button[id=findRow]", function() {
-		var comCodeDetailId = $("#comCodeDetailId").val();
-		console.log(comCodeDetailId);
+		var comMaterialCode = $("#comMaterialCode").val();
 		
-		var comCodeDetailName = $("#comCodeDetailName").val();
-		console.log(comCodeDetailName);
+		var comMaterialName = $("#comMaterialName").val();
 	
 		var readParams = {
-				'comCodeDetailId' : comCodeDetailId,
-				'comCodeDetailName' : comCodeDetailName
+				'comMaterialCode' : comMaterialCode,
+				'comMaterialName' : comMaterialName
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -66,7 +64,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/ajax/searchVendor',
+				url : '${pageContext.request.contextPath}/ajax/searchMaterial',
 				method : 'GET'
 			}
 		},
@@ -77,19 +75,16 @@ $(document).ready(function() {
 		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
-		scrollX: true,
-		scrollY: true,
-		bodyHeight :300,
-		rowHeight: 30,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :300,
+	        rowHeight: 30,
 		columns : [ {
-			header : '업체코드',
-			name : 'comCodeDetailId'
+			header : '자재코드',
+			name : 'comMaterialCode'
 		}, {
-			header : '업체명',
-			name : 'comCodeDetailName'
-		}, {
-			header : '납품목록',
-			name : 'comCodeDetailDesc'
+			header : '자재명',
+			name : 'comMaterialName'
 		}]
 	});
 	
