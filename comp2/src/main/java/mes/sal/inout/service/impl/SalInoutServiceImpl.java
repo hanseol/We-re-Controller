@@ -1,19 +1,17 @@
 package mes.sal.inout.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import mes.sal.inout.service.SalInoutService;
 import mes.sal.inout.service.SalInoutVO;
-import mes.sal.inout.service.impl.SalInoutMapper;
 /**
  * @Class Name : SalInoutServiceImpl.java
  * @Description : SalInout Business Implement class
@@ -49,7 +47,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public String insertSalInout(SalInoutVO vo) throws Exception {
+    public String insertSalInout(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -69,7 +67,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateSalInout(SalInoutVO vo) throws Exception {
+    public void updateSalInout(LinkedHashMap vo) throws Exception {
         salInoutDAO.updateSalInout(vo);
     }
 
@@ -79,7 +77,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteSalInout(SalInoutVO vo) throws Exception {
+    public void deleteSalInout(LinkedHashMap vo) throws Exception {
         salInoutDAO.deleteSalInout(vo);
     }
 
@@ -119,12 +117,10 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	}
     
     
-    public int selectSalInoutListTotCnt(SalInoutVO searchVO) {
+    public int selectSalProductInoutListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
 	}
 
-    
-    
     
     
     //모달 : 제품코드 조회
@@ -159,6 +155,18 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchProductLotNoListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.searchProductLotNoListTotCnt(searchVO);
 	}
+
+	//모달 : 생산지시디테일코드 조회
+	@Override
+	public List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.searchProductCodeList(searchVO);
+	}
+
+	@Override
+	public int searchProductCodeListTotCnt(SalInoutVO searchVO) {
+		return salInoutDAO.searchProductCodeListTotCnt(searchVO);
+	}
+	
 
 	
 }

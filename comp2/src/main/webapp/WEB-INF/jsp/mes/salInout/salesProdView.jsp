@@ -61,11 +61,11 @@
 			<div class="row">
 				<div class="col-md-3">
 						일자
-						<input type="date" id="date" name="date">
+						<input type="date" id="dateGubun" name="dateGubun">
 				</div>
 				<div class="col-md-3">
 						입/출고구분 &nbsp;
-						<input type="checkbox" id="inGubun" name="gubun" value="1" checked="checked">입고
+						<input type="checkbox" id="inGubun" name="gubun" value="1" checked>입고
 						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
 				</div>
 				<div class="col-md-3">
@@ -105,10 +105,24 @@
 	$(document).ready(function() {	
 		$(document).on("click", "button[id=search]",
 				function() {
-					var date = $("#date").val();
-					var gubun = $("#gubun").val();
+					var date = $("#dateGubun").val();
+					var inGubun = $("#inGubun").val();
+					var outGubun = $("#outGubun").val();
+					var gubun;
 					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val(); 
+					var productLotNo = $("#productLotNo").val();
+					
+					//체크박스 옵션
+					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
+						gubun = null;
+					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
+						gubun = 'SALES003';
+					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
+						gubun = 'SALES002';
+					} else {
+						gubun = null;
+					}
+										
 					var readParams = {
 						'salInoutDate' : date,
 						'salInoutGubun' : gubun,
@@ -125,6 +139,7 @@
 					method : 'GET'
 				}
 			},
+			initialRequest: false, 
 			contentType : "application/json"
 		};
 
@@ -132,6 +147,10 @@
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :30, 
+	        rowHeight: 30,
 			columns : [ {
 				header : '입/출고일자',
 				name : 'salInoutDate',
@@ -144,32 +163,28 @@
 				}
 			},{
 				header : '입/출고구분',
-				name : 'salInoutGubun',
-				editor : 'text'
+				name : 'salInoutGubun'
 			}, {
 				header : '전표번호',
-				name : 'salInoutStatement',
-				editor : 'text'
+				name : 'salInoutStatement'
 			}, {
 				header : '지시/거래처코드',
-				name : 'salInoutCode',
-				editor : 'text'
+				name : 'salInoutCode'
 			}, {
 				header : '제품코드',
-				name : 'comProductCode',
-				editor : 'text'
+				name : 'comProductCode'
 			}, {
 				header : '제품명',
-				name : 'comProductName',
-				editor : 'text'
+				name : 'comProductName'
 			}, {
 				header : '수량',
-				name : 'salInoutQuantity',
-				editor : 'text'
+				name : 'salInoutQuantity'
 			}, {
 				header : '완제품 LOT_NO',
-				name : 'proProcessLotNo',
-				editor : 'text'
+				name : 'proProcessLotNo'
+			}, {
+				header : '작성일자',
+				name : 'salWriteDate'
 			}]
 		}); 
 	

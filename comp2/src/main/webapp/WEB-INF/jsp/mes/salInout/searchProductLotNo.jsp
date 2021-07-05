@@ -42,11 +42,11 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'proProductLotNo');
+			code = grid.getValue(chkRowKeys[i],'proProcessLotNo');
 			console.log(code);
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
-		$("#productCode").val(code);
+		$("#productLotNo").val(code);
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {

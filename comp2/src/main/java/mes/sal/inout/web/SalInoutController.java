@@ -1,7 +1,6 @@
 package mes.sal.inout.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
-import mes.pro.plan.service.ProPlanVO;
+import mes.main.service.GridDataVO;
 import mes.sal.inout.service.SalInoutService;
 import mes.sal.inout.service.SalInoutVO;
 
@@ -59,12 +58,11 @@ public class SalInoutController {
 	// 주문목록조회 salesOrder grid
 	@RequestMapping("ajax/sal/readSalesOrder")
 	@ResponseBody
-	public Map<String, Object> readSalesOrder(Model model, @ModelAttribute("searchVO") SalInoutVO searchVO)
+	public Map<String, Object> readSalesOrder(@ModelAttribute("searchVO") SalInoutVO searchVO)
 			throws Exception {
 		
 		List<?> list = salInoutService.selectSalInoutList(searchVO);	
 
-		ComFunc comFunc = new ComFunc();
 		return comFunc.sendResult(list);
 	}
 
@@ -92,7 +90,6 @@ public class SalInoutController {
 		
     	List<?> list = salInoutService.searchProductList(searchVO);
     	
-    	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
 	}
 
@@ -112,19 +109,17 @@ public class SalInoutController {
 
 		List<?> list = salInoutService.searchCustomerList(searchVO);
 
-		ComFunc comFunc = new ComFunc();
 		return comFunc.sendResult(list);
 	}
 			
 	// 입출고목록조회 salesProduct grid
 	@RequestMapping("/ajax/sal/readSalesProduct")
 	@ResponseBody
-	public Map<String, Object> readSalesProduct(Model model, @ModelAttribute("searchVO") SalInoutVO searchVO)
+	public Map<String, Object> readSalesProduct(@ModelAttribute("searchVO") SalInoutVO searchVO)
 			throws Exception {
+			
+		List<?> list = salInoutService.selectSalProductInoutList(searchVO);
 
-		List<?> list = new ArrayList<>();
-
-		ComFunc comFunc = new ComFunc();
 		return comFunc.sendResult(list);
 	}
 
@@ -161,7 +156,6 @@ public class SalInoutController {
 
 		List<?> list = salInoutService.searchProductLotNoList(searchVO);
 
-		ComFunc comFunc = new ComFunc();
 		return comFunc.sendResult(list);
 	}
 
@@ -173,56 +167,52 @@ public class SalInoutController {
 		return "mes/salMatch/salesMatchView.page";
 	}
 
-	// 관리 (CRUD)
-	// 입출고목록 추가
-	@RequestMapping("/salInout/addSalInoutView.do")
-	public String addSalInoutView(@ModelAttribute("searchVO") SalInoutVO searchVO, Model model) throws Exception {
-		model.addAttribute("salInoutVO", new SalInoutVO());
-		return "mes/salInout/salesProdView.page";
-	}
-
-	// 입출고목록 추가-보여주기?
-	@RequestMapping("/salInout/addSalInout.do")
-	public String addSalInout(SalInoutVO salInoutVO, @ModelAttribute("searchVO") SalInoutVO searchVO,
-			SessionStatus status) throws Exception {
-		salInoutService.insertSalInout(salInoutVO);
-		status.setComplete();
-		return "forward:/salInout/salesProdView.do";
-	}
-
+	// 관리
 	// 입출고목록 수정
-	@RequestMapping("/salInout/updateSalInoutView.do")
-	public String updateSalInoutView(@RequestParam("salInoutStatement") java.lang.String salInoutStatement,
-			@ModelAttribute("searchVO") SalInoutVO searchVO, Model model) throws Exception {
-		SalInoutVO salInoutVO = new SalInoutVO();
-		salInoutVO.setSalInoutStatement(salInoutStatement);
-		// 변수명은 CoC 에 따라 salInoutVO
-		model.addAttribute(selectSalInout(salInoutVO, searchVO));
-		return "/salInout/SalInoutRegister";
+	@PutMapping("/ajax/modifySalInoutList")
+	@ResponseBody
+	public void modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {
+		
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+						
+		//C
+		
+				
+		//U
+		if (updatedList.size() != 0) {
+			for (int i=0; i<updatedList.size(); i++) {
+				salInoutService.updateSalInout((LinkedHashMap) updatedList.get(i));
+			}
+		}
+		
+		//D
+		if (deletedList.size() != 0)
+		{
+			for (int i = 0; i < deletedList.size(); i++) {
+				salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
+			}
+		}
+		
 	}
 
-	// 입출고목록 서비스로 보내
-	@RequestMapping("/salInout/selectSalInout.do")
-	public @ModelAttribute("salInoutVO") SalInoutVO selectSalInout(SalInoutVO salInoutVO,
-			@ModelAttribute("searchVO") SalInoutVO searchVO) throws Exception {
-		return salInoutService.selectSalInout(salInoutVO);
-	}
+	// 모달 : 생산지시디테일코드 조회
+		@GetMapping("/salInout/searchOrderCode.do")
+		public String searchOrderCode() {
 
-	// 입출고목록 수정해서 뿌려줘
-	@RequestMapping("/salInout/updateSalInout.do")
-	public String updateSalInout(SalInoutVO salInoutVO, @ModelAttribute("searchVO") SalInoutVO searchVO,
-			SessionStatus status) throws Exception {
-		salInoutService.updateSalInout(salInoutVO);
-		status.setComplete();
-		return "forward:/salInout/SalInoutList.do";
-	}
+			// 모달창 띄워주는 페이지
+			return "mes/salInout/searchOrderCode";
+		}
 
-	// 입출고목록 삭제
-	@RequestMapping("/salInout/deleteSalInout.do")
-	public String deleteSalInout(SalInoutVO salInoutVO, @ModelAttribute("searchVO") SalInoutVO searchVO,
-			SessionStatus status) throws Exception {
-		salInoutService.deleteSalInout(salInoutVO);
-		status.setComplete();
-		return "forward:/salInout/SalInoutList.do";
-	}
+		// 모달 : 생산지시디테일코드 조회값 전달
+		@RequestMapping("mes/salInout/searchOrderCode")
+		@ResponseBody
+		public Map<String, Object> searchOrderCodeList(@ModelAttribute("searchVO") SalInoutVO searchVO)
+				throws Exception {
+
+			List<?> list = salInoutService.searchProductCodeList(searchVO);
+
+			return comFunc.sendResult(list);
+		}
 }
