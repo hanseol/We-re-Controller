@@ -7,10 +7,19 @@
 				<nav>
 					<ul class="nav">
 						<li>
-							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>공통</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-							<div id="subPages" class="collapse ">
+							<a href="#subPages0" data-toggle="collapse" class="collapsed" id="boardNav"><i class="lnr lnr-file-empty"></i> <span>테스트얌</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="subPages0" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/comCode/ComCodeList.do" class="">공통코드관리</a></li>
+									<li><a href="${pageContext.request.contextPath}/home.do" class="boardList">BOARD</a></li>
+									<li><a href="#" class="">Login</a></li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>공통</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="subPages1" class="collapse ">
+								<ul class="nav">
+									<li><a href="${pageContext.request.contextPath}/comCode/ComCodeList.do" class="active">공통코드관리</a></li>
 									<li><a href="#" class="">자재정보/안전재고관리</a></li>
 									<li><a href="#" class="">제품BOM관리</a></li>
 									<li><a href="#" class="">제품공정흐름관리</a></li>
@@ -24,10 +33,10 @@
 							<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>영업</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages2" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/salInout/salesOrderView.do" class="">주문내역</a></li>
-									<li><a href="${pageContext.request.contextPath}/salInout/salesProdView.do" class="">완제품입출고</a></li>
-									<li><a href="${pageContext.request.contextPath}/salInout/retuProdView.do" class="">반품목록</a></li>
-									<li><a href="${pageContext.request.contextPath}/salInout/matchProdView.do" class="">재고품조정</a></li>
+									<li><a href="${pageContext.request.contextPath}/salInout/salesOrderView.do" class="active">주문내역</a></li>
+									<li><a href="${pageContext.request.contextPath}/salInout/salesProdView.do" class="active">완제품입출고</a></li>
+									<li><a href="${pageContext.request.contextPath}/salInout/retuProdView.do" class="active">반품목록</a></li>
+									<li><a href="${pageContext.request.contextPath}/salInout/matchProdView.do" class="active">재고품조정</a></li>
 								</ul>
 							</div>
 						</li>
@@ -36,9 +45,9 @@
 							<div id="subPages3" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/erpMaterialOrder/ErpMaterialOrderList.do" class="">자재발주</a></li>
-									<li><a href="#" class="">자재입출고</a></li>
-									<li><a href="#" class="">자재LOT재고</a></li>
-									<li><a href="#" class="">자재재고</a></li>
+									<li><a href="${pageContext.request.contextPath}/matInout/matrInoutView.do" class="">자재입출고</a></li>
+									<li><a href="${pageContext.request.contextPath}/matLot/matrLotForm.do" class="">자재LOT재고조정</a></li>
+									<li><a href="${pageContext.request.contextPath}/matMatr/matMatrView.do" class="">자재재고조회</a></li>
 								</ul>
 							</div>
 						</li>
@@ -74,8 +83,7 @@
 						</li>
 
 						<li><a href="tables.html" class=""><i class="lnr lnr-dice"></i> <span>관리자</span></a></li>
-						<!-- <li><a href="typography.html" class=""><i class="lnr lnr-text-format"></i> <span>Typography</span></a></li>
-						<li><a href="icons.html" class=""><i class="lnr lnr-linearicons"></i> <span>Icons</span></a></li> -->
+						
 					</ul>
 				</nav>
 			</div>

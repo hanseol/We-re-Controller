@@ -3,32 +3,6 @@
 	
 <!-- 20210630 김한설 모달창 출력-->
 
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal{
-	-webkit-border-radius :0px;
-	border-radius:0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	height: 600px;
-	max-height: 600px;
-}
-
-.blocker{
-	z-index: 1200;
-}
-
-</style>
-
 <div class="content-fluid">
 	<div>
 		<h2>기능 연구 페이지</h2>
@@ -53,7 +27,11 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">그리드 테이블 밖에서 값을 입력할 때도 insert 가능.</p>
+					<p class="panel-subtitle">to do list.<br/>
+					1.로그인 화면 / 권한에 따라 뷰 페이지 다르게 보여주기 공유(월,화,수)<br/>
+					2.전표번호에 들어가는 seq값 매일 00:00시에 1로 reset하도록 만들어야함.(화)<br/>
+					3.네비게이션 값 고정 될 수 있도록 js 파일 만들기 (수)<br/>
+					4.grid 크기 조정 방법 공유 (수)<br/>
 					<input type="text" id="no" name="no">
 				</div>
 				<div class="col-md-5" align="right">
@@ -61,15 +39,27 @@
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
 			</div>
-			<div class="panel-body">
-				<div id="grid"></div>
-			</div>
 		</div>
+		<div class="panel-body">
+			<div id="grid" style="width:800px;"></div>
+		</div>		
 	</div>
 </div>
 
 <script>
+
+	//$('#boardNav').removeClass('collapsed');
+	$('#boardNav').addClass('active');
+	//$('#boardNav').attr('aria-expanded','true'); 
+
+	$('#subPages0').addClass('in');
+	$('#subPages0').attr('aria-expanded','true');
+	$('#subPages0').attr('style','');
+	
+	$('.boardList').addClass('active');
+
 	$(document).ready(function() {
+
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData = {
 				title : "",
@@ -138,7 +128,8 @@
 				align : 'center',
 				validation: {
 					required:true
-				}
+				},
+				filter : 'text'
 			}, {
 				header : 'Content',
 				name : 'content',
