@@ -135,8 +135,10 @@
 			}, {
 				header : 'Title',
 				name : 'title',
-				editor : 'text',
-				align : 'center'
+				align : 'center',
+				validation: {
+					required:true
+				}
 			}, {
 				header : 'Content',
 				name : 'content',
@@ -167,6 +169,9 @@
 					header: {
 						background: "#003458",
 						text: "white"
+					},
+					currentRow : {
+						background: "#d5dae1"
 					}
 				}
 			});
