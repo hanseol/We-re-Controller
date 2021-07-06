@@ -7,11 +7,11 @@
 				<nav>
 					<ul class="nav">
 						<li>
-							<a href="#subPages0" data-toggle="collapse" class="collapsed" id="boardNav"><i class="lnr lnr-file-empty"></i> <span>테스트얌</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages0" data-toggle="collapse" class="collapsed" id="memberNav"><i class="lnr lnr-file-empty"></i> <span>테스트얌</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages0" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/home.do" class="boardList">BOARD</a></li>
-									<li><a href="#" class="">Login</a></li>
+									<li><a href="${pageContext.request.contextPath}/loginForm.do" class="memberLogin">Login</a></li>
 								</ul>
 							</div>
 						</li>

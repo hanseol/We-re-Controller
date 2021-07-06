@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ErpEmp">
+	
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="erpEmpSerarchVO" type="mes.member.service.ErpEmpDefaultVO"/>
+	
+	<resultMap id="erpEmp" class="mes.member.service.ErpEmpVO">
+		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" columnIndex="1"/>
+		<result property="erpEmployeeName" column="ERP_EMPLOYEE_NAME" columnIndex="2"/>
+		<result property="erpEmployeePosition" column="ERP_EMPLOYEE_POSITION" columnIndex="3"/>
+		<result property="erpEmployeeEmail" column="ERP_EMPLOYEE_EMAIL" columnIndex="4"/>
+		<result property="erpEmployeePhone" column="ERP_EMPLOYEE_PHONE" columnIndex="5"/>
+		<result property="erpEmployeeHiredate" column="ERP_EMPLOYEE_HIREDATE" columnIndex="6"/>
+		<result property="erpJobName" column="ERP_JOB_NAME" columnIndex="7"/>
+		<result property="erpDepartmentName" column="ERP_DEPARTMENT_NAME" columnIndex="8"/>
+		<result property="erpEmployeePassword" column="ERP_EMPLOYEE_PASSWORD" columnIndex="9"/>
+	</resultMap>
+	
+	<insert id="erpEmpDAO.insertErpEmp_S">
+		<![CDATA[
+			INSERT INTO ERP_EMP 
+				( ERP_EMPLOYEE_ID
+				  , ERP_EMPLOYEE_NAME
+				  , ERP_EMPLOYEE_POSITION
+				  , ERP_EMPLOYEE_EMAIL
+				  , ERP_EMPLOYEE_PHONE
+				  , ERP_EMPLOYEE_HIREDATE
+				  , ERP_JOB_NAME
+				  , ERP_DEPARTMENT_NAME
+				  , ERP_EMPLOYEE_PASSWORD )
+			VALUES ( #erpEmployeeId#
+				  , #erpEmployeeName#
+				  , #erpEmployeePosition#
+				  , #erpEmployeeEmail#
+				  , #erpEmployeePhone#
+				  , #erpEmployeeHiredate#
+				  , #erpJobName#
+				  , #erpDepartmentName#
+				  , #erpEmployeePassword# )
+		]]>
+	</insert>
+	
+	<update id="erpEmpDAO.updateErpEmp_S">
+		<![CDATA[
+			UPDATE ERP_EMP
+			SET ERP_EMPLOYEE_ID=#erpEmployeeId#
+				, ERP_EMPLOYEE_NAME=#erpEmployeeName#
+				, ERP_EMPLOYEE_POSITION=#erpEmployeePosition#
+				, ERP_EMPLOYEE_EMAIL=#erpEmployeeEmail#
+				, ERP_EMPLOYEE_PHONE=#erpEmployeePhone#
+				, ERP_EMPLOYEE_HIREDATE=#erpEmployeeHiredate#
+				, ERP_JOB_NAME=#erpJobName#
+				, ERP_DEPARTMENT_NAME=#erpDepartmentName#
+				, ERP_EMPLOYEE_PASSWORD=#erpEmployeePassword#
+						WHERE ERP_EMPLOYEE_ID=#erpEmployeeId#
+				]]>
+	</update>
+	
+	<delete id="erpEmpDAO.deleteErpEmp_S">
+		<![CDATA[
+			DELETE FROM ERP_EMP 
+						WHERE ERP_EMPLOYEE_ID=#erpEmployeeId#
+				]]>
+	</delete>
+	
+	<select id="erpEmpDAO.selectErpEmp_S" resultMap="erpEmp">
+		<![CDATA[
+			SELECT
+				ERP_EMPLOYEE_ID
+				, ERP_EMPLOYEE_NAME
+				, ERP_EMPLOYEE_POSITION
+				, ERP_EMPLOYEE_EMAIL
+				, ERP_EMPLOYEE_PHONE
+				, ERP_EMPLOYEE_HIREDATE
+				, ERP_JOB_NAME
+				, ERP_DEPARTMENT_NAME
+				, ERP_EMPLOYEE_PASSWORD
+			FROM ERP_EMP
+						WHERE ERP_EMPLOYEE_ID=#erpEmployeeId#
+				]]>
+	</select>
+	
+	<select id="erpEmpDAO.selectErpEmpList_D" parameterClass="erpEmpSerarchVO" resultClass="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								ERP_EMPLOYEE_ID
+								, ERP_EMPLOYEE_NAME
+								, ERP_EMPLOYEE_POSITION
+								, ERP_EMPLOYEE_EMAIL
+								, ERP_EMPLOYEE_PHONE
+								, ERP_EMPLOYEE_HIREDATE
+								, ERP_JOB_NAME
+								, ERP_DEPARTMENT_NAME
+								, ERP_EMPLOYEE_PASSWORD
+						FROM ERP_EMP
+				WHERE 1=1
+				<isEqual prepend="AND" property="searchCondition" compareValue="0">
+					ERP_EMPLOYEE_ID = #searchKeyword#
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="1">
+					ERP_EMPLOYEE_NAME LIKE '%' || #searchKeyword# || '%'
+				</isEqual>
+					ORDER BY 
+						ERP_EMPLOYEE_ID DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #lastIndex#
+)WHERE RNUM > #firstIndex#
+]]>
+	</select>	
+	<select id="erpEmpDAO.selectErpEmpListTotCnt_S" parameterClass="erpEmpSerarchVO" resultClass="int">
+			SELECT COUNT(*) totcnt
+			FROM ERP_EMP
+			WHERE 1=1
+			<isEqual prepend="AND" property="searchCondition" compareValue="0">
+				ERP_EMPLOYEE_ID = #searchKeyword#
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="1">
+				ERP_EMPLOYEE_NAME LIKE '%' || #searchKeyword# || '%'
+			</isEqual>
+	</select>
+
+</sqlMap>

@@ -28,10 +28,11 @@
 			<div class="row">
 				<div class="col-md-7">
 					<p class="panel-subtitle">to do list.<br/>
-					1.로그인 화면 / 권한에 따라 뷰 페이지 다르게 보여주기 공유(월,화,수)<br/>
+					1.로그인 / 권한에 따라 뷰 페이지 다르게 보여주기 공유(월,화,수)<br/>
 					2.전표번호에 들어가는 seq값 매일 00:00시에 1로 reset하도록 만들어야함.(화)<br/>
 					3.네비게이션 값 고정 될 수 있도록 js 파일 만들기 (수)<br/>
-					4.grid 크기 조정 방법 공유 (수)<br/>
+					4.grid 크기 조정 방법 공유 (수)
+					5.파일업로드 / 다운로드 <br/>
 					<input type="text" id="no" name="no">
 				</div>
 				<div class="col-md-5" align="right">
@@ -49,7 +50,7 @@
 <script>
 
 	//$('#boardNav').removeClass('collapsed');
-	$('#boardNav').addClass('active');
+	$('#memberNav').addClass('active');
 	//$('#boardNav').attr('aria-expanded','true'); 
 
 	$('#subPages0').addClass('in');
@@ -126,6 +127,7 @@
 				header : 'Title',
 				name : 'title',
 				align : 'center',
+				editor : 'text',
 				validation: {
 					required:true
 				},

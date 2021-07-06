@@ -20,7 +20,7 @@
 			VALUES ( #{no}
 				  , #{title}
 				  , #{content}
-				  , #{wdate} )
+				  , sysdate )
 		]]>
 	</insert>
 	

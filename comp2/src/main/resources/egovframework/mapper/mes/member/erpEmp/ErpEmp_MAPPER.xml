@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.member.service.ErpEmpMapper">
+	
+
+	<resultMap id="erpEmp" type="mes.member.service.ErpEmpVO">
+		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" />
+		<result property="erpEmployeeName" column="ERP_EMPLOYEE_NAME" />
+		<result property="erpEmployeePosition" column="ERP_EMPLOYEE_POSITION" />
+		<result property="erpEmployeeEmail" column="ERP_EMPLOYEE_EMAIL" />
+		<result property="erpEmployeePhone" column="ERP_EMPLOYEE_PHONE" />
+		<result property="erpEmployeeHiredate" column="ERP_EMPLOYEE_HIREDATE" />
+		<result property="erpJobName" column="ERP_JOB_NAME" />
+		<result property="erpDepartmentName" column="ERP_DEPARTMENT_NAME" />
+		<result property="erpEmployeePassword" column="ERP_EMPLOYEE_PASSWORD" />
+	</resultMap>
+	
+	<insert id="insertErpEmp">
+		<![CDATA[
+			INSERT INTO ERP_EMP 
+				( ERP_EMPLOYEE_ID
+				  , ERP_EMPLOYEE_NAME
+				  , ERP_EMPLOYEE_POSITION
+				  , ERP_EMPLOYEE_EMAIL
+				  , ERP_EMPLOYEE_PHONE
+				  , ERP_EMPLOYEE_HIREDATE
+				  , ERP_JOB_NAME
+				  , ERP_DEPARTMENT_NAME
+				  , ERP_EMPLOYEE_PASSWORD )
+			VALUES ( #{erpEmployeeId}
+				  , #{erpEmployeeName}
+				  , #{erpEmployeePosition}
+				  , #{erpEmployeeEmail}
+				  , #{erpEmployeePhone}
+				  , #{erpEmployeeHiredate}
+				  , #{erpJobName}
+				  , #{erpDepartmentName}
+				  , #{erpEmployeePassword} )
+		]]>
+	</insert>
+	
+	<update id="updateErpEmp">
+		<![CDATA[
+			UPDATE ERP_EMP
+			SET ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				, ERP_EMPLOYEE_NAME=#{erpEmployeeName}
+				, ERP_EMPLOYEE_POSITION=#{erpEmployeePosition}
+				, ERP_EMPLOYEE_EMAIL=#{erpEmployeeEmail}
+				, ERP_EMPLOYEE_PHONE=#{erpEmployeePhone}
+				, ERP_EMPLOYEE_HIREDATE=#{erpEmployeeHiredate}
+				, ERP_JOB_NAME=#{erpJobName}
+				, ERP_DEPARTMENT_NAME=#{erpDepartmentName}
+				, ERP_EMPLOYEE_PASSWORD=#{erpEmployeePassword}
+						WHERE ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				]]>
+	</update>
+	
+	<delete id="deleteErpEmp">
+		<![CDATA[
+			DELETE FROM ERP_EMP 
+						WHERE ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				]]>
+	</delete>
+	
+	<select id="selectErpEmp" resultMap="erpEmp">
+		<![CDATA[
+			SELECT
+				ERP_EMPLOYEE_ID
+				, ERP_EMPLOYEE_NAME
+				, ERP_EMPLOYEE_POSITION
+				, ERP_EMPLOYEE_EMAIL
+				, ERP_EMPLOYEE_PHONE
+				, ERP_EMPLOYEE_HIREDATE
+				, ERP_JOB_NAME
+				, ERP_DEPARTMENT_NAME
+				, ERP_EMPLOYEE_PASSWORD
+			FROM ERP_EMP
+						WHERE ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				]]>
+	</select>
+	
+	<select id="selectErpEmpList" parameterType="mes.member.service.ErpEmpVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								ERP_EMPLOYEE_ID
+								, ERP_EMPLOYEE_NAME
+								, ERP_EMPLOYEE_POSITION
+								, ERP_EMPLOYEE_EMAIL
+								, ERP_EMPLOYEE_PHONE
+								, ERP_EMPLOYEE_HIREDATE
+								, ERP_JOB_NAME
+								, ERP_DEPARTMENT_NAME
+								, ERP_EMPLOYEE_PASSWORD
+						FROM ERP_EMP
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						ERP_EMPLOYEE_ID = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						ERP_EMPLOYEE_NAME LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						ERP_EMPLOYEE_ID DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectErpEmpListTotCnt" parameterType="mes.member.service.ErpEmpVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM ERP_EMP
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					ERP_EMPLOYEE_ID = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					ERP_EMPLOYEE_NAME LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>

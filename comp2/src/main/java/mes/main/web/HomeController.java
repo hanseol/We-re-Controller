@@ -38,6 +38,12 @@ public class HomeController {
 		
 		return "tiles/home.page";
 	}
+	//구현하고나면 로그인 전에는 로그인 폼을 홈.do로.
+	//로그인 후에는 홈.do가 다른걸로
+	@RequestMapping("loginForm.do")
+	public String loginForm(Model model) {
+		return "mes/member/loginForm";
+	}
 	
 	//모달 창을 여는 버튼을 눌렀을 때 동작
 	@GetMapping("testModal.do")
