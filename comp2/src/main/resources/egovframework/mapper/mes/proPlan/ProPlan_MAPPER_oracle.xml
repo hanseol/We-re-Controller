@@ -27,7 +27,7 @@
 								     , PRO_PLAN_CODE
 								     , ERP_ORDER_CODE
 								     , ERP_PRODUCT_DEADLINE
-								     , PRO_PLAN_DATE
+								     , PRO_WORK_DATE
 								     , ERP_CUSTOMER_CODE
 								     , PRO_PLAN_EXPECT_QTY
 								     , PRO_PLAN_DAY_QTY
@@ -36,11 +36,11 @@
 								     , PRO_PLAN_QTY
 								     , ERP_PRODUCT_NAME
 								     , ERP_PRODUCT_CODE )
-		        	VALUES(	'PPD-' || TO_CHAR(
+		        	VALUES(	#{proPlanDetailCode}
 						  , #{proPlanCode}
 						  , #{erpOrderCode}
 						  , #{erpProductDeadline}
-						  , #{proPlanDate}
+						  , #{proWorkDate}
 						  , #{erpCustomerCode}
 						  , #{proPlanExpectQty}
 						  , #{proPlanDayQty}
@@ -163,6 +163,7 @@
 						     , erp_order_code
 						     , TO_CHAR(erp_product_deadline, 'yyyy/MM/dd' ) as erp_product_deadline
 						     , erp_order_qty
+						     , erp_customer_code
 						FROM erp_product_order
 						WHERE erp_order_code NOT IN(SELECT e.erp_order_code            
                            FROM erp_product_order e

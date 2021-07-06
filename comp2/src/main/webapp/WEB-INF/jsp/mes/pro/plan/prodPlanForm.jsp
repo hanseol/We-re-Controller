@@ -141,7 +141,14 @@
 		 
 		//M 저장 버튼
 		$(document).on("click", "button[id=modifyRow]", function () {
+			var date = $("#date").val();
+            var proPlanName = $("#proPlanName").val();
 			proPlanGrid.finishEditing('rowKey', 'columnName');
+			var requestParams = {
+	                  'proPlanDate' : date,
+	                  'proPlanName' : proPlanName
+	               };
+			proPlanGrid.setRequestParams(requestParams);
 			proPlanGrid.request('modifyData');
 		});
 		    
@@ -188,11 +195,6 @@
 		});
 		
 		
-		
-		
-		
-		
-		
 		//dataSource		
 		const dataSource = {
 			api : {
@@ -200,7 +202,7 @@
 					url : '${pageContext.request.contextPath}/proPlan/ProdPlanView',
 					method : 'GET'
 				},  
-				modifyData: { url: '${pageContext.request.contextPath}/proOrder/modifyProdPlan', method: 'PUT' }
+				modifyData: { url: '${pageContext.request.contextPath}/proPlan/modifyProdPlan', method: 'PUT' }
 			},
 			initialRequest : false,
 			contentType : "application/json"
@@ -244,25 +246,30 @@
 						language: 'ko'
 					} 
 				}
-			} , {
+			}, {
 				header : '작업순서',
 				name : 'proPlanSeq',
 				editor : 'text'
+			}, {
+				header : '고객사코드',
+				name : 'erpCustomerCode'
+			}, {
+				header : '예상소요량',
+				name : 'proPlanExpectQty',
+				hidden : true
+			}, {
+				header : '예상일',
+				name : 'proPlanDayQty',
+				hidden : true
 			} ]
 		});
 		
 	//디테일의 제품코드cell 더블클릭으로 모달창 띄우기	
 	proPlanGrid.on('dblclick', ev => {
 		if(ev.columnName == 'erpProductCode'){
-			
 			$('#showModal').click();
-			
 		}
 	});
-	
-
-	
-	
 
 	/* 	
 	proPlanGrid.on('response', ev => {

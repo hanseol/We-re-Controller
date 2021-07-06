@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import mes.board.service.BoardVO;
@@ -52,7 +53,16 @@ public class ProPlanController {
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
+
+    //전표번호 부여
+	@Resource(name = "proPlanCodeService") 
+	protected EgovIdGnrService proPlanCodeService;
 	
+	@Resource(name = "proPlanCodeDetailService") 
+	protected EgovIdGnrService proPlanCodeDetailService;
+	
+	
+    //공통함수
     ComFunc comFunc = new ComFunc();
    
     //생산계획관리 페이지로 이동(prodPlanForm.jsp)
@@ -75,7 +85,6 @@ public class ProPlanController {
         list = service.selectProPlanList(searchVO);
         return comFunc.sendResult(list);
     }
-    
     
     //생산계획관리_모달(생산계획명 검색 페이지 호출)
     @GetMapping("proPlanName.do")
@@ -115,10 +124,8 @@ public class ProPlanController {
 		return null;
     }
     
-    
-    
-    //생산계획리스트 추가, 수정, 삭제 (****수정하기)
-	@PutMapping("proOrder/modifyProdPlan")
+    //생산계획리스트 추가, 수정, 삭제 
+	@PutMapping("proPlan/modifyProdPlan")
 	@ResponseBody
 	public void modifyProdPlan(@RequestBody GridDataVO gd) throws Exception {
 
@@ -126,23 +133,36 @@ public class ProPlanController {
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
 
+		//수정
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
 				service.updateProPlan((LinkedHashMap) updatedList.get(i));
 			}
 		}
-
-		if (createdList.size() != 0) {
+		//생성
+		/*if (createdList.size() != 0) {
 			for (int i = 0; i < createdList.size(); i++) {
 				service.insertProPlan((LinkedHashMap) createdList.get(i));
 			}
-		}
-
+		}*/
+		//삭제
 		if (deletedList.size() != 0) {
 			for (int i = 0; i < deletedList.size(); i++) {
 				service.deleteProPlan((LinkedHashMap) deletedList.get(i));
 			}
 		}
 		
+		//시퀀스 포멧팅(pro_plan테이블)
+		if(createdList.size() != 0) { 
+			for(int i = 0; i < createdList.size(); i++) {
+				((LinkedHashMap)createdList.get(i)).put("proPlanDate", gd.getProPlanDate());
+				((LinkedHashMap)createdList.get(i)).put("proPlanName", gd.getProPlanName());
+				((LinkedHashMap)createdList.get(i)).put("proPlanCode", proPlanCodeService.getNextStringId());
+				((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
+				service.insertProPlan((LinkedHashMap)createdList.get(i)); 
+			}
+		 }
+		 
 	}
+	
 }
