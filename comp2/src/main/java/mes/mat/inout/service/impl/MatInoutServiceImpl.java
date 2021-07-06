@@ -60,11 +60,6 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	matInoutMapper.deleteMatInout(vo);
     }
     
-    //행 카운트
-    public int selectMatInoutListTotCnt(MatInoutVO searchVO) {
-		return matInoutMapper.selectMatInoutListTotCnt(searchVO);
-	}
-    
     //리스트 전체조회
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception {
     	return matInoutMapper.selectMatInoutList(searchVO);

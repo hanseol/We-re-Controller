@@ -17,38 +17,14 @@ import java.util.List;
  */
 public interface MatInoutService {
 	
-	/**
-	 * MAT_INOUT을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 MatInoutVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
+	//등록
 	String insertMatInout(LinkedHashMap vo) throws Exception;
     
-    /**
-	 * MAT_INOUT을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 MatInoutVO
-	 * @return void형
-	 * @exception Exception
-	 */
+	//수정
     void updateMatInout(LinkedHashMap vo) throws Exception;
     
-    /**
-	 * MAT_INOUT을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 MatInoutVO
-	 * @return void형 
-	 * @exception Exception
-	 */
+    //삭제
     void deleteMatInout(LinkedHashMap vo) throws Exception;
-    
-    /**
-	 * MAT_INOUT을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 MatInoutVO
-	 * @return 조회한 MAT_INOUT
-	 * @exception Exception
-	 */
-    //행 카운트
-    int selectMatInoutListTotCnt(MatInoutVO searchVO);
     
     //전체  리스트 출력
     List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;

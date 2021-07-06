@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mes.mat.lot.service.impl.MatLotMapper">
+
+	<!-- 자재LOT 전체 조회 -->
+	<select id="selectMatLotList" parameterType="mes.mat.lot.service.MatLotVO" resultType="egovMap" >
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   m.mat_match_statement,
+		                              		   m.mat_match_inout,
+		                              		   m.mat_match_date,
+		                              		   c.com_material_code,
+		                              		   c.com_material_name,
+		                              		   m.mat_lot_no,
+		                              		   c.com_material_unit,
+		                              		   m.mat_match_qty,
+		                              		   i.mat_inout_unit_price,
+		                              		   i.mat_inout_price,
+		                              		   (q.qua_material_p_qty - CASE m.mat_match_inout
+                                                                    	WHEN 'PNS005'
+                                                                    	THEN mat_inout_quantity
+                                                                    	ELSE 0
+                                                                    	END						) as material_stock
+		                              FROM     com_material c,
+		                                       mat_inout i,
+		                                       mat_match m,
+		                                       qua_material_chk q
+		                              WHERE    c.com_material_code = i.com_material_code
+		                              AND	   c.com_material_code = q.com_material_code
+		                              AND	   c.com_material_code = m.com_material_code
+		                              <if test="matMatchDate != null and matMatchDate != ''">
+		                              	AND
+							        	m.mat_match_date = #{matMatchDate}
+		                              </if>
+		                              <if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+		                              </if>
+									  <if test="matMatchInout != null and matMatchInout != ''">
+									  	AND
+									  	m.mat_match_inout = #{matMatchInout}
+									  </if>
+									  
+		                              ORDER BY mat_match_date  <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>
+	</select>
+</mapper>

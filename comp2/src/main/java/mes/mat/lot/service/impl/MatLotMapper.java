@@ -4,16 +4,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import mes.main.map.ResultMapVO;
+import mes.mat.lot.service.MatLotVO;
 
 @Mapper("matLotMapper")
 public interface MatLotMapper {
 	
-	//전체 리스트 출력
-	public List<?> selectMatLotList(ResultMapVO searchVO) throws Exception;
-		
-	//행 카운트
-	public int selectMatLotListTotCnt(ResultMapVO searchVO) throws Exception;
 	
 	//등록
     public void insertMatLot(LinkedHashMap vo) throws Exception;
@@ -24,5 +19,13 @@ public interface MatLotMapper {
     //삭제
     public void deleteMatLot(LinkedHashMap vo) throws Exception;
 
-	
+    //전체 리스트 출력
+	public List<?> selectMatLotList(MatLotVO searchVO) throws Exception;		
+
+    //모달 자재코드 리스트
+    public List<?> searchMaterialCodeList(MatLotVO searchVO) throws Exception;
+    
+    //모달 입고업체 리스트
+    public List<?> searchVendorCodeList(MatLotVO searchVO) throws Exception;
+
 }

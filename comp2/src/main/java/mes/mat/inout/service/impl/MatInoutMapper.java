@@ -5,7 +5,6 @@ import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.mat.inout.service.MatInoutVO;
-import mes.pro.plan.service.ProPlanVO;
 
 /**
  * @Class Name : MatInoutMapper.java
@@ -31,9 +30,6 @@ public interface MatInoutMapper {
 
     //삭제
     public void deleteMatInout(LinkedHashMap vo) throws Exception;
-
-    //행 카운트
-    public int selectMatInoutListTotCnt(MatInoutVO searchVO);
     
     //전체 입출고 리스트
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;

@@ -59,7 +59,7 @@ $(document).ready(function() {
 		if (rowId == -1) {
 			$("#productCode").val(code);
 		} else {
-			mgrid.refreshLayout;
+			mgrid.blur();
 			mgrid.setValue(rowId, 'comProductCode', code, false);
 			console.log(rowId);
 		}
