@@ -46,7 +46,9 @@ SELECT * FROM (
 	<!-- 디테일코드 업데이트 -->
 	<update id="updateComCodeDetail">
 		UPDATE COM_CODE_DETAIL
-		SET COM_CODE_DETAIL_NAME = #{comCodeDetailName}
+		SET
+		COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId})
+		, COM_CODE_DETAIL_NAME = #{comCodeDetailName}
 		, COM_CODE_DETAIL_DESC = #{comCodeDetailDesc}
 		, COM_CODE_DETAIL_SEQ = #{comCodeDetailSeq}
 		, COM_CODE_DETAIL_USEDCHK = #{comCodeDetailUsedchk}

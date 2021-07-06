@@ -30,24 +30,13 @@
    </ul>
 </div>
 
-
-<!-- 마스터테이블의 CRUD 버튼 -->
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="findRow">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-		</div>
-	</div>
-</div>
-
 <!-- 마스터 테이블 -->
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-12">
-					<form action="">
+				<form action="">
+					<div class="col-md-6">
 						* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
 							~ <input type="date" id="endDate" name="endDate"> 
 							<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
@@ -55,9 +44,12 @@
 							<br/><br/>
 						* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
 						* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
-						
-					</form>
-				</div>
+						</div>
+						<div class="col-md-6" align="right">
+							<button type="button" class="btn btn-success" id="findRow">조회</button>
+							<button type="reset" class="btn btn-danger">새자료</button>
+						</div> 
+				</form>
 			</div>
 		</div>
 	</div>
@@ -119,6 +111,9 @@
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			columns : [ {
+				header : '계획명',
+				name : 'proPlanName',
+			}, {
 				header : '계획일자',
 				name : 'proPlanDate',
 			}, {

@@ -57,6 +57,7 @@ public interface ProPlanService {
 	 */
     List<?> selectProPlanList(ProPlanVO searchVO) throws Exception;
     
+    
     /**
 	 * PRO_PLAN 총 갯수를 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
@@ -91,6 +92,11 @@ public interface ProPlanService {
     int selectPlanListCnt(ProPlanVO vo);
     
     
+    //생산계획관리 페이지에서 전체 조회
+    List<?> selectProPlanFormList(ProPlanVO searchVO);
+    int selectPlanFormListCnt(ProPlanVO vo);
+
+	void insertProPlanM(LinkedHashMap linkedHashMap);
     
     
 }

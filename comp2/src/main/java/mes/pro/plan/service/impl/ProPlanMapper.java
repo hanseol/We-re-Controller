@@ -108,7 +108,13 @@ public interface ProPlanMapper {
 	public List<?> selectPlanList(ProPlanVO vo);
 
 	public int selectPlanListCnt(ProPlanVO vo);
+	
+	
+    //생산계획관리 페이지에서 전체조회
+	public List<?> selectProPlanFormList(ProPlanVO vo);
     
-    
+	public int selectProPlanFormListTotCnt(ProPlanVO vo);
+
+	public void insertProPlanM(LinkedHashMap vo);
     
 }

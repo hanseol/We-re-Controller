@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.prodUseMatr.service.impl.ProdUseMatrMapper">
+
+	<!-- 마스터 조회 -->
+	<select id="selectProudUseHead" parameterType="mes.com.prodUseMatr.service.ProdUseMatrVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT 
+						DISTINCT(a.COM_PRODUCT_CODE)
+						, b.COM_PRODUCT_NAME
+						, b.COM_PRODUCT_SIZE
+						, b.COM_PRODUCT_UNIT
+						, d.COM_CODE_DETAIL_ID
+					FROM COM_BOM a
+						, COM_PRODUCT b
+						, SAL_INOUT c
+						, COM_CODE_DETAIL d
+					WHERE a.COM_PRODUCT_CODE = b.COM_PRODUCT_CODE
+						AND b.COM_PRODUCT_CODE = c.COM_PRODUCT_CODE
+						AND c.SAL_INOUT_CODE = d.COM_CODE_DETAIL_ID
+						AND a.COM_PRODUCT_CODE = upper(#{comProductCode})
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+	]]>
+	</select>
+	<!-- 디테일 조회 -->
+	<select id="selectProdUseMatrList" parameterType="mes.com.prodUseMatr.service.ProdUseMatrVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT b.COM_PRODUCT_CODE
+							, b.COM_PRODUCT_NAME
+							, b.COM_PRODUCT_UNIT
+							, b.COM_PRODUCT_USE
+							, a.COM_MATERIAL_CODE
+							, d.COM_MATERIAL_NAME
+							, a.COM_BOM_UNIT
+							, a.COM_BOM_ORDER
+							, a.COM_BOM_PRODUCE
+							, a.COM_PROCESS_CODE
+							, c.COM_PROCESS_NAME
+							, a.COM_BOM_ETC
+					FROM COM_BOM a
+						, COM_PRODUCT b
+						, COM_PROCESS_DETAIL c
+						, COM_MATERIAL d
+					WHERE 1=1 
+						AND a.COM_PRODUCT_CODE = b.COM_PRODUCT_CODE
+						AND a.COM_MATERIAL_CODE = d.COM_MATERIAL_CODE
+						AND a.COM_PROCESS_CODE = c.COM_PROCESS_CODE
+					<if test="comProductCode != null and comProductCode != ''  ">
+						AND a.COM_PRODUCT_CODE = upper(#{comProductCode})
+					</if>
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+	]]>
+	</select>
+
+	<!-- 제품코드 모달 -->
+	<select id="selectBomModal" parameterType="mes.com.prodUseMatr.service.ProdUseMatrVO" resultType="egovMap">
+	SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+			SELECT
+					COM_PRODUCT_CODE
+					, COM_PRODUCT_NAME
+					, COM_PRODUCT_UNIT
+			FROM
+					COM_PRODUCT
+			WHERE 1=1
+					<if test="comProductCode != null and comProductCode != ''  ">
+					AND COM_PRODUCT_CODE LIKE '%' || upper(#{comProductCode}) || '%'
+					</if>
+					<if test="comProductName != null and comProductName != ''  ">
+					AND COM_PRODUCT_NAME LIKE '%' || upper(#{comProductName}) || '%'
+					</if>
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+	]]>
+	</select>
+	
+	<!-- 공정코드 모달 -->
+	<select id="selectProcessModal" parameterType="mes.com.prodUseMatr.service.ProdUseMatrVO" resultType="egovMap">
+	SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+			SELECT
+					COM_PROCESS_CODE
+					, COM_PROCESS_NAME
+					, COM_PROCESS_ETC
+			FROM
+					COM_PROCESS_DETAIL
+			WHERE 1=1
+					<if test="comProcessCode != null and comProcessCode != ''  ">
+					AND COM_PROCESS_CODE LIKE '%' || upper(#{comProcessCode}) || '%'
+					</if>
+					<if test="comProcessName != null and comProcessName != ''  ">
+					AND COM_PROCESS_NAME LIKE '%' || upper(#{comProcessName}) || '%'
+					</if>
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+	]]>
+	</select>
+	
+	<!-- 디테일코드 삽입 -->
+	<insert id="insertProdUseMatrDetail">
+		INSERT INTO COM_BOM(
+				COM_PRODUCT_CODE
+				, COM_MATERIAL_CODE
+				, COM_BOM_UNIT
+				, COM_BOM_ORDER
+				, COM_BOM_PRODUCE
+				, COM_PROCESS_CODE
+				, COM_BOM_ETC)
+		VALUES (
+				UPPER(#{comProductCode})
+				, UPPER(#{comMaterialCode})
+				, #{comBomUnit}
+				, #{comBomOrder}
+				, #{comBomProduce}
+				, UPPER(#{comProcessCode})
+				, #{comBomEtc})
+	</insert>
+	
+	<update id="updateProdUseMatrDetail">
+		UPDATE
+		COM_BOM
+		SET 
+		COM_PROCESS_CODE = UPPER(#{comProcessCode})
+		, COM_BOM_ORDER = #{comBomOrder}
+		, COM_BOM_PRODUCE = #{comBomProduce}
+		, COM_BOM_UNIT = #{comBomUnit}
+		WHERE COM_PRODUCT_CODE LIKE UPPER(#{comProductCode})
+		AND COM_MATERIAL_CODE LIKE UPPER(#{comMaterialCode})
+	</update>
+	
+	<delete id="deleteProdUseMatrDetail" parameterType="mes.com.prodUseMatr.service.ProdUseMatrVO">
+		DELETE FROM COM_BOM
+		WHERE COM_PRODUCT_CODE LIKE UPPER(#{comProductCode})
+		AND COM_MATERIAL_CODE LIKE UPPER(#{comMaterialCode})
+	</delete>
+		
+</mapper>

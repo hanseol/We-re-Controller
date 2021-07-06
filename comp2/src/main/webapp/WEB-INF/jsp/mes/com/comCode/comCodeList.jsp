@@ -70,10 +70,12 @@
 							<!-- Detail 표현 -->
 							<div class="col-md-8" id="gridDetail"></div>
 						</div>
-						<!-- 마스터데이터 호출 -->
-						<div class="col-md-4" id="grid"></div>
-						<!-- Detail 표현 -->
-						<div class="col-md-8" id="gridDetail"></div>
+						<tbody>
+							<!-- 마스터데이터 호출 -->
+							<div class="col-md-4" id="grid"></div>
+							<!-- Detail 표현 -->
+							<div class="col-md-8" id="gridDetail"></div>
+						</tbody>
 					</div>
 				</div>
 			</div>
@@ -134,10 +136,11 @@
     hiddenInput.disabled = disabled; 
     }
 };
-
+	/* grid */
 	$(document)
 			.ready(
 					function() {
+						//변수생성
 						var comCodeIdclick = 0;
 						
 						//코드명 검색
@@ -174,13 +177,13 @@
 								header : '공통코드',
 								name : 'comCodeId',
 								validation: {
-									required:true
+								required:true
 								},
 								filter : 'text'
 							}, {
 								header : '공통코드명',
 								name : 'comCodeName',validation: {
-									required:true
+								required:true
 								},
 								filter : 'text'
 							} ]
@@ -229,11 +232,14 @@
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
-								hidden : true
+								
 							},{
 								header : '코드',
 								name : 'comCodeDetailId',
-								editor : 'text'
+								validation: {
+						               required:true
+						            },
+							sortable: true ,
 							}, {
 								header : '코드명',
 								name : 'comCodeDetailName',

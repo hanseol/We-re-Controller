@@ -32,40 +32,40 @@
 var gridModal;
 
 $(document).ready(function() {
-	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
-	//일딴 한건만 선택했을 때의 경우.
+	
+	//확인버튼
 	$(document).on("click","button[id=ok]", function(){
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
-		var chkRowKeys = gridModal.getCheckedRowKeys();
-		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
+			var chkRowKeys = gridModal.getCheckedRowKeys();
 			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
 			erpProductCode = gridModal.getValue(chkRowKeys[i],'erpProductCode');
 			erpProductName = gridModal.getValue(chkRowKeys[i],'erpProductName');
 			erpOrderQty = gridModal.getValue(chkRowKeys[i],'erpOrderQty');
 			erpProductDeadline = gridModal.getValue(chkRowKeys[i],'erpProductDeadline');
+			erpCustomerCode = gridModal.getValue(chkRowKeys[i],'erpCustomerCode');
 			
 			console.log(erpOrderCode);
 			console.log(erpProductCode);
 			console.log(erpProductName);
 			console.log(erpOrderQty);
 			console.log(erpProductDeadline);
+			console.log(erpCustomerCode);
 			
 			proPlanGrid.setValue(chkRowKeys[i], 'erpProductCode', erpProductCode, false);
 			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderCode', erpOrderCode, false);
 			proPlanGrid.setValue(chkRowKeys[i], 'erpProductName', erpProductName, false);
 			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderQty', erpOrderQty, false);
 			proPlanGrid.setValue(chkRowKeys[i], 'erpProductDeadline', erpProductDeadline, false);
-		
-
+			proPlanGrid.setValue(chkRowKeys[i], 'erpCustomerCode', erpCustomerCode, false);
 		}
 	});
 	
 	
 	
-	
+	//검색버튼
 	$(document).on("click", "a[id=findRow]", function() {
 				var erpProductCode = $("#erpProductCode").val();
 				var erpProductName = $("#erpProductName").val();
@@ -76,7 +76,8 @@ $(document).ready(function() {
 					};
 				gridModal.readData(1, readParams, true);
 			});
-			
+	
+	//데이터소스
 	const dataSource = {
 		api : {
 			readData : {
@@ -85,8 +86,9 @@ $(document).ready(function() {
 			}
 		},
 		contentType : "application/json"
-	};
+	};  //end of dataSource
 
+	//그리드
 	gridModal = new tui.Grid({
 		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
@@ -111,7 +113,19 @@ $(document).ready(function() {
 			header : '납기일자',
 			name : 'erpProductDeadline',
 			hidden : true
-		} ]
+		}, {
+			header : '고객사코드',
+			name : 'erpCustomerCode',
+			hidden : true
+		} /*,  {
+			header : '예상소요량',
+			name : 'proPlanExpectQty',
+			hidden : true
+		}, {
+			header : '예상일',
+			name : 'proPlanDayQty',
+			hidden : true
+		}  */]
 	});
 	
 	

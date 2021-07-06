@@ -78,7 +78,7 @@ public class MatrDtaListController {
 	@RequestMapping(value = "matrDta/MatrDtaList.do")
 	public String MatrDtaList(@ModelAttribute("searchVO") MatrDtaListVO searchVO, ModelMap model) {
 
-		return "mes/com/matrDta/MatrDtaList.page";
+		return "mes/com/matrDta/matrDtaList.page";
 	}
 
 }

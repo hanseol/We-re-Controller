@@ -2,6 +2,8 @@ package mes.main.service;
 
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 import mes.board.service.BoardVO;
 
@@ -18,4 +20,6 @@ import mes.board.service.BoardVO;
 	List<?> deletedRows;
 	private Integer no;
 	private String matInoutStatus;
+	private String proPlanDate;
+	private String proPlanName;
 }
