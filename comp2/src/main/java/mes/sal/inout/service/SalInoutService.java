@@ -66,9 +66,7 @@ public interface SalInoutService {
 
   //입출고 조회 페이지
     List selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
-    int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
-
-    
+    int selectSalProductInoutListTotCnt(SalInoutVO searchVO);    
     
     //모달 : 제품코드 조회
     List<?> searchProductList(SalInoutVO searchVO) throws Exception;

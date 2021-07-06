@@ -73,7 +73,7 @@
 				<div class="col-md-3">
 						제품코드
 						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="searchProductCode.do" rel="modal:open">						
+						<a id="searchProductCode" href="searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-3">
@@ -109,8 +109,10 @@
 <!-- 추가 모달 -->
 <a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
 <a id="searchCustomerCode" href="searchCustomerCode.do" rel="modal:open"></a>
+<input type="hidden" id="hiddenCode" value="">
 
 <script>
+let mgrid;
 	$(document).ready(function() {
 		//Read
 		$(document).on("click", "button[id=search]",
@@ -121,17 +123,14 @@
 					var gubun;
 					var productCode = $("#productCode").val();
 					var productLotNo = $("#productLotNo").val();
-					/* var inoutCode;
-					var quantity;
-					var writeDate; */
 					
 					//체크박스 옵션
 					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
 						gubun = null;
 					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'SALES003';
+						gubun = 'INOUT003';
 					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = 'SALES002';
+						gubun = 'INOUT002';
 					} else {
 						gubun = null;
 					}
@@ -147,19 +146,17 @@
 		
 		//Insert
 		$(document).on("click", "button[id=appendRow]", function() {
-			var rowData = {
-					date : "",
-					gubun : "",
-					statement : "",
-					inoutCode : "",
-					productCode : "",
-					quantity : "",
-					productLotNo : "",
-					writeDate : ""
-			};
+			var rowData =[{
+					salInoutDate : "",
+					salInoutGubun : "",
+					salInoutCode : "",
+					comProductCode : "",
+					salInoutQuantity : "",
+					proProcessLotNo : "",
+					salWriteDate : ""
+			}];
 			grid.appendRow(rowData, {
 				at : 0,
-				/*at : grid.getRowCount(),*/
 				focus : true
 			});
 			grid.enable();
@@ -167,28 +164,12 @@
 		
 		//Delete
 		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.finishEditing('rowKey','columnName');
 			grid.removeCheckedRows(false);
 		});
 		
 		//Modify
 		$(document).on("click", "button[id=modifyRow]", function() {
-			var date = $("#dateGubun").val();
-			var gubun = $("#gubun").val();
-			var productCode = $("#productCode").val();
-			var productLotNo = $("#productLotNo").val();		
-			
 			grid.finishEditing('rowKey','columnName');
-			var requestParams = { 
-					'salInoutDate' : date,
-					'salInoutGubun' : gubun,
-					'salInoutCode' : inoutCode,
-					'comProductCode' : productCode,
-					'salInoutQuantity' : quantity,
-					'proProcessLotNo' : productLotNo,
-					'salWriteDate' : writeDate
-			};
-			grid.setRequestParams(requestParams);
 			grid.request('modifyData');
 		});
 		
@@ -208,10 +189,6 @@
 			contentType : "application/json"
 		};
 		
-/* 		const selectBox = new SelectBox(container, {
-			 data: [ { label: '입고', value: 'SALES002', selected: true },
-				 	{ label: '출고', value: 'SALES003' } ]
-		}); */
 
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
@@ -238,15 +215,11 @@
 					type: 'select',
 					options : {
 					listItems: [
-						{text : '입고', value : 'SALES002'},
-						{text : '출고', value : 'SALES003'}
+						{text : '입고', value : 'INOUT002'},
+						{text : '출고', value : 'INOUT003'}
 						]
 					}
 				}
-			}, {
-				header : '전표번호',
-				name : 'salInoutStatement',
-				editor : 'text'
 			}, {
 				header : '지시/거래처코드',
 				name : 'salInoutCode',
@@ -264,25 +237,16 @@
 				name : 'proProcessLotNo',
 				editor : 'text'
 			}, {
-				header : '작성일자',
-				name : 'salWriteDate',
-				editor : 'text'
+				header : '전표번호',
+				name : 'salInoutStatement',
+				hidden : true
 			}]
-		}); 
-	
-	
-	grid.on('response', ev => {
-		  const {response} = ev.xhr;
-		  const responseObj = JSON.parse(response);
-
-		  console.log('result : ', responseObj.result);
-		  console.log('data : ', responseObj.data);
-		});
-	
+		}); 	
+	 mgrid = grid;
 	 //모달 : 제품코드
 	   grid.on('dblclick', ev => {
-	      if(ev.columnName == 'comProductCode'){    
-	         $('#searchProductCode').click();	         
+	      if(ev.columnName == 'comProductCode'){  
+	    	  productCodeSearch(ev.rowKey);	  
 	      }
 	   });
 	
@@ -294,19 +258,49 @@
 	   });
 
 	 //모달 : 지시/거래처코드 구분
-	 grid.on('dblclick', ev => {
-	      if(ev.columnName == 'salInoutCode') {    
-	         if(grid.getColumnsValues('salInoutGubun') == 'SALES002') { //입고 -> 지시 모달 오픈
-	        	 $('#searchOrderCode').click();	  
-	         } else if (grid.getColumnsValues('salInoutGubun') == 'SALES003') { //출고 -> 거래처 모달 오픈
-	        	 $('#searchCustomerCode').click();
-	      	 } else {
-		    	  alert('입고/출고를 먼저 구분해주세요.');
-		    	  return;
-		     }
-	    } 
-	   });
+	 grid.on('dblclick', ev => {		 
+	 	var i = ev.rowKey;
+		if(ev.columnName == 'salInoutCode') {
+	      if(grid.getValue(i, 'salInoutGubun') == null) {
+	    	  alert('입고/출고를 먼저 구분해주세요.');
+	      } else {
+	         	if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') { //입고 -> 지시 모달 오픈
+	        		$('#searchOrderCode').click();
+	         		return;
+	         	} else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') { //출고 -> 거래처 모달 오픈
+	        		$('#searchCustomerCode').click();
+	         		return;
+	      	 	}
+		  } 
+		}
+	});
+		
+	// option form reset  
+	 $(document).ready(function() {  
+	    $("#reset").click(function() {  
+	         $("form").each(function() {  
+	                if(this.id == "option") this.reset();  
+	             });  
+	    });  
+	 });  
 
-
+	 $('#searchProductCode').click(function(event) {
+		 	productCodeSearch(-1);
+		});
 }); //end of document ready
+
+var rowId;
+function productCodeSearch(c) {
+	  rowId = c;
+	  console.log(rowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchProductCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
+
 </script>

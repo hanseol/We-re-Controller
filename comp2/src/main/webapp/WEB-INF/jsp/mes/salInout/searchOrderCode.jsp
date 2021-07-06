@@ -82,9 +82,6 @@ $(document).ready(function() {
 			header : '생산지시디테일코드',
 			name : 'proOrderDetailCode'
 		}, {
-			header : '납기일자',
-			name : 'erpProductDeadline'
-		}, {
 			header : '고객사',
 			name : 'erpCustomerCode'
 		}, {

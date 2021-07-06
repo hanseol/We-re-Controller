@@ -40,13 +40,18 @@ $(document).ready(function() {
 
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
-		for(var i=0; i<chkRowKeys.length; i++){
+		for(var i=0; i<chkRowKeys.length; i++) {
 			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
 			console.log(code);
 		}
-		//view 페이지에 뿌려줄 부분 아이디값
+		//view 페이지로 쏴주기
 		$("#customerCode").val(code);
+		
+		
 	});
+	
+	
+		
 	
 	$(document).on("click", "button[id=findRow]", function() {
 		var code = $("#comCustomerCode").val();

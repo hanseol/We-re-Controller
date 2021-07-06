@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
+<div class="modal">	
 <!-- 210701 김현경 제품검색 모달창 -->
 
 <div class="content-fluid">
@@ -42,12 +43,28 @@ $(document).ready(function() {
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
 			code = grid.getValue(chkRowKeys[i],'comProductCode');
-			console.log(code);
+			
+			
+			/*  grid.on('dblclick', ev => {		 
+					if(ev.columnName == 'comProductCode') { //그리드로
+						grid.setValue(chkRowKeys[i], 'comProductCode', code, false);
+					} else { //아니면 아이디값으로
+						$("#productCode").val(code);
+					}
+				 }); */		 
+				 	 
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
-		 $("#productCode").val(code);
-	
+		if (rowId == -1) {
+			$("#productCode").val(code);
+		} else {
+			mgrid.refreshLayout;
+			mgrid.setValue(rowId, 'comProductCode', code, false);
+			console.log(rowId);
+		}
+		 
+		
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
@@ -91,3 +108,4 @@ $(document).ready(function() {
 });
 //end of document ready
 </script>
+</div>

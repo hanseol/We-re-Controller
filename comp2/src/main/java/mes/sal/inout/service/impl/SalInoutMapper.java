@@ -73,7 +73,7 @@ public interface SalInoutMapper {
     //완제품입출고목록 조회
     public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
     public int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
-
+    
     
     
     //모달 : 제품코드 조회

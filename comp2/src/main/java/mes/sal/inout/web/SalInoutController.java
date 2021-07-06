@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
@@ -40,6 +41,13 @@ public class SalInoutController {
 
 	@Resource(name = "salInoutService")
 	private SalInoutService salInoutService;
+	
+	//입고 전표번호
+	@Resource(name = "mesSalInStatementIdGnrService")
+	protected EgovIdGnrService salInStatementIdGnrService;
+	//출고 전표번호
+	@Resource(name = "mesSalOutStatementIdGnrService")
+	protected EgovIdGnrService salOutStatementIdGnrService;
 
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
@@ -178,7 +186,19 @@ public class SalInoutController {
 		List<?> deletedList = gd.getDeletedRows();
 						
 		//C
-		
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
+				
+				if(gubun.equals("INOUT002")) {
+					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
+					} else if(gubun.equals("INOUT003")) {
+					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());
+					}			
+					salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
+				}
+
+		}
 				
 		//U
 		if (updatedList.size() != 0) {

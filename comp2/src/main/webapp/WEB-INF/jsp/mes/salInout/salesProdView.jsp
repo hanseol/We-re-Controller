@@ -116,9 +116,9 @@
 					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
 						gubun = null;
 					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'SALES003';
+						gubun = 'INOUT003';
 					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = 'SALES002';
+						gubun = 'INOUT002';
 					} else {
 						gubun = null;
 					}
@@ -187,14 +187,7 @@
 				name : 'salWriteDate'
 			}]
 		}); 
-	
-	grid.on('response', ev => {
-		  const {response} = ev.xhr;
-		  const responseObj = JSON.parse(response);
 
-		  console.log('result : ', responseObj.result);
-		  console.log('data : ', responseObj.data);
-		});
 	
 	// option form reset  
 	 $(document).ready(function() {  

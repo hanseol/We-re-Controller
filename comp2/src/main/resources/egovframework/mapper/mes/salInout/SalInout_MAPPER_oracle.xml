@@ -26,7 +26,7 @@
 		
 		<result property="comCodeDetailId" column="COM_CODE_DETAIL_ID" />
 		<result property="comCodeDetailName" column="COM_CODE_DETAIL_NAME" />
-		<result property="comProductName" column="comProductName" />
+		<result property="comProductName" column="COM_PRODUCT_NAME" />
 	</resultMap>
 
 	<!-- 한 건 조회 -->
@@ -87,7 +87,7 @@
 									C.COM_PRODUCT_NAME, SAL_INOUT_CODE,
 									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
 									FROM SAL_INOUT I, PRO_PROCESS P, COM_PRODUCT C
-									WHERE SAL_INOUT_GUBUN NOT IN('SALES001')
+									WHERE SAL_INOUT_GUBUN NOT IN('INOUT001')
 									AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
 									AND C.COM_PRODUCT_NAME = P.ERP_PRODUCT_NAME
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
@@ -110,8 +110,7 @@
 	</select>
 	
 	<!-- 입출고목록 삽입 -->
-	<insert id="insertSalProductInout"
-		parameterType="mes.sal.inout.service.SalInoutVO">
+	<insert id="insertSalInout">
 		INSERT INTO SAL_INOUT
 		VALUES (#{salInoutStatement}
 			, #{comProductCode}
@@ -124,23 +123,22 @@
 	</insert>
 	
 	<!-- 입출고목록 수정 -->
-	<update id="updateSalProductInout" parameterType="mes.sal.inout.service.SalInoutVO">
+	<update id="updateSalInout">
 		UPDATE SAL_INOUT SET
-		SAL_INOUT_STATEMENT = #{salInoutStatement}
-		, COM_PRODUCT_CODE = #{comProductCode}
+		COM_PRODUCT_CODE = #{comProductCode}
 		, SAL_INOUT_DATE = #{salInoutDate}
 		, SAL_INOUT_QUANTITY = #{salInoutQuantity}
 		, SAL_INOUT_CODE = #{salInoutCode}
 		, SAL_INOUT_GUBUN = #{salInoutGubun}
 		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		, SAL_WRITE_DATE = #{salWriteDate}
-		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
 	</update>
 	
 	<!-- 입출고목록 삭제 -->
-	<delete id="deleteSalProductInout" parameterType="mes.sal.inout.service.SalInoutVO">
+	<delete id="deleteSalInout">
 		DELETE FROM SAL_INOUT
-		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
 	</delete>
 	
 	<!-- 반품입고목록 조회 -->
@@ -152,7 +150,7 @@
 		JOIN (
 				SELECT P.PRO_PROCESS_LOT_NO
 				FROM PRO_PROCESS P, SAL_INOUT I
-				WHERE SAL_INOUT_GUBUN = 'SALES001'
+				WHERE SAL_INOUT_GUBUN = 'INOUT001'
  				AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO) M
 		ON I.PRO_PROCESS_LOT_NO = M.PRO_PROCESS_LOT_NO
 		WHERE 1=1
@@ -166,7 +164,7 @@
 			<if test="searchCondition == 2">AND
 				SAL_INOUT_CODE LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			AND SAL_INOUT_GUBUN = 'SALES001'
+			AND SAL_INOUT_GUBUN = 'INOUT001'
 		</if>
 		ORDER BY I.PRO_PROCESS_LOT_NO	
 				<![CDATA[						
@@ -184,7 +182,7 @@
 		, #{SAL_INOUT_DATE}
 		, #{SAL_INOUT_QUANTITY}
 		, #{SAL_INOUT_CODE}
-		, 'SALES001' <!-- 반품 = SALES001 -->
+		, 'INOUT001' <!-- 반품 = INOUT001 -->
 		, #{PRO_PROCESS_LOT_NO})
 	</insert>
 	
@@ -197,14 +195,14 @@
 		, SAL_INOUT_QUANTITY = #{SAL_INOUT_QUANTITY}
 		, SAL_INOUT_CODE = #{SAL_INOUT_CODE}
 		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
-		AND SAL_INOUT_GUBUN = 'SALES001'
+		AND SAL_INOUT_GUBUN = 'INOUT001'
 	</update>
 	
 	<!-- 반품입고목록 삭제 -->
 	<delete id="deleteSalProductReturn" parameterType="mes.sal.inout.service.SalInoutVO">
 		DELETE FROM SAL_INOUT
 		WHERE SAL_INOUT_STATEMENT=#{SAL_INOUT_STATEMENT}
-		AND SAL_INOUT_GUBUN = 'SALES001'
+		AND SAL_INOUT_GUBUN = 'INOUT001'
 	</delete>	
 	
 	<!-- 페이지 -->
@@ -398,7 +396,7 @@
 		]]>
 	</select>
 	
-	<!-- 모달 : 완제품 LOT_NO 목록 총 갯수 -->
+	<!-- 모달 : 생산지시디테일코드 목록 총 갯수 -->
 	<select id="searchProductCodeListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
 		SELECT COUNT(*)
 		FROM PRO_ORDER_DETAIL
