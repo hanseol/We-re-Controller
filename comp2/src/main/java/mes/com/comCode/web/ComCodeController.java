@@ -125,7 +125,7 @@ public class ComCodeController {
 //	public String comCodeModal() {
 //		
 //		//모달창에 띄워줄 view페이지 전달.
-//		return "mes/com/comCode/ComCodeModal";
+//		return "mes/com/comCode/comCodeModal";
 //	}
 //	
 //	//모달창에 결과 값 전달
@@ -160,7 +160,7 @@ public class ComCodeController {
 	@RequestMapping(value = "comCode/ComCodeList.do")
 	public String selectComCodeList(@ModelAttribute("searchVO") ComCodeVO searchVO, ModelMap model) {
 
-		return "mes/com/comCode/ComCodeList.page";
+		return "mes/com/comCode/comCodeList.page";
 	}
 
 }
