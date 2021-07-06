@@ -59,6 +59,7 @@ $(document).ready(function() {
 			console.log(proPlanName);
 			console.log(proPlanDate);
 		}
+		
 		$("#proPlanName").val(proPlanName);
 		$("#date").val(proPlanDate);
 	}); //end of click button
