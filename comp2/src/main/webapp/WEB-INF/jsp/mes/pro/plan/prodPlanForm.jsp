@@ -51,19 +51,8 @@
 
 
 
-<!-- 마스터테이블의 CRUD 버튼 -->
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-	
-			<button type="button" class="btn btn-success" id="findRow">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
-			<!-- <button type="button" class="btn btn-info" id="updateRow">수정저장</button> -->
-			
-		</div>
-	</div>
-</div>
+
+
 
 
 <!-- 마스터 테이블 -->
@@ -71,19 +60,21 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-6">
-					<form>
+				<form>
+					<div class="col-md-6">
 						* 계획일자   &nbsp;&nbsp;&nbsp;<input type="date" id="date" name="date" > <br/><br/>
-							
 						* 생산계획명  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">  &nbsp;&nbsp;
 						<a href="${pageContext.request.contextPath}/proPlanName.do" rel="modal:open">						
-                     		<i class="fa fa-search"></i>
-                  		</a>
-						<!-- 모달창 -->
-						<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a> 
-					</form>
-				</div>
-				
+	                    		<i class="fa fa-search"></i>
+	                 		</a>
+					<!-- 모달창 -->
+					<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a>
+					</div>
+					<div class="col-md-6" align="right">
+						<button type="button" class="btn btn-success" id="findRow">조회</button>
+						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+					</div> 
+				</form>
 			</div>
 		</div>
 	</div>
@@ -103,6 +94,7 @@
 					<!-- <button type="button">조회</button> -->
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
+					<button type="button" id="modifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -130,11 +122,12 @@
 		
 		//M 조회 버튼
 		$(document).on("click", "button[id=findRow]", function() {
-	               var erpProductCode = $("#erpProductCode").val();
-	               var erpCustomerCode = $("#erpCustomerCode").val();
+	               var date = $("#date").val();
+	               var proPlanName = $("#proPlanName").val();
+
 	               var readParams = {
-	                  'erpProductCode' : erpProductCode,
-	                  'erpCustomerCode' : erpCustomerCode
+	                  'proPlanDate' : date,
+	                  'proPlanName' : proPlanName
 	               };
 	               proPlanGrid.readData(1, readParams, true);
 	            });
@@ -199,7 +192,7 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/proPlan/ProdPlanView',
+					url : '${pageContext.request.contextPath}/proPlan/ProdPlanFormList',
 					method : 'GET'
 				},  
 				modifyData: { url: '${pageContext.request.contextPath}/proPlan/modifyProdPlan', method: 'PUT' }

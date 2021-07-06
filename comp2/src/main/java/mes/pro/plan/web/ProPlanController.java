@@ -61,15 +61,13 @@ public class ProPlanController {
 	@Resource(name = "proPlanCodeDetailService") 
 	protected EgovIdGnrService proPlanCodeDetailService;
 	
-	
     //공통함수
     ComFunc comFunc = new ComFunc();
-   
-    //생산계획관리 페이지로 이동(prodPlanForm.jsp)
-    @RequestMapping("proPlan/prodPlanForm.do")
-    public String prodPlanForm( @ModelAttribute("searchVO") ProPlanVO searchVO, Model model){
-        return "mes/pro/plan/prodPlanForm.page";
-    }
+    
+    
+    
+    
+    //proPlanView.jsp
     
     //생산계획조회 페이지로 이동 (prodPlanView.jsp)
     @RequestMapping("proPlan/ProdPlanView.do")
@@ -77,12 +75,31 @@ public class ProPlanController {
         return "mes/pro/plan/prodPlanView.page";
     }
     
-    //생산계획리스트 조회
+    //생산계획조회 페이지에서 리스트 조회
     @RequestMapping("proPlan/ProdPlanView")
     @ResponseBody
     public Map<String, Object> readPlan(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
     	List<?> list = new ArrayList<>();
         list = service.selectProPlanList(searchVO);
+        return comFunc.sendResult(list);
+    }
+    
+    
+    //proPlanForm.jsp
+    
+    //생산계획관리 페이지로 이동(prodPlanForm.jsp)
+    @RequestMapping("proPlan/prodPlanForm.do")
+    public String prodPlanForm( @ModelAttribute("searchVO") ProPlanVO searchVO, Model model){
+        return "mes/pro/plan/prodPlanForm.page";
+    }
+    
+    
+    //생산계획관리 페이지에서 리스트 조회
+    @RequestMapping("proPlan/ProdPlanFormList")
+    @ResponseBody
+    public Map<String, Object> readPlanForm(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
+    	List<?> list = new ArrayList<>();
+        list = service.selectProPlanFormList(searchVO);
         return comFunc.sendResult(list);
     }
     
@@ -154,15 +171,18 @@ public class ProPlanController {
 		
 		//시퀀스 포멧팅(pro_plan테이블)
 		if(createdList.size() != 0) { 
+			String ppId = proPlanCodeService.getNextStringId();
+			((LinkedHashMap)createdList.get(0)).put("proPlanDate", gd.getProPlanDate());
+			((LinkedHashMap)createdList.get(0)).put("proPlanName", gd.getProPlanName());
+			((LinkedHashMap)createdList.get(0)).put("proPlanCode", ppId);
+			service.insertProPlanM((LinkedHashMap)createdList.get(0));
+			
 			for(int i = 0; i < createdList.size(); i++) {
-				((LinkedHashMap)createdList.get(i)).put("proPlanDate", gd.getProPlanDate());
-				((LinkedHashMap)createdList.get(i)).put("proPlanName", gd.getProPlanName());
-				((LinkedHashMap)createdList.get(i)).put("proPlanCode", proPlanCodeService.getNextStringId());
+				((LinkedHashMap)createdList.get(i)).put("proPlanCode", ppId);
 				((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
 				service.insertProPlan((LinkedHashMap)createdList.get(i)); 
 			}
 		 }
 		 
 	}
-	
 }

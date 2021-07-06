@@ -38,27 +38,29 @@ $(document).ready(function() {
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
-		var chkRowKeys = gridModal.getCheckedRowKeys();
-		erpOrderCode = gridModal.getValue(chkRowKeys,'erpOrderCode');
-		erpProductCode = gridModal.getValue(chkRowKeys,'erpProductCode');
-		erpProductName = gridModal.getValue(chkRowKeys,'erpProductName');
-		erpOrderQty = gridModal.getValue(chkRowKeys,'erpOrderQty');
-		erpProductDeadline = gridModal.getValue(chkRowKeys,'erpProductDeadline');
-		erpCustomerCode = gridModal.getValue(chkRowKeys,'erpCustomerCode');
-		
-		console.log(erpOrderCode);
-		console.log(erpProductCode);
-		console.log(erpProductName);
-		console.log(erpOrderQty);
-		console.log(erpProductDeadline);
-		console.log(erpCustomerCode);
-		
-		proPlanGrid.setValue(0, 'erpProductCode', erpProductCode, false);
-		proPlanGrid.setValue(0, 'erpOrderCode', erpOrderCode, false);
-		proPlanGrid.setValue(0, 'erpProductName', erpProductName, false);
-		proPlanGrid.setValue(0, 'erpOrderQty', erpOrderQty, false);
-		proPlanGrid.setValue(0, 'erpProductDeadline', erpProductDeadline, false);
-		proPlanGrid.setValue(0, 'erpCustomerCode', erpCustomerCode, false);
+		for(var i=0; i<chkRowKeys.length; i++){
+			var chkRowKeys = gridModal.getCheckedRowKeys();
+			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
+			erpProductCode = gridModal.getValue(chkRowKeys[i],'erpProductCode');
+			erpProductName = gridModal.getValue(chkRowKeys[i],'erpProductName');
+			erpOrderQty = gridModal.getValue(chkRowKeys[i],'erpOrderQty');
+			erpProductDeadline = gridModal.getValue(chkRowKeys[i],'erpProductDeadline');
+			erpCustomerCode = gridModal.getValue(chkRowKeys[i],'erpCustomerCode');
+			
+			console.log(erpOrderCode);
+			console.log(erpProductCode);
+			console.log(erpProductName);
+			console.log(erpOrderQty);
+			console.log(erpProductDeadline);
+			console.log(erpCustomerCode);
+			
+			proPlanGrid.setValue(chkRowKeys[i], 'erpProductCode', erpProductCode, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderCode', erpOrderCode, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpProductName', erpProductName, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderQty', erpOrderQty, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpProductDeadline', erpProductDeadline, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpCustomerCode', erpCustomerCode, false);
+		}
 	});
 	
 	

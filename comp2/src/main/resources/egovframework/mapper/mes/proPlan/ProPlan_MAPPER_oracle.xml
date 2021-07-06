@@ -11,19 +11,23 @@
 		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
 	</resultMap>
 	
-	<!-- INSERT (prodPlanForm.jsp에서 작성한 내용) --> 
-	<insert id="insertProPlan">
+	<!-- INSERT pro_plan (prodPlanForm.jsp에서 작성한 내용) --> 
+	<insert id="insertProPlanM">
 		<![CDATA[
-			INSERT ALL 
-		        INTO pro_plan ( PRO_PLAN_CODE
-							  , PRO_PLAN_NAME
-							  , PRO_PLAN_DATE
-							  , ERP_CUSTOMER_CODE )
-		       		VALUES ( #{proPlanCode}
-						   , #{proPlanName}
-						   , #{proPlanDate}
-						   , #{erpCustomerCode} )
-		        INTO pro_plan_detail ( PRO_PLAN_DETAIL_CODE
+			INSERT INTO pro_plan (  PRO_PLAN_CODE
+								  , PRO_PLAN_NAME
+								  , PRO_PLAN_DATE
+								  , ERP_CUSTOMER_CODE )
+			       		VALUES ( #{proPlanCode}
+							   , #{proPlanName}
+							   , #{proPlanDate}
+							   , #{erpCustomerCode} )
+		]]>
+	</insert>
+	
+	<!-- INSERT pro_plan_detail (prodPlanForm.jsp에서 작성한 내용) --> 
+	<insert id="insertProPlan">
+		INSERT INTO pro_plan_detail (  PRO_PLAN_DETAIL_CODE
 								     , PRO_PLAN_CODE
 								     , ERP_ORDER_CODE
 								     , ERP_PRODUCT_DEADLINE
@@ -36,22 +40,21 @@
 								     , PRO_PLAN_QTY
 								     , ERP_PRODUCT_NAME
 								     , ERP_PRODUCT_CODE )
-		        	VALUES(	#{proPlanDetailCode}
-						  , #{proPlanCode}
-						  , #{erpOrderCode}
-						  , #{erpProductDeadline}
-						  , #{proWorkDate}
-						  , #{erpCustomerCode}
-						  , #{proPlanExpectQty}
-						  , #{proPlanDayQty}
-						  , #{proPlanSeq}
-						  , #{erpOrderQty}
-						  , #{proPlanQty}
-						  , #{erpProductName}
-						  , #{erpProductCode})
-			 	SELECT * FROM dual
-		]]>
+				        	VALUES(	#{proPlanDetailCode}
+								  , #{proPlanCode}
+								  , #{erpOrderCode}
+								  , #{erpProductDeadline}
+								  , #{proWorkDate}
+								  , #{erpCustomerCode}
+								  , #{proPlanExpectQty}
+								  , #{proPlanDayQty}
+								  , #{proPlanSeq}
+								  , #{erpOrderQty}
+								  , #{proPlanQty}
+								  , #{erpProductName}
+								  , #{erpProductCode})
 	</insert>
+	
 	
 	<update id="updateProPlan">
 		<![CDATA[
@@ -85,7 +88,7 @@
 	
 	
 	
-	<!-- 생산계획조회  -->
+	<!-- 전체리스트 조회 (proPlanView) -->
 	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
@@ -100,7 +103,7 @@
 						     , d.pro_plan_qty
 						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
 						     , d.pro_plan_seq
-						     <!-- , m.pro_plan_name -->
+						     , m.pro_plan_name
 						FROM pro_plan_detail d
 						   , erp_product_order e
 						   , pro_plan m
@@ -120,14 +123,8 @@
 								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
 									e.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
 								</if>
-								<if test="proPlanName != null and proPlanName != ''"> AND
-									m.pro_plan_name LIKE '%' || #{proPlanName} || '%'
-								</if> 
-								<if test="proPlanDate != null and proPlanDate != ''"> AND
-									m.pro_plan_date LIKE '%' || #{proPlanDate} || '%'
-								</if>
-							ORDER BY 
-								m.PRO_PLAN_CODE DESC
+						ORDER BY 
+							m.PRO_PLAN_CODE DESC
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
@@ -148,10 +145,61 @@
 				<if test="searchCondition == 1">AND
 					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
 				</if>
-				
 			</if>
-			
 	</select>
+	
+	
+	<!-- 전체리스트 조회 (proPlanForm) -->
+	<select id="selectProPlanFormList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy/MM/dd') as pro_plan_date
+							 , e.erp_customer_code
+							 , m.pro_plan_code
+						     , e.erp_product_code
+						     , e.erp_product_name 
+						     , e.erp_order_code
+						     , TO_CHAR(e.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+						     , e.erp_order_qty
+						     , d.pro_plan_qty
+						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+						     , d.pro_plan_seq
+						     , m.pro_plan_name
+						FROM pro_plan_detail d
+						   , erp_product_order e
+						   , pro_plan m
+						WHERE d.erp_order_code = e.erp_order_code
+						  AND m.pro_plan_code = d.pro_plan_code
+							<if test="proPlanName != null and proPlanName != ''"> AND
+								m.pro_plan_name LIKE #{proPlanName}
+							</if> 
+							<if test="date != null and date != ''"> AND
+								m.pro_plan_date LIKE '%' || TO_DATE(#{date}) || '%'
+							</if>
+						ORDER BY 
+							m.PRO_PLAN_CODE DESC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>	
+<!-- 	<select id="selectProPlanFormListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM pro_plan m
+			   , pro_plan_detail d
+			   , erp_product_order e
+			WHERE m.pro_plan_code = d.pro_plan_code
+			  AND d.erp_order_code = e.erp_order_code
+			  AND 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_PLAN_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select> -->
 	
 	
 	<!-- erp_order테이블에서 제품리스트 가져오기 -->
@@ -181,7 +229,6 @@
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
 		]]>
-	
 	</select>
 	<select id="selectErpProdCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
 		SELECT COUNT(*) totcnt
@@ -197,8 +244,6 @@
 		</if>
 	</select>
 	
-	
-
 
 	 <!-- pro_plan테이블에서 계획리스트 가져오기 -->
 	<select id="selectPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
@@ -215,7 +260,7 @@
 							</if>
 						</if>
 						ORDER BY 
-							pro_plan_name
+							pro_plan_code
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}

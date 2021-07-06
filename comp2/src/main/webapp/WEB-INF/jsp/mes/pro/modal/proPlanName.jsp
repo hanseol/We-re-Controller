@@ -42,7 +42,7 @@ $(document).ready(function() {
 			proPlanName = gridModal.getValue(chkRowKeys[i],'proPlanName');
 			proPlanDate = gridModal.getValue(chkRowKeys[i],'proPlanDate');
 			
-			erpProductCode = gridModal.getValue(chkRowKeys[i],'erpProductCode');
+			/* erpProductCode = gridModal.getValue(chkRowKeys[i],'erpProductCode');
 			erpProductName = gridModal.getValue(chkRowKeys[i],'erpProductName');
 			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
 			erpProductDeadline = gridModal.getValue(chkRowKeys[i],'erpProductDeadline');
@@ -52,16 +52,24 @@ $(document).ready(function() {
 			proPlanSeq = gridModal.getValue(chkRowKeys[i],'proPlanSeq');
 			erpCustomerCode = gridModal.getValue(chkRowKeys[i],'erpCustomerCode');
 			proPlanExpectQty = gridModal.getValue(chkRowKeys[i],'proPlanExpectQty');
-			proPlanDayQty = gridModal.getValue(chkRowKeys[i],'proPlanDayQty');
+			proPlanDayQty = gridModal.getValue(chkRowKeys[i],'proPlanDayQty'); */
 			
 			
 			
 			console.log(proPlanName);
 			console.log(proPlanDate);
+			
+			$("#proPlanName").val(proPlanName);
+			$("#date").val(proPlanDate);
+			
+			/* proPlanGrid.setValue(chkRowKeys[i], 'erpProductCode', erpProductCode, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderCode', erpOrderCode, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpProductName', erpProductName, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderQty', erpOrderQty, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpProductDeadline', erpProductDeadline, false);
+			proPlanGrid.setValue(chkRowKeys[i], 'erpCustomerCode', erpCustomerCode, false); */
+			
 		}
-		
-		$("#proPlanName").val(proPlanName);
-		$("#date").val(proPlanDate);
 	}); //end of click button
 	
 	
@@ -102,16 +110,16 @@ $(document).ready(function() {
         bodyHeight :300,
         rowHeight: 30,
 		columns : [ {
-			header : '계획일자',
-			name : 'proPlanDate',
-			id : 'select'
-		}, {
 			header : '계획번호',
 			name : 'proPlanCode'
 		}, {
-			header : '계획이름',
+			header : '계획명',
 			name : 'proPlanName'
 		}, {
+			header : '계획일자',
+			name : 'proPlanDate',
+			id : 'select'
+		} /* {
 			header : '제품코드',
 			name : 'erpProductCode',
 			hidden : true
@@ -155,7 +163,7 @@ $(document).ready(function() {
 			header : '예상일',
 			name : 'proPlanDayQty',
 			hidden : true
-		}]
+		} */]
 	});
 	
 	

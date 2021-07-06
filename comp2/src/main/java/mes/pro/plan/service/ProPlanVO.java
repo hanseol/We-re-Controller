@@ -53,5 +53,8 @@ public class ProPlanVO extends SearchVO{
     //erp_order 테이블
     private String erpProductCode;
     private String erpProductName;
+    
+    //추가 
+    private String date;
 
 }

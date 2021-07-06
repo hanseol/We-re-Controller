@@ -176,4 +176,20 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 		return proPlanDAO.selectPlanListCnt(vo);
 	}
 
+	@Override
+	public List<?> selectProPlanFormList(ProPlanVO vo) {
+		return proPlanDAO.selectProPlanFormList(vo);
+	}
+
+	@Override
+	public int selectPlanFormListCnt(ProPlanVO vo) {
+		return proPlanDAO.selectProPlanFormListTotCnt(vo);
+	}
+
+	@Override
+	public void insertProPlanM(LinkedHashMap vo) {
+		proPlanDAO.insertProPlanM(vo);
+		
+	}
+
 }
