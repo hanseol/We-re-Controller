@@ -36,8 +36,16 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>주문목록조회</h2>
+		<h2>반품목록관리</h2>
 	</div>
+</div>
+
+<!-- 관리, 지시 탭 이동 -->
+<div id="tabs">
+   <ul class="nav nav-tabs" role="tablist">
+     <li class="active"><a onclick='location.href="retuProdForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
+     <li class=""><a onclick='location.href="retuProdView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
+   </ul>
 </div>
 
 <div class="content-fluid">
@@ -45,6 +53,7 @@
 		<div class="my-panel">
 			<button type="button" class="btn btn-success" id="search">조회</button>
 			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
 		</div>
 	</div>
 </div>
@@ -54,22 +63,15 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-4">
-						주문일자
-						<input type="date" id="orderDate" name="erpProdcutOrderDate">					
+				<div class="col-md-6">
+					반품일자
+					<input type="date" id="returnDate" name="returnDate">			
 				</div>
-				<div class="col-md-4">			
-						제품코드
-						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="searchProductCode.do">						
-                     	<i class="fa fa-search"></i></a>
-                  </a>											
-				</div>
-				<div class="col-md-4">
-						업체코드
-						<input type="text" id="customerCode" name="customerCode">
-						<a id="searchCustomerCode" href="searchCustomerCode.do">					
-						<i class="fa fa-search"></i></a>
+				<div class="col-md-6">
+					전표번호
+					<input type="text" id="inoutStatement" name="inoutStatement">
+					<a id="searchInoutStatement" href="searchInoutStatement.do">
+					<i class="fa fa-search"></i></a>			
 				</div>
 			</div>
 		</div>
@@ -82,7 +84,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">전체 주문 목록</p>
+					<p class="panel-subtitle">반품 목록</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -97,13 +99,12 @@ let mgrid; //모달 그리드
 	$(document).ready(function() {
 		$(document).on("click", "button[id=search]",
 				function() {
-					var orderDate = $("#orderDate").val();
-					var productCode = $("#productCode").val();
-					var customerCode = $("#customerCode").val();
+					var returnDate = $("#returnDate").val();
+					var inoutStatement = $("#inoutStatement").val();
+					console.log(returnDate, inoutStatement);
 					var readParams = {
-						'erpProductOrderDate' : orderDate,
-						'erpProductCode' : productCode,
-						'erpCustomerCode' : customerCode
+						'salInoutDate' : returnDate,
+						'salInoutStatement' : inoutStatement
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -111,7 +112,7 @@ let mgrid; //모달 그리드
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/ajax/sal/readSalesOrder',
+					url : '${pageContext.request.contextPath}/ajax/sal/readReturnProduct',
 					method : 'GET'
 				}
 			},
@@ -128,55 +129,50 @@ let mgrid; //모달 그리드
 	        bodyHeight :30, 
 	        rowHeight: 30,
 			columns : [{
-				header : '주문코드',
-				name : 'erpOrderCode',
+				header : '반품일자',
+				name : 'salInoutDate',
+				editor : {
+					type : 'datePicker',
+					options : {
+						format : 'YYYY/MM/dd',
+						language: 'ko'
+					} 
+				}
+			}, {
+				header : '전표번호',
+				name : 'salInoutStatement',
+				editor : 'text'
 			}, {
 				header : '업체코드',
-				name : 'erpCustomerCode',
+				name : 'salInoutCode',
+				editor : 'text'
 			}, {
 				header : '제품코드',
-				name : 'erpProductCode',
+				name : 'comProductCode',
+				editor : 'text'
 			}, {
-				header : '제품명',
-				name : 'erpProductName',
-			}, {
-				header : '주문량',
-				name : 'erpOrderQty',
-			}, {
-				header : '개당단가',
-				name : 'erpProductUnitPrice',
-			}, {
-				header : '주문일자',
-				name : 'erpProductOrderDate',
-				editor : {
-					type : 'datePicker',
-					options : {
-						format : 'YYYY/MM/dd',
-						language: 'ko'
-					} 
-				}
-			}, {
-				header : '납기일자',
-				name : 'erpProductDeadline',
-				editor : {
-					type : 'datePicker',
-					options : {
-						format : 'YYYY/MM/dd',
-						language: 'ko'
-					} 
-				}
+				header : '수량',
+				name : 'salInoutQuantity',
+				editor : 'text'
 			}]
 		}); 
 	
 		mgrid = grid;
 		
-		$('#searchProductCode').click(function(event) {
-			productCodeSearch(-1);
+		//모달 클릭 이벤트
+		//모달 : 전표번호
+	  	grid.on('dblclick', ev => {
+	      if(ev.columnName == 'salInoutStatement'){  
+	    	  inoutStatementSearch(ev.rowKey);
+	    	  //더블클릭 이벤트 -> inoutStatementSearch 함수 실행
+	      }
+	   });
+		
+		$('#searchInoutStatement').click(function(event) {
+			 inoutStatementSearch(-1);
 		});
 		
-		$('#searchCustomerCode').click(function(event) {
-			customerCodeSearch(-1);
-		});
+		
 	
 	// option form reset  
 	 $(document).ready(function() {  
@@ -191,26 +187,14 @@ let mgrid; //모달 그리드
 
 var rowId;
 
-//제품코드 모달
-function productCodeSearch(c) {
+//전표번호 모달
+function inoutStatementSearch(c) {
 	  rowId = c;
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchProductCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
-
-//업체코드 모달
-function customerCodeSearch(c) {
-	  rowId = c;
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchCustomerCode.do", function(html) {
+	  $.get("searchInoutStatement.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

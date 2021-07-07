@@ -79,18 +79,33 @@
 				]]>
 	</update>
 
-
-
-	
+	<!-- DELETE pro_plan 테이블 -->
 	<delete id="deleteProPlan">
 		<![CDATA[
-			DELETE FROM m, d
-			       USING pro_plan AS m 
-			       LEFT JOIN pro_plan_detail AS d
-			       ON m.pro_plan_code = d.pro_plan_code
-			WHERE d.pro_plan_code = #{proPlanCode}
+			DELETE 
+				FROM  pro_plan
+				WHERE pro_plan_code = #{proPlanCode}
 				]]>
 	</delete>
+	
+	<!-- DELETE pro_plan_detail 테이블 -->
+	<delete id="deleteProPlanD">
+		<![CDATA[
+			DELETE 
+				FROM  pro_plan_detail
+				WHERE pro_plan_code = #{proPlanCode}
+				]]>
+	</delete>
+	
+	<!-- DELETE 한개 행 삭제 -->
+	<delete id="">
+		DELETE 
+			FROM pro_plan_detail
+			WHERE 
+	
+	</delete>
+	
+	
 	
 	<select id="selectProPlan" resultMap="proPlan">
 		<![CDATA[
@@ -168,7 +183,7 @@
 	
 	
 	<!-- 전체리스트 조회 (proPlanForm) -->
-	<select id="selectProPlanFormList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+	<select id="selectProPlanFormList" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
 						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy/MM/dd') as pro_plan_date
@@ -183,13 +198,14 @@
 						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
 						     , d.pro_plan_seq
 						     , m.pro_plan_name
+						     , d.pro_plan_detail_code
 						FROM pro_plan_detail d
 						   , erp_product_order e
 						   , pro_plan m
 						WHERE d.erp_order_code = e.erp_order_code
 						  AND m.pro_plan_code = d.pro_plan_code
-							<if test="proPlanName != null and proPlanName != ''"> AND
-								m.pro_plan_name LIKE #{proPlanName}
+							<if test="proPlanCode != null and proPlanCode != ''"> AND
+								m.pro_plan_code LIKE #{proPlanCode}
 							</if> 
 							<if test="date != null and date != ''"> AND
 								m.pro_plan_date LIKE '%' || TO_DATE(#{date}) || '%'

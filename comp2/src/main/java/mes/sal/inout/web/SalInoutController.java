@@ -131,7 +131,6 @@ public class SalInoutController {
 		return comFunc.sendResult(list);
 	}
 
-
 	// 입출고조회 페이지
 	@RequestMapping("/salInout/salesProdView.do")
 	public String selectSalesProductList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
@@ -167,13 +166,54 @@ public class SalInoutController {
 		return comFunc.sendResult(list);
 	}
 
-	// 반품 조회 (수정해야 함)
-	@RequestMapping("/salMatch/salesMatchView.do")
-	public String selectSalesMatchList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
+	
+	// 반품 목록 조회 grid
+	@RequestMapping("/ajax/sal/readReturnProduct")
+	@ResponseBody
+	public Map<String, Object> readReturnProduct(@ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+				
+		List<?> list = salInoutService.selectSalReturnList(searchVO);
+
+		return comFunc.sendResult(list);
+	}
+		
+	// 반품 목록 조회 페이지
+	@RequestMapping("/salInout/retuProdView.do")
+	public String selectSalesReturnList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {
 
-		return "mes/salMatch/salesMatchView.page";
+		return "mes/salInout/retuProdView.page";
 	}
+	
+	// 반품 목록 관리 페이지
+	@RequestMapping("/salInout/retuProdForm.do")
+	public String selectSalesReturnFormList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
+			throws Exception {
+
+		return "mes/salInout/retuProdForm.page";
+	}
+		
+	//모달 : 전표번호 조회(반품페이지)
+	@GetMapping("/salInout/searchInoutStatement.do")
+	public String searchInoutStatementView() {
+
+		// 모달창 띄워주는 페이지
+		return "mes/salInout/searchInoutStatement";
+	}
+
+	// 모달 : 전표번호 값 전달
+	@RequestMapping("mes/salInout/searchInoutStatement")
+	@ResponseBody
+	public Map<String, Object> searchInoutStatement(@ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+
+		List<?> list = salInoutService.searchInoutStatement(searchVO);
+
+		return comFunc.sendResult(list);
+	}
+		
+		
 
 	// 관리
 	// 입출고목록 수정

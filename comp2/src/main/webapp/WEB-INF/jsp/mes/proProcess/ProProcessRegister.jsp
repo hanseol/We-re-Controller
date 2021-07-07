@@ -5,39 +5,43 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
  /**
-  * @Class Name : SalInoutRegister.jsp
-  * @Description : SalInout Register 화면
+  * @Class Name : ProProcessRegister.jsp
+  * @Description : ProProcess Register 화면
   * @Modification Information
   * 
-  * @author hk
-  * @since 2021-06-28
+  * @author dahee
+  * @since 20210707
   * @version 1.0
   * @see
   *  
   * Copyright (C) All right reserved.
   */
 %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<c:set var="registerFlag" value="${empty salInoutVO.salInoutStatement ? '등록' : '수정'}"/>
+<c:set var="registerFlag" value="${empty proProcessVO.comProcessCode ? '등록' : '수정'}"/>
 
 <title> <c:out value="${registerFlag}"/> </title>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
 
 <!--For Commons Validator Client Side-->
 <!-- script type="text/javascript" src="<c:url value='/cmmn/validator.do'/>"></script -->
-<!-- validator:javascript formName="salInoutVO" staticJavascript="false" xhtml="true" cdata="false"/ -->
+<!-- validator:javascript formName="proProcessVO" staticJavascript="false" xhtml="true" cdata="false"/ -->
 
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 /* 글 목록 화면 function */
 function fn_egov_selectList() {
-   	document.getElementById("detailForm").action = "<c:url value='/salInout/SalInoutList.do'/>";
+   	document.getElementById("detailForm").action = "<c:url value='/proProcess/ProProcessList.do'/>";
    	document.getElementById("detailForm").submit();		
 }
 
 /* 글 삭제 function */
 function fn_egov_delete() {
-   	document.getElementById("detailForm").action = "<c:url value='/salInout/deleteSalInout.do'/>";
+   	document.getElementById("detailForm").action = "<c:url value='/proProcess/deleteProProcess.do'/>";
    	document.getElementById("detailForm").submit();		
 }
 
@@ -47,17 +51,17 @@ function fn_egov_save() {
 
 	/* TODO Validation기능 보완 */
 	
-  	frm.action = "<c:url value="${registerFlag == '등록' ? '/salInout/addSalInout.do' : '/salInout/updateSalInout.do'}"/>";
+  	frm.action = "<c:url value="${registerFlag == '등록' ? '/proProcess/addProProcess.do' : '/proProcess/updateProProcess.do'}"/>";
     frm.submit();
 
 }
 
 // -->
 </script>
+</head>
+<body>
 
-
-
-<form:form commandName="salInoutVO" name="detailForm" id="detailForm" >
+<form:form commandName="proProcessVO" name="detailForm" id="detailForm" >
 <div id="content_pop">
 	<!-- 타이틀 -->
 	<div id="title">
@@ -75,53 +79,67 @@ function fn_egov_save() {
 			
 		<c:if test="${registerFlag == '수정'}">
 	   <tr>
-			<th>SAL_INOUT_STATEMENT *</th>
+			<th>COM_PROCESS_CODE *</th>
 			<td>
-				<form:input path="salInoutStatement" cssClass="essentiality" readonly="true" />
+				<form:input path="comProcessCode" cssClass="essentiality" readonly="true" />
 			</td>			
 		</tr>	
 		</c:if>
 		<c:if test="${registerFlag == '등록'}">
 	   <tr>
-			<th>SAL_INOUT_STATEMENT *</th>
+			<th>COM_PROCESS_CODE *</th>
 			<td>
-				<form:input path="salInoutStatement" cssClass="txt" readonly="false" />
+				<form:input path="comProcessCode" cssClass="txt" readonly="false" />
 			</td>			
 		</tr>	
 		</c:if>		
 		<tr>
-			<th>COM_PRODUCT_CODE</th>
+			<th>COM_PRODUCT_F_CODE</th>
 			<td>
-				<form:input path="comProductCode" cssClass="txt"/>
-				&nbsp;<form:errors path="comProductCode" />
+				<form:input path="comProductFCode" cssClass="txt"/>
+				&nbsp;<form:errors path="comProductFCode" />
 			</td>
 		</tr>	
 		<tr>
-			<th>SAL_INOUT_DATE</th>
+			<th>PRO_PROCESS_F_QTY</th>
 			<td>
-				<form:input path="salInoutDate" cssClass="txt"/>
-				&nbsp;<form:errors path="salInoutDate" />
+				<form:input path="proProcessFQty" cssClass="txt"/>
+				&nbsp;<form:errors path="proProcessFQty" />
 			</td>
 		</tr>	
 		<tr>
-			<th>SAL_INOUT_QUANTITY</th>
+			<th>MAC_LINE_NO</th>
 			<td>
-				<form:input path="salInoutQuantity" cssClass="txt"/>
-				&nbsp;<form:errors path="salInoutQuantity" />
+				<form:input path="macLineNo" cssClass="txt"/>
+				&nbsp;<form:errors path="macLineNo" />
 			</td>
 		</tr>	
 		<tr>
-			<th>SAL_INOUT_CODE</th>
+			<th>PRO_PROCESS_START_TIME</th>
 			<td>
-				<form:input path="salInoutCode" cssClass="txt"/>
-				&nbsp;<form:errors path="salInoutCode" />
+				<form:input path="proProcessStartTime" cssClass="txt"/>
+				&nbsp;<form:errors path="proProcessStartTime" />
 			</td>
 		</tr>	
 		<tr>
-			<th>SAL_INOUT_GUBUN</th>
+			<th>PRO_PROCESS_END_TIME</th>
 			<td>
-				<form:input path="salInoutGubun" cssClass="txt"/>
-				&nbsp;<form:errors path="salInoutGubun" />
+				<form:input path="proProcessEndTime" cssClass="txt"/>
+				&nbsp;<form:errors path="proProcessEndTime" />
+			</td>
+		</tr>	
+		<tr>
+			<th>ERP_EMPLOYEE_ID</th>
+			<td>
+				<form:input path="erpEmployeeId" cssClass="txt"/>
+				&nbsp;<form:errors path="erpEmployeeId" />
+			</td>
+		</tr>	
+		<tr>
+			<th>MAC_CODE</th>
+			<td>
+				<form:input path="macCode" cssClass="txt"/>
+				&nbsp;<form:errors path="macCode" />
 			</td>
 		</tr>	
 		<tr>
@@ -129,6 +147,13 @@ function fn_egov_save() {
 			<td>
 				<form:input path="proProcessLotNo" cssClass="txt"/>
 				&nbsp;<form:errors path="proProcessLotNo" />
+			</td>
+		</tr>	
+		<tr>
+			<th>PRO_PROCESS_QUANTITY</th>
+			<td>
+				<form:input path="proProcessQuantity" cssClass="txt"/>
+				&nbsp;<form:errors path="proProcessQuantity" />
 			</td>
 		</tr>	
 	</table>
@@ -148,5 +173,6 @@ function fn_egov_save() {
 <input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 </form:form>
-
+</body>
+</html>
 

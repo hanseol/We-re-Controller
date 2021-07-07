@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
 import mes.pro.order.service.ProOrderService;
 import mes.pro.order.service.ProOrderVO;
+import mes.pro.plan.service.ProPlanVO;
 
 /**
  * @Class Name : ProOrderController.java
@@ -48,12 +50,9 @@ public class ProOrderController {
     
     ComFunc comFunc = new ComFunc();
 
-    //생산지시관리 페이지 호출(prodForm.jsp)
-    @RequestMapping("proOrder/prodForm.do")
-    public String prodForm(Model model){
-        return "mes/pro/order/prodForm.page";
-    }
-        
+    
+    //proView.jsp
+      
     //생산지시조회 페이지 호출(prodView.jsp)
     @RequestMapping("proOrder/prodView.do")
     public String prodView(Model model){
@@ -68,6 +67,36 @@ public class ProOrderController {
         list = service.selectProOrderList(proOrderVO);
     	return comFunc.sendResult(list);
     }
+    
+    
+    
+    //proForm.jsp
+    
+    //생산지시관리 페이지 호출(prodForm.jsp)
+    @RequestMapping("proOrder/prodForm.do")
+    public String prodForm(Model model){
+        return "mes/pro/order/prodForm.page";
+    }
+        
+    
+    //생산지시관리 페이지에서 리스트 조회
+    
+    
+    //모달 호출(생산지시코드로 검색)
+    @GetMapping("proOrderSearch.do")
+    public String proOrderSearch() {
+    	return "mes/pro/modal/proOrderSearch";
+    }
+    
+    //모달 값 뿌리기(생산지시코드로 검색)
+//    @RequestMapping("proOrderSearch")
+//    @ResponseBody
+//    public Map<String, Object> proOrderSearch(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
+//    	List<?> list = service.(searchVO);
+//    	ComFunc comFunc = new ComFunc();
+//    	return comFunc.sendResult(list);
+//    }
+    
     
     //생산지시리스트 추가, 수정, 삭제 (****수정하기)
 	@PutMapping("proOrder/modifyProdOrder")
@@ -84,11 +113,13 @@ public class ProOrderController {
 			}
 		}
 
-		if (createdList.size() != 0) {
-			for (int i = 0; i < createdList.size(); i++) {
-				service.insertProOrder((LinkedHashMap) createdList.get(i));
+		//시퀀스 포멧팅(pro_plan테이블) **수정하기
+		if(createdList.size() != 0) { 
+			
+			for(int i = 0; i < createdList.size(); i++) {
 			}
-		}
+			
+		 }
 
 		if (deletedList.size() != 0)
 		{

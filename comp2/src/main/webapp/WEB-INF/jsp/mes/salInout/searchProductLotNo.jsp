@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+
+<div class="modal">
 <!-- 210701 김현경 LOT_NO 검색 모달창 -->
+<!-- 210707 뿌려주는 곳 수정 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -17,8 +19,7 @@
 					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" /> &nbsp;
 					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" /> <br>
 					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
-					<button id="findRow">검색</button>
-					<br>
+					<button id="findRow">검색</button><br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>
@@ -43,10 +44,18 @@ $(document).ready(function() {
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
 			code = grid.getValue(chkRowKeys[i],'proProcessLotNo');
-			console.log(code);
+		
 		}
+		
 		//view 페이지에 뿌려줄 부분 아이디값
-		$("#productLotNo").val(code);
+		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
+			$("#productLotNo").val(code);
+			code = [];
+		} else { //아니면 mgrid(모달그리드)에 뿌려준다
+			mgrid.blur();
+			mgrid.setValue(rowId, 'proProcessLotNo', code, false);
+		}
+
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
@@ -96,3 +105,4 @@ $(document).ready(function() {
 });
 //end of document ready
 </script>
+</div>	

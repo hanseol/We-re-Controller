@@ -60,56 +60,48 @@
 				]]>
 	</select>
 	
+	
+	
+	<!-- prodView 전체조회 -->
 	<select id="selectProOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT 
-						       TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
-						     , d.pro_order_code
-						     
-						     , d.erp_customer_code
-						     , d.erp_product_code
-						     , d.erp_product_name
-						     , p.erp_order_code
-						     , TO_CHAR(d.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
-						     , p.erp_order_qty
-						     , d.pro_order_qty
-						     
-						     , m.mac_hour_qty as mac_hour_qty
-						     , m.mac_hour_qty*24 as day_qty
-						     , CEIL(p.pro_plan_qty/(m.mac_hour_qty*24)) as day_Count
-						     
-						     , o.pro_order_gubun
-						     , l.pro_material_lot
-						     , d.pro_order_seq
-						     
-						     , d.pro_process_lot_no
-						     
-						FROM pro_order_detail d
-						   , pro_plan_detail p
-						   , mac m
-						   , pro_order o
-						   , pro_material_lot l
-						WHERE p.erp_product_code = d.erp_product_code
-						  AND m.com_product_code = d.erp_product_code
-						  AND o.pro_order_code = d.pro_order_code
-						  AND d.pro_order_detail_code = l.pro_order_detail_code
-							<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
-								<if test="searchCondition == 1"> AND
-									o.pro_work_date BETWEEN #{startDate} AND #{endDate} 
+						SELECT TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+								     , d.pro_order_code 
+								     , d.erp_customer_code
+								     , d.erp_product_code
+								     , d.erp_product_name
+								     , p.erp_order_code
+								     , TO_CHAR(d.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+								     , p.erp_order_qty
+								     , d.pro_order_qty
+								     , m.pro_order_gubun
+								     , l.pro_material_lot 
+								     , d.pro_order_seq
+								     , d.pro_process_lot_no 
+								FROM pro_order_detail d
+								   , pro_order m
+								   , pro_plan_detail p
+								   , pro_material_lot l
+								WHERE d.pro_order_code = m.pro_order_code
+								  AND d.pro_plan_detail_code = p.pro_plan_detail_code
+								  AND d.pro_order_detail_code = l.pro_order_detail_code								  
+								<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+									<if test="searchCondition == 1"> AND
+										d.pro_work_date BETWEEN #{startDate} AND #{endDate} 
+									</if>
+									<if test="searchCondition == 2"> AND
+										d.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
+									</if>
 								</if>
-								<if test="searchCondition == 2"> AND
-									o.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
-								</if>
-							</if>
 								<if test="erpProductCode != null and erpProductCode != ''"> AND
-									o.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+									d.erp_product_code LIKE '%' || #{erpProductCode} || '%'
 								</if>
 								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
-									o.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
+									d.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
 								</if>
 							ORDER BY 
-								o.PRO_ORDER_CODE DESC
+								m.PRO_ORDER_CODE DESC
 				
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}

@@ -118,5 +118,7 @@ public interface ProPlanMapper {
 	public void insertProPlanM(LinkedHashMap vo);
 
 	public void updateProPlanD(LinkedHashMap vo);
+
+	public void deleteProPlanD(LinkedHashMap vo);
     
 }

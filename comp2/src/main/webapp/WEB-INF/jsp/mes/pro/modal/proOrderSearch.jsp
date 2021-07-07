@@ -3,7 +3,7 @@
       
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>생산계획 검색</h3>
+		<h3>생산지시 검색</h3>
 	</div>
 </div>
 
@@ -14,7 +14,7 @@
 				<div>
 					계획일자<input type="date" id="startDate" name="startDate"> 
 					   ~ <input type="date" id="endDate" name="endDate">
-					<a id="findRow"><i class="fa fa-search" href="erpProductSearch"></i></a>
+					<a id="findRow"><i class="fa fa-search" href="proOrderSearch"></i></a>
 				</div> <br/>
 				<div id="modalGrid"></div>
 			</div>
@@ -40,12 +40,11 @@ $(document).ready(function() {
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
 			proPlanCode = gridModal.getValue(chkRowKeys[i],'proPlanCode');
-			proPlanDate = gridModal.getValue(chkRowKeys[i],'proPlanDate');
 			proPlanName = gridModal.getValue(chkRowKeys[i],'proPlanName');
+			proPlanDate = gridModal.getValue(chkRowKeys[i],'proPlanDate');
 			
 			console.log(proPlanCode);
 			console.log(proPlanDate);
-			
 			
 			$("#proPlanName").val(proPlanName);
 			$("#proPlanCode").val(proPlanCode);
@@ -63,12 +62,13 @@ $(document).ready(function() {
 				var endDate = $("#endDate").val();
 				var proPlanDate = $("#proPlanDate").val();
 				var proPlanName = $("#proPlanName").val();
+				
 				var readParams = {
 						'proPlanCode' : proPlanCode,
+						'proPlanName' : proPlanName,
 						'startDate' : startDate,
 						'endDate' : endDate,
-						'proPlanDate' : proPlanDate,
-						'proPlanName' : proPlanName
+						'proPlanDate' : proPlanDate
 					};
 				gridModal.readData(1, readParams, true);
 			}); //end of click a
@@ -101,53 +101,8 @@ $(document).ready(function() {
 			name : 'proPlanName'
 		}, {
 			header : '계획일자',
-			name : 'proPlanDate',
-			id : 'select'
-		} /* {
-			header : '제품코드',
-			name : 'erpProductCode',
-			hidden : true
-		}, {
-			header : '제품명',
-			name : 'erpProductName',
-			hidden : true
-		}, {
-			header : '주문코드',
-			name : 'erpOrderCode',
-			hidden : true
-		}, {
-			header : '납기일자',
-			name : 'erpProductDeadline',
-			hidden : true
-		}, {
-			header : '주문량',
-			name : 'erpOrderQty',
-			hidden : true
-		}, {
-			header : '작업계획량',
-			name : 'proPlanQty',
-			hidden : true
-		}, {
-			header : '작업착수일',
-			name : 'proWorkDate',
-			hidden : true
-		}, {
-			header : '작업순서',
-			name : 'proPlanSeq',
-			hidden : true
-		}, {
-			header : '고객사코드',
-			name : 'erpCustomerCode',
-			hidden : true
-		}, {
-			header : '예상소요량',
-			name : 'proPlanExpectQty',
-			hidden : true
-		}, {
-			header : '예상일',
-			name : 'proPlanDayQty',
-			hidden : true
-		} */]
+			name : 'proPlanDate'
+		}]
 	});
 	
 	

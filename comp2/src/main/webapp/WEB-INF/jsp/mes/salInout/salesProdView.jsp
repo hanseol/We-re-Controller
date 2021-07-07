@@ -71,13 +71,13 @@
 				<div class="col-md-3">
 						제품코드
 						<input type="text" id="productCode" name="productCode">	
-						<a href="searchProductCode.do" rel="modal:open">						
+						<a id="searchProductCode" href="searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-3">
 						완제품 LOT_NO
 						<input type="text" id="productLotNo" name="productLotNo">	
-						<a href="searchProductLotNo.do" rel="modal:open">						
+						<a id="searchProductLotNo" href="searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -102,6 +102,7 @@
 </div>
 
 <script>
+let mgrid;
 	$(document).ready(function() {	
 		$(document).on("click", "button[id=search]",
 				function() {
@@ -186,8 +187,18 @@
 				header : '작성일자',
 				name : 'salWriteDate'
 			}]
-		}); 
-
+		});
+		
+		mgrid = grid;
+		 
+		
+		 $('#searchProductCode').click(function(event) {
+				productCodeSearch(-1); //매개변수 -1로 함수 실행
+			});
+		 
+		$('#searchProductLotNo').click(function(event) {
+			 	productLotNoSearch(-1);
+			});
 	
 	// option form reset  
 	 $(document).ready(function() {  
@@ -199,4 +210,32 @@
 	 });  
 	
 }); //end of document ready
+
+//모달 실행 함수
+var rowId;
+
+//제품코드 모달
+function productCodeSearch(c) {
+	  rowId = c;
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchProductCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
+//완제품 LOT_NO 모달
+function productLotNoSearch(c) {
+	  rowId = c;
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchProductLotNo.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
 </script>

@@ -31,34 +31,26 @@
 </div>
 
 
-
-<!-- 마스터테이블의 CRUD 버튼 -->
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="findRow">조회</button>
-			<button type="button" class="btn btn-danger">새자료</button>
-		</div>
-	</div>
-</div>
-
 <!-- 마스터 테이블 -->
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-12">
-					<form action="">
-						* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
-							~ <input type="date" id="endDate" name="endDate"> 
-							<input type="radio" id="gubun1" name="gubun" value="1" checked> 작업일자
-							<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
-							<br/><br/>
-						* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
-						* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
-						
-					</form>
-				</div>
+				<form action="">
+					<div class="col-md-6">
+					* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
+						~ <input type="date" id="endDate" name="endDate"> 
+						<input type="radio" id="gubun1" name="gubun" value="1" checked> 작업일자
+						<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
+						<br/><br/>
+					* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
+					* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
+					</div>
+					<div class="col-md-6" align="right">
+						<button type="button" class="btn btn-success" id="findRow">조회</button>
+						<button type="reset" class="btn btn-danger">새자료</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -111,6 +103,7 @@
 					method : 'GET'
 				}
 			},
+			initialRequest : false,
 			contentType : "application/json"
 		};
 
@@ -123,7 +116,7 @@
 				name : 'proWorkDate'
 			}, {
 				header : '생산지시코드',
-				name : 'erpOrderCode'
+				name : 'proOrderCode'
 			}, {
 				header : '고객사코드',
 				name : 'erpCustomerCode'
@@ -167,6 +160,26 @@
 	
 	grid.on('check', (ev) => {
 		  alert(`check: ${ev.rowKey}`);
+	});
+	
+
+	// 그리드 테마
+	tui.Grid.applyTheme('clean', 
+		{
+			row: {
+	       		hover: {
+	       			background: "#d5dae1"
+	       		}
+			},
+			cell: {
+				header: {
+					background: "#003458",
+					text: "white"
+				},
+				currentRow : {
+					background: "#d5dae1"
+				}
+			}
 	});
 	
 }); //end of document ready

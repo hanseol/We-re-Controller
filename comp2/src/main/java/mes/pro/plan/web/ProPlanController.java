@@ -85,6 +85,7 @@ public class ProPlanController {
     }
     
     
+    
     //proPlanForm.jsp
     
     //생산계획관리 페이지로 이동(prodPlanForm.jsp)
@@ -156,31 +157,39 @@ public class ProPlanController {
 				service.updateProPlanD((LinkedHashMap) updatedList.get(i));
 			}
 		}
-		//생성
-		/*if (createdList.size() != 0) {
-			for (int i = 0; i < createdList.size(); i++) {
-				service.insertProPlan((LinkedHashMap) createdList.get(i));
-			}
-		}*/
+		
 		//삭제
 		if (deletedList.size() != 0) {
 			for (int i = 0; i < deletedList.size(); i++) {
+				//마스터 테이블의 PP코드 찾아서 삭제(PK)
 				service.deleteProPlan((LinkedHashMap) deletedList.get(i));
+				//디테일 테이블의 PP코드 찾아서 삭제 (1개의 PPD에 여러개의 PP가 올 수 있음)
+				service.deleteProPlanD((LinkedHashMap) deletedList.get(i));
 			}
 		}
 		
+		//생성
 		//시퀀스 포멧팅(pro_plan테이블)
-		if(createdList.size() != 0) { 
-			String ppId = proPlanCodeService.getNextStringId();
-			((LinkedHashMap)createdList.get(0)).put("proPlanDate", gd.getProPlanDate());
-			((LinkedHashMap)createdList.get(0)).put("proPlanName", gd.getProPlanName());
-			((LinkedHashMap)createdList.get(0)).put("proPlanCode", ppId);
-			service.insertProPlanM((LinkedHashMap)createdList.get(0));
-			
-			for(int i = 0; i < createdList.size(); i++) {
-				((LinkedHashMap)createdList.get(i)).put("proPlanCode", ppId);
-				((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
-				service.insertProPlan((LinkedHashMap)createdList.get(i)); 
+		if(createdList.size() != 0) {
+			String ppId = null;
+
+			if("".equals(((LinkedHashMap)createdList.get(0)).get("proPlanCode"))) {
+				ppId = proPlanCodeService.getNextStringId();
+				((LinkedHashMap)createdList.get(0)).put("proPlanDate", gd.getProPlanDate());
+				((LinkedHashMap)createdList.get(0)).put("proPlanName", gd.getProPlanName());
+				((LinkedHashMap)createdList.get(0)).put("proPlanCode", ppId);
+				service.insertProPlanM((LinkedHashMap)createdList.get(0));
+				for(int i = 0; i < createdList.size(); i++) {
+					((LinkedHashMap)createdList.get(i)).put("proPlanCode", ppId);
+					((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
+					service.insertProPlan((LinkedHashMap)createdList.get(i)); 
+				}
+			}else {
+				
+				for(int i = 0; i < createdList.size(); i++) {
+					((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
+					service.insertProPlan((LinkedHashMap)createdList.get(i)); 
+				}
 			}
 		 }
 		 
