@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.utl.sim.service.EgovFileScrty;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import mes.member.service.ErpEmpService;
@@ -88,11 +89,8 @@ public class ErpEmpServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 조회한 ERP_EMP
 	 * @exception Exception
 	 */
-    public ErpEmpVO selectErpEmp(ErpEmpVO vo) throws Exception {
-        ErpEmpVO resultVO = erpEmpDAO.selectErpEmp(vo);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
-        return resultVO;
+    public ErpEmpVO selectErpEmp(ErpEmpVO vo) throws Exception { 
+    	return erpEmpDAO.selectErpEmp(vo);
     }
 
     /**
@@ -113,6 +111,25 @@ public class ErpEmpServiceImpl extends EgovAbstractServiceImpl implements
 	 */
     public int selectErpEmpListTotCnt(ErpEmpVO searchVO) {
 		return erpEmpDAO.selectErpEmpListTotCnt(searchVO);
+	}
+
+	@Override
+	public ErpEmpVO login(ErpEmpVO vo) throws Exception {
+		// 1. 입력한 비밀번호를 암호화한다.
+		String enpassword = EgovFileScrty.encryptPassword(vo.getErpEmployeePassword(), vo.getErpEmployeeId());
+		vo.setErpEmployeePassword(enpassword);
+    	
+    	// 2. 아이디와 암호화된 비밀번호가 DB와 일치하는지 확인한다.
+    	ErpEmpVO erpEmpVO = erpEmpDAO.selectErpEmp(vo);
+    	
+    	// 3. 결과를 리턴한다.
+    	if (erpEmpVO != null && !erpEmpVO.getErpEmployeeName().equals("")) {
+    		return erpEmpVO;
+    	}else {
+    		erpEmpVO = new ErpEmpVO();
+    	}
+    		
+    	return erpEmpVO;
 	}
     
 }

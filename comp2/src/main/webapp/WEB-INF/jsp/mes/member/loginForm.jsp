@@ -43,14 +43,17 @@
 								<div class="logo text-center"><img src="${pageContext.request.contextPath}/resources/images/logo-dark.png" alt="Klorofil Logo"></div>
 								<p class="lead">Login to your account</p>
 							</div>
-							<form class="form-auth-small" action="index.php">
+							<form class="form-auth-small" action="login.do">
 								<div class="form-group">
 									<label for="login-id" class="control-label sr-only">ID</label>
-									<input type="text" class="form-control" id="login-id" placeholder="ID">
+									<input type="text" class="form-control" id="erpEmployeeId" name="erpEmployeeId" placeholder="ID" required>
 								</div>
 								<div class="form-group">
 									<label for="login-password" class="control-label sr-only">Password</label>
-									<input type="password" class="form-control" id="login-password" placeholder="PASSWORD">
+									<input type="password" class="form-control" id="erpEmployeePassword" name="erpEmployeePassword" placeholder="PASSWORD" required>
+								</div>
+								<div>
+									<p>${loginFailMsg }</p>
 								</div>
 								<div class="form-group clearfix">
 									<label class="fancy-checkbox element-left">

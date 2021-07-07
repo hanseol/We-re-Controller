@@ -22,6 +22,12 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 @Mapper("erpEmpMapper")
 public interface ErpEmpMapper {
 
+	/*
+	 * MES_LOGIN ACTION
+	 * 2021-07-07
+	 * */
+	public ErpEmpVO login(ErpEmpVO vo) throws Exception;
+	
 	/**
 	 * ERP_EMP을 등록한다.
 	 * @param vo - 등록할 정보가 담긴 ErpEmpVO

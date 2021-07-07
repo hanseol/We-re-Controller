@@ -3,21 +3,22 @@ package mes.member.web;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
 import mes.member.service.ErpEmpService;
 import mes.member.service.ErpEmpVO;
+import mes.member.service.SessionVO;
 
 /**
  * @Class Name : ErpEmpController.java
@@ -42,6 +43,61 @@ public class ErpEmpController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 	
+    
+    /* 
+     * 홈페이지에 접속하면 로그인 폼 화면이 보여진다.
+     * 
+     * */
+    @RequestMapping("loginForm.do")
+  	public String loginForm(Model model) {
+  		return "mes/member/loginForm";
+  	}
+    
+    /* 
+     * 아이디와 비밀번호가 일치하는지 확인하여
+     * 상황에 맞는 뷰 페이지를 전달한다.
+     * */
+    @RequestMapping("login.do")
+    public ModelAndView login(ErpEmpVO empVO,
+    						ModelAndView mv, HttpSession session) throws Exception {
+    	
+    	
+    	SessionVO sessionVO = new SessionVO();
+    	
+    	empVO = erpEmpService.login(empVO);
+    	
+    	//해당 사원이 있는지 체크
+    	if(!empVO.getErpEmployeeName().equals("")){
+    		//로그인 성공 시 세션에 해당사원 정보 담아주기.
+    		sessionVO.setErpEmployeeId(empVO.getErpEmployeeId());
+    		sessionVO.setErpEmployeeName(empVO.getErpEmployeeName());
+    		sessionVO.setErpEmployeePosition(empVO.getErpEmployeePosition());
+    		sessionVO.setErpDepartmentName(empVO.getErpDepartmentName());
+    		session.setAttribute("session", sessionVO);
+    	
+    		mv.setViewName("redirect:home.do");
+    		
+    	}else {
+    		mv.addObject("loginFailMsg", "아이디 또는 비밀번호 불일치");
+    	    mv.setViewName("mes/member/loginForm");
+    	}
+    	return mv;
+    }
+    
+    
+    /*
+     * 로그아웃 시 세션 정보를 삭제하고 로그인 페이지로 이동.
+     * 
+     */
+    @RequestMapping("logout.do")
+    public String logout(HttpSession session) {
+    	
+    	System.out.println("==============="+session.getAttribute("session").toString());
+    	session.invalidate();
+    	
+    	return "mes/member/loginForm";
+    }
+    
     /**
 	 * ERP_EMP 목록을 조회한다. (pageing)
 	 * @param searchVO - 조회할 정보가 담긴 ErpEmpDefaultVO
@@ -95,25 +151,6 @@ public class ErpEmpController {
         return "forward:/erpEmp/ErpEmpList.do";
     }
     
-    @RequestMapping("/erpEmp/updateErpEmpView.do")
-    public String updateErpEmpView(
-            @RequestParam("erpEmployeeId") java.math.BigDecimal erpEmployeeId ,
-            @ModelAttribute("searchVO") ErpEmpVO searchVO, Model model)
-            throws Exception {
-        ErpEmpVO erpEmpVO = new ErpEmpVO();
-        erpEmpVO.setErpEmployeeId(erpEmployeeId);
-        // 변수명은 CoC 에 따라 erpEmpVO
-        model.addAttribute(selectErpEmp(erpEmpVO, searchVO));
-        return "/erpEmp/ErpEmpRegister";
-    }
-
-    @RequestMapping("/erpEmp/selectErpEmp.do")
-    public @ModelAttribute("erpEmpVO")
-    ErpEmpVO selectErpEmp(
-            ErpEmpVO erpEmpVO,
-            @ModelAttribute("searchVO") ErpEmpVO searchVO) throws Exception {
-        return erpEmpService.selectErpEmp(erpEmpVO);
-    }
 
     @RequestMapping("/erpEmp/updateErpEmp.do")
     public String updateErpEmp(

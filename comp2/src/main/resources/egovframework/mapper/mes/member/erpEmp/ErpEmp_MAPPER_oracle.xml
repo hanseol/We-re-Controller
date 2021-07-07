@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mes.member.service.ErpEmpMapper">
+<mapper namespace="mes.member.service.impl.ErpEmpMapper">
 	
 
 	<resultMap id="erpEmp" type="mes.member.service.ErpEmpVO">
 		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" />
-		<result property="erpEmployeeName" column="ERP_EMPLOYEE_NAME" />
+		<result property="erpEmployeeName" column="ERP_EMPLOYEE_NAME"/>
 		<result property="erpEmployeePosition" column="ERP_EMPLOYEE_POSITION" />
 		<result property="erpEmployeeEmail" column="ERP_EMPLOYEE_EMAIL" />
 		<result property="erpEmployeePhone" column="ERP_EMPLOYEE_PHONE" />
@@ -15,6 +15,23 @@
 		<result property="erpDepartmentName" column="ERP_DEPARTMENT_NAME" />
 		<result property="erpEmployeePassword" column="ERP_EMPLOYEE_PASSWORD" />
 	</resultMap>
+	
+	<select id="login" resultType="mes.member.service.ErpEmpVO">
+		<![CDATA[
+			SELECT
+				ERP_EMPLOYEE_ID
+				, ERP_EMPLOYEE_NAME
+				, ERP_EMPLOYEE_POSITION
+				, ERP_EMPLOYEE_EMAIL
+				, ERP_EMPLOYEE_PHONE
+				, ERP_EMPLOYEE_HIREDATE
+				, ERP_JOB_NAME
+				, ERP_DEPARTMENT_NAME
+			FROM ERP_EMP
+						WHERE ERP_EMPLOYEE_ID=#{erpEmployeeId}
+						AND	ERP_EMPLOYEE_PASSWORD=#{erpEmployeePassword}
+				]]>
+	</select>
 	
 	<insert id="insertErpEmp">
 		<![CDATA[
@@ -63,7 +80,7 @@
 				]]>
 	</delete>
 	
-	<select id="selectErpEmp" resultMap="erpEmp">
+	<select id="selectErpEmp" resultType="mes.member.service.ErpEmpVO">
 		<![CDATA[
 			SELECT
 				ERP_EMPLOYEE_ID
@@ -74,9 +91,9 @@
 				, ERP_EMPLOYEE_HIREDATE
 				, ERP_JOB_NAME
 				, ERP_DEPARTMENT_NAME
-				, ERP_EMPLOYEE_PASSWORD
 			FROM ERP_EMP
 						WHERE ERP_EMPLOYEE_ID=#{erpEmployeeId}
+						AND	ERP_EMPLOYEE_PASSWORD=#{erpEmployeePassword}
 				]]>
 	</select>
 	

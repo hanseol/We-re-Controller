@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
 			<div class="sidebar-scroll">
@@ -11,7 +10,6 @@
 							<div id="subPages0" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/home.do" class="boardList">BOARD</a></li>
-									<li><a href="${pageContext.request.contextPath}/loginForm.do" class="memberLogin">Login</a></li>
 								</ul>
 							</div>
 						</li>
@@ -81,9 +79,6 @@
 								</ul>
 							</div>
 						</li>
-
-						<li><a href="tables.html" class=""><i class="lnr lnr-dice"></i> <span>관리자</span></a></li>
-						
 					</ul>
 				</nav>
 			</div>

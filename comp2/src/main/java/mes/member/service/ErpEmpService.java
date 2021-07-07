@@ -17,6 +17,12 @@ import mes.member.service.ErpEmpVO;
  */
 public interface ErpEmpService {
 	
+	/*
+	 * MES_LOGIN ACTION
+	 * 2021-07-07
+	 * */
+	ErpEmpVO login(ErpEmpVO vo) throws Exception;
+	
 	/**
 	 * ERP_EMP을 등록한다.
 	 * @param vo - 등록할 정보가 담긴 ErpEmpVO

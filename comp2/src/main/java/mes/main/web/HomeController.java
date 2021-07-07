@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,15 +36,13 @@ public class HomeController {
     protected EgovPropertyService propertiesService;
 	
 	@RequestMapping("home.do")
-	public String home(Model model) {
-		
+	public String home(HttpSession session) {
+	
+		//세션체크 //나중에 aop적용하기...
+		if(session.getAttribute("session")==null) {
+			return "mes/member/loginForm";
+		}
 		return "tiles/home.page";
-	}
-	//구현하고나면 로그인 전에는 로그인 폼을 홈.do로.
-	//로그인 후에는 홈.do가 다른걸로
-	@RequestMapping("loginForm.do")
-	public String loginForm(Model model) {
-		return "mes/member/loginForm";
 	}
 	
 	//모달 창을 여는 버튼을 눌렀을 때 동작
