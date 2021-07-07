@@ -97,6 +97,8 @@ public interface ProPlanService {
     int selectPlanFormListCnt(ProPlanVO vo);
 
 	void insertProPlanM(LinkedHashMap linkedHashMap);
+
+	void updateProPlanD(LinkedHashMap linkedHashMap);
     
     
 }

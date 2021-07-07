@@ -38,8 +38,8 @@ $(document).ready(function() {
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
+		var chkRowKeys = gridModal.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
-			var chkRowKeys = gridModal.getCheckedRowKeys();
 			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
 			erpProductCode = gridModal.getValue(chkRowKeys[i],'erpProductCode');
 			erpProductName = gridModal.getValue(chkRowKeys[i],'erpProductName');

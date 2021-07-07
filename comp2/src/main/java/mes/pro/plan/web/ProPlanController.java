@@ -153,7 +153,7 @@ public class ProPlanController {
 		//수정
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
-				service.updateProPlan((LinkedHashMap) updatedList.get(i));
+				service.updateProPlanD((LinkedHashMap) updatedList.get(i));
 			}
 		}
 		//생성

@@ -11,6 +11,8 @@
 		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
 	</resultMap>
 	
+	
+	
 	<!-- INSERT pro_plan (prodPlanForm.jsp에서 작성한 내용) --> 
 	<insert id="insertProPlanM">
 		<![CDATA[
@@ -55,22 +57,38 @@
 								  , #{erpProductCode})
 	</insert>
 	
-	
+	<!-- UPDATE pro_plan 테이블  -->
 	<update id="updateProPlan">
 		<![CDATA[
-			UPDATE PRO_PLAN
-			SET PRO_PLAN_CODE=#{proPlanCode}
-				, PRO_PLAN_NAME=#{proPlanName}
-				, PRO_PLAN_DATE=#{proPlanDate}
-				, ERP_CUSTOMER_CODE=#{erpCustomerCode}
-						WHERE PRO_PLAN_CODE=#{proPlanCode}
+		UPDATE PRO_PLAN
+		    SET PRO_PLAN_NAME = #{proPlanName}
+		      , PRO_PLAN_DATE = #{proPlanDate}
+		WHERE PRO_PLAN_CODE = #{proPlanCode}
+
 				]]>
 	</update>
+
+	<!-- UPDATE pro_plan_detail 테이블  -->
+	<update id="updateProPlanD">
+		<![CDATA[
+			UPDATE PRO_PLAN_DETAIL
+			    SET PRO_PLAN_QTY = #{proPlanQty}
+			      , PRO_WORK_DATE = #{proWorkDate}
+			      , PRO_PLAN_SEQ = #{proPlanSeq}
+			WHERE PRO_PLAN_DETAIL_CODE = #{proPlanDetailCode}
+				]]>
+	</update>
+
+
+
 	
 	<delete id="deleteProPlan">
 		<![CDATA[
-			DELETE FROM PRO_PLAN 
-						WHERE PRO_PLAN_CODE=#{proPlanCode}
+			DELETE FROM m, d
+			       USING pro_plan AS m 
+			       LEFT JOIN pro_plan_detail AS d
+			       ON m.pro_plan_code = d.pro_plan_code
+			WHERE d.pro_plan_code = #{proPlanCode}
 				]]>
 	</delete>
 	
