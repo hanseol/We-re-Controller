@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+
+<div class="modal">
 <!-- 210701 김현경 고객사검색 모달창 -->
 
 <div class="content-fluid">
@@ -43,11 +44,16 @@ $(document).ready(function() {
 		for(var i=0; i<chkRowKeys.length; i++) {
 			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
 			console.log(code);
+		
+			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
+				$("#customerCode").val(code);
+			} else { //아니면 mgrid(모달그리드)에 뿌려준다
+				mgrid.blur();
+				mgrid.setValue(rowId, 'salInoutCode', code, false);
+			}
 		}
-		//view 페이지로 쏴주기
-		$("#customerCode").val(code);
 		
-		
+				
 	});
 	
 	
@@ -100,3 +106,4 @@ $(document).ready(function() {
 });
 //end of document ready
 </script>
+</div>

@@ -145,29 +145,25 @@
 	<select id="selectSalReturnList"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT *
-		FROM SAL_INOUT I
-		RIGHT
-		JOIN (
-				SELECT P.PRO_PROCESS_LOT_NO
-				FROM PRO_PROCESS P, SAL_INOUT I
-				WHERE SAL_INOUT_GUBUN = 'INOUT001'
- 				AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO) M
-		ON I.PRO_PROCESS_LOT_NO = M.PRO_PROCESS_LOT_NO
-		WHERE 1=1
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0">AND
-				SAL_INOUT_DATE = #{SAL_INOUT_DATE}
-			</if>
-			<if test="searchCondition == 1">AND
-				COM_PRODUCT_CODE LIKE '%' || #{searchKeyword} || '%'
-			</if>
-			<if test="searchCondition == 2">AND
-				SAL_INOUT_CODE LIKE '%' || #{searchKeyword} || '%'
-			</if>
-			AND SAL_INOUT_GUBUN = 'INOUT001'
-		</if>
-		ORDER BY I.PRO_PROCESS_LOT_NO	
-				<![CDATA[						
+		FROM (
+				SELECT A.*,
+				ROWNUM RNUM FROM (
+									SELECT
+									TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
+									SAL_INOUT_STATEMENT, SAL_INOUT_CODE, 
+									COM_PRODUCT_CODE, SAL_INOUT_QUANTITY,
+									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
+									FROM SAL_INOUT
+									WHERE 1=1
+									AND SAL_INOUT_GUBUN = 'INOUT001'
+				<if test="salInoutDate != null and salInoutDate != ''"> AND
+					SAL_INOUT_DATE = #{salInoutDate}
+				</if>
+				<if test="salInoutCode != null and salInoutCode != ''">AND
+					SAL_INOUT_CODE LIKE '%' || #{salInoutCode} || '%'
+				</if>
+		ORDER BY SAL_INOUT_DATE DESC		
+			<![CDATA[						
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
 		]]>
@@ -342,7 +338,7 @@
 		AND P.PRO_PROCESS_LOT_NO IS NOT NULL
 		<if test="(proProcessLotNo != null and proProcessLotNo != '')
 					|| (comProductName !=null and comProductName != '')
-					|| ()omProductCode !=null and comProductCode != '')">
+					|| (comProductCode !=null and comProductCode != '')">
 			<if test="searchCondition == 0">
 				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 			</if>
@@ -410,6 +406,48 @@
 			</if>
 			<if test="searchCondition == 2">
 				PRO_ORDER_DETAIL_CODE LIKE '%' || #{proOrderDetailCode} || '%'
+				AND PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 모달 : 전표번호(반품) 목록 -->
+	<select id="searchInoutStatementList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+											SELECT SAL_INOUT_STATEMENT, SAL_INOUT_CODE, 
+											COM_PRODUCT_CODE, PRO_PROCESS_LOT_NO
+											FROM SAL_INOUT
+											WHERE 1=1
+											AND SAL_INOUT_GUBUN = 'INOUT001'
+						<if test="salInoutStatement != null and salInoutStatement != ''"> AND
+							SAL_INOUT_STATEMENT LIKE '%' || #{salInoutStatement} || '%'
+						</if>
+						<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
+							PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+						</if>
+						ORDER BY 
+								SAL_INOUT_STATEMENT
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 모달 : 전표번호(반품) 목록 총 갯수 -->
+	<select id="searchInoutStatementListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
+		SELECT COUNT(*)
+		FROM SAL_INOUT
+		<if test="(salInoutStatement != null and salInoutStatement != '')
+				|| (proProcessLotNo != null and proProcessLotNo != '')">
+			<if test="searchCondition == 0">
+				SAL_INOUT_STATEMENT LIKE '%' || #{salInoutStatement} || '%'
+			</if>
+			<if test="searchCondition == 1">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+			</if>
+			<if test="searchCondition == 2">
+				SAL_INOUT_STATEMENT LIKE '%' || #{salInoutStatement} || '%'
 				AND PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 			</if>
 		</if>

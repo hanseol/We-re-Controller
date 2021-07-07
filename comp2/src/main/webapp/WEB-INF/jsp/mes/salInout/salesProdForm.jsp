@@ -79,7 +79,7 @@
 				<div class="col-md-3">
 						완제품 LOT_NO
 						<input type="text" id="productLotNo" name="productLotNo">	
-						<a id="searchProductLotNo" href="searchProductLotNo.do" rel="modal:open">						
+						<a id="searchProductLotNo" href="searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -109,10 +109,10 @@
 <!-- 추가 모달 -->
 <a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
 <a id="searchCustomerCode" href="searchCustomerCode.do" rel="modal:open"></a>
-<input type="hidden" id="hiddenCode" value="">
 
 <script>
-let mgrid;
+let mgrid; //모달그리드
+
 	$(document).ready(function() {
 		//Read
 		$(document).on("click", "button[id=search]",
@@ -241,21 +241,35 @@ let mgrid;
 				name : 'salInoutStatement',
 				hidden : true
 			}]
-		}); 	
+		}); 
+		
 	 mgrid = grid;
+	 
+	 //모달 클릭 이벤트
 	 //모달 : 제품코드
 	   grid.on('dblclick', ev => {
 	      if(ev.columnName == 'comProductCode'){  
-	    	  productCodeSearch(ev.rowKey);	  
+	    	  productCodeSearch(ev.rowKey);
+	    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
 	      }
 	   });
-	
+	 
+	 $('#searchProductCode').click(function(event) {
+			productCodeSearch(-1); //매개변수 -1로 함수 실행
+		});
+		
 	 //모달 : 완제품 LOT_NO
 	   grid.on('dblclick', ev => {
 	      if(ev.columnName == 'proProcessLotNo'){    
-	         $('#searchProductLotNo').click();	         
+	    	  productLotNoSearch(ev.rowKey);         
 	      }
 	   });
+	 
+		$('#searchProductLotNo').click(function(event) {
+		 	productLotNoSearch(-1);
+		});
+	 
+	 
 
 	 //모달 : 지시/거래처코드 구분
 	 grid.on('dblclick', ev => {		 
@@ -265,10 +279,10 @@ let mgrid;
 	    	  alert('입고/출고를 먼저 구분해주세요.');
 	      } else {
 	         	if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') { //입고 -> 지시 모달 오픈
-	        		$('#searchOrderCode').click();
+	         		$('#searchOrderCode').click();
 	         		return;
 	         	} else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') { //출고 -> 거래처 모달 오픈
-	        		$('#searchCustomerCode').click();
+	         		$('#searchCustomerCode').click();
 	         		return;
 	      	 	}
 		  } 
@@ -283,24 +297,35 @@ let mgrid;
 	             });  
 	    });  
 	 });  
-
-	 $('#searchProductCode').click(function(event) {
-		 	productCodeSearch(-1);
-		});
+	
+	
 }); //end of document ready
 
-var rowId;
-function productCodeSearch(c) {
-	  rowId = c;
-	  console.log(rowId);
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchProductCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
-
+	//모달 실행 함수
+	var rowId;
+	
+	//제품코드 모달
+	function productCodeSearch(c) {
+		  rowId = c;
+		  event.preventDefault();
+		  $(".modal").remove();
+		  this.blur(); // Manually remove focus from clicked link.
+		  console.log(this.href);
+		  $.get("searchProductCode.do", function(html) {
+		    $(html).appendTo('body').modal();
+		  });
+	}
+	
+	//완제품 LOT_NO 모달
+	function productLotNoSearch(c) {
+		  rowId = c;
+		  event.preventDefault();
+		  $(".modal").remove();
+		  this.blur(); // Manually remove focus from clicked link.
+		  console.log(this.href);
+		  $.get("searchProductLotNo.do", function(html) {
+		    $(html).appendTo('body').modal();
+		  });
+	}
 
 </script>

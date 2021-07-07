@@ -120,6 +120,13 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
     public int selectSalProductInoutListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
 	}
+    
+    
+    //반품목록 조회
+    @Override
+	public List selectSalReturnList(SalInoutVO vo) throws Exception {
+    	return salInoutDAO.selectSalReturnList(vo);
+	}
 
     
     
@@ -166,6 +173,19 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchProductCodeListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.searchProductCodeListTotCnt(searchVO);
 	}
+	
+	//모달 : 전표번호
+	@Override
+	public List<?> searchInoutStatement(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.searchInoutStatementList(searchVO);
+	}
+
+	@Override
+	public int searchInoutStatementListTotCnt(SalInoutVO searchVO) {
+		return salInoutDAO.searchInoutStatementListTotCnt(searchVO);
+	}
+
+	
 	
 
 	

@@ -3,6 +3,7 @@
 	
 <div class="modal">	
 <!-- 210701 김현경 제품검색 모달창 -->
+<!-- 210707 뿌려주는 곳 수정 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -44,24 +45,15 @@ $(document).ready(function() {
 		for(var i=0; i<chkRowKeys.length; i++){
 			code = grid.getValue(chkRowKeys[i],'comProductCode');
 			
-			
-			/*  grid.on('dblclick', ev => {		 
-					if(ev.columnName == 'comProductCode') { //그리드로
-						grid.setValue(chkRowKeys[i], 'comProductCode', code, false);
-					} else { //아니면 아이디값으로
-						$("#productCode").val(code);
-					}
-				 }); */		 
-				 	 
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
-		if (rowId == -1) {
+		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
 			$("#productCode").val(code);
-		} else {
+			code = [];		
+		} else { //아니면 mgrid에 뿌려준다
 			mgrid.blur();
 			mgrid.setValue(rowId, 'comProductCode', code, false);
-			console.log(rowId);
 		}
 		 
 		
