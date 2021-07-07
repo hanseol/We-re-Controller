@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.proc.service.impl.ProProcessMapper">
+	
+
+	<resultMap id="proProcess" type="mes.pro.proc.service.ProProcessVO">
+		<result property="comProcessCode" column="COM_PROCESS_CODE" />
+		<result property="proOrderDetailCode" column="PRO_ORDER_DETAIL_CODE" />
+		<result property="comProductFCode" column="COM_PRODUCT_F_CODE" />
+		<result property="proProcessFQty" column="PRO_PROCESS_F_QTY" />
+		<result property="macLineNo" column="MAC_LINE_NO" />
+		<result property="proProcessStartTime" column="PRO_PROCESS_START_TIME" />
+		<result property="proProcessEndTime" column="PRO_PROCESS_END_TIME" />
+		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" />
+		<result property="macCode" column="MAC_CODE" />
+		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
+		<result property="proProcessQuantity" column="PRO_PROCESS_QUANTITY" />
+	</resultMap>
+	
+	<insert id="insertProProcess">
+		<![CDATA[
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , COM_PRODUCT_F_CODE
+				  , PRO_PROCESS_F_QTY
+				  , MAC_LINE_NO
+				  , PRO_PROCESS_START_TIME
+				  , PRO_PROCESS_END_TIME
+				  , ERP_EMPLOYEE_ID
+				  , MAC_CODE
+				  , PRO_PROCESS_LOT_NO
+				  , PRO_PROCESS_QUANTITY )
+			VALUES ( #{comProcessCode}
+				  , #{proOrderDetailCode}
+				  , #{comProductFCode}
+				  , #{proProcessFQty}
+				  , #{macLineNo}
+				  , #{proProcessStartTime}
+				  , #{proProcessEndTime}
+				  , #{erpEmployeeId}
+				  , #{macCode}
+				  , #{proProcessLotNo}
+				  , #{proProcessQuantity} )
+		]]>
+	</insert>
+	
+	<update id="updateProProcess">
+		<![CDATA[
+			UPDATE PRO_PROCESS
+			SET COM_PROCESS_CODE=#{comProcessCode}
+				, PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				, COM_PRODUCT_F_CODE=#{comProductFCode}
+				, PRO_PROCESS_F_QTY=#{proProcessFQty}
+				, MAC_LINE_NO=#{macLineNo}
+				, PRO_PROCESS_START_TIME=#{proProcessStartTime}
+				, PRO_PROCESS_END_TIME=#{proProcessEndTime}
+				, ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				, MAC_CODE=#{macCode}
+				, PRO_PROCESS_LOT_NO=#{proProcessLotNo}
+				, PRO_PROCESS_QUANTITY=#{proProcessQuantity}
+						WHERE COM_PROCESS_CODE=#{comProcessCode}
+								AND PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				]]>
+	</update>
+	
+	<delete id="deleteProProcess">
+		<![CDATA[
+			DELETE FROM PRO_PROCESS 
+						WHERE COM_PROCESS_CODE=#{comProcessCode}
+								AND PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				]]>
+	</delete>
+	
+	<select id="selectProProcess" resultMap="proProcess">
+		<![CDATA[
+			SELECT
+				COM_PROCESS_CODE
+				, PRO_ORDER_DETAIL_CODE
+				, COM_PRODUCT_F_CODE
+				, PRO_PROCESS_F_QTY
+				, MAC_LINE_NO
+				, PRO_PROCESS_START_TIME
+				, PRO_PROCESS_END_TIME
+				, ERP_EMPLOYEE_ID
+				, MAC_CODE
+				, PRO_PROCESS_LOT_NO
+				, PRO_PROCESS_QUANTITY
+			FROM PRO_PROCESS
+						WHERE COM_PROCESS_CODE=#{comProcessCode}
+								AND PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				]]>
+	</select>
+	
+	<select id="selectProProcessList" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								COM_PROCESS_CODE
+								, PRO_ORDER_DETAIL_CODE
+								, COM_PRODUCT_F_CODE
+								, PRO_PROCESS_F_QTY
+								, MAC_LINE_NO
+								, PRO_PROCESS_START_TIME
+								, PRO_PROCESS_END_TIME
+								, ERP_EMPLOYEE_ID
+								, MAC_CODE
+								, PRO_PROCESS_LOT_NO
+								, PRO_PROCESS_QUANTITY
+						FROM PRO_PROCESS
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						COM_PROCESS_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						PRO_ORDER_DETAIL_CODE LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						COM_PROCESS_CODE DESC
+							, PRO_ORDER_DETAIL_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectProProcessListTotCnt" parameterType="mes.pro.proc.service.ProProcessVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM PRO_PROCESS
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					COM_PROCESS_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_ORDER_DETAIL_CODE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>

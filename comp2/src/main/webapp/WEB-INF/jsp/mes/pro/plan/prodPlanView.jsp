@@ -44,11 +44,11 @@
 							<br/><br/>
 						* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
 						* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
-						</div>
-						<div class="col-md-6" align="right">
-							<button type="button" class="btn btn-success" id="findRow">조회</button>
-							<button type="reset" class="btn btn-danger">새자료</button>
-						</div> 
+					</div>
+					<div class="col-md-6" align="right">
+						<button type="button" class="btn btn-success" id="findRow">조회</button>
+						<button type="reset" class="btn btn-danger">새자료</button>
+					</div> 
 				</form>
 			</div>
 		</div>
@@ -159,6 +159,27 @@
 	
 	grid.on('check', (ev) => {
 		  alert(`check: ${ev.rowKey}`);
+	});
+	
+
+	
+	// 그리드 테마
+	tui.Grid.applyTheme('clean', 
+		{
+			row: {
+	       		hover: {
+	       			background: "#d5dae1"
+	       		}
+			},
+			cell: {
+				header: {
+					background: "#003458",
+					text: "white"
+				},
+				currentRow : {
+					background: "#d5dae1"
+				}
+			}
 	});
 	
 }); //end of document ready

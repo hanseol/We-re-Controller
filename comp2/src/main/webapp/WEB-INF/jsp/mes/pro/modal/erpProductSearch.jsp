@@ -54,12 +54,12 @@ $(document).ready(function() {
 			console.log(erpProductDeadline);
 			console.log(erpCustomerCode);
 			
-			proPlanGrid.setValue(chkRowKeys[i], 'erpProductCode', erpProductCode, false);
-			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderCode', erpOrderCode, false);
-			proPlanGrid.setValue(chkRowKeys[i], 'erpProductName', erpProductName, false);
-			proPlanGrid.setValue(chkRowKeys[i], 'erpOrderQty', erpOrderQty, false);
-			proPlanGrid.setValue(chkRowKeys[i], 'erpProductDeadline', erpProductDeadline, false);
-			proPlanGrid.setValue(chkRowKeys[i], 'erpCustomerCode', erpCustomerCode, false);
+			proPlanGrid.setValue(proPlanRowKey, 'erpProductCode', erpProductCode, false);
+			proPlanGrid.setValue(proPlanRowKey, 'erpOrderCode', erpOrderCode, false);
+			proPlanGrid.setValue(proPlanRowKey, 'erpProductName', erpProductName, false);
+			proPlanGrid.setValue(proPlanRowKey, 'erpOrderQty', erpOrderQty, false);
+			proPlanGrid.setValue(proPlanRowKey, 'erpProductDeadline', erpProductDeadline, false);
+			proPlanGrid.setValue(proPlanRowKey, 'erpCustomerCode', erpCustomerCode, false);
 		}
 	});
 	

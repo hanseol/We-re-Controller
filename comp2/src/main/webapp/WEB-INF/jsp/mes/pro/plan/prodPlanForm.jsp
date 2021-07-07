@@ -62,17 +62,19 @@
 			<div class="row">
 				<form>
 					<div class="col-md-6">
+						<input type="hidden" id="proPlanCode" name="proPlanCode">
 						* 계획일자   &nbsp;&nbsp;&nbsp;<input type="date" id="date" name="date" > <br/><br/>
-						* 생산계획명  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">  &nbsp;&nbsp;
+						* 생산계획이름  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">
 						<a href="${pageContext.request.contextPath}/proPlanName.do" rel="modal:open">						
-	                    		<i class="fa fa-search"></i>
-	                 		</a>
-					<!-- 모달창 -->
-					<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a>
+                    		<i class="fa fa-search"></i>
+                 		</a>
+						<!-- 모달창 -->
+						<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a>
 					</div>
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
 						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+						<button type="button" class="btn btn-fail" id="deletePlan">계획삭제</button>
 					</div> 
 				</form>
 			</div>
@@ -107,27 +109,18 @@
 
 <script>
 	var proPlanGrid;
+	var proPlanRowKey;
+	
 	$(document).ready(function() {
-		
- 		
-		/*//M 새자료버튼 
-		$(document).ready(function() {  
-		       $("#reset").click(function() {  
-		            $("form").each(function() {  
-		                   if(this.id == "option") this.reset();  
-		                });  
-		       });  
-		    });  */ 
-		
-		
+
 		//M 조회 버튼
 		$(document).on("click", "button[id=findRow]", function() {
 	               var date = $("#date").val();
-	               var proPlanName = $("#proPlanName").val();
-
+	               var proPlanCode = $("#proPlanCode").val();
+	               
 	               var readParams = {
 	                  'proPlanDate' : date,
-	                  'proPlanName' : proPlanName
+	                  'proPlanCode' : proPlanCode
 	               };
 	               proPlanGrid.readData(1, readParams, true);
 	            });
@@ -136,40 +129,35 @@
 		$(document).on("click", "button[id=modifyRow]", function () {
 			var date = $("#date").val();
             var proPlanName = $("#proPlanName").val();
+            
 			proPlanGrid.finishEditing('rowKey', 'columnName');
+			
 			var requestParams = {
 	                  'proPlanDate' : date,
-	                  'proPlanName' : proPlanName
+	                  'proPlanName' : proPlanName,
 	               };
 			proPlanGrid.setRequestParams(requestParams);
+			 
 			proPlanGrid.request('modifyData');
 		});
+		 
+		
+		//M 삭제버튼 (계획을 삭제)
+		$(document).on("click", "button[id=deletePlan]", function() {
+			proPlanGrid.checkAll(true);
+			proPlanGrid.removeCheckedRows(true);
+			proPlanGrid.request('modifyData');
+		})
 		    
-		    
-		/* //M 추가저장 버튼
-		$(document).on("click", "button[id=insertRow]", function() {
-			proPlanGrid.finishEditing('rowKey','columnName');
-			proPlanGrid.request('createData');
-		});
-		
-		//M 수정저장 버튼 
-		$(document).on("click", "button[id=updateRow]", function() {
-			proPlanGrid.finishEditing('rowKey','columnName');
-			proPlanGrid.request('updateData');
-		}); */
-		
-
-		
-		
 		//D 삭제 버튼 
 		$(document).on("click", "button[id=deleteRow]", function() {
 			proPlanGrid.removeCheckedRows(true);
-			proPlanGrid.request('deleteData');
+			proPlanGrid.request('modifyData');
 		});
 		
 		//D 추가 버튼
 		$(document).on("click", "button[id=appendRow]", function() {
-			var rowData = [ {
+			var rowData = {
 				erpCustomerCode : "",
 				erpProductCode : "",
 				erpProductName : "",
@@ -178,8 +166,9 @@
 				erpOrderQty : "" ,
 				proPlanQty : "" ,
 				proWorkDate : "" ,
-				proPlanSeq : "" 
-			} ];
+				proPlanSeq : "" ,
+				proPlanCode : $('#proPlanCode').val()
+			} ;
 			proPlanGrid.appendRow(rowData, {
 				at : 0,
 				focus : true
@@ -191,11 +180,8 @@
 		//dataSource		
 		const dataSource = {
 			api : {
-				readData : {
-					url : '${pageContext.request.contextPath}/proPlan/ProdPlanFormList',
-					method : 'GET'
-				},  
-				modifyData: { url: '${pageContext.request.contextPath}/proPlan/modifyProdPlan', method: 'PUT' }
+				readData : { url : '${pageContext.request.contextPath}/proPlan/ProdPlanFormList', method : 'GET' },  
+				modifyData : { url: '${pageContext.request.contextPath}/proPlan/modifyProdPlan', method: 'PUT' }
 			},
 			initialRequest : false,
 			contentType : "application/json"
@@ -254,16 +240,45 @@
 				header : '예상일',
 				name : 'proPlanDayQty',
 				hidden : true
-			} ]
+			}, {
+				header : '디테일코드',
+				name : 'proPlanDetailCode',
+				hidden : true
+			}, {
+				header : '생산계획코드',
+				name : 'proPlanCode'
+			}]
 		});
 		
 	//디테일의 제품코드cell 더블클릭으로 모달창 띄우기	
 	proPlanGrid.on('dblclick', ev => {
 		if(ev.columnName == 'erpProductCode'){
+			proPlanRowKey = ev.rowKey;
+			
 			$('#showModal').click();
 		}
 	});
 
+	// 그리드 테마
+	tui.Grid.applyTheme('clean', 
+		{
+			row: {
+	       		hover: {
+	       			background: "#d5dae1"
+	       		}
+			},
+			cell: {
+				header: {
+					background: "#003458",
+					text: "white"
+				},
+				currentRow : {
+					background: "#d5dae1"
+				}
+			}
+	});
+	
+	
 	/* 	
 	proPlanGrid.on('response', ev => {
 		  const {response} = ev.xhr;

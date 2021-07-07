@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProProcess">
+	
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="proProcessSerarchVO" type="mes.pro.proc.service.ProProcessDefaultVO"/>
+	
+	<resultMap id="proProcess" class="mes.pro.proc.service.ProProcessVO">
+		<result property="comProcessCode" column="COM_PROCESS_CODE" columnIndex="1"/>
+		<result property="proOrderDetailCode" column="PRO_ORDER_DETAIL_CODE" columnIndex="2"/>
+		<result property="comProductFCode" column="COM_PRODUCT_F_CODE" columnIndex="3"/>
+		<result property="proProcessFQty" column="PRO_PROCESS_F_QTY" columnIndex="4"/>
+		<result property="macLineNo" column="MAC_LINE_NO" columnIndex="5"/>
+		<result property="proProcessStartTime" column="PRO_PROCESS_START_TIME" columnIndex="6"/>
+		<result property="proProcessEndTime" column="PRO_PROCESS_END_TIME" columnIndex="7"/>
+		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" columnIndex="8"/>
+		<result property="macCode" column="MAC_CODE" columnIndex="9"/>
+		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" columnIndex="10"/>
+		<result property="proProcessQuantity" column="PRO_PROCESS_QUANTITY" columnIndex="11"/>
+	</resultMap>
+	
+	<insert id="proProcessDAO.insertProProcess_S">
+		<![CDATA[
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , COM_PRODUCT_F_CODE
+				  , PRO_PROCESS_F_QTY
+				  , MAC_LINE_NO
+				  , PRO_PROCESS_START_TIME
+				  , PRO_PROCESS_END_TIME
+				  , ERP_EMPLOYEE_ID
+				  , MAC_CODE
+				  , PRO_PROCESS_LOT_NO
+				  , PRO_PROCESS_QUANTITY )
+			VALUES ( #comProcessCode#
+				  , #proOrderDetailCode#
+				  , #comProductFCode#
+				  , #proProcessFQty#
+				  , #macLineNo#
+				  , #proProcessStartTime#
+				  , #proProcessEndTime#
+				  , #erpEmployeeId#
+				  , #macCode#
+				  , #proProcessLotNo#
+				  , #proProcessQuantity# )
+		]]>
+	</insert>
+	
+	<update id="proProcessDAO.updateProProcess_S">
+		<![CDATA[
+			UPDATE PRO_PROCESS
+			SET COM_PROCESS_CODE=#comProcessCode#
+				, PRO_ORDER_DETAIL_CODE=#proOrderDetailCode#
+				, COM_PRODUCT_F_CODE=#comProductFCode#
+				, PRO_PROCESS_F_QTY=#proProcessFQty#
+				, MAC_LINE_NO=#macLineNo#
+				, PRO_PROCESS_START_TIME=#proProcessStartTime#
+				, PRO_PROCESS_END_TIME=#proProcessEndTime#
+				, ERP_EMPLOYEE_ID=#erpEmployeeId#
+				, MAC_CODE=#macCode#
+				, PRO_PROCESS_LOT_NO=#proProcessLotNo#
+				, PRO_PROCESS_QUANTITY=#proProcessQuantity#
+						WHERE COM_PROCESS_CODE=#comProcessCode#
+								AND PRO_ORDER_DETAIL_CODE=#proOrderDetailCode#
+				]]>
+	</update>
+	
+	<delete id="proProcessDAO.deleteProProcess_S">
+		<![CDATA[
+			DELETE FROM PRO_PROCESS 
+						WHERE COM_PROCESS_CODE=#comProcessCode#
+								AND PRO_ORDER_DETAIL_CODE=#proOrderDetailCode#
+				]]>
+	</delete>
+	
+	<select id="proProcessDAO.selectProProcess_S" resultMap="proProcess">
+		<![CDATA[
+			SELECT
+				COM_PROCESS_CODE
+				, PRO_ORDER_DETAIL_CODE
+				, COM_PRODUCT_F_CODE
+				, PRO_PROCESS_F_QTY
+				, MAC_LINE_NO
+				, PRO_PROCESS_START_TIME
+				, PRO_PROCESS_END_TIME
+				, ERP_EMPLOYEE_ID
+				, MAC_CODE
+				, PRO_PROCESS_LOT_NO
+				, PRO_PROCESS_QUANTITY
+			FROM PRO_PROCESS
+						WHERE COM_PROCESS_CODE=#comProcessCode#
+								AND PRO_ORDER_DETAIL_CODE=#proOrderDetailCode#
+				]]>
+	</select>
+	
+	<select id="proProcessDAO.selectProProcessList_D" parameterClass="proProcessSerarchVO" resultClass="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								COM_PROCESS_CODE
+								, PRO_ORDER_DETAIL_CODE
+								, COM_PRODUCT_F_CODE
+								, PRO_PROCESS_F_QTY
+								, MAC_LINE_NO
+								, PRO_PROCESS_START_TIME
+								, PRO_PROCESS_END_TIME
+								, ERP_EMPLOYEE_ID
+								, MAC_CODE
+								, PRO_PROCESS_LOT_NO
+								, PRO_PROCESS_QUANTITY
+						FROM PRO_PROCESS
+				WHERE 1=1
+				<isEqual prepend="AND" property="searchCondition" compareValue="0">
+					COM_PROCESS_CODE = #searchKeyword#
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="1">
+					PRO_ORDER_DETAIL_CODE LIKE '%' || #searchKeyword# || '%'
+				</isEqual>
+					ORDER BY 
+						COM_PROCESS_CODE DESC
+							, PRO_ORDER_DETAIL_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #lastIndex#
+)WHERE RNUM > #firstIndex#
+]]>
+	</select>	
+	<select id="proProcessDAO.selectProProcessListTotCnt_S" parameterClass="proProcessSerarchVO" resultClass="int">
+			SELECT COUNT(*) totcnt
+			FROM PRO_PROCESS
+			WHERE 1=1
+			<isEqual prepend="AND" property="searchCondition" compareValue="0">
+				COM_PROCESS_CODE = #searchKeyword#
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="1">
+				PRO_ORDER_DETAIL_CODE LIKE '%' || #searchKeyword# || '%'
+			</isEqual>
+	</select>
+
+</sqlMap>

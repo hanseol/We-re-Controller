@@ -197,4 +197,10 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 		proPlanDAO.updateProPlanD(vo);
 	}
 
+	@Override
+	public void deleteProPlanD(LinkedHashMap vo) {
+		proPlanDAO.deleteProPlanD(vo);
+		
+	}
+
 }

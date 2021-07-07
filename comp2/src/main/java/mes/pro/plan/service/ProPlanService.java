@@ -99,6 +99,8 @@ public interface ProPlanService {
 	void insertProPlanM(LinkedHashMap linkedHashMap);
 
 	void updateProPlanD(LinkedHashMap linkedHashMap);
+
+	void deleteProPlanD(LinkedHashMap linkedHashMap);
     
     
 }
