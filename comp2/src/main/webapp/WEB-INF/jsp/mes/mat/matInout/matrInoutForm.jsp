@@ -259,8 +259,7 @@ let matLotGrid;
 				name: 'comMaterialName'
 			}, {
 				header: '자재LOT_NO',
-				name: 'matLotNo',
-				editor: 'text'
+				name: 'matLotNo'
 			}, {
 				header: '규격',
 				name: 'comMaterialSize'
@@ -273,7 +272,7 @@ let matLotGrid;
 				editor: 'text'
 			}, {
 				header: '단가',
-				name: 'matInoutUnitPrice',
+				name: 'erpMaterialUnitPrice',
 				editor: 'text'
 			}, {
 				header: '금액',
@@ -297,7 +296,7 @@ let matLotGrid;
 		grid.on('afterChange',ev => {
 			//자동 계산 (수량 *단가)
 			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
-			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'matInoutUnitPrice');
+			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
 			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 			
 		});

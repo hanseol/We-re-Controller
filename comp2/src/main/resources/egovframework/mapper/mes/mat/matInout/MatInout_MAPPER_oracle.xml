@@ -10,32 +10,42 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   d.com_code_detail_id,
-		                              		   d.com_code_detail_name,
-		                              		   m.mat_inout_statement,
-		                              		   TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
-		                              		   q.erp_vendor_code,
-		                              		   c.com_material_code,
-		                              		   m.mat_lot_no,
-		                                       c.com_material_name,
-		                                       c.com_material_size,
-		                                       c.com_material_unit,
-		                                       m.mat_inout_gubun,
-		                                       m.mat_inout_quantity,
-		                                       m.mat_inout_unit_price,
-		                                       m.mat_inout_price,
-		                                       (q.qua_material_p_qty - CASE m.mat_inout_gubun
-                                                                    	WHEN 'INOUT003'
-                                                                    	THEN mat_inout_quantity
-                                                                    	ELSE 0
-                                                                    	END						) as material_stock
-		                              FROM     com_material c,
-		                                       mat_inout m,
-		                                       qua_material_chk q,
-		                                       com_code_detail d
-		                              WHERE    c.com_material_code = m.com_material_code
-		                              AND	   m.com_material_code = q.com_material_code
-		                              AND	   q.erp_vendor_code = d.com_code_detail_id
+										SELECT  
+										        (CASE q.qua_material_chk
+										        WHEN '1'
+										        THEN q.qua_material_statement
+										        ELSE null END							  ) as qua_material_statement,
+										        TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
+										        q.erp_vendor_code,
+										        q.com_material_code,
+										        q.qua_material_p_qty,
+												m.mat_lot_no,
+										        m.mat_inout_gubun,
+										        m.mat_inout_quantity,
+										        m.mat_inout_price,
+										        c.com_material_name,
+										        c.com_material_size,
+										        c.com_material_unit,
+										        d.com_code_detail_name,
+										        e.erp_material_unit_price,
+										        (q.qua_material_p_qty - CASE m.mat_inout_gubun
+										                                WHEN 'INOUT003'
+										                                THEN mat_inout_quantity
+										                                ELSE 0
+										                                END						) as material_stock
+										        
+										        
+										        
+										FROM    mat_inout m,
+										        qua_material_chk q,
+										        erp_material_order e,
+										        com_material c,
+										        com_code_detail d
+										WHERE   m.qua_material_statement = q.qua_material_statement
+										AND		m.com_material_code = q.com_material_code
+										AND     q.erp_material_order_code = e.erp_material_order_code
+										AND     c.com_material_code = m.com_material_code
+										AND     q.erp_vendor_code = d.com_code_detail_id
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
 							        	m.mat_inout_date = #{matInoutDate}
@@ -46,7 +56,7 @@
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	m.com_material_code = #{comMaterialCode}
+							        	q.com_material_code = #{comMaterialCode}
 		                              </if>
 									  <if test="matInoutGubun != null and matInoutGubun != ''">
 									  	AND
