@@ -55,18 +55,6 @@
 				<div class="panel-body">
 					<div class="row">
 						<div>
-							<label>공통코드명</label>
-							<!-- 체크박스 값 input에 받기 -->
-
-							<input id="comCodeName" />
-							<!-- 모달창 사용x -->
-							<%-- 					<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData">
-						<i class="fa fa-search"></i>
-						</a> 
---%>
-							<button id="findRowCodeId" type="button">검색</button>
-
-						</div>
 						<!-- 마스터데이터 호출 -->
 						<div class="col-md-4" id="grid"></div>
 						<div class="col-md-8">

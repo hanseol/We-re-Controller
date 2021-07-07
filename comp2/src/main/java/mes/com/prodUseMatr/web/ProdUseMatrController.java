@@ -78,7 +78,7 @@ public class ProdUseMatrController {
 	public String ProdUseMatrModal() {
 		
 		//모달창에 띄워줄 view페이지 전달.
-		return "mes/com/prodUseMatr/prodUseMatrModal";
+		return "mes/com/commodal/prodUseMatrModal";
 	}
 	
 	//모달창에 결과 값 전달
@@ -98,7 +98,7 @@ public class ProdUseMatrController {
 	public String ProcessModal() {
 		
 		//모달창에 띄워줄 view페이지 전달.
-		return "mes/com/prodUseMatr/proCodeSearchModal";
+		return "mes/com/commodal/proCodeSearchModal";
 	}
 	
 	//모달창에 결과 값 전달

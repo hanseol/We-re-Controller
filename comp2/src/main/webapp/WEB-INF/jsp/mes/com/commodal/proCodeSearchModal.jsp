@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style type="text/css">
-</style>
+<div class="modal">  
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -15,8 +14,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					공정코드 <input type="text" id="comProcessCode" placeholder="공정코드"/>
-					공정명<input type="text" id="comProcessName" placeholder="공정명"/>
+					공정코드 <input type="text" id="comProcessCode" name="comProcessCode" placeholder="공정코드"/>
+					공정명<input type="text" id="comProcessName" name="comProcessName"placeholder="공정명"/>
 					<button id="findRowProcModal">검색</button>
 				</div>
 				<div id="procModalGrid"></div>
@@ -26,36 +25,41 @@
 </div>
 
 <div class="content-fluid">
-	<a href="#" rel="modal:close"><button id="ok">확인</button></a> <a
-		href="#" rel="modal:close"><button id="cancle">취소</button></a>
+	<a href="#" rel="modal:close"><button id="ok">확인</button></a> 
+	<a href="#" rel="modal:close"><button id="cancle">취소</button></a>
 </div>
 
 <script>
-var procGrid
 $(document).ready(function() {
-	
 	//체크박스 값 변수 저장
 	$(document).on("click","button[id=ok]", function(){
-		var chkRowKeys = procGrid.getCheckedRowKeys();
-			ProcessCode = procGrid.getValue(chkRowKeys,'comProcessCode');
-			ProcessName = procGrid.getValue(chkRowKeys,'comProcessName');
-			
-			console.log(ProcessCode);
-			console.log(ProcessName);
+		var chkRowKeys = grid.getCheckedRowKeys();
+		var code = [];
+		for(var i=0; i<chkRowKeys.length; i++){
+			comProcessCode = grid.getValue(chkRowKeys[i],'comProcessCode');
+			comProcessName = grid.getValue(chkRowKeys[i],'comProcessName');
+		}
+		//view 페이지에 뿌려줄 부분 아이디값
+		if(comProcId == -1){
+			$("#comProcessCode").val(comProcessCode);
+		} else {
+			procGrid.blur();
+			console.log(comProcId);
+			procGrid.setValue(comProcId, 'comProcessCode', comProcessCode, false);
+			procGrid.setValue(comProcId, 'comProcessName', comProcessName, false);
+		}
 		
-			grid.setValue(0, 'comProcessCode', ProcessCode, false);
-			grid.setValue(0, 'comProcessName', ProcessName, false);
 	});
-	
+
 	//검색버튼
 	$(document).on("click", "button[id=findRowProcModal]", function() {
-		var ProcessCode = $("#comProcessCode").val();
-		console.log(ProcessCode);
-		var ProcessName = $("#comProcessName").val();
-		console.log(ProcessName);
+		var comProcessCode = $("#comProcessCode").val();
+		console.log(comProcessCode);
+		var comProcessName = $("#comProcessName").val();
+		console.log(comProcessName);
 		var readParams = {
-				'comProcessCode' : ProcessCode,
-				'comProcessName' : ProcessName
+				'comProcessCode' : comProcessCode,
+				'comProcessName' : comProcessName
 			};
 		procGrid.readData(1, readParams, true);
 	});
@@ -70,7 +74,7 @@ $(document).ready(function() {
 			contentType : "application/json"
 		};
 		
-	procGrid = new tui.Grid({
+	const grid = new tui.Grid({
 			el : document.getElementById('procModalGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
@@ -91,3 +95,4 @@ $(document).ready(function() {
 		});
 }); //end of document ready
 </script>
+</div>
