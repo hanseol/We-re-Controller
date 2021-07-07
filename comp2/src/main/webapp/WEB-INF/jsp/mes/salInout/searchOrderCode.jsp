@@ -45,7 +45,7 @@ $(document).ready(function() {
 			console.log(code);
 			
 			mgrid.blur();
-			mgrid.setValue(chkRowKeys[i], 'salInoutCode', code, false);
+			mgrid.setValue(rowId, 'salInoutCode', code, false);
 
 		}
 		

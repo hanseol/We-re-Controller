@@ -68,8 +68,8 @@
 				</div>
 				<div class="col-md-6">
 						전표번호
-						<input type="text" id="salInoutStatement" name="salInoutStatement">
-						<a id="searchInoutStatement" href="searchInoutStatement.do" rel="modal:open">
+						<input type="text" id="inoutStatement" name="inoutStatement">
+						<a id="searchInoutStatement" href="searchInoutStatement.do">
 						<i class="fa fa-search"></i></a>			
 				</div>
 			</div>

@@ -159,8 +159,8 @@
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					SAL_INOUT_DATE = #{salInoutDate}
 				</if>
-				<if test="salInoutCode != null and salInoutCode != ''">AND
-					SAL_INOUT_CODE LIKE '%' || #{salInoutCode} || '%'
+				<if test="salInoutStatement != null and salInoutStatement != ''">AND
+					SAL_INOUT_STATEMENT LIKE '%' || #{inoutStatement} || '%'
 				</if>
 		ORDER BY SAL_INOUT_DATE DESC		
 			<![CDATA[						
