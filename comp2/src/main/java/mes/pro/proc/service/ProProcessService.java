@@ -1,7 +1,6 @@
 package mes.pro.proc.service;
 
 import java.util.List;
-import mes.pro.proc.service.ProProcessDefaultVO;
 import mes.pro.proc.service.ProProcessVO;
 
 /**
@@ -56,7 +55,7 @@ public interface ProProcessService {
 	 * @return PRO_PROCESS 목록
 	 * @exception Exception
 	 */
-    List selectProProcessList(ProProcessDefaultVO searchVO) throws Exception;
+    List selectProProcessList(ProProcessVO searchVO) throws Exception;
     
     /**
 	 * PRO_PROCESS 총 갯수를 조회한다.
@@ -64,6 +63,6 @@ public interface ProProcessService {
 	 * @return PRO_PROCESS 총 갯수
 	 * @exception
 	 */
-    int selectProProcessListTotCnt(ProProcessDefaultVO searchVO);
+    int selectProProcessListTotCnt(ProProcessVO searchVO);
     
 }

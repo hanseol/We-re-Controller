@@ -3,7 +3,6 @@ package mes.pro.proc.service.impl;
 import java.util.List;
 
 import mes.pro.proc.service.ProProcessVO;
-import mes.pro.proc.service.ProProcessDefaultVO;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -61,7 +60,7 @@ public interface ProProcessMapper {
 	 * @return PRO_PROCESS 목록
 	 * @exception Exception
 	 */
-    public List<?> selectProProcessList(ProProcessDefaultVO searchVO) throws Exception;
+    public List<?> selectProProcessList(ProProcessVO searchVO) throws Exception;
 
     /**
 	 * PRO_PROCESS 총 갯수를 조회한다.
@@ -69,6 +68,6 @@ public interface ProProcessMapper {
 	 * @return PRO_PROCESS 총 갯수
 	 * @exception
 	 */
-    public int selectProProcessListTotCnt(ProProcessDefaultVO searchVO);
+    public int selectProProcessListTotCnt(ProProcessVO searchVO);
 
 }

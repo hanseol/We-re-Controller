@@ -17,7 +17,6 @@ import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import mes.pro.proc.service.ProProcessService;
-import mes.pro.proc.service.ProProcessDefaultVO;
 import mes.pro.proc.service.ProProcessVO;
 
 /**
@@ -51,7 +50,7 @@ public class ProProcessController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="/proProcess/ProProcessList.do")
-    public String selectProProcessList(@ModelAttribute("searchVO") ProProcessDefaultVO searchVO, 
+    public String selectProProcessList(@ModelAttribute("searchVO") ProProcessVO searchVO, 
     		ModelMap model)
             throws Exception {
     	
@@ -81,7 +80,7 @@ public class ProProcessController {
     
     @RequestMapping("/proProcess/addProProcessView.do")
     public String addProProcessView(
-            @ModelAttribute("searchVO") ProProcessDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProProcessVO searchVO, Model model)
             throws Exception {
         model.addAttribute("proProcessVO", new ProProcessVO());
         return "/proProcess/ProProcessRegister";
@@ -90,7 +89,7 @@ public class ProProcessController {
     @RequestMapping("/proProcess/addProProcess.do")
     public String addProProcess(
             ProProcessVO proProcessVO,
-            @ModelAttribute("searchVO") ProProcessDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProProcessVO searchVO, SessionStatus status)
             throws Exception {
         proProcessService.insertProProcess(proProcessVO);
         status.setComplete();
@@ -101,7 +100,7 @@ public class ProProcessController {
     public String updateProProcessView(
             @RequestParam("comProcessCode") java.lang.String comProcessCode ,
             @RequestParam("proOrderDetailCode") java.lang.String proOrderDetailCode ,
-            @ModelAttribute("searchVO") ProProcessDefaultVO searchVO, Model model)
+            @ModelAttribute("searchVO") ProProcessVO searchVO, Model model)
             throws Exception {
         ProProcessVO proProcessVO = new ProProcessVO();
         proProcessVO.setComProcessCode(comProcessCode);
@@ -115,14 +114,14 @@ public class ProProcessController {
     public @ModelAttribute("proProcessVO")
     ProProcessVO selectProProcess(
             ProProcessVO proProcessVO,
-            @ModelAttribute("searchVO") ProProcessDefaultVO searchVO) throws Exception {
+            @ModelAttribute("searchVO") ProProcessVO searchVO) throws Exception {
         return proProcessService.selectProProcess(proProcessVO);
     }
 
     @RequestMapping("/proProcess/updateProProcess.do")
     public String updateProProcess(
             ProProcessVO proProcessVO,
-            @ModelAttribute("searchVO") ProProcessDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProProcessVO searchVO, SessionStatus status)
             throws Exception {
         proProcessService.updateProProcess(proProcessVO);
         status.setComplete();
@@ -132,7 +131,7 @@ public class ProProcessController {
     @RequestMapping("/proProcess/deleteProProcess.do")
     public String deleteProProcess(
             ProProcessVO proProcessVO,
-            @ModelAttribute("searchVO") ProProcessDefaultVO searchVO, SessionStatus status)
+            @ModelAttribute("searchVO") ProProcessVO searchVO, SessionStatus status)
             throws Exception {
         proProcessService.deleteProProcess(proProcessVO);
         status.setComplete();

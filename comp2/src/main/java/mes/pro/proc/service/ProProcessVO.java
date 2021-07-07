@@ -1,5 +1,7 @@
 package mes.pro.proc.service;
 
+import mes.main.service.SearchVO;
+
 /**
  * @Class Name : ProProcessVO.java
  * @Description : ProProcess VO class
@@ -12,7 +14,7 @@ package mes.pro.proc.service;
  *  
  *  Copyright (C)  All right reserved.
  */
-public class ProProcessVO extends ProProcessDefaultVO{
+public class ProProcessVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** COM_PROCESS_CODE */
