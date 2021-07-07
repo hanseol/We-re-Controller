@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+
+<div class="modal">	
 <!-- 20210702 주성원 업체검색 모달창 -->
    
 <div class="content-fluid">
@@ -41,13 +42,18 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
-			grid.setValue(chkRowKeys[i], 'erpVendorCode', code, false);
+			comCodeDetailId = grid.getValue(chkRowKeys[i],'comCodeDetailId');
+			comCodeDetailName = grid.getValue(chkRowKeys[i],'comCodeDetailName');
 			
 		}
 		
-		$("#comCodeDetailId").val(code);
-		
+		if(vendorRowId == -1){
+			$("#vendorCode").val(code);
+		} else {
+			vendorGrid.blur();
+			vendorGrid.setValue(vendorRowId, 'erpVendorCode', comCodeDetailId, false);
+			vendorGrid.setValue(vendorRowId, 'comCodeDetailName', comCodeDetailName, false);
+		}
 	});
 
 	
@@ -97,3 +103,4 @@ $(document).ready(function() {
 	
 }); //end of document ready
 </script>
+</div>

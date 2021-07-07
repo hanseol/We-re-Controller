@@ -55,13 +55,18 @@ max-height: 600px; */
 					</div>
 					<div class="col-md-2">
 						자재코드
-						<input type="text" id="comMaterialCode" name="comMaterialCode">
-						<a id="searchMaterialModal" href="${pageContext.request.contextPath}/searchMaterialCode.do" rel="modal:open"><i class="fa fa-search"></i></a>
+						<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+						
+						<input type="hidden" id="matLot" name="matLot">
+						<a id="searchMatLotNo" href="searchMatLotCode.do"></a>
 					</div>
 					<div class="col-md-3">
 						입고업체
-						<input type="text" id="erpVendorCode" name="erpVendorCode">
-						<a id="searchVendorModal" href="${pageContext.request.contextPath}/searchVendorCode.do" rel="modal:open"><i class="fa fa-search"></i></a>
+						<input type="text" id="vendorCode" name="vendorCode">
+						<a id="searchVendorCode" href="searchVendorCode.do">
+						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						<button type="button" class="btn btn-success" id="search">조회</button>
@@ -95,7 +100,26 @@ max-height: 600px; */
 </div>
 
 <script>
+//그리드모달창을 위한 그리드 선언-------------------------------------
+let materialGrid;
+let vendorGrid;
+let matLotGrid;
+//-----------------------------------------------------------
+
+
+
+
 	$(document).ready(function () {
+		
+		// 옵션 폼 리셋버튼  
+		 $(document).ready(function() {  
+		    $("#reset").click(function() {  
+		         $("form").each(function() {  
+		                if(this.id == "option") this.reset();  
+		             });  
+		    });  
+		 });  
+		
 		//날짜 범위로 지정하는 방법 생각.
 		
 		//입출고구분 체크박스 하나만 체크되거나 해제가능.
@@ -192,7 +216,10 @@ max-height: 600px; */
 			el: document.getElementById('grid'),
 			rowHeaders: ['checkbox'],
 			data: dataSource,
-			
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight: 30, 
+	        rowHeight: 30,
 			columns: [{
 				header: '입출고구분',
 				name: 'matInoutGubun',
@@ -231,7 +258,8 @@ max-height: 600px; */
 				name: 'comMaterialName'
 			}, {
 				header: '자재LOT_NO',
-				name: 'matLotNo'
+				name: 'matLotNo',
+				editor: 'text'
 			}, {
 				header: '규격',
 				name: 'comMaterialSize'
@@ -256,6 +284,12 @@ max-height: 600px; */
 			}]
 		});
 		
+//모달 그리드 초기화 ----------------------------------
+		materialGrid = grid;
+		vendorGrid = grid;
+		matLotGrid = grid;
+//--------------------------------------------------
+		
 		
 		
 		
@@ -264,14 +298,6 @@ max-height: 600px; */
 			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
 			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'matInoutUnitPrice');
 			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
-			
-			//업체코드입력 시 업체명 자동기입
-			if(ev.changes[0].columnName = 'erpVendorCode'){
-				grid.setValue(ev.changes[0].rowKey, 'comCodeDetailName', ?);
-			//자재코드입력 시 자재명 자동기입
-			}else if(ev.changes[0].columnName = 'comMaterialCode'){
-				grid.setValue(ev.changes[0].rowKey, 'comMaterialName', ?);
-			}
 			
 		});
 		
@@ -284,19 +310,34 @@ max-height: 600px; */
 		
 		
 
-		//컬럼 더블클릭 이벤트
+		
+//그리드 모달 더블클릭--------------------------------------------------
+		//업체
 		grid.on('dblclick', ev => {
-			
-			for(var i=0; i<=getRowCount().length; i++){
-				if((ev.columnName == 'erpVendorCode') && (ev.rowKey != null)){
-			         $('#searchVendorModal').click();
-				} else if((ev.columnName == 'comMaterialCode') && (ev.rowKey != null)){
-			    	  $('#searchMaterialModal').click();
-				}
+			if(ev.columnName == 'erpVendorCode'){
+				vendorCodeSearch(ev.rowKey);
 			}
+
 		});
+		//자재
+		grid.on('dblclick', ev =>{
+			if(ev.columnName == 'comMaterialCode'){
+				materialCodeSearch(ev.rowKey);
+			}
+		})
+		//자재LOT_NO
+		grid.on('dblclick', ev =>{
+			if(ev.columnName == 'matLotNo'){
+				matLotCodeSearch(ev.rowKey);
+			}
+		})
+		
+//-----------------------------------------------------------------
 		   
 
+
+
+		//그리드 응답(제이슨)
 		grid.on('response', ev => {
 			const { response } = ev.xhr;
 			const responseObj = JSON.parse(response);
@@ -308,6 +349,56 @@ max-height: 600px; */
 		grid.on('check', (ev) => {
 			alert(`check: ${ev.rowKey}`);
 		}); */
-
-	}); //end of document ready
+		$('#searchMaterialCode').click(function(event) {
+			materialCodeSearch(-1);
+		});
+		$('#searchVendorCode').click(function(event) {
+			vendorCodeSearch(-1);
+		});
+		$('#searchMatLotCode').click(function(event) {
+			matLotCodeSearch(-1);
+		});
+		
+});//end of document ready
+//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+//자재
+var materialRowId;
+function materialCodeSearch(c) {
+	materialRowId = c;
+	  console.log(materialRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchMaterialCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//업체
+var vendorRowId;
+function vendorCodeSearch(c) {
+	vendorRowId = c;
+	  console.log(vendorRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchVendorCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//자재LOT_NO
+var matrLotRowId;
+function matLotCodeSearch(c) {
+	matrLotRowId = c;
+	  console.log(matrLotRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchMatLotCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//---------------------------------------------------------------
 </script>

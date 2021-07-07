@@ -156,6 +156,29 @@
          			WHERE ROWNUM <= #{lastIndex})
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>
-
+	
+		<!-- 모달 자재LOT_NO 리스트 -->
+	<select id="searchMaterialLotList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		          	SELECT a.*,
+		                     ROWNUM rnum
+		            FROM   (
+		                              SELECT   c.com_material_code,
+		                                       c.com_material_name,
+		                                       m.mat_lot_no
+		                              FROM     mat_inout m,
+		                              		   com_material c
+		                              WHERE	   c.com_material_code = m.com_material_code
+					                  <if test="matLotNo != null and matLotNo !=''"> AND
+					                     mat_lot_no LIKE '%' || #{matLotNo} || '%'
+					                  </if>
+					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
+					                     com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                  </if>
+									  ORDER BY mat_lot_no <![CDATA[ ) A
+         			WHERE ROWNUM <= #{lastIndex})
+		WHERE RNUM >= #{firstIndex}]]>
+	</select>
 	
 </mapper>

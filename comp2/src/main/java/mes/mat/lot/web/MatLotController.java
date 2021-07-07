@@ -39,11 +39,11 @@ public class MatLotController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("mat/matLot/matrLotView.do")
+    @RequestMapping("/matLot/matrLotView.do")
     public String selectMatLotList(@ModelAttribute("searchVO") MatLotVO searchVO, 
     		ModelMap model) {
 
-        return "mat/matLot/matrLotView.page";
+        return "mes/mat/matLot/matrLotView.page";
     }
     //자재입출고조회 리스트
     @RequestMapping("/ajax/readMatLot")
@@ -62,11 +62,11 @@ public class MatLotController {
 //--------------------------------------관리 페이지--------------------------------------    
     
   	//자재입출고 [관리] 페이지
-    @RequestMapping(value="mat/matLot/matrLotForm.do")
+    @RequestMapping("/matLot/matrLotForm.do")
     public String selectMatLotForm(@ModelAttribute("searchVO") MatLotVO searchVO, 
     		ModelMap model) {
 
-        return "mat/matLot/matrLotForm.page";
+        return "mes/mat/matLot/matrLotForm.page";
     }
   	
   	//자재입출고 [관리] 등록 수정 삭제 

@@ -39,6 +39,9 @@ public interface MatInoutMapper {
     
     //모달 입고업체 리스트
     public List<?> searchVendorCodeList(MatInoutVO searchVO) throws Exception;
+    
+    //모달 자재LOT_NO 리스트 
+    public List<?> searchMaterialLotList(MatInoutVO searchVO) throws Exception;
 
     
 }

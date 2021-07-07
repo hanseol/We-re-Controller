@@ -15,10 +15,11 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
+					자재LOT_NO<input type="text" id="matLotNo" name="matLotNo" placeholder="자재LOT_NO"/>
 					자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" placeholder="자재코드"/>
-				    자재명 <input type="text" id="comMaterialName" name="comMaterialName" placeholder="자재명"/>
+				 	자재명 <input type="text" id="comMaterialName" name="comMaterialName" placeholder="자재명"/>
 				    <button id="findRow">검색</button>
-				</div>
+				</div>matLot
 				<div id="modalGrid"></div>
 			</div>
 		</div>
@@ -40,15 +41,16 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
+			matLotNo = grid.getValue(chkRowKeys[i], 'matLotNo');
 			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
 			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
 		if(materialRowId == -1){
-			$("#materialCode").val(comMaterialCode);
+			$("#matLot").val(matLotNo);
 		} else {
 			materialGrid.blur();
-			console.log(materialRowId);
+			materialGrid.setValue(materialRowId, 'matLotNo', matLotNo, false);
 			materialGrid.setValue(materialRowId, 'comMaterialCode', comMaterialCode, false);
 			materialGrid.setValue(materialRowId, 'comMaterialName', comMaterialName, false);
 		}
@@ -61,8 +63,11 @@ $(document).ready(function() {
 		var comMaterialCode = $("#comMaterialCode").val();
 		
 		var comMaterialName = $("#comMaterialName").val();
-	
+		
+		var matLotNo = $("#matLotNo").val();
+		
 		var readParams = {
+				'matLotNo' : matLotNo,
 				'comMaterialCode' : comMaterialCode,
 				'comMaterialName' : comMaterialName
 			};
@@ -72,7 +77,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/ajax/searchMaterial',
+				url : '${pageContext.request.contextPath}/ajax/searchMaterialLotNo',
 				method : 'GET'
 			}
 		},
@@ -88,6 +93,9 @@ $(document).ready(function() {
 	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
+			header : '자재LOT_NO',
+			name : 'matLotNo'
+		}, {
 			header : '자재코드',
 			name : 'comMaterialCode'
 		}, {

@@ -59,11 +59,11 @@ public class MatInoutController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("mat/matInout/matrInoutView.do")
+    @RequestMapping("/matInout/matrInoutView.do")
     public String selectMatInoutList(@ModelAttribute("searchVO") MatInoutVO searchVO, 
     		ModelMap model) {
 
-        return "mat/matInout/matrInoutView.page";
+        return "mes/mat/matInout/matrInoutView.page";
     }
     //자재입출고조회 리스트
     @RequestMapping("/ajax/readMatInout")
@@ -82,11 +82,11 @@ public class MatInoutController {
 //--------------------------------------관리 페이지--------------------------------------    
     
   	//자재입출고 [관리] 페이지
-    @RequestMapping(value="mat/matInout/matrInoutForm.do")
+    @RequestMapping("/matInout/matrInoutForm.do")
     public String selectMatInoutForm(@ModelAttribute("searchVO") MatInoutVO searchVO, 
     		ModelMap model) {
 
-        return "mat/matInout/matrInoutForm.page";
+        return "mes/mat/matInout/matrInoutForm.page";
     }
   	
   	//자재입출고 [관리] 등록 수정 삭제 
@@ -130,7 +130,7 @@ public class MatInoutController {
 //--------------------------------------모달 페이지--------------------------------------
     
     //자재코드 오픈
-    @GetMapping("searchMaterialCode.do")
+    @GetMapping("matInout/searchMaterialCode.do")
   	public String searchMaterialCode() {
   		
   		//모달창에 띄워줄 view페이지 전달.
@@ -151,7 +151,7 @@ public class MatInoutController {
   	}
   	
     //입고업체 오픈
-    @GetMapping("searchVendorCode.do")
+    @GetMapping("matInout/searchVendorCode.do")
   	public String searchVendorCode() {
   		
   		//모달창에 띄워줄 view페이지 전달.
@@ -166,6 +166,27 @@ public class MatInoutController {
   		
 
       	List<?> list = service.searchVendorCodeList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
+  	
+    //자재LOT_NO 오픈
+    @GetMapping("matInout/searchMaterialLotNo.do")
+  	public String searchMaterialLotNo() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/mat/modal/searchMaterialLotNo";
+  	}
+  	
+  	//자재LOT_NO 결과 값 전달
+  	@RequestMapping("/ajax/searchMaterialLotNo")
+  	@ResponseBody
+  	public Map<String, Object> searchMaterialLot(Model model, 
+     		@ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchMaterialLotList(searchVO);
       	
       	ComFunc comFunc = new ComFunc();
       	return comFunc.sendResult(list);
