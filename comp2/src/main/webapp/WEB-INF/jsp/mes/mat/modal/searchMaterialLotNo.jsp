@@ -46,13 +46,13 @@ $(document).ready(function() {
 			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
-		if(materialRowId == -1){
+		if(matrLotRowId == -1){
 			$("#matLot").val(matLotNo);
 		} else {
 			materialGrid.blur();
-			materialGrid.setValue(materialRowId, 'matLotNo', matLotNo, false);
-			materialGrid.setValue(materialRowId, 'comMaterialCode', comMaterialCode, false);
-			materialGrid.setValue(materialRowId, 'comMaterialName', comMaterialName, false);
+			materialGrid.setValue(matrLotRowId, 'matLotNo', matLotNo, false);
+			materialGrid.setValue(matrLotRowId, 'comMaterialCode', comMaterialCode, false);
+			materialGrid.setValue(matrLotRowId, 'comMaterialName', comMaterialName, false);
 		}
 		
 

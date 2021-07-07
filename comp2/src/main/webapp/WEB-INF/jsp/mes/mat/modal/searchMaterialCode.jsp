@@ -42,6 +42,8 @@ $(document).ready(function() {
 		for(var i=0; i<chkRowKeys.length; i++){
 			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
 			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
+			comMaterialSize = grid.getValue(chkRowKeys[i],'comMaterialSize');
+			comMaterialUnit = grid.getValue(chkRowKeys[i],'comMaterialUnit');
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
 		if(materialRowId == -1){
@@ -51,6 +53,8 @@ $(document).ready(function() {
 			console.log(materialRowId);
 			materialGrid.setValue(materialRowId, 'comMaterialCode', comMaterialCode, false);
 			materialGrid.setValue(materialRowId, 'comMaterialName', comMaterialName, false);
+			materialGrid.setValue(materialRowId, 'comMaterialSize', comMaterialSize, false);
+			materialGrid.setValue(materialRowId, 'comMaterialUnit', comMaterialUnit, false);
 		}
 		
 
@@ -93,6 +97,14 @@ $(document).ready(function() {
 		}, {
 			header : '자재명',
 			name : 'comMaterialName'
+		}, {
+			header : '규격',
+			name : 'comMaterialSize',
+			hidden : true
+		}, {
+			header : '관리단위',
+			name : 'comMaterialUnit',
+			hidden : true
 		}]
 	});
 	

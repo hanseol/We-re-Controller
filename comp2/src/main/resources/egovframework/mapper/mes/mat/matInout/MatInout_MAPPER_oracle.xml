@@ -42,11 +42,11 @@
 		                              </if>
 		                              <if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
+							        	q.erp_vendor_code = #{erpVendorCode}
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+							        	m.com_material_code = #{comMaterialCode}
 		                              </if>
 									  <if test="matInoutGubun != null and matInoutGubun != ''">
 									  	AND
@@ -120,7 +120,9 @@
 		                     ROWNUM rnum
 		              FROM   (
 		                              SELECT   com_material_code,
-		                                       com_material_name
+		                                       com_material_name,
+		                                       com_material_size,
+		                                       com_material_unit
 		                              FROM     com_material
 		                              WHERE	   1=1
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND

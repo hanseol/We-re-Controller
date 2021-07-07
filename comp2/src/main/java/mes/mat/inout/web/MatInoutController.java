@@ -172,7 +172,7 @@ public class MatInoutController {
   	}
   	
     //자재LOT_NO 오픈
-    @GetMapping("matInout/searchMaterialLotNo.do")
+    @GetMapping("matInout/searchMatLotNo.do")
   	public String searchMaterialLotNo() {
   		
   		//모달창에 띄워줄 view페이지 전달.

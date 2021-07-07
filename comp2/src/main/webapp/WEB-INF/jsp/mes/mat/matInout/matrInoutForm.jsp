@@ -41,11 +41,12 @@ max-height: 600px; */
 	</ul>
 </div>
 
-<form id="option">
-	<div class="content-fluid">
-		<div class="panel panel-headline">
-			<div class="panel-body">
-				<div class="row">
+
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<form id="option">
 					<div class="col-md-2">
 						일자<input type="date" id="matInoutDate" name="matInoutDate">
 					</div>
@@ -54,30 +55,29 @@ max-height: 600px; */
 						<input type="checkbox" id="outGubun" name="gubunChkBox">출고
 					</div>
 					<div class="col-md-2">
-						자재코드
-						<input type="text" id="materialCode" name="materialCode">
+						자재코드<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 						
 						<input type="hidden" id="matLot" name="matLot">
-						<a id="searchMatLotNo" href="searchMatLotCode.do"></a>
+						<a id="searchMatLotNo" href="searchMatLotNo.do"></a>
 					</div>
 					<div class="col-md-3">
-						입고업체
-						<input type="text" id="vendorCode" name="vendorCode">
+						입고업체<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
-						<button type="button" class="btn btn-success" id="search">조회</button>
-						<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-						<button type="button" class="btn btn-danger" id="reset">새자료</button>
-					</div>
+				</form>
+				<div class="col-md-3">
+					<button type="button" class="btn btn-success" id="search">조회</button>
+					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
 	</div>
-</form>
+</div>
+
 
 
 <div class="content-fluid">
@@ -104,6 +104,7 @@ max-height: 600px; */
 let materialGrid;
 let vendorGrid;
 let matLotGrid;
+
 //-----------------------------------------------------------
 
 
@@ -112,13 +113,11 @@ let matLotGrid;
 	$(document).ready(function () {
 		
 		// 옵션 폼 리셋버튼  
-		 $(document).ready(function() {  
-		    $("#reset").click(function() {  
-		         $("form").each(function() {  
-		                if(this.id == "option") this.reset();  
-		             });  
-		    });  
-		 });  
+		$("#reset").click(function() {  
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();  
+		    	});
+			}); 
 		
 		//날짜 범위로 지정하는 방법 생각.
 		
@@ -173,21 +172,23 @@ let matLotGrid;
 		$(document).on("click",	"button[id=search]",
 				function () {
 					//입출고구분 테스트
-					var inGubun = $('input:checkbox[id="inGubun"]').is(":checked")
-					var outGubun = $('input:checkbox[id="outGubun"]').is(":checked")
-					if(inGubun == true && outGubun == false){
-						var matInoutGubun = 'INOUT002';
-					}else if(inGubun == false && outGubun == true){
-						var matInoutGubun = 'INOUT003';
+					var inGubun = $('input:checkbox[id="inGubun"]').is(":checked");
+					var outGubun = $('input:checkbox[id="outGubun"]').is(":checked");
+					var matInoutGubun;
+					if(inGubun == true){
+						matInoutGubun = 'INOUT002';
+					}else if(outGubun == true){
+						matInoutGubun = 'INOUT003';
 					}
+					
 
 					//데이터를 변수에 담아서 parameter로 만들기.
-
+					var comMaterialCode = $("#materialCode").val();
 					var matInoutDate = $("#matInoutDate").val();
-					var erpVendorCode = $("#erpVendorCode").val();
-					var matInoutGubun = $("#matInoutGubun").val();
+					var erpVendorCode = $("#vendorCode").val();
 
 					var readParams = {
+						'comMaterialCode': comMaterialCode,
 						'matInoutDate': matInoutDate,
 						'erpVendorCode': erpVendorCode,
 						'matInoutGubun': matInoutGubun
@@ -328,7 +329,7 @@ let matLotGrid;
 		//자재LOT_NO
 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'matLotNo'){
-				matLotCodeSearch(ev.rowKey);
+				matLotNoSearch(ev.rowKey);
 			}
 		})
 		
@@ -355,8 +356,8 @@ let matLotGrid;
 		$('#searchVendorCode').click(function(event) {
 			vendorCodeSearch(-1);
 		});
-		$('#searchMatLotCode').click(function(event) {
-			matLotCodeSearch(-1);
+		$('#searchMatLotNo').click(function(event) {
+			matLotNoSearch(-1);
 		});
 		
 });//end of document ready
@@ -389,14 +390,14 @@ function vendorCodeSearch(c) {
 }
 //자재LOT_NO
 var matrLotRowId;
-function matLotCodeSearch(c) {
+function matLotNoSearch(c) {
 	matrLotRowId = c;
 	  console.log(matrLotRowId);
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchMatLotCode.do", function(html) {
+	  $.get("searchMatLotNo.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

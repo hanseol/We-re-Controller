@@ -48,7 +48,7 @@ $(document).ready(function() {
 		}
 		
 		if(vendorRowId == -1){
-			$("#vendorCode").val(code);
+			$("#vendorCode").val(comCodeDetailId);
 		} else {
 			vendorGrid.blur();
 			vendorGrid.setValue(vendorRowId, 'erpVendorCode', comCodeDetailId, false);
