@@ -27,7 +27,7 @@ max-height: 600px; */
 
 <div class="content-fluid">
 	<div>
-		<h2>자재입출고관리</h2>
+		<h2>자재입고검사 관리</h2>
 	</div>
 </div>
 
@@ -63,7 +63,7 @@ max-height: 600px; */
 						<a id="searchMatLotNo" href="searchMatLotNo.do"></a>
 					</div>
 					<div class="col-md-3">
-						입고업체<input type="text" id="vendorCode" name="vendorCode">
+						발주업체<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
@@ -85,7 +85,7 @@ max-height: 600px; */
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-11">
-					<p class="panel-subtitle">자재 입출고 목록</p>
+					<p class="panel-subtitle">자재 발주 목록</p>
 				</div>
 				<div class="col-md-1">
 					<button type="button" class="btn btn-info" id="appendRow">추가</button>

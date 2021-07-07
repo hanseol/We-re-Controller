@@ -41,12 +41,9 @@ public class MatInoutController {
 	//공통함수 객체 생성
 	ComFunc comFunc = new ComFunc();
 	
-	//입고전표번호 객체 선언
-	@Resource(name = "mesMatInStatementIdGnrService")
-	protected EgovIdGnrService matInStatementIdGnrService;
 	//출고전표번호 객체 선언
 	@Resource(name = "mesMatOutStatementIdGnrService")
-	protected EgovIdGnrService matOutStatementIdGnrService;
+	protected EgovIdGnrService mesMatOutStatementIdGnrService;
 	
     @Resource(name = "matInoutService")
     private MatInoutService service;
@@ -106,14 +103,14 @@ public class MatInoutController {
 		
 		if (createdList.size() != 0) {
 			for (int i = 0; i < createdList.size(); i++) {
-				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("matInoutGubun");
-				
-				//전표번호 부여
-				if(gubun.equals("INOUT002")) {
-				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", matInStatementIdGnrService.getNextStringId());
-				}else if(gubun.equals("INOUT003")){
-					((LinkedHashMap)createdList.get(i)).put("matInoutStatement", matOutStatementIdGnrService.getNextStringId());
-				}
+//				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("matInoutGubun");
+				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", mesMatOutStatementIdGnrService.getNextStringId());
+//				//전표번호 부여
+//				if(gubun.equals("INOUT002")) {
+//				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
+//				}else if(gubun.equals("INOUT003")){
+//					
+//				}
 				service.insertMatInout((LinkedHashMap) createdList.get(i));
 			}
 		}

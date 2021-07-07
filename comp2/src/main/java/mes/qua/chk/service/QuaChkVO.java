@@ -20,7 +20,7 @@ import mes.main.service.SearchVO;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class QuaMaterialChkVO extends SearchVO{
+public class QuaChkVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** QUA_MATERIAL_STATEMENT */

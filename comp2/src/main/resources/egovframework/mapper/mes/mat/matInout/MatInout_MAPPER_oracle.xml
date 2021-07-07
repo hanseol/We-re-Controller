@@ -10,16 +10,13 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-										SELECT  
-										        (CASE q.qua_material_chk
-										        WHEN '1'
-										        THEN q.qua_material_statement
-										        ELSE null END							  ) as qua_material_statement,
+										SELECT  DISTINCT(m.qua_material_statement) as qua_material_statement,
+												m.mat_inout_statement,
 										        TO_CHAR(m.mat_inout_date, 'YYYY/MM/DD') mat_inout_date,
 										        q.erp_vendor_code,
 										        q.com_material_code,
 										        q.qua_material_p_qty,
-												m.mat_lot_no,
+                           						m.mat_lot_no,
 										        m.mat_inout_gubun,
 										        m.mat_inout_quantity,
 										        m.mat_inout_price,
@@ -42,10 +39,10 @@
 										        com_material c,
 										        com_code_detail d
 										WHERE   m.qua_material_statement = q.qua_material_statement
-										AND		m.com_material_code = q.com_material_code
-										AND     q.erp_material_order_code = e.erp_material_order_code
+                    					AND     m.com_material_code = q.com_material_code
 										AND     c.com_material_code = m.com_material_code
 										AND     q.erp_vendor_code = d.com_code_detail_id
+                    					AND     q.qua_material_chk = 1
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
 							        	m.mat_inout_date = #{matInoutDate}
@@ -71,53 +68,44 @@
 	
 	<!-- 자재입출고 관리페이지 등록 -->
 	<insert id="insertMatInout">
-		INSERT INTO mat_inout (com_material_code,
+		INSERT INTO mat_inout (mat_inout_statement,
+							   com_material_code,
 							   com_process_code,
-							   mat_inout_statement,
+							   qua_material_statement,
 							   mat_inout_gubun,
 							   mat_inout_date,
 							   mat_lot_no,
 							   mat_inout_quantity,
 							   mat_inout_unit_price,
 							   mat_inout_price)
-		VALUES  (#{comMaterialCode},
-			   	(select	DISTINCT(com_process_code)
-				 from	com_bom
-				 where	com_material_code = #{comMaterialCode}),
-			   #{matInoutStatement},
-			   #{matInoutGubun},
-			   #{matInoutDate},
-			   #{matLotNo},
-			   #{matInoutQuantity},
-			   #{matInoutUnitPrice},
-			   #{matInoutPrice})
+					VALUES  	(#{matInoutStatement},
+								#{comMaterialCode},
+						   		(select	DISTINCT(com_process_code)
+							 	from	com_bom
+							 	where	com_material_code = #{comMaterialCode}),
+						   		#{quaMaterialStatement},
+						   		#{matInoutGubun},
+						   		#{matInoutDate},
+						   		#{matLotNo},
+						   		#{matInoutQuantity},
+						   		#{matInoutUnitPrice},
+						   		#{matInoutPrice})
 
 	</insert>
 	
 	<!-- 자재입출고 관리페이지 수정 -->
 	<update id="updateMatInout">
 		UPDATE mat_inout
-		SET			mat_inout_gubun = #{matInoutGubun},
-					mat_inout_date = #{matInoutDate},
-					<!-- (select	DISTINCT(erp_vendor_code)
-				 	 from	qua_material_chk
-				 	 where	com_material_code = #{comMaterialCode}) as erp_vendor_code = #{erpVendorCode}, -->
-					com_material_code = #{comMaterialCode},
-		            mat_inout_quantity = #{matInoutQuantity},
-		            mat_inout_unit_price = #{matInoutUnitPrice},
+		SET			mat_inout_quantity = #{matInoutQuantity},
 		            mat_inout_price = #{matInoutPrice}
 		       
-		WHERE	mat_inout_statement = #{matInoutStatement}
+		WHERE	qua_material_statement = #{quaMaterialStatement}
 	</update>
 	
 	<!-- 자재입출고 관리 삭제 -->
 	<delete id="deleteMatInout">
 		DELETE FROM	mat_inout
-		WHERE		mat_inout_statement = #{matInoutStatement}
-<!-- <if test="(comCodeDetailId != null and comCodeDetailId != '')">
-			WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId}) 
-			OR COM_CODE_DETAIL_ID = LOWER(#{comCodeDetailId})
-		</if> -->
+		WHERE		qua_material_statement = #{quaMaterialStatement}
 	</delete>
 	
 
