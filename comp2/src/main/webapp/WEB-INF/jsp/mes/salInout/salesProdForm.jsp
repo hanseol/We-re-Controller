@@ -108,7 +108,7 @@
 
 <!-- 추가 모달 -->
 <a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
-<a id="searchCustomerCode" href="searchCustomerCode.do" rel="modal:open"></a>
+<a id="searchCustomerCode" href="searchCustomerCode.do"></a>
 
 <script>
 let mgrid; //모달그리드
@@ -283,6 +283,7 @@ let mgrid; //모달그리드
 	         		return;
 	         	} else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') { //출고 -> 거래처 모달 오픈
 	         		$('#searchCustomerCode').click();
+	         		customerCodeSearch(0);
 	         		return;
 	      	 	}
 		  } 
@@ -324,6 +325,18 @@ let mgrid; //모달그리드
 		  this.blur(); // Manually remove focus from clicked link.
 		  console.log(this.href);
 		  $.get("searchProductLotNo.do", function(html) {
+		    $(html).appendTo('body').modal();
+		  });
+	}
+	
+	//업체코드 모달
+	function customerCodeSearch(c) {
+		  rowId = c;
+		  event.preventDefault();
+		  $(".modal").remove();
+		  this.blur(); // Manually remove focus from clicked link.
+		  console.log(this.href);
+		  $.get("searchCustomerCode.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
 	}

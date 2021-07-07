@@ -97,6 +97,7 @@
 <script>
 let mgrid; //모달 그리드
 	$(document).ready(function() {
+		//Read
 		$(document).on("click", "button[id=search]",
 				function() {
 					var returnDate = $("#returnDate").val();
@@ -108,6 +109,35 @@ let mgrid; //모달 그리드
 					};
 					grid.readData(1, readParams, true);
 				});
+		
+		//Insert
+		$(document).on("click", "button[id=appendRow]", function() {
+			var rowData =[{
+					salInoutDate : "",
+					salInoutGubun : "",
+					salInoutCode : "",
+					comProductCode : "",
+					salInoutQuantity : "",
+					proProcessLotNo : "",
+					salWriteDate : ""
+			}];
+			grid.appendRow(rowData, {
+				at : 0,
+				focus : true
+			});
+			grid.enable();
+		});
+		
+		//Delete
+		$(document).on("click", "button[id=deleteRow]", function() {
+			grid.removeCheckedRows(false);
+		});
+		
+		//Modify
+		$(document).on("click", "button[id=modifyRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('modifyData');
+		});
 		
 		const dataSource = {
 			api : {

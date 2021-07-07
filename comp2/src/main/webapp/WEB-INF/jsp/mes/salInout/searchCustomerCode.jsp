@@ -47,6 +47,7 @@ $(document).ready(function() {
 		
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
 				$("#customerCode").val(code);
+				code = [];
 			} else { //아니면 mgrid(모달그리드)에 뿌려준다
 				mgrid.blur();
 				mgrid.setValue(rowId, 'salInoutCode', code, false);

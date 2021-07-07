@@ -47,6 +47,7 @@ $(document).ready(function() {
 			
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
 				$("#inoutStatement").val(code);
+				code = [];
 			} else { //아니면 mgrid(모달그리드)에 뿌려준다
 				mgrid.blur();
 				mgrid.setValue(rowId, 'salInoutStatement', code, false);
@@ -58,7 +59,7 @@ $(document).ready(function() {
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
-		var code = $("#inoutStatement").val();
+		var code = $("#salInoutStatement").val();
 		var no = $("#proProcessLotNo").val();
 		console.log(code, no);
 		var readParams = { //실제컬럼명 : ~
