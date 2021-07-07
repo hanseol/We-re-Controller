@@ -13,8 +13,11 @@
 	<div>
 		<div class="my-panel">
 			<!-- 모달창띄우기 -->
-			<a href="testModal.do" rel="modal:open" id="getData">
-			<i class="fa fa-search" ></i>
+			테스트1<a href="testModal.do" rel="modal:open">
+			<i id="test1" class="fa fa-search" ></i>
+			</a>
+			테스트2<a href="salInout/searchProductLotNo.do" rel="modal:open">
+			<i id="test2" class="fa fa-search" ></i>
 			</a>
 			<button type="button" class="btn btn-danger">새자료</button>
 			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
@@ -31,14 +34,17 @@
 					1.로그인 / 권한에 따라 뷰 페이지 다르게 보여주기 공유(월,화,수)<br/>
 					2.전표번호에 들어가는 seq값 매일 00:00시에 1로 reset하도록 만들어야함.(화)<br/>
 					3.네비게이션 값 고정 될 수 있도록 js 파일 만들기 (수)<br/>
-					4.grid 크기 조정 방법 공유 (수)
-					5.파일업로드 / 다운로드 <br/>
-					<input type="text" id="no" name="no">
+					4.grid 크기 조정 방법 공유 (수)<br/>
+					5.파일업로드 / 다운로드 <br/><br/>
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
 				</div>
+			</div>
+			<div>
+				테스트1<input type="text" id="no" name="no">
+				테스트2<input type="text" id="no2" name="no2">
 			</div>
 		</div>
 		<div class="panel-body">
@@ -168,6 +174,10 @@
 					}
 				}
 			});
+		
+		$("#test1").on("click", function(){
+			
+		})
 		//grid.on('click', (ev) => {
 		//	  alert(ev.rowKey);
 		//});

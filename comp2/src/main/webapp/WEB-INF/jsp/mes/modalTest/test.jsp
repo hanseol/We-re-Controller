@@ -39,12 +39,8 @@ $(document).ready(function() {
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
 		var chkRowKeys = grid.getCheckedRowKeys();
-		var code = [];
-		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'comProductCode');
-			console.log(code);
-		}
-		
+		var code = grid.getValue(chkRowKeys,'comProductCode');
+
 		$("#no").val(code);
 	});
 	

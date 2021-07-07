@@ -44,6 +44,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 	
 	<style>
+	
 	.my-panel {
 		text-align: right;
 		border-top: 1px solid gray;
@@ -63,6 +64,20 @@
 	
 	.blocker {
 		z-index: 1200;
+	}
+	
+	/*
+	header.jsp
+	*/
+	
+	#navbar-menu #member{
+		width: 200px;
+		font-size :20px;
+		text-align : center;
+	}
+
+	#logout {
+		margin-top: 24px;
 	}
 </style>
 </head>
