@@ -34,10 +34,8 @@ max-height: 600px; */
 <!-- 관리, 지시 탭 이동 -->
 <div id="tabs">
 	<ul class="nav nav-tabs" role="tablist">
-		<li class="active"><a onclick='location.href="matrInoutForm.do"' aria-controls="tab1" role="tab"
-				data-toggle="tab">관리</a></li>
-		<li class=""><a onclick='location.href="matrInoutView.do"' aria-controls="tab2" role="tab"
-				data-toggle="tab">조회</a></li>
+		<li class="active"><a onclick='location.href="matrQuaForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
+		<li class=""><a onclick='location.href="matrQuaView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
 	</ul>
 </div>
 
@@ -49,10 +47,6 @@ max-height: 600px; */
 				<form id="option">
 					<div class="col-md-2">
 						일자<input type="date" id="matInoutDate" name="matInoutDate">
-					</div>
-					<div class="col-md-2">
-						입/출고구분<input type="checkbox" id="inGubun" name="gubunChkBox">입고
-						<input type="checkbox" id="outGubun" name="gubunChkBox">출고
 					</div>
 					<div class="col-md-2">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -134,19 +128,19 @@ let matLotGrid;
 			function () {
 				var rowData = [{
 					//여기 수정 해야함.
-					일자: "",
+					입고일자: "",
 					업체코드: "",
-					입고업체명: "",
+					업체명: "",
 					자재코드: "",
 					자재명: "",
-					자재LOT_NO: "",
 					규격: "",
 					관리단위: "",
-					입출고: "",
-					수량: "",
+					발주량: "",
+					합격량: "",
+					불량량: "",
 					단가: "",
 					금액: "",
-					현재고: ""
+					검사일자:""
 				}];
 				grid.appendRow(rowData, {
 					at: 0,
@@ -199,11 +193,11 @@ let matLotGrid;
 		const dataSource = {
 			api: {
 				readData: {
-					url: '${pageContext.request.contextPath}/ajax/readMatInout',
+					url: '${pageContext.request.contextPath}/ajax/readQuaChk',
 					method: 'GET'
 				},
 				modifyData: {
-					url: '${pageContext.request.contextPath}/ajax/modifyMatInout',
+					url: '${pageContext.request.contextPath}/ajax/modifyQuaChk',
 					method: 'PUT'
 				}
 
@@ -221,21 +215,11 @@ let matLotGrid;
 	        scrollY: true,
 	        bodyHeight: 30, 
 	        rowHeight: 30,
+	        
+
 			columns: [{
-				header: '입출고구분',
-				name: 'matInoutGubun',
-				editor : {
-					type: 'select',
-					options : {
-					listItems: [
-						{text : '입고', value : 'INOUT002'},
-						{text : '출고', value : 'INOUT003'}
-						]
-					}
-				}
-			}, {
-				header: '일자',
-				name: 'matInoutDate',
+				header: '입고일자',
+				name: 'quaMaterialDate',
 				editor: {
 					type: 'datePicker',
 					options: {
@@ -248,7 +232,7 @@ let matLotGrid;
 				name: 'erpVendorCode',
 				editor: 'text'
 			}, {
-				header: '입고업체명',
+				header: '업체명',
 				name: 'comCodeDetailName'
 			}, {
 				header: '자재코드',
@@ -258,17 +242,22 @@ let matLotGrid;
 				header: '자재명',
 				name: 'comMaterialName'
 			}, {
-				header: '자재LOT_NO',
-				name: 'matLotNo'
-			}, {
 				header: '규격',
 				name: 'comMaterialSize'
 			}, {
 				header: '관리단위',
 				name: 'comMaterialUnit'
 			}, {
-				header: '수량',
-				name: 'matInoutQuantity',
+				header: '발주량',
+				name: 'erpMaterialOrderQty',
+				editor: 'text'
+			}, {
+				header: '합격량',
+				name: 'quaMaterialPQty',
+				editor: 'text'
+			}, {
+				header: '불량량',
+				name: 'quaMaterialFQty',
 				editor: 'text'
 			}, {
 				header: '단가',
@@ -278,8 +267,19 @@ let matLotGrid;
 				header: '금액',
 				name: 'matInoutPrice'
 			}, {
-				header: '현재고',
-				name: 'materialStock'
+				header: '검사유무',
+				name: 'quaMaterialChk',
+				editor: 'text'
+			}, {
+				header: '검사일자',
+				name: 'quaMaterialChkDate',
+				editor: {
+					type: 'datePicker',
+					options: {
+						format: 'YYYY/MM/dd',
+						language: 'ko'
+					}
+				}
 			}]
 		});
 		

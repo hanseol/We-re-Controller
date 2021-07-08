@@ -4,7 +4,7 @@
 <mapper namespace="mes.mat.matr.service.impl.MaterialMapper">
 	
 	<!-- 자재재고조회페이지 전체 리스트 출력 -->
-	<select id="selectMatList" parameterType="mes.mat.order.service.MaterialOrderVO" resultType="egovMap">
+	<select id="selectMaterialList" parameterType="mes.mat.matr.service.MaterialVO" resultType="egovMap">
 		SELECT *
 		FROM   (
 		              SELECT a.*,
@@ -36,23 +36,5 @@
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
-	</select>
-	
-	<!-- 행 카운트 -->
-	<select id="selectComMaterialListTotCnt" parameterType="mes.mat.matr.service.MaterialVO" resultType="int">
-		SELECT	Count(*) totcnt
-		FROM    com_material c,
-		        mat_inout m
-		WHERE   c.com_material_code = m.com_material_code
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0"> AND
-			    com_material_code = #{searchKeyword}
-			</if>
-			<if test="searchCondition == 1"> AND
-			    com_material_name LIKE '%'
-		              || #{searchKeyword}
-		              || '%'
-			</if>
-		</if>
 	</select>
 </mapper>

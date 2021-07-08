@@ -1,5 +1,7 @@
 package mes.qua.chk.service;
 
+import java.math.BigDecimal;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -51,6 +53,19 @@ public class QuaChkVO extends SearchVO{
     
     /** ERP_MATERIAL_ORDER_CODE */
     private java.lang.String erpMaterialOrderCode;
+    
+    //개당단가 추가
+    private BigDecimal erpMaterialUnitPrice;
+    //자재명 추가
+    private String comMaterialName;
+    //규격 추가
+    private String comMaterialSize;
+    //관리단위 추가
+    private String comMaterialUnit;
+    //업체명(공통코드) 추가
+    private String comCodeDetailName;
+    
+    
     
     
 }

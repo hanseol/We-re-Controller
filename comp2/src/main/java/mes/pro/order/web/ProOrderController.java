@@ -62,9 +62,8 @@ public class ProOrderController {
     //생산지시리스트 조회
     @RequestMapping("proOrder/prodView")
     @ResponseBody
-    public Map<String, Object> readOrder(Model model, @ModelAttribute("proOrderVO") ProOrderVO proOrderVO ) throws Exception {
-    	List<?> list = new ArrayList<>();
-        list = service.selectProOrderList(proOrderVO);
+    public Map<String, Object> readOrder(@ModelAttribute("searchVO") ProOrderVO searchVO ) throws Exception {
+    	List<?> list = service.selectProOrderList(searchVO);
     	return comFunc.sendResult(list);
     }
     
@@ -80,6 +79,12 @@ public class ProOrderController {
         
     
     //생산지시관리 페이지에서 리스트 조회
+    @RequestMapping("ajax/proOrder/prodFormList")
+    @ResponseBody
+    public Map<String, Object> readOrderForm(@ModelAttribute("searchVO") ProOrderVO searchVO) throws Exception {
+    	List<?> list = service.selectOrderForm(searchVO);
+    	return comFunc.sendResult(list);
+    }
     
     
     //모달 호출(생산지시코드로 검색)
@@ -89,17 +94,17 @@ public class ProOrderController {
     }
     
     //모달 값 뿌리기(생산지시코드로 검색)
-//    @RequestMapping("proOrderSearch")
-//    @ResponseBody
-//    public Map<String, Object> proOrderSearch(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
-//    	List<?> list = service.(searchVO);
-//    	ComFunc comFunc = new ComFunc();
-//    	return comFunc.sendResult(list);
-//    }
+    @RequestMapping("proOrderSearch")
+    @ResponseBody
+    public Map<String, Object> proOrderSearch(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
+    	List<?> list = service.selectOrderList(searchVO);
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
     
     
     //생산지시리스트 추가, 수정, 삭제 (****수정하기)
-	@PutMapping("proOrder/modifyProdOrder")
+	@PutMapping("ajax/proOrder/modifyProdOrder")
 	@ResponseBody
 	public void modifyProdOrder(@RequestBody GridDataVO gd) throws Exception {
 

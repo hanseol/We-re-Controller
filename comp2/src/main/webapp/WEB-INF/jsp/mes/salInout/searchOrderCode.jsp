@@ -17,7 +17,7 @@
 					생산지시디테일코드 <input type="text" id="proOrderDetailCode" name="proOrderDetailCode" placeholder="생산지시디테일코드" />
 					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" />
 					<button id="findRow">검색</button>
-					<br>
+					<br> <br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>

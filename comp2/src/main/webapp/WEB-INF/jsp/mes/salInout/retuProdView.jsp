@@ -67,10 +67,10 @@
 						<input type="date" id="returnDate" name="returnDate">			
 				</div>
 				<div class="col-md-6">
-						전표번호
-						<input type="text" id="inoutStatement" name="inoutStatement">
-						<a id="searchInoutStatement" href="searchInoutStatement.do">
-						<i class="fa fa-search"></i></a>			
+						완제품 LOT_NO
+						<input type="text" id="productLotNo" name="productLotNo">	
+						<a id="searchProductLotNo" href="searchProductLotNo.do">						
+                     	<i class="fa fa-search"></i></a>		
 				</div>
 			</div>
 		</div>
@@ -101,10 +101,13 @@ let mgrid; //모달 그리드
 					var returnDate = $("#returnDate").val();
 					var productCode = $("#productCode").val();
 					var customerCode = $("#customerCode").val();
+					var productLotNo = $("#productLotNo").val();
+					console.log(returnDate, productLotNo);
 					var readParams = {
 						'salInoutDate' : returnDate,
 						'comProductCode' : productCode,
-						'salInoutCode' : customerCode
+						'salInoutCode' : customerCode,
+						'proProcessLotNo' : productLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -139,8 +142,11 @@ let mgrid; //모달 그리드
 					} 
 				}
 			}, {
-				header : '전표번호',
+				header : '반품 전표번호',
 				name : 'salInoutStatement',
+			}, {
+				header : '완제품 LOT_NO',
+				name : 'proProcessLotNo',
 			}, {
 				header : '업체코드',
 				name : 'salInoutCode',
@@ -158,8 +164,8 @@ let mgrid; //모달 그리드
 	
 		mgrid = grid;
 		
-		$('#searchInoutStatement').click(function(event) {
-			 inoutStatementSearch(-1);
+		$('#searchProductLotNo').click(function(event) {
+		 	productLotNoSearch(-1);
 		});
 	
 	// option form reset  
@@ -175,16 +181,17 @@ let mgrid; //모달 그리드
 
 var rowId;
 
-//전표번호 모달
-function inoutStatementSearch(c) {
+//완제품 LOT_NO 모달
+function productLotNoSearch(c) {
 	  rowId = c;
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchInoutStatement.do", function(html) {
+	  $.get("searchProductLotNo.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
+
 
 </script>

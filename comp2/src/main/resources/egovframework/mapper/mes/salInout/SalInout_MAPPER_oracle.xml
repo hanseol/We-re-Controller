@@ -152,15 +152,16 @@
 									TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
 									SAL_INOUT_STATEMENT, SAL_INOUT_CODE, 
 									COM_PRODUCT_CODE, SAL_INOUT_QUANTITY,
-									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
+									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
+									PRO_PROCESS_LOT_NO
 									FROM SAL_INOUT
 									WHERE 1=1
 									AND SAL_INOUT_GUBUN = 'INOUT001'
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					SAL_INOUT_DATE = #{salInoutDate}
 				</if>
-				<if test="salInoutStatement != null and salInoutStatement != ''">AND
-					SAL_INOUT_STATEMENT LIKE '%' || #{inoutStatement} || '%'
+				<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
+					PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 				</if>
 		ORDER BY SAL_INOUT_DATE DESC		
 			<![CDATA[						
@@ -170,34 +171,34 @@
 	</select>
 	
 	<!-- 반품입고목록 삽입 -->
-	<insert id="insertSalProductReturn"
-		parameterType="mes.sal.inout.service.SalInoutVO">
+	<insert id="insertSalReturn">
 		INSERT INTO SAL_INOUT
-		VALUES (#{SAL_INOUT_STATEMENT}
-		, #{COM_PRODUCT_CODE}
-		, #{SAL_INOUT_DATE}
-		, #{SAL_INOUT_QUANTITY}
-		, #{SAL_INOUT_CODE}
-		, 'INOUT001' <!-- 반품 = INOUT001 -->
-		, #{PRO_PROCESS_LOT_NO})
+		VALUES (#{salInoutStatement}
+			, #{comProductCode}
+			, #{salInoutDate}
+			, #{salInoutQuantity}
+			, #{salInoutCode}
+			, 'INOUT001'
+			, #{proProcessLotNo}
+			, SYSDATE)
 	</insert>
 	
 	<!-- 반품입고목록 수정 -->
-	<update id="updateSalProductReturn" parameterType="mes.sal.inout.service.SalInoutVO">
+	<update id="updateSalReturn">
 		UPDATE SAL_INOUT SET
-		SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
-		, COM_PRODUCT_CODE = #{COM_PRODUCT_CODE}
-		, SAL_INOUT_DATE = #{SAL_INOUT_DATE}
-		, SAL_INOUT_QUANTITY = #{SAL_INOUT_QUANTITY}
-		, SAL_INOUT_CODE = #{SAL_INOUT_CODE}
-		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		COM_PRODUCT_CODE = #{comProductCode}
+		, SAL_INOUT_DATE = #{salInoutDate}
+		, SAL_INOUT_QUANTITY = #{salInoutQuantity}
+		, SAL_INOUT_CODE = #{salInoutCode}
+		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
 		AND SAL_INOUT_GUBUN = 'INOUT001'
 	</update>
 	
 	<!-- 반품입고목록 삭제 -->
-	<delete id="deleteSalProductReturn" parameterType="mes.sal.inout.service.SalInoutVO">
+	<delete id="deleteSalReturn">
 		DELETE FROM SAL_INOUT
-		WHERE SAL_INOUT_STATEMENT=#{SAL_INOUT_STATEMENT}
+		WHERE PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		AND SAL_INOUT_GUBUN = 'INOUT001'
 	</delete>	
 	

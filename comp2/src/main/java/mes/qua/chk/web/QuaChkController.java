@@ -45,7 +45,7 @@ public class QuaChkController {
 	protected EgovIdGnrService mesMatInStatementIdGnrService;
 
 	
-    @Resource(name = "quaMaterialChkService")
+    @Resource(name = "quaChkService")
     private QuaChkService service;
     
     
@@ -60,7 +60,7 @@ public class QuaChkController {
     public String selectmatQuaList(@ModelAttribute("searchVO") QuaChkVO searchVO, 
     		ModelMap model) {
 
-        return "mes/qua/quaChk/matrQuaChkView.page";
+        return "mes/qua/quaChk/matrQuaView.page";
     }
     //자재입출고조회 리스트
     @RequestMapping("/ajax/readQuaChk")
@@ -68,7 +68,7 @@ public class QuaChkController {
     public Map<String, Object> matQua(Model model, 
     		 @ModelAttribute("searchVO") QuaChkVO searchVO) throws Exception{
 
-    	List<?> list = service.selectQuaMaterialChkList(searchVO);
+    	List<?> list = service.selectQuaChkList(searchVO);
     	
     	//공통함수 객체 생성
     	ComFunc comFunc = new ComFunc();
@@ -83,7 +83,7 @@ public class QuaChkController {
     public String selectQuaChkForm(@ModelAttribute("searchVO") QuaChkVO searchVO, 
     		ModelMap model) {
 
-        return "mes/mat/quaChk/matrQuaChkForm.page";
+        return "mes/qua/quaChk/matrQuaForm.page";
     }
   	
   	//자재입출고 [관리] 등록 수정 삭제 
@@ -97,7 +97,7 @@ public class QuaChkController {
 
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
-				service.updateQuaMaterialChk((LinkedHashMap) updatedList.get(i));
+				service.updateQuaChk((LinkedHashMap) updatedList.get(i));
 			}
 		}
 		
@@ -106,14 +106,14 @@ public class QuaChkController {
 				//입고전표번호 만들어서 insert맵퍼에 값 전달
 				((LinkedHashMap)createdList.get(i)).put("quaMaterialStatement", mesMatInStatementIdGnrService.getNextStringId());
 
-				service.insertQuaMaterialChk((LinkedHashMap) createdList.get(i));
+				service.insertQuaChk((LinkedHashMap) createdList.get(i));
 			}
 		}
 
 		if (deletedList.size() != 0)
 		{
 			for (int i = 0; i < deletedList.size(); i++) {
-				service.deleteQuaMaterialChk((LinkedHashMap) deletedList.get(i));
+				service.deleteQuaChk((LinkedHashMap) deletedList.get(i));
 			}
 		}
 	}

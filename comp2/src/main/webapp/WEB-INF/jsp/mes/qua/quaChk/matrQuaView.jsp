@@ -28,17 +28,15 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>자재입출고조회</h2>
+		<h2>자재입고검사조회</h2>
 	</div>
 </div>
 
 <!-- 관리, 지시 탭 이동 -->
 <div id="tabs">
 	<ul class="nav nav-tabs" role="tablist">
-		<li class=""><a onclick='location.href="matrInoutForm.do"'
-			aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
-		<li class="active"><a onclick='location.href="matrInoutView.do"'
-			aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
+		<li class=""><a onclick='location.href="matrQuaForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
+		<li class="active"><a onclick='location.href="matrQuaView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
 	</ul>
 </div>
 
@@ -80,7 +78,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">자재 입출고 목록</p>
+					<p class="panel-subtitle">자재 발주 목록</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -137,7 +135,7 @@ $(document).ready(function () {
 	const dataSource = {
 		api: {
 			readData: {
-				url: '${pageContext.request.contextPath}/ajax/readMatInout',
+				url: '${pageContext.request.contextPath}/ajax/readQuaChk',
 				method: 'GET'
 			}
 

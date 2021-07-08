@@ -19,7 +19,7 @@
 					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" />
 					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
 					<button id="findRow">검색</button>
-					<br>
+					<br><br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>

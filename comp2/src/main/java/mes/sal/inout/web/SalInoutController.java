@@ -48,7 +48,10 @@ public class SalInoutController {
 	//출고 전표번호
 	@Resource(name = "mesSalOutStatementIdGnrService")
 	protected EgovIdGnrService salOutStatementIdGnrService;
-
+	//반품 전표번호
+	@Resource(name = "mesSalReturnStatementIdGnrService")
+	protected EgovIdGnrService salReturnStatementIdGnrService;
+	
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -252,6 +255,43 @@ public class SalInoutController {
 		{
 			for (int i = 0; i < deletedList.size(); i++) {
 				salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
+			}
+		}
+		
+	}
+	
+	// 반품목록 수정
+	@PutMapping("/ajax/modifySalReturnList")
+	@ResponseBody
+	public void modifySalReturnList(@RequestBody GridDataVO gd) throws Exception {
+		
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+						
+		//C
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				
+				((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salReturnStatementIdGnrService.getNextStringId());	
+					
+				salInoutService.insertSalReturn((LinkedHashMap)(createdList.get(i)));
+			}
+
+		}
+				
+		//U
+		if (updatedList.size() != 0) {
+			for (int i=0; i<updatedList.size(); i++) {
+				salInoutService.updateSalReturn((LinkedHashMap) updatedList.get(i));
+			}
+		}
+		
+		//D
+		if (deletedList.size() != 0)
+		{
+			for (int i = 0; i < deletedList.size(); i++) {
+				salInoutService.deleteSalReturn((LinkedHashMap) deletedList.get(i));
 			}
 		}
 		

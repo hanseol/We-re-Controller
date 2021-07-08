@@ -125,7 +125,7 @@
 	               proPlanGrid.readData(1, readParams, true);
 	            });
 		 
-		//M 저장 버튼
+		//D 저장 버튼
 		$(document).on("click", "button[id=modifyRow]", function () {
 			var date = $("#date").val();
             var proPlanName = $("#proPlanName").val();
@@ -169,10 +169,7 @@
 				proPlanSeq : "" ,
 				proPlanCode : $('#proPlanCode').val()
 			} ;
-			proPlanGrid.appendRow(rowData, {
-				at : 0,
-				focus : true
-			});
+			proPlanGrid.appendRow(rowData, { at : 0, focus : true });
 			proPlanGrid.enable();
 		});
 		

@@ -18,15 +18,15 @@ import java.util.List;
 public interface QuaChkService {
 	
     //등록
-    String insertQuaMaterialChk(LinkedHashMap vo) throws Exception;
+    String insertQuaChk(LinkedHashMap vo) throws Exception;
     
     //수정
-    void updateQuaMaterialChk(LinkedHashMap vo) throws Exception;
+    void updateQuaChk(LinkedHashMap vo) throws Exception;
     
     //삭제
-    void deleteQuaMaterialChk(LinkedHashMap vo) throws Exception;
+    void deleteQuaChk(LinkedHashMap vo) throws Exception;
     
     //전체 리스트 출력
-    List<?> selectQuaMaterialChkList(QuaChkVO searchVO) throws Exception;
+    List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;
 
 }

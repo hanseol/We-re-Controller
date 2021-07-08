@@ -5,7 +5,7 @@
 
 
 	<!-- 자재입고검사조회 전체리스트  -->
-	<select id="selectQuaMatrChkList" parameterType="mes.qua.chk.service.QuaChkVO" resultType="egovMap">
+	<select id="selectQuaChkList" parameterType="mes.qua.chk.service.QuaChkVO" resultType="egovMap">
 		SELECT *
 		FROM   (
 		              SELECT a.*,
@@ -36,30 +36,5 @@
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
-	</select>
-	<!-- 행 카운트 -->
-	<select id="selectQuaMaterialChkListTotCnt" parameterType="mes.qua.chk.service.QuaChkVO" resultType="int">
-		SELECT Count(*) totcnt
-		FROM   erp_material_order e,
-		       qua_material_chk k,
-		       qua_material_f qf,
-		       com_material c,
-		       mat_inout m,
-		       com_material_f cf
-		WHERE  e.erp_material_order_code = k.erp_material_order_code
-		AND    k.qua_material_statement = qf.qua_material_statement
-		AND    qf.com_material_f_code = cf.com_material_f_code
-		AND    k.com_material_code = c.com_material_code
-		AND    c.com_material_code = m.com_material_code
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0">AND
-			    erp_material_order_code = #{searchKeyword}
-			</if>
-			<if test="searchCondition == 1">AND
-			    com_material_code LIKE '%'
-		              || #{searchKeyword}
-		              || '%'
-		    </if>
-		</if>
 	</select>
 </mapper>

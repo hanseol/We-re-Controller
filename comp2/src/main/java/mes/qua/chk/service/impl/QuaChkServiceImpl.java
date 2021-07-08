@@ -25,14 +25,14 @@ import mes.qua.chk.service.QuaChkVO;
  *  Copyright (C)  All right reserved.
  */
 
-@Service("quaMaterialChkService")
+@Service("quaChkService")
 public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
         QuaChkService {
         
     private static final Logger LOGGER = LoggerFactory.getLogger(QuaChkServiceImpl.class);
 
-    @Resource(name="quaMaterialChkMapper")
-    private QuaChkMapper quaMaterialChkDAO;
+    @Resource(name="quaChkMapper")
+    private QuaChkMapper quaChkMapper;
     
     //@Resource(name="quaMaterialChkDAO")
     //private QuaMaterialChkDAO quaMaterialChkDAO;
@@ -42,7 +42,7 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
     //private EgovIdGnrService egovIdGnrService;
 
 	//등록
-    public String insertQuaMaterialChk(LinkedHashMap vo) throws Exception {
+    public String insertQuaChk(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -51,25 +51,25 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
     	//vo.setId(id);
     	LOGGER.debug(vo.toString());
     	
-    	quaMaterialChkDAO.insertQuaMaterialChk(vo);
+    	quaChkMapper.insertQuaChk(vo);
     	//TODO 해당 테이블 정보에 맞게 수정    	
         return null;
     }
 
     //수정
-    public void updateQuaMaterialChk(LinkedHashMap vo) throws Exception {
-        quaMaterialChkDAO.updateQuaMaterialChk(vo);
+    public void updateQuaChk(LinkedHashMap vo) throws Exception {
+    	quaChkMapper.updateQuaChk(vo);
     }
 
     //삭제
-    public void deleteQuaMaterialChk(LinkedHashMap vo) throws Exception {
-        quaMaterialChkDAO.deleteQuaMaterialChk(vo);
+    public void deleteQuaChk(LinkedHashMap vo) throws Exception {
+    	quaChkMapper.deleteQuaChk(vo);
     }
 
 
     //전체리스트 조회
-    public List<?> selectQuaMaterialChkList(QuaChkVO searchVO) throws Exception {
-        return quaMaterialChkDAO.selectQuaMatrChkList(searchVO);
+    public List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception {
+        return quaChkMapper.selectQuaChkList(searchVO);
     }
 
 

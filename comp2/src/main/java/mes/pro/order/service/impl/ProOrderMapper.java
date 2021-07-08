@@ -3,6 +3,7 @@ package mes.pro.order.service.impl;
 import java.util.List;
 
 import mes.pro.order.service.ProOrderVO;
+import mes.pro.plan.service.ProPlanVO;
 import mes.main.service.SearchVO;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -70,5 +71,9 @@ public interface ProOrderMapper {
 	 * @exception
 	 */
     public int selectProOrderListTotCnt(SearchVO searchVO);
+
+	public List<?> selectOrderForm(ProOrderVO searchVO);
+
+	public List<?> selectOrderList(ProPlanVO searchVO);
 
 }

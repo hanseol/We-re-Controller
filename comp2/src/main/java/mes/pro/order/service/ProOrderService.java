@@ -3,6 +3,8 @@ package mes.pro.order.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import mes.pro.plan.service.ProPlanVO;
+
 
 /**
  * @Class Name : ProOrderService.java
@@ -65,6 +67,10 @@ public interface ProOrderService {
 	 * @exception
 	 */
     int selectProOrderListTotCnt(ProOrderVO searchVO);
+
+	List<?> selectOrderForm(ProOrderVO searchVO);
+
+	List<?> selectOrderList(ProPlanVO proOrderVO);
 
     
 }

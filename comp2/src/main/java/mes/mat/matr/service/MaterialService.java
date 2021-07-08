@@ -1,5 +1,6 @@
 package mes.mat.matr.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -16,54 +17,15 @@ import java.util.List;
  */
 public interface MaterialService {
 	
-	/**
-	 * COM_MATERIAL을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 ComMaterialVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    String insertComMaterial(MaterialVO vo) throws Exception;
+	//등록
+	String insertMaterial(LinkedHashMap vo) throws Exception;
     
-    /**
-	 * COM_MATERIAL을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 ComMaterialVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    void updateComMaterial(MaterialVO vo) throws Exception;
+    //수정
+    void updateMaterial(LinkedHashMap vo) throws Exception;
     
-    /**
-	 * COM_MATERIAL을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 ComMaterialVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    void deleteComMaterial(MaterialVO vo) throws Exception;
-    
-    /**
-	 * COM_MATERIAL을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 ComMaterialVO
-	 * @return 조회한 COM_MATERIAL
-	 * @exception Exception
-	 */
-    MaterialVO selectComMaterial(MaterialVO vo) throws Exception;
-    
-    /**
-	 * COM_MATERIAL 목록을 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return COM_MATERIAL 목록
-	 * @exception Exception
-	 */
-    List selectComMaterialList(MaterialVO searchVO) throws Exception;
-    
-    /**
-	 * COM_MATERIAL 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return COM_MATERIAL 총 갯수
-	 * @exception
-	 */
-    int selectComMaterialListTotCnt(MaterialVO searchVO);
-    
-    //리스트 전체 조회
-    List<?> selectMatList(MaterialVO searchVO) throws Exception;
+    //삭제
+    void deleteMaterial(LinkedHashMap vo) throws Exception;
+	
+    //전체 리스트 출력
+	List<?> selectMaterialList(MaterialVO searchVO) throws Exception;
 }

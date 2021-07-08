@@ -32,14 +32,14 @@ public class ProOrderVO extends SearchVO{
     private java.math.BigDecimal proOrderQty;
     private java.math.BigDecimal proOrderRank;
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private java.sql.Date proOrderDate;
+    private String proOrderDate;
     
     //확장
     //pro_order_detail 테이블
     private java.lang.String proOrderDetailCode;
     private java.lang.String proPlanDetailCode;
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private java.sql.Date erpProductDeadline;
+    private String erpProductDeadline;
     private java.lang.String erpCustomerCode;
     private java.math.BigDecimal proOrderExpectQty;
     private java.math.BigDecimal proOrderDayQty;
@@ -48,9 +48,15 @@ public class ProOrderVO extends SearchVO{
     
     //추가
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private java.sql.Date proWorkDate;
+    private String proWorkDate;
     private String erpProductCode;
+    private String erpProductName;
+    private String erpOrderCode;
+    private String erpOrderQty;
     
+    private String macHourQty;
+    private String dayQty;
+    private String dayCount;
     //추가
     private String proMaterialLot;
     

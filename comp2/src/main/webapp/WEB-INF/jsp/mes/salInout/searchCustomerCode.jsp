@@ -18,7 +18,7 @@
 					고객사코드 <input type="text" id="comCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
 					고객사명 <input type="text" id="comCustomerName" name="erpCustomerName" placeholder="고객사명" />
 					<button id="findRow">검색</button>
-					<br>
+					<br><br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>

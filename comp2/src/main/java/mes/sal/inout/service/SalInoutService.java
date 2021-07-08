@@ -35,6 +35,11 @@ public interface SalInoutService {
     //반품 조회 페이지
     List selectSalReturnList(SalInoutVO vo) throws Exception;
     
+    //반품 관리 페이지
+    String insertSalReturn(LinkedHashMap vo) throws Exception;
+    void updateSalReturn(LinkedHashMap vo) throws Exception;
+    void deleteSalReturn(LinkedHashMap vo) throws Exception;
+    
     
     //모달 : 제품코드 조회
     List<?> searchProductList(SalInoutVO searchVO) throws Exception;
