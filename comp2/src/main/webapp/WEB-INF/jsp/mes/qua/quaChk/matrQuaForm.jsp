@@ -87,7 +87,9 @@ max-height: 600px; */
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="grid"></div>
+				<form id="optionGrid">
+					<div id="grid"></div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -109,19 +111,14 @@ let matLotGrid;
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() {  
 			$("form").each(function() {  
-		    	if(this.id == "option") this.reset();  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
 		    	});
 			}); 
 		
 		//날짜 범위로 지정하는 방법 생각.
 		
-		//입출고구분 체크박스 하나만 체크되거나 해제가능.
-		$('input[type="checkbox"][name="gubunChkBox"]').click(function(){
- 			if($(this).prop('checked')){
-				$('input[type="checkbox"][name="gubunChkBox"]').prop('checked',false);
-				$(this).prop('checked',true);
-			}
-		});
+
 
 		//추가버튼 (행 추가)
 		$(document).on("click", "button[id=appendRow]",
@@ -165,27 +162,16 @@ let matLotGrid;
 		//검색데이터 전송
 		$(document).on("click",	"button[id=search]",
 				function () {
-					//입출고구분 테스트
-					var inGubun = $('input:checkbox[id="inGubun"]').is(":checked");
-					var outGubun = $('input:checkbox[id="outGubun"]').is(":checked");
-					var matInoutGubun;
-					if(inGubun == true){
-						matInoutGubun = 'INOUT002';
-					}else if(outGubun == true){
-						matInoutGubun = 'INOUT003';
-					}
-					
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 					var comMaterialCode = $("#materialCode").val();
-					var matInoutDate = $("#matInoutDate").val();
+					var quaMaterialDate = $("#quaMaterialDate").val();
 					var erpVendorCode = $("#vendorCode").val();
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
-						'matInoutDate': matInoutDate,
-						'erpVendorCode': erpVendorCode,
-						'matInoutGubun': matInoutGubun
+						'quaMaterialDate': quaMaterialDate,
+						'erpVendorCode': erpVendorCode
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -213,7 +199,7 @@ let matLotGrid;
 			data: dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 30, 
+	        bodyHeight: 300, 
 	        rowHeight: 30,
 	        
 
@@ -280,6 +266,10 @@ let matLotGrid;
 						language: 'ko'
 					}
 				}
+			}, {
+				header: '발주코드',
+				name: 'erpMaterialOrderCode',
+				hidden: true
 			}]
 		});
 		
@@ -386,18 +376,6 @@ function vendorCodeSearch(c) {
 	    $(html).appendTo('body').modal();
 	  });
 }
-//자재LOT_NO
-var matrLotRowId;
-function matLotNoSearch(c) {
-	matrLotRowId = c;
-	  console.log(matrLotRowId);
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchMatLotNo.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
+
 //---------------------------------------------------------------
 </script>

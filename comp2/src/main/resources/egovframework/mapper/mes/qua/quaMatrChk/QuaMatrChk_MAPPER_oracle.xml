@@ -11,30 +11,115 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   e.erp_vendor_code,
-		                                       k.qua_material_chk_date,
-		                                       c.com_material_code,
-		                                       c.com_material_name,
-		                                       m.mat_inout_quantity,
-		                                       k.qua_material_chk,
-		                                       k.qua_material_p_qty,
-		                                       qf.qua_material_f_qty,
-		                                       cf.com_material_f_name
-		                              FROM     erp_material_order e,
-		                                       qua_material_chk k,
-		                                       qua_material_f qf,
-		                                       com_material c,
-		                                       mat_inout m,
-		                                       com_material_f cf
-		                              WHERE    e.erp_material_order_code = k.erp_material_order_code
-		                              AND      k.qua_material_statement = qf.qua_material_statement
-		                              AND      qf.com_material_f_code = cf.com_material_f_code
-		                              AND      k.com_material_code = c.com_material_code
-		                              AND      c.com_material_code = m.com_material_code
-		                              ORDER BY erp_material_order_code DESC
-		                              <![CDATA[ ) a
+										SELECT  q.erp_material_order_code,
+										        q.qua_material_statement,
+										        TO_CHAR(q.qua_material_date,'YY/MM/DD')as qua_material_date,
+										        q.erp_vendor_code,
+										        d.com_code_detail_name,
+                            					q.com_material_code,                            
+										        c.com_material_name,
+										        c.com_material_size,
+										        c.com_material_unit,
+										        e.erp_material_order_qty,
+										        TO_CHAR(e.erp_material_request_date,'YY/MM/DD')as erp_material_request_date,
+										        q.qua_material_p_qty,
+										        q.qua_material_f_qty,
+										        q.qua_material_chk,
+										        e.erp_material_unit_price,
+										        TO_CHAR(e.erp_material_order_date,'YY/MM/DD')AS erp_material_order_date,
+										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD')as qua_material_chk_date
+										        
+										FROM    com_material c,
+										        erp_material_order e,
+										        qua_material_chk q,
+										        com_code_detail d
+										        
+					                    WHERE   e.com_material_code = q.com_material_code
+					                    AND     q.com_material_code = c.com_material_code
+					                    AND     q.erp_vendor_code = e.erp_vendor_code
+					                    AND     d.com_code_detail_id = q.erp_vendor_code
+					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
+		                                AND
+							        	e.erp_vendor_code = #{erpVendorCode}
+		                              	</if>
+		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	e.com_material_code = #{comMaterialCode}
+		                              	</if>
+		                              	<if test="erpMaterialRequestDate != null and erpMaterialRequestDate != ''">
+		                              	AND
+							        	e.erp_material_request_date = #{erpMaterialRequestDate}
+		                              	</if>
+		                              ORDER BY qua_material_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
 	</select>
+	
+	
+	<!-- 자재입고검사 더미데이터 추가(QUA-*** 전표번호)근데 발주코드는 어떻게 인서트하지? -->
+	<insert id="insertQuaChk">
+		INSERT INTO qua_material_chk  (qua_material_statement,
+									   qua_material_date,
+									   erp_vendor_code,
+									   com_material_code,
+									   qua_material_p_qty,
+									   qua_material_f_qty,
+									   qua_material_chk,
+									   qua_material_chk_date,
+									   erp_material_order_code)
+							VALUES  	(#{quaMaterialStatement},
+										#{quaMaterialDate},
+								   		#{erpVendorCode},
+								   		#{comMaterialCode},
+								   		#{quaMaterialPQty},
+								   		#{quaMaterialFQty},
+								   		#{quaMaterialChk},
+								   		#{quaMaterialChkDate},
+								   		#{erpMaterialOrderCode})
+	</insert>
+	<!-- 검사 후 전표번호 발급해서 자재입출고로(MATIN-*** 전표번호) -->
+	<insert id="insertQuaChkMatIn">
+		INSERT INTO mat_inout  		  (mat_inout_statement,
+									   com_material_code,
+									   mat_inout_date,
+									   mat_inout_gubun,
+									   mat_inout_quantity,
+									   mat_lot_no,
+									   mat_inout_unit_price,
+									   mat_inout_price)
+							VALUES  	(#{quaMaterialStatement},
+										#{comMaterialCode},
+								   		#{quaMaterialChkDate},
+								   		'INOUT002',
+								   		#{quaMaterialPQty},
+								   		#{matLotNo},
+								   		#{erpMaterialUnitPrice},
+								   		#{matInoutPrice})
+	</insert>
+	
+	
+	
+	
+	<!-- 자재검사 완료(발주코드로 구분하긴 했는데, 발주 하나에 자재 무조건 하나였나? -->
+	<update id="updateQuaChk">
+		UPDATE 		qua_material_chk
+		SET			qua_material_statement = #{quaMaterialStatement},
+					qua_material_date = #{erpMaterialRequestDate},
+					erp_vendor_code = #{erpVendorCode},
+					com_material_code = #{comMaterialCode},
+					qua_material_p_qty = #{quaMaterialPQty},
+					qua_material_f_qty = #{quaMaterialFQty},
+					qua_material_chk = #{quaMaterialChk},
+					qua_material_chk_date = #{quaMaterialChkDate}
+					
+		WHERE	erp_material_order_code = #{erpMaterialOrderCode}
+	</update>
+	
+	<!-- 삭제 (전표번호로 구분하면 검사완료 하지 않은(더미데이터) 삭제가 안되므로 발주코드로 구분) -->
+	<delete id="deleteQuaChk">
+		DELETE FROM	qua_material_chk
+		WHERE		erp_material_order_code = #{erpMaterialOrderCode}
+	</delete>
+	
 </mapper>

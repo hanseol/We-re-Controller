@@ -74,7 +74,7 @@ public class QuaChkController {
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
-  	
+
 
 //--------------------------------------관리 페이지--------------------------------------    
     
@@ -86,7 +86,7 @@ public class QuaChkController {
         return "mes/qua/quaChk/matrQuaForm.page";
     }
   	
-  	//자재입출고 [관리] 등록 수정 삭제 
+  	//자재입출고 [관리] 등록 수정 삭제
     @PutMapping("/ajax/modifyQuaChk")
 	@ResponseBody
 	public void modifyQuaChk(@RequestBody GridDataVO gd) throws Exception {
