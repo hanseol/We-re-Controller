@@ -1,19 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-</style>
 
 <!-- 타이틀 -->
 <div class="content-fluid">
@@ -38,19 +24,21 @@
 			<div class="row">
 				<form>
 					<div class="col-md-6">
-						* 작업일자 <input type="date" id="proPlanDate" name="proPlanDate"><br><br>
-						* 작업지시코드 <input type="text" id="comProductCode " name="comProductCode">
-						<a href="${pageContext.request.contextPath}/proPlanName.do" rel="modal:open">						
+						* 작업일자 <input type="date" id="proWorkDate" name="proWorkDate"><br><br>
+						* 작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode">
+						<!-- 지시검색모달 -->
+						<a href="${pageContext.request.contextPath}/proOrderSearch.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
                  		</a>
+						
 						<!-- 모달창 -->
 						<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a>
+					
 					</div>
 					<div class="col-md-6" align="right">	
-						<button type="button" class="btn btn-success">조회</button>
-						<button type="reset" class="btn btn-danger">새자료</button>
-						<button type="button" class="btn btn-warning" id="insertRow">추가저장</button>
-						<button type="button" class="btn btn-info" id="updateRow">수정저장</button>
+						<button type="button" class="btn btn-success" id="findRow">조회</button>
+						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+						<button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button>
 					</div> 
 				</form>
 			</div>
@@ -79,9 +67,57 @@
 		</div>
 	</div>
 </div>
+
+
+<!-- 디테일-디테일테이블 -->
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-7">
+					<p class="panel-subtitle">자재정보</p>
+					<div class="panel-body">
+						<div id="matInfogrid"></div>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<p class="panel-subtitle">로트정보</p>	
+					<div class="panel-body">
+						<div id="matLotgrid"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function() {
 
+		
+		// M 조회버튼
+		$("#findRow").on("click", function() {
+			var proWorkDate = $("#proWorkDate").val();
+			var proOrderCode = $("#proOrderCode").val();
+			
+			var readParams = {
+					'proWorkDate' : proWorkDate,
+					'proOrderCode' : proOrderCode
+			};
+			grid.readData(1, readParams, true);
+		});
+		
+		/* //M 삭제버튼
+		$(document).on("click", "button[id=deleteOrder]", function() {
+			
+		});
+		
+		//D 삭제버튼
+		$(document).on("click", "button[id=deleteRow]", function() {
+			
+		}); 
+ */
+		//D 행추가버튼
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData = [ {
 				comProductCode : "",
@@ -96,11 +132,7 @@
 				proWorkDate : "" ,
 				proOrderSeq : ""
 			} ];
-			
-			grid.appendRow(rowData, {
-				at : grid.getRowCount(),
-				focus : true
-			});
+			grid.appendRow(rowData, { at : grid.getRowCount(), focus : true });
 			grid.enable();
 		});
 		
@@ -108,14 +140,14 @@
 		$(document).on("click", "button[id=modifyRow]", function() {
 			grid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
-		})
+		});
 		
 	
-		
+		//dataSource	
 		const dataSource = {
 			api : {
-				readData : { url : '${pageContext.request.contextPath}/proOrder/prodView', method : 'GET' },
-				modifyData : { url: '${pageContext.request.contextPath}/proOrder/prodView', method : 'PUT' }
+				readData : { url : '${pageContext.request.contextPath}/ajax/proOrder/prodFormList', method : 'GET' },
+				modifyData : { url: '${pageContext.request.contextPath}/ajax/proOrder/prodView', method : 'PUT' }
 			},
 			initialRequest : false,
 			contentType : "application/json"
@@ -128,13 +160,12 @@
 			columns : [ {
 				header : '제품코드',
 				name : 'erpProductCode',
-				editor : 'text'
+				validation: {
+		               required:true
+		            }
 			}, {
 				header : '제품명',
 				name : 'erpProductName'
-			}, {
-				header : '주문번호',
-				name : 'erpOrderCode'
 			}, {
 				header : '구분',
 				name : 'proOrderGubun',
@@ -147,6 +178,9 @@
 		              ]
 		            }
 		          }
+			}, {
+				header : '주문번호',
+				name : 'erpOrderCode'
 			}, {
 				header : '납기일자',
 				name : 'erpProductDeadline'
@@ -178,21 +212,17 @@
 			} ]
 		});
 	
-	grid.on('response', ev => {
-		  const {response} = ev.xhr;
-		  const responseObj = JSON.parse(response);
-
-		  console.log('result : ', responseObj.result);
-		  console.log('data : ', responseObj.data);
-		});
 	
-	grid.on('check', (ev) => {
-		  alert(`check: ${ev.rowKey}`);
+	//디테일의 제품코드cell 더블클릭으로 모달창 띄우기	
+	grid.on('dblclick', ev => {
+		if(ev.columnName == 'erpProductCode'){
+			proPlanRowKey = ev.rowKey;
+			
+			$('#showModal').click();
+		}
 	});
 	
-	
-	
-	// 그리드 테마
+	// 그리드 테마 	
 	tui.Grid.applyTheme('clean', 
 		{
 			row: {
@@ -209,7 +239,7 @@
 					background: "#d5dae1"
 				}
 			}
-	});
+	}); 
 	
 	
 }); //end of document ready

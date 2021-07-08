@@ -60,6 +60,53 @@
 				]]>
 	</select>
 	
+	<!-- 생산지시 리스트 조회(모달) -->
+	<select id="selectOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT pro_order_code
+		     , pro_order_date
+		     ,pro_order_gubun
+		FROM pro_order
+	</select>	
+	
+	
+	<!-- proForm 전체조회 -->
+	<select id="selectOrderForm" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT     od.erp_product_code
+						         , od.erp_product_name
+						         , om.pro_order_gubun
+						         , p.erp_order_code
+						         , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+						         , p.erp_order_qty
+						         , od.pro_order_qty
+						         , m.mac_hour_qty as UPH
+						         , od.pro_order_day_qty
+						         , od.pro_order_expect_qty
+						         , TO_CHAR(od.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+						         , od.pro_order_seq
+						         , od.pro_order_code
+						FROM     pro_order_detail od
+						       , pro_order om
+						       , pro_plan_detail p
+						       , mac m     
+						WHERE  od.pro_order_code = om.pro_order_code
+						  AND  od.pro_plan_detail_code = p.pro_plan_detail_code
+						  AND  od.erp_product_code = m.com_product_code							  
+							<if test="proWorkDate != null and proWorkDate != ''"> AND
+								od.pro_work_date LIKE '%' || #{proWorkDate} || '%'
+							</if>
+							<if test="proOrderCode != null and proOrderCode != ''"> AND
+								od.pro_order_code LIKE '%' || #{proOrderCode} || '%'
+							</if>
+						ORDER BY 
+							od.pro_plan_detail_code DESC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+
 	
 	
 	<!-- prodView 전체조회 -->

@@ -12,7 +12,7 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					계획일자<input type="date" id="startDate" name="startDate"> 
+					작업일자<input type="date" id="startDate" name="startDate"> 
 					   ~ <input type="date" id="endDate" name="endDate">
 					<a id="findRow"><i class="fa fa-search" href="proOrderSearch"></i></a>
 				</div> <br/>
@@ -33,22 +33,20 @@ $(document).ready(function() {
 	
 	//확인버튼 
 	$(document).on("click","button[id=ok]", function(){
-		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
-		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
-
 		var chkRowKeys = gridModal.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			proPlanCode = gridModal.getValue(chkRowKeys[i],'proPlanCode');
-			proPlanName = gridModal.getValue(chkRowKeys[i],'proPlanName');
-			proPlanDate = gridModal.getValue(chkRowKeys[i],'proPlanDate');
+			proOrderCode = gridModal.getValue(chkRowKeys[i],'proOrderCode');
+			proOrderDate = gridModal.getValue(chkRowKeys[i],'proOrderDate');
+			proOrderGubun = gridModal.getValue(chkRowKeys[i],'proOrderGubun');
 			
-			console.log(proPlanCode);
-			console.log(proPlanDate);
+			console.log(proOrderCode);
+			console.log(proOrderDate);
+			console.log(proOrderGubun);
 			
-			$("#proPlanName").val(proPlanName);
-			$("#proPlanCode").val(proPlanCode);
-			$("#date").val(proPlanDate);
+			$("#proOrderCode").val(proOrderCode);
+			$("#proOrderDate").val(proOrderDate);
+			$("#proOrderGubun").val(proOrderGubun);
 			
 		}
 	}); //end of click button
@@ -57,18 +55,18 @@ $(document).ready(function() {
 	
 	//검색버튼
 	$(document).on("click", "a[id=findRow]", function() {
-				var proPlanCode = $("#proPlanCode").val();
+				var proOrderCode = $("#proOrderCode").val();
 				var startDate = $("#startDate").val();
 				var endDate = $("#endDate").val();
-				var proPlanDate = $("#proPlanDate").val();
-				var proPlanName = $("#proPlanName").val();
+				var proOrderDate = $("#proOrderDate").val();
+				var proOrderGubun = $("#proOrderGubun").val();
 				
 				var readParams = {
-						'proPlanCode' : proPlanCode,
-						'proPlanName' : proPlanName,
+						'proOrderCode' : proOrderCode,
+						'proOrderGubun' : proOrderGubun,
 						'startDate' : startDate,
 						'endDate' : endDate,
-						'proPlanDate' : proPlanDate
+						'proOrderDate' : proOrderDate
 					};
 				gridModal.readData(1, readParams, true);
 			}); //end of click a
@@ -77,7 +75,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/proPlanName',
+				url : '${pageContext.request.contextPath}/proOrderSearch',
 				method : 'GET'
 			}
 		},
@@ -94,14 +92,14 @@ $(document).ready(function() {
         bodyHeight :300,
         rowHeight: 30,
 		columns : [ {
-			header : '계획번호',
-			name : 'proPlanCode'
+			header : '지시번호',
+			name : 'proOrderCode'
 		}, {
-			header : '계획명',
-			name : 'proPlanName'
+			header : '지시일자',
+			name : 'proOrderDate'
 		}, {
-			header : '계획일자',
-			name : 'proPlanDate'
+			header : '지시구분',
+			name : 'proOrderGubun'
 		}]
 	});
 	
