@@ -89,8 +89,8 @@ $(document).ready(function() {
 				header : '공정명',
 				name : 'comProcessName'
 			}, {
-				header : '비고',
-				name : 'comProductUnit'
+				header : '공정설명',
+				name : 'comProcessDesc'
 			} ]
 		});
 }); //end of document ready

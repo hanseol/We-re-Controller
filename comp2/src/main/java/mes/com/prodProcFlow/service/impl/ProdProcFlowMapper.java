@@ -1,5 +1,6 @@
 package mes.com.prodProcFlow.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -29,6 +30,17 @@ public interface ProdProcFlowMapper {
     
     //공정전개
     public List<?> selectProcFlowList(ProdProcFlowVO searchVO) throws Exception;
+    
+    //모달
+    public List<?> selectProcFlowModal(ProdProcFlowVO searchVO) throws Exception;
 
+    //디테일코드 삽입
+    public void insertProcFlow(LinkedHashMap searchVO) throws Exception;
+    
+    //디테일코드 삭제
+    public void deleteProcFlow(LinkedHashMap searchVO) throws Exception;
+    
+    //디테일코드 수정
+    public void updateProcFlow(LinkedHashMap searchVO) throws Exception;
 
 }

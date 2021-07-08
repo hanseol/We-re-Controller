@@ -1,5 +1,6 @@
 package mes.com.prodProcFlow.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -46,6 +47,29 @@ public class ProdProcFlowServiceImpl extends EgovAbstractServiceImpl implements 
 	// 공정전개
 	public List<?> selectProcFlowList(ProdProcFlowVO searchVO) throws Exception {
 		return prodProcFlowDAO.selectProcFlowList(searchVO);
+	}
+	
+	// 모달
+	public List<?> selectProcFlowModal(ProdProcFlowVO searchVO) throws Exception {
+		return prodProcFlowDAO.selectProcFlowModal(searchVO);
+	}
+	
+	// 공정흐름 수정
+	public void updateProcFlow(LinkedHashMap searchVO) throws Exception {
+		prodProcFlowDAO.updateProcFlow(searchVO);
+	}
+
+	// 공정흐름 삭제
+	public void deleteProcFlow(LinkedHashMap searchVO) throws Exception {
+		prodProcFlowDAO.deleteProcFlow(searchVO);
+	}
+
+	// 공정흐름 삽입
+	public String insertProcFlow(LinkedHashMap searchVO) throws Exception {
+
+		prodProcFlowDAO.insertProcFlow(searchVO);
+
+		return null;
 	}
 
 }

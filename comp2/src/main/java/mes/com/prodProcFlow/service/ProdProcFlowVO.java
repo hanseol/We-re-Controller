@@ -62,7 +62,6 @@ public class ProdProcFlowVO extends SearchVO{
     private java.lang.String comProcessUnit;
     private java.math.BigDecimal comProcessBuha; //number
     private java.math.BigDecimal comProcessUnitPrice; //number
-    @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
     private java.lang.String comProcessLeadtime; //date
     private java.math.BigDecimal comProcessProductDay; //number
     private java.lang.String comProcessGubun;

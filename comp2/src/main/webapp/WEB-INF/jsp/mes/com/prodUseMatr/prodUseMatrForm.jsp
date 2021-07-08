@@ -261,12 +261,14 @@ let procGrid;
 		$(document).on("click", "button[id=deleteRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.removeCheckedRows(false);
+			console.log(finishEditing);
 		});
 		
 		//CRUD
 		$(document).on("click", "button[id=modifyRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('modifyData');
+			console.log(finishEditing);
 		});
 		
 

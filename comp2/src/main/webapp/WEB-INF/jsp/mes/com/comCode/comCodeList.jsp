@@ -232,6 +232,7 @@
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
+								hidden : true
 								
 							},{
 								header : '코드',
@@ -240,18 +241,22 @@
 						               required:true
 						            },
 							sortable: true ,
+							align : 'center'
 							}, {
 								header : '코드명',
 								name : 'comCodeDetailName',
-								editor : 'text'
+								editor : 'text',
+								align : 'center'
 							}, {
 								header : '코드설명',
 								name : 'comCodeDetailDesc',
-								editor : 'text'
+								editor : 'text',
+								align : 'center'
 							}, {
 								header : '표시순번',
 								name : 'comCodeDetailSeq',
-								editor : 'text'
+								editor : 'text',
+									align : 'center'
 							}, {
 								header : '사용여부',
 								name : 'comCodeDetailUsedchk',
