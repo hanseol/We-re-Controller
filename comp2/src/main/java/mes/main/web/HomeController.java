@@ -56,7 +56,7 @@ public class HomeController {
 	//모달창에 결과 값 전달
 	@RequestMapping("mes/modalTest/test")
 	@ResponseBody
-	public Map<String, Object> searchProduct(Model model, 
+	public Map<String, Object> searchProduct( 
    		@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
 		
 
@@ -64,7 +64,16 @@ public class HomeController {
     	
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
+    	
 	}
+	
+	//모달 창을 여는 버튼을 눌렀을 때 동작
+		@GetMapping("test2Modal.do")
+		public String test2Modal() {
+			
+			//모달창에 띄워줄 view페이지 전달.
+			return "mes/modalTest/test2";
+		}
 	
 
 }

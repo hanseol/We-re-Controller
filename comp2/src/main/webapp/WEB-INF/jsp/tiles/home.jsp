@@ -12,12 +12,19 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
+			한설 to do list.. <br/>
+			1. 목요일 - 설비페이지 만들기..  <br/>
+			2. 금요일 - 품질표준서 페이지 만들기.. (사진첨부...) <br/>
+			3. 토요일 - <br/>
+			4. 일요일 - <br/>
+			5. 월요일 - security 수업 열심히 듣고 권한관리 만들기... <br/>
 			<!-- 모달창띄우기 -->
 			테스트1<a href="testModal.do" rel="modal:open">
 			<i id="test1" class="fa fa-search" ></i>
 			</a>
-			테스트2<a href="salInout/searchProductLotNo.do" rel="modal:open">
+			테스트2<a href="test2Modal.do" rel="modal:open">
 			<i id="test2" class="fa fa-search" ></i>
+			</a>
 			</a>
 			<button type="button" class="btn btn-danger">새자료</button>
 			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
@@ -30,12 +37,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">to do list.<br/>
-					1.로그인 / 권한에 따라 뷰 페이지 다르게 보여주기 공유(월,화,수)<br/>
-					2.전표번호에 들어가는 seq값 매일 00:00시에 1로 reset하도록 만들어야함.(화)<br/>
-					3.네비게이션 값 고정 될 수 있도록 js 파일 만들기 (수)<br/>
-					4.grid 크기 조정 방법 공유 (수)<br/>
-					5.파일업로드 / 다운로드 <br/><br/>
+					<p class="panel-subtitle"><br/><br/>
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button" id="appendRow">추가</button>
@@ -175,9 +177,7 @@
 				}
 			});
 		
-		$("#test1").on("click", function(){
-			
-		})
+		
 		//grid.on('click', (ev) => {
 		//	  alert(ev.rowKey);
 		//});

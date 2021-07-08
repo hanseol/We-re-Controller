@@ -1,6 +1,7 @@
 package mes.board.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +78,11 @@ public class BoardController {
 	 */
 	@PutMapping("/ajax/modifyBoard")
 	@ResponseBody
-	public void modifyBoard( @RequestBody GridDataVO gd) throws Exception{
+	public Map<String, Object> modifyBoard( @RequestBody GridDataVO gd) throws Exception{
 
+		
+    	Map<String,Object> map = new HashMap<>();
+		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -119,5 +123,9 @@ public class BoardController {
 				service.deleteBoard((LinkedHashMap) deletedList.get(i));
 			}
 		}
+		
+    	map.put("result", true);
+		
+		return map;
 	}
 }
