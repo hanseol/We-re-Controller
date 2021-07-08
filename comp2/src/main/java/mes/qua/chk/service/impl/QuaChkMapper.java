@@ -19,21 +19,21 @@ import mes.qua.chk.service.QuaChkVO;
  *  Copyright (C)  All right reserved.
  */
 
-@Mapper("quaMaterialChkMapper")
+@Mapper("quaChkMapper")
 public interface QuaChkMapper {
 
 	//등록
-    public void insertQuaMaterialChk(LinkedHashMap vo) throws Exception;
+    public void insertQuaChk(LinkedHashMap vo) throws Exception;
 
     //수정
-    public void updateQuaMaterialChk(LinkedHashMap vo) throws Exception;
+    public void updateQuaChk(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public void deleteQuaMaterialChk(LinkedHashMap vo) throws Exception;
+    public void deleteQuaChk(LinkedHashMap vo) throws Exception;
 
 
     //전체리스트 조회
-    public List<?> selectQuaMatrChkList(QuaChkVO searchVO) throws Exception;
+    public List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;
 
 
 }

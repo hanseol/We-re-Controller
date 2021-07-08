@@ -20,7 +20,7 @@ import mes.main.service.SearchVO;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class MaterialOrderVO extends SearchVO{
+public class MatOrderVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
     /** ERP_MATERIAL_ORDER_CODE */

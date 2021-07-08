@@ -1,5 +1,6 @@
 package mes.mat.inout.web;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,8 +90,8 @@ public class MatInoutController {
   	//자재입출고 [관리] 등록 수정 삭제 
     @PutMapping("/ajax/modifyMatInout")
 	@ResponseBody
-	public void modifyMatInout(@RequestBody GridDataVO gd) throws Exception {
-    	
+	public Map<String, Object> modifyMatInout(@RequestBody GridDataVO gd) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -121,6 +122,9 @@ public class MatInoutController {
 				service.deleteMatInout((LinkedHashMap) deletedList.get(i));
 			}
 		}
+		map.put("result", true);
+		
+		return map;
 	}
 
 
