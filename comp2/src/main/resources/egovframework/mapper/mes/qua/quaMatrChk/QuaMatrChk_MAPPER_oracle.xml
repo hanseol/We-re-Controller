@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mes.qua.chk.service.impl.QuaMaterialChkMapper">
+<mapper namespace="mes.qua.chk.service.impl.QuaChkMapper">
 
 
 	<!-- 자재입고검사조회 전체리스트  -->
-	<select id="selectQuaMatrChkList" parameterType="mes.qua.chk.service.QuaMaterialChkVO" resultType="egovMap">
+	<select id="selectQuaMatrChkList" parameterType="mes.qua.chk.service.QuaChkVO" resultType="egovMap">
 		SELECT *
 		FROM   (
 		              SELECT a.*,
@@ -38,7 +38,7 @@
 		]]>	
 	</select>
 	<!-- 행 카운트 -->
-	<select id="selectQuaMaterialChkListTotCnt" parameterType="mes.qua.chk.service.QuaMaterialChkVO" resultType="int">
+	<select id="selectQuaMaterialChkListTotCnt" parameterType="mes.qua.chk.service.QuaChkVO" resultType="int">
 		SELECT Count(*) totcnt
 		FROM   erp_material_order e,
 		       qua_material_chk k,
