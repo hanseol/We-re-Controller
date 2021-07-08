@@ -106,32 +106,39 @@ public class ProOrderController {
     //생산지시리스트 추가, 수정, 삭제 (****수정하기)
 	@PutMapping("ajax/proOrder/modifyProdOrder")
 	@ResponseBody
-	public void modifyProdOrder(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifyProdOrder(@RequestBody GridDataVO gd) throws Exception {
 
+		Map<String, Object> map = new HashMap<>();
+		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
 
+		//수정
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
 				service.updateProOrder((LinkedHashMap) updatedList.get(i));
 			}
 		}
-
-		//시퀀스 포멧팅(pro_plan테이블) **수정하기
-		if(createdList.size() != 0) { 
-			
-			for(int i = 0; i < createdList.size(); i++) {
-			}
-			
-		 }
-
-		if (deletedList.size() != 0)
-		{
+		
+		//삭제
+		if (deletedList.size() != 0) {
 			for (int i = 0; i < deletedList.size(); i++) {
 				service.deleteProOrder((LinkedHashMap) deletedList.get(i));
 			}
-		}
+		}		
+
+		//생성
+		//시퀀스 포멧팅(pro_plan테이블) **수정하기
+		if(createdList.size() != 0) { 
+			for(int i = 0; i < createdList.size(); i++) {
+			}
+		 }
+
+
+		map.put("result", true);
+
+		return map;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package mes.pro.plan.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,8 +146,10 @@ public class ProPlanController {
     //생산계획리스트 추가, 수정, 삭제 
 	@PutMapping("proPlan/modifyProdPlan")
 	@ResponseBody
-	public void modifyProdPlan(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifyProdPlan(@RequestBody GridDataVO gd) throws Exception {
 
+		Map<String, Object> map = new HashMap<>();
+		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -192,6 +195,10 @@ public class ProPlanController {
 				}
 			}
 		 }
-		 
+		
+		map.put("result", true);
+		
+		return map;
+		
 	}
 }

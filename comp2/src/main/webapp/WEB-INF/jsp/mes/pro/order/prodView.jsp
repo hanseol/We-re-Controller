@@ -147,6 +147,9 @@
 			},{
 				header : '작업순서',
 				name : 'proOrderSeq'
+			},{
+				header : '지시일자',
+				name : 'proOrderDate'
 			} ]
 		});
 	

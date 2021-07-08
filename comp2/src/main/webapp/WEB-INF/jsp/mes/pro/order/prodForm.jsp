@@ -8,6 +8,7 @@
 	</div>
 </div>
 
+
 <!-- 관리, 조회 탭 이동 -->
 <div id="tabs">
    <ul class="nav nav-tabs" role="tablist">
@@ -24,8 +25,8 @@
 			<div class="row">
 				<form>
 					<div class="col-md-6">
-						* 작업일자 <input type="date" id="proWorkDate" name="proWorkDate"><br><br>
-						* 작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode">
+						* 지시일자 <input type="date" id="proOrderDate" name="proOrderDate">
+						<input type="hidden" id="proOrderCode" name="proOrderCode">
 						<!-- 지시검색모달 -->
 						<a href="${pageContext.request.contextPath}/proOrderSearch.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
@@ -97,11 +98,11 @@
 		
 		// M 조회버튼
 		$("#findRow").on("click", function() {
-			var proWorkDate = $("#proWorkDate").val();
+			var proOrderDate = $("#proOrderDate").val();
 			var proOrderCode = $("#proOrderCode").val();
 			
 			var readParams = {
-					'proWorkDate' : proWorkDate,
+					'proOrderDate' : proOrderDate,
 					'proOrderCode' : proOrderCode
 			};
 			grid.readData(1, readParams, true);
@@ -118,7 +119,7 @@
 		}); 
  */
 		//D 행추가버튼
-		$(document).on("click", "button[id=appendRow]", function() {
+		$("#appendRow").on("click", function() {
 			var rowData = [ {
 				comProductCode : "",
 				comProductName : "",
@@ -137,7 +138,7 @@
 		});
 		
 		// D 저장 버튼
-		$(document).on("click", "button[id=modifyRow]", function() {
+		$("#modifyRow").on("click", function() {
 			grid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
 		});
@@ -196,10 +197,10 @@
 				name : 'macHourQty'
 			}, {
 				header : '일생산량',
-				name : 'dayQty'
+				name : 'proOrderDayQty'
 			}, {
 				header : '일수',
-				name : 'dayCount',
+				name : 'proOrderExpectQty',
 				editor : 'text'
 			}, {
 				header : '작업일자',
@@ -223,7 +224,7 @@
 	});
 	
 	// 그리드 테마 	
-	tui.Grid.applyTheme('clean', 
+/* 	tui.Grid.applyTheme('clean', 
 		{
 			row: {
 	       		hover: {
@@ -240,7 +241,7 @@
 				}
 			}
 	}); 
-	
+	 */
 	
 }); //end of document ready
 </script>

@@ -63,8 +63,8 @@
 	<!-- 생산지시 리스트 조회(모달) -->
 	<select id="selectOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
 		SELECT pro_order_code
-		     , pro_order_date
-		     ,pro_order_gubun
+		     , TO_CHAR(pro_order_date, 'yyyy-MM-dd') as pro_order_date
+		     , pro_order_gubun
 		FROM pro_order
 	</select>	
 	
@@ -80,10 +80,10 @@
 						         , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
 						         , p.erp_order_qty
 						         , od.pro_order_qty
-						         , m.mac_hour_qty as UPH
+						         , m.mac_hour_qty
 						         , od.pro_order_day_qty
 						         , od.pro_order_expect_qty
-						         , TO_CHAR(od.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+						         , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
 						         , od.pro_order_seq
 						         , od.pro_order_code
 						FROM     pro_order_detail od
@@ -94,7 +94,7 @@
 						  AND  od.pro_plan_detail_code = p.pro_plan_detail_code
 						  AND  od.erp_product_code = m.com_product_code							  
 							<if test="proWorkDate != null and proWorkDate != ''"> AND
-								od.pro_work_date LIKE '%' || #{proWorkDate} || '%'
+								od.pro_work_date LIKE '%' || TO_DATE(#{proWorkDate}) || '%'
 							</if>
 							<if test="proOrderCode != null and proOrderCode != ''"> AND
 								od.pro_order_code LIKE '%' || #{proOrderCode} || '%'
@@ -125,7 +125,8 @@
 								     , m.pro_order_gubun
 								     , l.pro_material_lot 
 								     , d.pro_order_seq
-								     , d.pro_process_lot_no 
+								     , d.pro_process_lot_no
+								     , m.pro_order_date
 								FROM pro_order_detail d
 								   , pro_order m
 								   , pro_plan_detail p

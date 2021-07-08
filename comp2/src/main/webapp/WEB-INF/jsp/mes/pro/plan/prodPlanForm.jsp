@@ -1,35 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal{
-	-webkit-border-radius :0px;
-	border-radius:0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/*height: 600px;
-	max-height: 600px;*/
-}
-
-.blocker{
-	z-index: 1200;
-}
-</style>
 
 <!-- 타이틀 -->
 <div class="content-fluid">
@@ -39,8 +9,6 @@
 </div>
 
 
-
-
 <!-- 관리, 조회 탭 이동 -->
 <div id="tabs">
    <ul class="nav nav-tabs" role="tablist">
@@ -48,11 +16,6 @@
      <li class=""><a onclick='location.href="ProdPlanView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
    </ul>
 </div>
-
-
-
-
-
 
 
 <!-- 마스터 테이블 -->
@@ -81,7 +44,6 @@
 		</div>
 	</div>
 </div>
-
 
 
 <!-- 디테일 테이블 -->
@@ -114,7 +76,7 @@
 	$(document).ready(function() {
 
 		//M 조회 버튼
-		$(document).on("click", "button[id=findRow]", function() {
+		$("#findRow").on("click", function() {
 	               var date = $("#date").val();
 	               var proPlanCode = $("#proPlanCode").val();
 	               
@@ -126,7 +88,7 @@
 	            });
 		 
 		//D 저장 버튼
-		$(document).on("click", "button[id=modifyRow]", function () {
+		$("#modifyRow").on("click", function () {
 			var date = $("#date").val();
             var proPlanName = $("#proPlanName").val();
             
@@ -143,20 +105,20 @@
 		 
 		
 		//M 삭제버튼 (계획을 삭제)
-		$(document).on("click", "button[id=deletePlan]", function() {
+		$("#deletePlan").on("click", function() {
 			proPlanGrid.checkAll(true);
 			proPlanGrid.removeCheckedRows(true);
 			proPlanGrid.request('modifyData');
 		})
 		    
 		//D 삭제 버튼 
-		$(document).on("click", "button[id=deleteRow]", function() {
+		$("#deleteRow").on("click", function() {
 			proPlanGrid.removeCheckedRows(true);
 			proPlanGrid.request('modifyData');
 		});
 		
 		//D 추가 버튼
-		$(document).on("click", "button[id=appendRow]", function() {
+		$("#appendRow").on("click", function() {
 			var rowData = {
 				erpCustomerCode : "",
 				erpProductCode : "",
