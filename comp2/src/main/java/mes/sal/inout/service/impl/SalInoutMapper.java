@@ -77,6 +77,11 @@ public interface SalInoutMapper {
     //반품목록 조회
     public List selectSalReturnList(SalInoutVO vo) throws Exception;
     
+    //반품목록 관리
+    public void insertSalReturn(LinkedHashMap vo) throws Exception;
+    public void updateSalReturn(LinkedHashMap vo) throws Exception;
+    public void deleteSalReturn(LinkedHashMap vo) throws Exception;
+    
     
     //모달 : 제품코드 조회
   	public List<?> searchProductList(SalInoutVO searchVO) throws Exception;

@@ -127,6 +127,27 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public List selectSalReturnList(SalInoutVO vo) throws Exception {
     	return salInoutDAO.selectSalReturnList(vo);
 	}
+    
+    //반품목록 관리
+    @Override
+	public String insertSalReturn(LinkedHashMap vo) throws Exception {
+			LOGGER.debug(vo.toString());
+			LOGGER.debug(vo.toString());
+			    	
+			salInoutDAO.insertSalReturn(vo);
+			
+			return null;
+	}
+
+	@Override
+	public void updateSalReturn(LinkedHashMap vo) throws Exception {
+		salInoutDAO.updateSalReturn(vo);
+	}
+
+	@Override
+	public void deleteSalReturn(LinkedHashMap vo) throws Exception {
+		salInoutDAO.deleteSalReturn(vo);
+	}
 
     
     
@@ -184,6 +205,8 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchInoutStatementListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.searchInoutStatementListTotCnt(searchVO);
 	}
+
+	
 
 	
 	

@@ -3,6 +3,7 @@
 
 <div class="modal">
 <!-- 210707 김현경 전표번호 모달창 -->
+<!-- 210708 하지만 쓰지 않는 것으로 결정... -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">

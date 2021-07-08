@@ -68,10 +68,10 @@
 					<input type="date" id="returnDate" name="returnDate">			
 				</div>
 				<div class="col-md-6">
-					전표번호
-					<input type="text" id="inoutStatement" name="inoutStatement">
-					<a id="searchInoutStatement" href="searchInoutStatement.do">
-					<i class="fa fa-search"></i></a>			
+					완제품 LOT_NO
+					<input type="text" id="productLotNo" name="productLotNo">	
+					<a id="searchProductLotNo" href="searchProductLotNo.do">						
+                    <i class="fa fa-search"></i></a>			
 				</div>
 			</div>
 		</div>
@@ -85,6 +85,10 @@
 			<div class="row">
 				<div class="col-md-7">
 					<p class="panel-subtitle">반품 목록</p>
+				</div>
+				<div class="col-md-5" align="right">
+					<button type="button" id="appendRow">추가</button>
+					<button type="button" id="deleteRow">삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -101,11 +105,11 @@ let mgrid; //모달 그리드
 		$(document).on("click", "button[id=search]",
 				function() {
 					var returnDate = $("#returnDate").val();
-					var inoutStatement = $("#inoutStatement").val();
-					console.log(returnDate, inoutStatement);
+					var productLotNo = $("#productLotNo").val();
+					console.log(returnDate, productLotNo);
 					var readParams = {
 						'salInoutDate' : returnDate,
-						'salInoutStatement' : inoutStatement
+						'proProcessLotNo' : productLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -114,12 +118,11 @@ let mgrid; //모달 그리드
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData =[{
 					salInoutDate : "",
-					salInoutGubun : "",
 					salInoutCode : "",
 					comProductCode : "",
 					salInoutQuantity : "",
 					proProcessLotNo : "",
-					salWriteDate : ""
+					salWriteDate : "",
 			}];
 			grid.appendRow(rowData, {
 				at : 0,
@@ -144,6 +147,10 @@ let mgrid; //모달 그리드
 				readData : {
 					url : '${pageContext.request.contextPath}/ajax/sal/readReturnProduct',
 					method : 'GET'
+				},
+				modifyData : {
+					url : '${pageContext.request.contextPath}/ajax/modifySalReturnList',
+					method : 'PUT'
 				}
 			},
 			initialRequest: false, 
@@ -169,8 +176,8 @@ let mgrid; //모달 그리드
 					} 
 				}
 			}, {
-				header : '전표번호',
-				name : 'salInoutStatement',
+				header : '완제품 LOT_NO',
+				name : 'proProcessLotNo',
 				editor : 'text'
 			}, {
 				header : '업체코드',
@@ -189,20 +196,33 @@ let mgrid; //모달 그리드
 	
 		mgrid = grid;
 		
-		//모달 클릭 이벤트
-		//모달 : 전표번호
-	  	grid.on('dblclick', ev => {
-	      if(ev.columnName == 'salInoutStatement'){  
-	    	  inoutStatementSearch(ev.rowKey);
-	    	  //더블클릭 이벤트 -> inoutStatementSearch 함수 실행
-	      }
-	   });
+		 //모달 : 제품코드
+		   grid.on('dblclick', ev => {
+		      if(ev.columnName == 'comProductCode'){  
+		    	  productCodeSearch(ev.rowKey);
+		    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
+		      }
+		   });
+
+		//모달 : 완제품 LOT_NO
+		   grid.on('dblclick', ev => {
+		      if(ev.columnName == 'proProcessLotNo'){    
+		    	  productLotNoSearch(ev.rowKey);         
+		      }
+		   });
+		 
+			$('#searchProductLotNo').click(function(event) {
+			 	productLotNoSearch(-1);
+			});
 		
-		$('#searchInoutStatement').click(function(event) {
-			 inoutStatementSearch(-1);
-		});
-		
-		
+			//모달 : 거래처코드
+		   	grid.on('dblclick', ev => {
+		      if(ev.columnName == 'salInoutCode'){  
+		    	  customerCodeSearch(ev.rowKey);
+		    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
+		      }
+		   });
+
 	
 	// option form reset  
 	 $(document).ready(function() {  
@@ -217,14 +237,38 @@ let mgrid; //모달 그리드
 
 var rowId;
 
-//전표번호 모달
-function inoutStatementSearch(c) {
+//제품코드 모달
+function productCodeSearch(c) {
 	  rowId = c;
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchInoutStatement.do", function(html) {
+	  $.get("searchProductCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
+//완제품 LOT_NO 모달
+function productLotNoSearch(c) {
+	  rowId = c;
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchProductLotNo.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
+//업체코드 모달
+function customerCodeSearch(c) {
+	  rowId = c;
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchCustomerCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
