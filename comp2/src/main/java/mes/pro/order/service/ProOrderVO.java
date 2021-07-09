@@ -57,8 +57,15 @@ public class ProOrderVO extends SearchVO{
     private String macHourQty;
     private String dayQty;
     private String dayCount;
-    //추가
+    
     private String proMaterialLot;
+    
+    private String comProductCode;
+    
+    private String comMaterialCode;
+    private String comMaterialName;
+    private String comProcessCode;
+    
     
     
 

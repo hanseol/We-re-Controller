@@ -12,7 +12,7 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					작업일자<input type="date" id="startDate" name="startDate"> 
+					지시일자<input type="date" id="startDate" name="startDate"> 
 					   ~ <input type="date" id="endDate" name="endDate">
 					<a id="findRow"><i class="fa fa-search" href="proOrderSearch"></i></a>
 				</div> <br/>

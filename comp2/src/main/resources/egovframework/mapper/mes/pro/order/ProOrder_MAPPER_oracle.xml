@@ -60,14 +60,59 @@
 				]]>
 	</select>
 	
-	<!-- 생산지시 리스트 조회(모달) -->
+	
+	
+	<!-- 2번째 그리드의 제품BOM 정보 -->
+	<select id="selectmatBomList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT b.com_product_code
+		     , p.com_product_name
+		     , b.com_material_code
+		     , m.com_material_name
+		     , b.com_process_code
+		FROM  com_bom b
+		    , com_product p
+		    , com_material m
+		WHERE  b.com_product_code = p.com_product_code 
+		   AND b.com_material_code = m.com_material_code
+		   AND b.com_product_code = #{comProductCode}
+		ORDER BY b.com_material_code
+	</select>
+	
+	
+	
+	<!-- 생산지시: 생산지시관리에서 입력한 지시 조회(모달) -->
 	<select id="selectOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
 		SELECT pro_order_code
 		     , TO_CHAR(pro_order_date, 'yyyy-MM-dd') as pro_order_date
 		     , pro_order_gubun
 		FROM pro_order
-	</select>	
+		WHERE 1=1
+			<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
+				pro_order_date BETWEEN #{startDate} AND #{endDate} 
+			</if>	
+	</select>
 	
+	<!-- 생산지시: 생산계획에 작성된 제품 조회(모달) -->	
+	<select id="selectPlanProductList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT	   pd.pro_plan_detail_code
+			     , pd.erp_product_code
+			     , pd.erp_product_name
+			     , pd.erp_order_code
+			     , pd.erp_product_deadline
+			     , pd.erp_order_qty
+			     , m.mac_hour_qty
+			     , (m.mac_hour_qty*24) as pro_order_day_qty
+		FROM 	  pro_plan_detail pd
+		   		, mac m 
+		WHERE 	  pd.erp_product_code = m.com_product_code
+			<if test="erpProductCode != null and erpProductCode != ''"> AND
+				pd.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+			</if>
+			<if test="erpProductName != null and erpProductName != ''"> AND
+				pd.erp_product_name LIKE '%' || #{erpProductName} || '%'
+			</if>
+		ORDER BY  pd.pro_plan_detail_code
+	</select>
 	
 	<!-- proForm 전체조회 -->
 	<select id="selectOrderForm" resultType="egovMap">
@@ -86,6 +131,7 @@
 						         , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
 						         , od.pro_order_seq
 						         , od.pro_order_code
+						         , om.pro_order_date
 						FROM     pro_order_detail od
 						       , pro_order om
 						       , pro_plan_detail p
@@ -93,8 +139,8 @@
 						WHERE  od.pro_order_code = om.pro_order_code
 						  AND  od.pro_plan_detail_code = p.pro_plan_detail_code
 						  AND  od.erp_product_code = m.com_product_code							  
-							<if test="proWorkDate != null and proWorkDate != ''"> AND
-								od.pro_work_date LIKE '%' || TO_DATE(#{proWorkDate}) || '%'
+							<if test="proOrderDate != null and proOrderDate != ''"> AND
+								om.pro_order_date LIKE '%' || TO_DATE(#{proOrderDate}) || '%'
 							</if>
 							<if test="proOrderCode != null and proOrderCode != ''"> AND
 								od.pro_order_code LIKE '%' || #{proOrderCode} || '%'
@@ -126,7 +172,7 @@
 								     , l.pro_material_lot 
 								     , d.pro_order_seq
 								     , d.pro_process_lot_no
-								     , m.pro_order_date
+								     , TO_CHAR(m.pro_order_date, 'yyyy/MM/dd') as pro_order_date
 								FROM pro_order_detail d
 								   , pro_order m
 								   , pro_plan_detail p

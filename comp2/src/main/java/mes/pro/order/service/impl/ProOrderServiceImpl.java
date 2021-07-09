@@ -140,5 +140,20 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	public List<?> selectOrderList(ProPlanVO proOrderVO) {
 		return proOrderDAO.selectOrderList(proOrderVO);
 	}
+
+	@Override
+	public List<?> selectPlanProductList(ProOrderVO proOrderVO) {
+		return proOrderDAO.selectPlanProductList(proOrderVO);
+	}
+
+	@Override
+	public List<?> selectOrderList(ProOrderVO searchVO) {
+		return proOrderDAO.selectOrderList(searchVO);
+	}
+
+	@Override
+	public List<?> selectmatBomList(ProOrderVO searchVO) {
+		return proOrderDAO.selectmatBomList(searchVO);
+	}
     
 }

@@ -58,7 +58,6 @@ public class ProOrderController {
     public String prodView(Model model){
         return "mes/pro/order/prodView.page";
     }
-    
     //생산지시리스트 조회
     @RequestMapping("proOrder/prodView")
     @ResponseBody
@@ -76,8 +75,6 @@ public class ProOrderController {
     public String prodForm(Model model){
         return "mes/pro/order/prodForm.page";
     }
-        
-    
     //생산지시관리 페이지에서 리스트 조회
     @RequestMapping("ajax/proOrder/prodFormList")
     @ResponseBody
@@ -86,21 +83,45 @@ public class ProOrderController {
     	return comFunc.sendResult(list);
     }
     
-    
-    //모달 호출(생산지시코드로 검색)
+    //모달 호출1(생산지시코드로 검색)
     @GetMapping("proOrderSearch.do")
     public String proOrderSearch() {
     	return "mes/pro/modal/proOrderSearch";
     }
-    
-    //모달 값 뿌리기(생산지시코드로 검색)
+    //모달 값 뿌리기1(생산지시코드로 검색)
     @RequestMapping("proOrderSearch")
     @ResponseBody
-    public Map<String, Object> proOrderSearch(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception {
+    public Map<String, Object> proOrderSearch(@ModelAttribute("searchVO") ProOrderVO searchVO) throws Exception {
     	List<?> list = service.selectOrderList(searchVO);
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
+
+    //모달 호출2(생산계획에서 작성된 제품리스트)
+    @GetMapping("planProductSearch.do")
+    public String planProductSearch() {
+    	return "mes/pro/modal/planProductSearch";
+    }
+    //모달 값 뿌리기2(생산계획에서 작성된 제품리스트)
+    @RequestMapping("planProductSearch")
+    @ResponseBody
+    public Map<String, Object> planProductSearch(@ModelAttribute("searchVO") ProOrderVO searchVO){
+    	List<?> list = service.selectPlanProductList(searchVO);
+    	comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
+    
+    // 2번 그리드에 값 뿌리기
+    @RequestMapping("matBomList")
+    @ResponseBody
+    public Map<String, Object> matBomList(@ModelAttribute("searchVO") ProOrderVO searchVO) {
+    	List<?> list = service.selectmatBomList(searchVO);
+    	comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
+    
+    
+    
     
     
     //생산지시리스트 추가, 수정, 삭제 (****수정하기)

@@ -183,12 +183,11 @@ public class ProPlanController {
 				((LinkedHashMap)createdList.get(0)).put("proPlanCode", ppId);
 				service.insertProPlanM((LinkedHashMap)createdList.get(0));
 				for(int i = 0; i < createdList.size(); i++) {
-					((LinkedHashMap)createdList.get(i)).put("proPlanCode", ppId);
+					/* ((LinkedHashMap)createdList.get(i)).put("proPlanCode", ppId); */
 					((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
 					service.insertProPlan((LinkedHashMap)createdList.get(i)); 
 				}
-			}else {
-				
+			} else {				
 				for(int i = 0; i < createdList.size(); i++) {
 					((LinkedHashMap)createdList.get(i)).put("proPlanDetailCode", proPlanCodeDetailService.getNextStringId());
 					service.insertProPlan((LinkedHashMap)createdList.get(i)); 

@@ -3,7 +3,7 @@
 
 
 
-<!-- 생산계획용 모달 -->
+<!-- 생산지시용 모달 -->
 
 
 
@@ -40,32 +40,36 @@ var gridModal;
 $(document).ready(function() {
 	
 	//확인버튼
-	$(document).on("click","button[id=ok]", function(){
-		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
-		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
+	$("#ok").on("click", function(){
 
 		var chkRowKeys = gridModal.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
-			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
+			proPlanDetailCode = gridModal.getValue(chkRowKeys[i],'proPlanDetailCode');
 			erpProductCode = gridModal.getValue(chkRowKeys[i],'erpProductCode');
 			erpProductName = gridModal.getValue(chkRowKeys[i],'erpProductName');
-			erpOrderQty = gridModal.getValue(chkRowKeys[i],'erpOrderQty');
+			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
 			erpProductDeadline = gridModal.getValue(chkRowKeys[i],'erpProductDeadline');
-			erpCustomerCode = gridModal.getValue(chkRowKeys[i],'erpCustomerCode');
+			erpOrderQty = gridModal.getValue(chkRowKeys[i],'erpOrderQty');
+			macHourQty = gridModal.getValue(chkRowKeys[i],'macHourQty');
+			proOrderDayQty = gridModal.getValue(chkRowKeys[i],'proOrderDayQty');
 			
-			console.log(erpOrderCode);
+			console.log(proPlanDetailCode);
 			console.log(erpProductCode);
 			console.log(erpProductName);
-			console.log(erpOrderQty);
+			console.log(erpOrderCode);
 			console.log(erpProductDeadline);
-			console.log(erpCustomerCode);
+			console.log(erpOrderQty);
+			console.log(macHourQty);
+			console.log(proOrderDayQty);
 			
-			proPlanGrid.setValue(proPlanRowKey, 'erpProductCode', erpProductCode, false);
-			proPlanGrid.setValue(proPlanRowKey, 'erpOrderCode', erpOrderCode, false);
-			proPlanGrid.setValue(proPlanRowKey, 'erpProductName', erpProductName, false);
-			proPlanGrid.setValue(proPlanRowKey, 'erpOrderQty', erpOrderQty, false);
-			proPlanGrid.setValue(proPlanRowKey, 'erpProductDeadline', erpProductDeadline, false);
-			proPlanGrid.setValue(proPlanRowKey, 'erpCustomerCode', erpCustomerCode, false);
+			proOrdergrid.setValue(proOrderRowKey, 'proPlanDetailCode', proPlanDetailCode, false);
+			proOrdergrid.setValue(proOrderRowKey, 'erpOrderCode', erpOrderCode, false);
+			proOrdergrid.setValue(proOrderRowKey, 'erpProductName', erpProductName, false);
+			proOrdergrid.setValue(proOrderRowKey, 'erpProductCode', erpProductCode, false);
+			proOrdergrid.setValue(proOrderRowKey, 'erpProductDeadline', erpProductDeadline, false);
+			proOrdergrid.setValue(proOrderRowKey, 'erpOrderQty', erpOrderQty, false);
+			proOrdergrid.setValue(proOrderRowKey, 'macHourQty', macHourQty, false);
+			proOrdergrid.setValue(proOrderRowKey, 'proOrderDayQty', proOrderDayQty, false);
 		}
 	});
 	
@@ -87,7 +91,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/erpProductSearch',
+				url : '${pageContext.request.contextPath}/planProductSearch',
 				method : 'GET'
 			}
 		},
@@ -104,8 +108,8 @@ $(document).ready(function() {
         bodyHeight :300,
         rowHeight: 30,
 		columns : [ {
-			header : '주문코드',
-			name : 'erpOrderCode'
+			header : '계획디테일코드',
+			name : 'proPlanDetailCode'
 		}, {
 			header : '제품코드',
 			name : 'erpProductCode'
@@ -113,25 +117,25 @@ $(document).ready(function() {
 			header : '제품명',
 			name : 'erpProductName'
 		}, {
-			header : '주문량',
-			name : 'erpOrderQty'
+			header : '주문코드',
+			name : 'erpOrderCode'
 		}, {
 			header : '납기일자',
 			name : 'erpProductDeadline',
 			hidden : true
 		}, {
-			header : '고객사코드',
-			name : 'erpCustomerCode',
-			hidden : true
-		} /*,  {
-			header : '예상소요량',
-			name : 'proPlanExpectQty',
+			header : '주문량',
+			name : 'erpOrderQty',
 			hidden : true
 		}, {
-			header : '예상일',
-			name : 'proPlanDayQty',
+			header : 'UPH',
+			name : 'macHourQty',
 			hidden : true
-		}  */]
+		}, {
+			header : '일생산량',
+			name : 'proOrderDayQty',
+			hidden : true
+		}]
 	});
 	
 	

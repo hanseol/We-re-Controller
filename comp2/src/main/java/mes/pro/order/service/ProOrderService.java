@@ -72,5 +72,11 @@ public interface ProOrderService {
 
 	List<?> selectOrderList(ProPlanVO proOrderVO);
 
+	List<?> selectPlanProductList(ProOrderVO searchVO);
+
+	List<?> selectOrderList(ProOrderVO searchVO);
+
+	List<?> selectmatBomList(ProOrderVO searchVO);
+
     
 }

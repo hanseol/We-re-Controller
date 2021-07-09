@@ -25,15 +25,15 @@
 			<div class="row">
 				<form>
 					<div class="col-md-6">
-						* 지시일자 <input type="date" id="proOrderDate" name="proOrderDate">
-						<input type="hidden" id="proOrderCode" name="proOrderCode">
+						* 지시일자 <input type="date" id="proOrderDate" name="proOrderDate"> <br/><br/>
+						* 작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode" readonly>
 						<!-- 지시검색모달 -->
 						<a href="${pageContext.request.contextPath}/proOrderSearch.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
                  		</a>
 						
 						<!-- 모달창 -->
-						<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a>
+						<a id="showModal" href="${pageContext.request.contextPath}/planProductSearch.do" rel="modal:open"></a>
 					
 					</div>
 					<div class="col-md-6" align="right">	
@@ -75,14 +75,23 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
-				<div class="col-md-7">
+				<div class="col-md-6">
 					<p class="panel-subtitle">자재정보</p>
+					<div>
+						제품코드 <input type="text" id="comProductCode" name="comProductCode" readonly>
+						제품명   <input type="text" id="comProductName" name="comProductName" readonly>
+						<!-- 지시량  <input type="text" id="proOrderSeq" name="proOrderSeq" readonly> -->
+					</div>
 					<div class="panel-body">
 						<div id="matInfogrid"></div>
 					</div>
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-6">
 					<p class="panel-subtitle">로트정보</p>	
+					<div>
+						자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" readonly>
+						자재명   <input type="text" id="comMaterialName" name="comMaterialName" readonly>
+					</div>
 					<div class="panel-body">
 						<div id="matLotgrid"></div>
 					</div>
@@ -93,9 +102,10 @@
 </div>
 
 <script>
-	$(document).ready(function() {
+var proOrdergrid;
+var proOrderRowKey;
 
-		
+	$(document).ready(function() {
 		// M 조회버튼
 		$("#findRow").on("click", function() {
 			var proOrderDate = $("#proOrderDate").val();
@@ -105,7 +115,7 @@
 					'proOrderDate' : proOrderDate,
 					'proOrderCode' : proOrderCode
 			};
-			grid.readData(1, readParams, true);
+			proOrdergrid.readData(1, readParams, true);
 		});
 		
 		/* //M 삭제버튼
@@ -116,45 +126,50 @@
 		//D 삭제버튼
 		$(document).on("click", "button[id=deleteRow]", function() {
 			
-		}); 
- */
+		});  */
+
 		//D 행추가버튼
 		$("#appendRow").on("click", function() {
 			var rowData = [ {
-				comProductCode : "",
-				comProductName : "",
-				proOrderCode : "",
-				erpProductDeadline : "",
+				erpProductCode : "",
+				erpProductName : "",
+				proOrderGubun : "",
+				erpOrderCode : "",
+				erpProductDeadline : "" ,
 				erpOrderQty : "" ,
 				proOrderQty : "" ,
 				macHourQty : "" ,
-				dayQty : "" ,
-				dayCount : "" ,
-				proWorkDate : "" ,
-				proOrderSeq : ""
+				proOrderDayQty : "" ,
+				proOrderExpectQty : "" ,
+				proWorkDate : "",
+				proOrderSeq : "",
+				proPlanDetailCode : ""
 			} ];
-			grid.appendRow(rowData, { at : grid.getRowCount(), focus : true });
-			grid.enable();
+			proOrdergrid.appendRow(rowData, { at : proOrdergrid.getRowCount(), focus : true });
+			proOrdergrid.enable();
 		});
 		
 		// D 저장 버튼
 		$("#modifyRow").on("click", function() {
-			grid.finishEditing('rowKey', 'columnName');
+			proOrdergrid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
 		});
+
 		
-	
+//======================================== 1번 그리드 ======================================== 
 		//dataSource	
 		const dataSource = {
 			api : {
 				readData : { url : '${pageContext.request.contextPath}/ajax/proOrder/prodFormList', method : 'GET' },
 				modifyData : { url: '${pageContext.request.contextPath}/ajax/proOrder/prodView', method : 'PUT' }
+				
 			},
 			initialRequest : false,
 			contentType : "application/json"
 		};
 
-		const grid = new tui.Grid({
+		//그리드
+		proOrdergrid = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
@@ -199,32 +214,126 @@
 				header : '일생산량',
 				name : 'proOrderDayQty'
 			}, {
-				header : '일수',
+				header : '예상작업일수',
 				name : 'proOrderExpectQty',
 				editor : 'text'
 			}, {
 				header : '작업일자',
 				name : 'proWorkDate',
-				editor : 'text'
-			} , {
+				editor : {
+					type : 'datePicker',
+					options : {
+						format : 'YYYY/MM/dd',
+						language: 'ko'
+					} 
+				}
+			}, {
 				header : '작업순서',
 				name : 'proOrderSeq',
 				editor : 'text'
+			}, {
+				header : '생산계획디테일코드',
+				name : 'proPlanDetailCode',
+				hidden : true
 			} ]
-		});
+		}); //end of grid(1번)
 	
 	
+	
+//======================================== 2번 그리드 ======================================== 		
+		//dataSource	
+		const matDataSource = {
+			api : {
+				readData : { url : '${pageContext.request.contextPath}/matBomList', method : 'GET' }
+			},
+			initialRequest : false,
+			contentType : "application/json"
+		};	
+			
+		// 디테일-디테일 그리드 (2번 그리드: 자재정보 그리드)
+		const matInfogrid = new tui.Grid({
+			el : document.getElementById('matInfogrid'),
+			rowHeaders : [ 'checkbox' ],
+			data : matDataSource,
+			columns : [  {
+				header : '자재코드',
+				name : 'comMaterialCode',
+				editor : 'text'
+			}, {
+				header : '자재이름',
+				name : 'comMaterialName'
+			}, {
+				header : '공정코드',
+				name : 'comProcessCode'
+			} ]
+		}); //end of grid(2번)
+	
+//======================================== 3번 그리드 ======================================== 		
+		//dataSource	
+		const lotDataSource = {
+			api : {
+				readData : { url : '${pageContext.request.contextPath}/', method : 'GET' }
+			},
+			initialRequest : false,
+			contentType : "application/json"
+		};	
+		// 디테일-디테일 그리드 (3번 그리드: 자재로트정보 그리드)
+		const matLotgrid = new tui.Grid({
+			el : document.getElementById('matLotgrid'),
+			rowHeaders : [ 'checkbox' ],
+			data : dataSource,
+			columns : [  {
+				header : '로트번호',
+				name : 'matLotNo',
+				editor : 'text'
+			}, {
+				header : '입고일자',
+				name : 'matInoutDate',
+			} ]
+		
+	}); //end of grid(3번)
+		
+		
+//======================================== 그리드 클릭 이벤트 ======================================== 		
 	//디테일의 제품코드cell 더블클릭으로 모달창 띄우기	
-	grid.on('dblclick', ev => {
+	proOrdergrid.on('dblclick', ev => {
 		if(ev.columnName == 'erpProductCode'){
-			proPlanRowKey = ev.rowKey;
+			proOrderRowKey = ev.rowKey;
 			
 			$('#showModal').click();
 		}
 	});
 	
+	//디테일의 제품코드cell 한번클릭으로 2번그리드에 값 뿌리기	
+	proOrdergrid.on('click', ev => {
+		if(ev.columnName == 'erpProductCode'){
+			var comProductCode = proOrdergrid.getFocusedCell().value;
+			console.log(comProductCode);
+			
+			var readParams = {
+					'comProductCode' : comProductCode
+			} 
+			matInfogrid.readData(1, readParams, true);
+		}
+	});
+	
+	// 그리드2의 자재코드cell 한번클릭으로 3번그리드에 값 뿌리기	
+	matInfogrid.on('click', ev => {
+		if(ev.columnName == 'comMaterialCode'){
+			var comMaterialCode = matInfogrid.getFocusedCell().value;
+			console.log(comMaterialCode);
+			
+			var readParams = {
+					'comMaterialCode' : comMaterialCode
+			} 
+			matLotgrid.readData(1, readParams, true);
+		}
+	});
+	
+	
+	
 	// 그리드 테마 	
-/* 	tui.Grid.applyTheme('clean', 
+/* 	tui.proOrdergrid.applyTheme('clean', 
 		{
 			row: {
 	       		hover: {

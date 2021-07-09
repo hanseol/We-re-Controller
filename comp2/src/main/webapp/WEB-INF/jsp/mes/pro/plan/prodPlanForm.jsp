@@ -238,6 +238,14 @@
 	});
 	
 	
+	   $('#salNav').addClass('active');
+
+	   $('#subPages2').addClass('in');
+	   $('#subPages2').attr('aria-expanded','true');
+	   $('#subPages2').attr('style','');
+	   
+	   $('.salesOrderView').addClass('active');
+	
 	/* 	
 	proPlanGrid.on('response', ev => {
 		  const {response} = ev.xhr;

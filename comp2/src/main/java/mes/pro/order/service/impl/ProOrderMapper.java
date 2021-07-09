@@ -76,4 +76,10 @@ public interface ProOrderMapper {
 
 	public List<?> selectOrderList(ProPlanVO searchVO);
 
+	public List<?> selectPlanProductList(ProOrderVO proOrderVO);
+
+	public List<?> selectOrderList(ProOrderVO searchVO);
+
+	public List<?> selectmatBomList(ProOrderVO searchVO);
+
 }
