@@ -70,7 +70,7 @@
 				<div class="col-md-6">
 					완제품 LOT_NO
 					<input type="text" id="productLotNo" name="productLotNo">	
-					<a id="searchProductLotNo" href="searchProductLotNo.do">						
+					<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                     <i class="fa fa-search"></i></a>			
 				</div>
 			</div>

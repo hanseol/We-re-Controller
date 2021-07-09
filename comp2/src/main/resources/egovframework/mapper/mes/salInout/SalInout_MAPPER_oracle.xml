@@ -74,6 +74,8 @@
 		]]>
 	</select>
 	
+	
+	<!-- 입출고목록 -->
 	<!-- 입출고목록 조회 -->
 	<select id="selectSalProductInoutList"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
@@ -141,6 +143,9 @@
 		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
 	</delete>
 	
+	
+	
+	<!-- 반품목록 -->
 	<!-- 반품입고목록 조회 -->
 	<select id="selectSalReturnList"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
@@ -202,6 +207,7 @@
 		AND SAL_INOUT_GUBUN = 'INOUT001'
 	</delete>	
 	
+	
 	<!-- 페이지 -->
 	<select id="selectSalInoutListTotCnt"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
@@ -217,6 +223,7 @@
 			</if>
 		</if>
 	</select>
+	
 	
 	<!-- 모달  -->
 	<!-- 모달 : 제품 목록 -->

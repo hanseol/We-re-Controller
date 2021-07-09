@@ -27,24 +27,25 @@ import mes.main.service.SearchVO;
 public class SalMatchVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
-    /** SAL_MATCH_STATEMENT */
     private java.lang.String salMatchStatement;
     
-    /** SAL_MATCH_INOUT */
     private java.lang.String salMatchInout;
     
-    /** SAL_MATCH_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd HH:mm:SS")	
-    private Date salMatchDate;
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private java.lang.String salMatchDate;
     
-    /** SAL_MATCH_QTY */
     private java.math.BigDecimal salMatchQty;
     
-    /** COM_PRODUCT_CODE */
     private java.lang.String comProductCode;
     
-    /** PRO_PROCESS_LOT_NO */
     private java.lang.String proProcessLotNo;
+    
+    //작성일
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private java.lang.String salWriteDate;
+    
+    //제품명
+    private java.lang.String comProductName;
    
     
 }

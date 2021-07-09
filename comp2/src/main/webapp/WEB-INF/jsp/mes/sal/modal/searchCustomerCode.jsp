@@ -2,12 +2,11 @@
 	pageEncoding="UTF-8"%>
 
 <div class="modal">
-<!-- 210701 김현경 LOT_NO 검색 모달창 -->
-<!-- 210707 뿌려주는 곳 수정 -->
+<!-- 210701 김현경 고객사검색 모달창 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>완제품 LOT_NO 검색</h3>
+		<h3>고객사 검색</h3>
 	</div>
 </div>
 
@@ -16,11 +15,10 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" /> <br> <br>
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
-					<button id="findRow">검색</button><br>
-					<br>
+					고객사코드 <input type="text" id="comCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
+					고객사명 <input type="text" id="comCustomerName" name="erpCustomerName" placeholder="고객사명" />
+					<button id="findRow">검색</button>
+					<br><br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>
@@ -43,33 +41,36 @@ $(document).ready(function() {
 
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
-		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'proProcessLotNo');
+		for(var i=0; i<chkRowKeys.length; i++) {
+			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
+			console.log(code);
 		
+			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
+				$("#customerCode").val(code);
+				code = [];
+			} else { //아니면 mgrid(모달그리드)에 뿌려준다
+				mgrid.blur();
+				mgrid.setValue(rowId, 'salInoutCode', code, false);
+			}
 		}
 		
-		//view 페이지에 뿌려줄 부분 아이디값
-		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-			$("#productLotNo").val(code);
-			code = [];
-		} else { //아니면 mgrid(모달그리드)에 뿌려준다
-			mgrid.blur();
-			mgrid.setValue(rowId, 'proProcessLotNo', code, false);
-		}
-
+				
 	});
 	
+	
+		
+	
 	$(document).on("click", "button[id=findRow]", function() {
-		var no = $("#proProcessLotNo").val();
-		console.log(no);
-		var code = $("#comProductCode").val();
+		var code = $("#comCustomerCode").val();
 		console.log(code);
-		var name = $("#comProductName").val();
+		var name = $("#comCustomerName").val();
 		console.log(name);
-		var readParams = {
-				'proProcessLotNo' : no,
-				'comProductCode' : code,
-				'comProductName' : name
+		var desc = $("#comCodeDetailDesc").val();
+		console.log(desc);
+		var readParams = { //실제컬럼명 : ~
+				'comCodeDetailId' : code,
+				'comCodeDetailName' : name,
+				'comCodeDetailDesc' : desc
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -77,7 +78,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/mes/salInout/searchProductLotNo',
+				url : '${pageContext.request.contextPath}/ajax/searchCustomerCode',
 				method : 'GET'
 			}
 		},
@@ -88,22 +89,22 @@ $(document).ready(function() {
 		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
-			scrollX: true,
-	        scrollY: true,
-	        bodyHeight :300,
-	        rowHeight: 30,
+		 scrollX: true,
+         scrollY: true,
+         bodyHeight :300,
+         rowHeight: 30,
 		columns : [ {
-			header : '완제품 LOT_NO',
-			name : 'proProcessLotNo'
+			header : '고객사코드',
+			name : 'comCodeDetailId'
 		}, {
-			header : '제품코드',
-			name : 'comProductCode'
+			header : '고객사명',
+			name : 'comCodeDetailName'
 		}, {
-			header : '제품명',
-			name : 'comProductName'
+			header : '설명',
+			name : 'comCodeDetailDesc'
 		}]
 	});
 });
 //end of document ready
 </script>
-</div>	
+</div>

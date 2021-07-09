@@ -74,7 +74,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/mes/salInout/searchProductCode',
+				url : '${pageContext.request.contextPath}/ajax/searchProductCode',
 				method : 'GET'
 			}
 		},

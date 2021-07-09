@@ -25,7 +25,7 @@ import mes.main.service.SearchVO;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
-public class SalInoutVO extends SearchVO{
+public class SalInoutVO extends SearchVO {
     private static final long serialVersionUID = 1L;
     
     /** SAL_INOUT_STATEMENT */

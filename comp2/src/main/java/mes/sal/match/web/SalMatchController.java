@@ -2,20 +2,26 @@ package mes.sal.match.web;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import mes.main.service.ComFunc;
+import mes.main.service.GridDataVO;
+import mes.sal.inout.service.SalInoutVO;
 import mes.sal.match.service.SalMatchService;
 import mes.sal.match.service.SalMatchVO;
 
@@ -33,107 +39,129 @@ import mes.sal.match.service.SalMatchVO;
  */
 
 @Controller
-@SessionAttributes(types=SalMatchVO.class)
 public class SalMatchController {
 
     @Resource(name = "salMatchService")
     private SalMatchService salMatchService;
     
-    /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-	
-    /**
-	 * SAL_MATCH 목록을 조회한다. (pageing)
-	 * @param searchVO - 조회할 정보가 담긴 SalMatchDefaultVO
-	 * @return "/salMatch/SalMatchList"
-	 * @exception Exception
-	 */
-    @RequestMapping(value="/salMatch/SalMatchList.do")
-    public String selectSalMatchList(@ModelAttribute("searchVO") SalMatchVO searchVO, 
-    		ModelMap model)
-            throws Exception {
-    	
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
-    	
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-        List<?> salMatchList = salMatchService.selectSalMatchList(searchVO);
-        model.addAttribute("resultList", salMatchList);
-        
-        int totCnt = salMatchService.selectSalMatchListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
-        
-        return "/salMatch/SalMatchList";
-    } 
     
-    @RequestMapping("/salMatch/addSalMatchView.do")
-    public String addSalMatchView(
-            @ModelAttribute("searchVO") LinkedHashMap searchVO, Model model)
-            throws Exception {
-        model.addAttribute("salMatchVO", new LinkedHashMap());
-        return "/salMatch/SalMatchRegister";
-    }
+    //정산입고 전표번호
+    @Resource(name = "mesSalMatchInStatementIdGnrService")
+	protected EgovIdGnrService salMatchInStatementIdGnrService;
     
-    @RequestMapping("/salMatch/addSalMatch.do")
-    public String addSalMatch(
-    		LinkedHashMap salMatchVO,
-            @ModelAttribute("searchVO") LinkedHashMap searchVO, SessionStatus status)
-            throws Exception {
-        salMatchService.insertSalMatch(salMatchVO);
-        status.setComplete();
-        return "forward:/salMatch/SalMatchList.do";
-    }
+    //정산출고 전표번호
+    @Resource(name = "mesSalMatchOutStatementIdGnrService")
+	protected EgovIdGnrService salMatchOutStatementIdGnrService;
     
-    @RequestMapping("/salMatch/updateSalMatchView.do")
-    public String updateSalMatchView(
-            @RequestParam("salMatchStatement") java.lang.String salMatchStatement ,
-            @ModelAttribute("searchVO") SalMatchVO searchVO, Model model)
-            throws Exception {
-        SalMatchVO salMatchVO = new SalMatchVO();
-        salMatchVO.setSalMatchStatement(salMatchStatement);
-        // 변수명은 CoC 에 따라 salMatchVO
-        model.addAttribute(selectSalMatch(salMatchVO, searchVO));
-        return "/salMatch/SalMatchRegister";
-    }
+    ComFunc comFunc = new ComFunc();
 
-    @RequestMapping("/salMatch/selectSalMatch.do")
-    public @ModelAttribute("salMatchVO")
-    SalMatchVO selectSalMatch(
-            SalMatchVO salMatchVO,
-            @ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
-        return salMatchService.selectSalMatch(salMatchVO);
-    }
-
-    @RequestMapping("/salMatch/updateSalMatch.do")
-    public String updateSalMatch(
-    		LinkedHashMap salMatchVO,
-            @ModelAttribute("searchVO") LinkedHashMap searchVO, SessionStatus status)
-            throws Exception {
-        salMatchService.updateSalMatch(salMatchVO);
-        status.setComplete();
-        return "forward:/salMatch/SalMatchList.do";
+//----------------------------조회--------------------------------
+    
+    //정산입출록조회 salesMatch grid
+    @RequestMapping("ajax/sal/readSalesMatch")
+    @ResponseBody
+    public Map<String, Object> readSalesMatch(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
+    	
+    	List<?> list = salMatchService.selectSalMatchList(searchVO);
+    	
+    	return comFunc.sendResult(list);
     }
     
-    @RequestMapping("/salMatch/deleteSalMatch.do")
-    public String deleteSalMatch(
-    		LinkedHashMap salMatchVO,
-            @ModelAttribute("searchVO") LinkedHashMap searchVO, SessionStatus status)
-            throws Exception {
-        salMatchService.deleteSalMatch(salMatchVO);
-        status.setComplete();
-        return "forward:/salMatch/SalMatchList.do";
+    //정산입출고조회 페이지
+    @RequestMapping("/salMatch/matchProdView.do")
+    public String selectSalesMatchList(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
+    	
+    	return "mes/sal/salMatch/matchProdView.page";
     }
+    
+    // 정산입출고관리 페이지
+ 	@RequestMapping("/salMatch/matchProdForm.do")
+ 	public String selectSalesProductFormList(@ModelAttribute("searchVO") SalMatchVO searchVO, ModelMap model)
+ 			throws Exception {
+
+ 		return "mes/sal/salMatch/matchProdForm.page";
+ 	}
+
+//-----------------------------관리-------------------------------------
+    
+ 	// 정산입출고관리 페이지
+ 	@PutMapping("/ajax/sal/modifySalMatchList")
+	@ResponseBody
+	public void modifySalMatchList(@RequestBody GridDataVO gd) throws Exception {
+		
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+						
+		//C
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salMatchInout");
+						
+				if(gubun.equals("INOUT004")) {
+					((LinkedHashMap)createdList.get(i)).put("salMatchStatement", salMatchInStatementIdGnrService.getNextStringId());	
+					} else if(gubun.equals("INOUT005")) {
+						((LinkedHashMap)createdList.get(i)).put("salMatchStatement", salMatchOutStatementIdGnrService.getNextStringId());
+					}			
+					salMatchService.insertSalMatch((LinkedHashMap)(createdList.get(i)));
+				}
+		}
+				
+		//U
+		if (updatedList.size() != 0) {
+			for (int i=0; i<updatedList.size(); i++) {
+				salMatchService.updateSalMatch((LinkedHashMap) updatedList.get(i));
+			}
+		}
+		
+		//D
+		if (deletedList.size() != 0)
+		{
+			for (int i = 0; i < deletedList.size(); i++) {
+				salMatchService.deleteSalMatch((LinkedHashMap) deletedList.get(i));
+			}
+		}
+		
+	}
+    
+        
+//--------------------------- 모달 -------------------------------
+    // 모달 : 완제품 LOT_NO 조회
+ 	@GetMapping("/salMatch/searchProductLotNo.do")
+ 	public String searchProductLotNoView() {
+
+ 		// 모달창 띄워주는 페이지
+ 		return "mes/sal/modal/searchProductLotNo";
+ 	}
+
+ 	// 모달 : 완제품 LOT_NO 조회값 전달
+ 	@RequestMapping("mes/salMatch/searchProductLotNo")
+ 	@ResponseBody
+ 	public Map<String, Object> searchProductLotNo(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
+
+ 		List<?> list = salMatchService.searchProductLotNoList(searchVO);
+
+ 		return comFunc.sendResult(list);
+ 	}
+ 	
+ 	// 모달 : 제품코드 조회
+ 	@GetMapping("/salMatch/searchProductCode.do")
+ 	public String searchProductCode() {
+ 		
+ 		//모달창 띄워주는 페이지
+ 		return "mes/sal/modal/searchProductCode"; //수정
+ 	}
+ 	
+ 	// 모달 : 제품코드 조회값 전달
+ 	@RequestMapping("mes/salMatch/searchProductCode") //수정
+ 	@ResponseBody
+ 	public Map<String, Object> searchProduct(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
+ 		
+     	List<?> list = salMatchService.searchProductList(searchVO);
+     	
+     	return comFunc.sendResult(list);
+ 	}
 
 }

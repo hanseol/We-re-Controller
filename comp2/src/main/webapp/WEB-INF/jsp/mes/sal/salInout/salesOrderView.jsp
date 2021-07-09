@@ -1,38 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal{
-	-webkit-border-radius :0px;
-	border-radius:0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-	max-height: 600px; */
-}
-
-.blocker{
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>
@@ -61,14 +29,14 @@
 				<div class="col-md-4">			
 						제품코드
 						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="searchProductCode.do">						
+						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
                   </a>											
 				</div>
 				<div class="col-md-4">
 						업체코드
 						<input type="text" id="customerCode" name="customerCode">
-						<a id="searchCustomerCode" href="searchCustomerCode.do">					
+						<a id="searchCustomerCode" href="${pageContext.request.contextPath}/searchCustomerCode.do">					
 						<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -93,7 +61,16 @@
 </div>
 
 <script>
+$('#salNav').addClass('active');
+
+$('#subPages2').addClass('in');
+$('#subPages2').attr('aria-expanded','true');
+$('#subPages2').attr('style','');
+
+$('.salesOrderView').addClass('active');
+
 let mgrid; //모달 그리드
+
 	$(document).ready(function() {
 		$(document).on("click", "button[id=search]",
 				function() {
@@ -125,9 +102,19 @@ let mgrid; //모달 그리드
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :30, 
+	        bodyHeight :300, 
 	        rowHeight: 30,
 			columns : [{
+				header : '주문일자',
+				name : 'erpProductOrderDate',
+				editor : {
+					type : 'datePicker',
+					options : {
+						format : 'YYYY/MM/dd',
+						language: 'ko'
+					} 
+				}
+			}, {
 				header : '주문코드',
 				name : 'erpOrderCode',
 			}, {
@@ -145,16 +132,6 @@ let mgrid; //모달 그리드
 			}, {
 				header : '개당단가',
 				name : 'erpProductUnitPrice',
-			}, {
-				header : '주문일자',
-				name : 'erpProductOrderDate',
-				editor : {
-					type : 'datePicker',
-					options : {
-						format : 'YYYY/MM/dd',
-						language: 'ko'
-					} 
-				}
 			}, {
 				header : '납기일자',
 				name : 'erpProductDeadline',

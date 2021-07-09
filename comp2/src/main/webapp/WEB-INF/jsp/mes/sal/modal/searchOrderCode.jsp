@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<div class="modal">
-<!-- 210701 김현경 고객사검색 모달창 -->
+	
+<!-- 210705 김현경 지시/고객사구분 모달창 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>고객사 검색</h3>
+		<h3>지시 코드</h3>
 	</div>
 </div>
 
@@ -15,10 +14,10 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					고객사코드 <input type="text" id="comCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
-					고객사명 <input type="text" id="comCustomerName" name="erpCustomerName" placeholder="고객사명" />
+					생산지시디테일코드 <input type="text" id="proOrderDetailCode" name="proOrderDetailCode" placeholder="생산지시디테일코드" />
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" />
 					<button id="findRow">검색</button>
-					<br><br>
+					<br> <br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>
@@ -41,36 +40,26 @@ $(document).ready(function() {
 
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
-		for(var i=0; i<chkRowKeys.length; i++) {
-			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
+		for(var i=0; i<chkRowKeys.length; i++){
+			code = grid.getValue(chkRowKeys[i],'proOrderDetailCode');
 			console.log(code);
-		
-			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-				$("#customerCode").val(code);
-				code = [];
-			} else { //아니면 mgrid(모달그리드)에 뿌려준다
-				mgrid.blur();
-				mgrid.setValue(rowId, 'salInoutCode', code, false);
-			}
+			
+			mgrid.blur();
+			mgrid.setValue(rowId, 'salInoutCode', code, false);
+
 		}
 		
-				
-	});
-	
-	
 		
 	
+	});
+	
 	$(document).on("click", "button[id=findRow]", function() {
-		var code = $("#comCustomerCode").val();
-		console.log(code);
-		var name = $("#comCustomerName").val();
-		console.log(name);
-		var desc = $("#comCodeDetailDesc").val();
-		console.log(desc);
+		var code = $("#proOrderDetailCode").val();
+		var no = $("#proProcessLotNo").val();
+		console.log(code, no);
 		var readParams = { //실제컬럼명 : ~
-				'comCodeDetailId' : code,
-				'comCodeDetailName' : name,
-				'comCodeDetailDesc' : desc
+				'proOrderDetailCode' : code,
+				'proProcessLotNo' : no
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -78,7 +67,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/mes/salInout/searchCustomerCode',
+				url : '${pageContext.request.contextPath}/ajax/searchOrderCode',
 				method : 'GET'
 			}
 		},
@@ -89,22 +78,24 @@ $(document).ready(function() {
 		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
-		 scrollX: true,
-         scrollY: true,
-         bodyHeight :300,
-         rowHeight: 30,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :300,
+	        rowHeight: 30,
 		columns : [ {
-			header : '고객사코드',
-			name : 'comCodeDetailId'
+			header : '생산지시디테일코드',
+			name : 'proOrderDetailCode'
 		}, {
-			header : '고객사명',
-			name : 'comCodeDetailName'
+			header : '고객사',
+			name : 'erpCustomerCode'
 		}, {
-			header : '설명',
-			name : 'comCodeDetailDesc'
+			header : '제품코드',
+			name : 'erpProductCode'
+		}, {
+			header : '완제품 LOT_NO',
+			name : 'proProcessLotNo'
 		}]
 	});
 });
 //end of document ready
 </script>
-</div>

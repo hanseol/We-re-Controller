@@ -22,52 +22,23 @@ import mes.sal.match.service.SalMatchVO;
 @Mapper("salMatchMapper")
 public interface SalMatchMapper {
 
-	/**
-	 * SAL_MATCH을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 SalMatchVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    public void insertSalMatch(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * SAL_MATCH을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 SalMatchVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    public void updateSalMatch(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * SAL_MATCH을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 SalMatchVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    public void deleteSalMatch(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * SAL_MATCH을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 SalMatchVO
-	 * @return 조회한 SAL_MATCH
-	 * @exception Exception
-	 */
+	//View
     public SalMatchVO selectSalMatch(SalMatchVO vo) throws Exception;
-
-    /**
-	 * SAL_MATCH 목록을 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return SAL_MATCH 목록
-	 * @exception Exception
-	 */
     public List<?> selectSalMatchList(SalMatchVO searchVO) throws Exception;
 
-    /**
-	 * SAL_MATCH 총 갯수를 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return SAL_MATCH 총 갯수
-	 * @exception
-	 */
-    public int selectSalMatchListTotCnt(SalMatchVO searchVO);
+	//CRUD
+    public void insertSalMatch(LinkedHashMap vo) throws Exception;
+    public void updateSalMatch(LinkedHashMap vo) throws Exception;
+    public void deleteSalMatch(LinkedHashMap vo) throws Exception;
+    
+    
+    //모달
+	public List<?> searchProductLotNoList(SalMatchVO searchVO) throws Exception;
+	public int searchProductLotNoListTotCnt(SalMatchVO searchVO);
+	public List<?> searchProductList(SalMatchVO searchVO) throws Exception;
+	public int searchProductListTotCnt(SalMatchVO searchVO);
+
+    
+    
 
 }

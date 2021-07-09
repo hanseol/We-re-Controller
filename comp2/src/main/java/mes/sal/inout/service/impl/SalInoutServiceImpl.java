@@ -34,59 +34,10 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
     @Resource(name="salInoutMapper")
     private SalInoutMapper salInoutDAO;
     
-    //@Resource(name="salInoutDAO")
-    //private SalInoutDAO salInoutDAO;
     
-    /** ID Generation */
-    //@Resource(name="{egovSalInoutIdGnrService}")    
-    //private EgovIdGnrService egovIdGnrService;
+    
 
-	/**
-	 * SAL_INOUT을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 SalInoutVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    public String insertSalInout(LinkedHashMap vo) throws Exception {
-    	LOGGER.debug(vo.toString());
-    	
-    	/** ID Generation Service */
-    	//TODO 해당 테이블 속성에 따라 ID 제너레이션 서비스 사용
-    	//String id = egovIdGnrService.getNextStringId();
-    	//vo.setId(id);
-    	LOGGER.debug(vo.toString());
-    	
-    	salInoutDAO.insertSalInout(vo);
-    	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
-    }
-
-    /**
-	 * SAL_INOUT을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 SalInoutVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    public void updateSalInout(LinkedHashMap vo) throws Exception {
-        salInoutDAO.updateSalInout(vo);
-    }
-
-    /**
-	 * SAL_INOUT을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 SalInoutVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    public void deleteSalInout(LinkedHashMap vo) throws Exception {
-        salInoutDAO.deleteSalInout(vo);
-    }
-
-    /**
-	 * SAL_INOUT을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 SalInoutVO
-	 * @return 조회한 SAL_INOUT
-	 * @exception Exception
-	 */
+    //주문 조회
     public SalInoutVO selectSalInout(SalInoutVO vo) throws Exception {
         SalInoutVO resultVO = salInoutDAO.selectSalInout(vo);
         if (resultVO == null)
@@ -94,22 +45,13 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
         return resultVO;
     }
 
-    /**
-	 * SAL_INOUT 목록을 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return SAL_INOUT 목록
-	 * @exception Exception
-	 */
+   
     public List<?> selectSalInoutList(SalInoutVO searchVO) throws Exception {
         return salInoutDAO.selectSalInoutList(searchVO);
     }
+    
 
-    /**
-	 * SAL_INOUT 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return SAL_INOUT 총 갯수
-	 * @exception
-	 */
+//-----------------------입/출고목록-------------------------    
     
     //입출고목록 조회
 	public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception {
@@ -121,14 +63,33 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
 	}
     
+    //입출고목록 CRUD
+    public String insertSalInout(LinkedHashMap vo) throws Exception {
+    	LOGGER.debug(vo.toString());
+    	LOGGER.debug(vo.toString());
+    	
+    	salInoutDAO.insertSalInout(vo);
+        return null;
+    }
+
+    public void updateSalInout(LinkedHashMap vo) throws Exception {
+        salInoutDAO.updateSalInout(vo);
+    }
+
+    public void deleteSalInout(LinkedHashMap vo) throws Exception {
+        salInoutDAO.deleteSalInout(vo);
+    }
     
+
+//-----------------------------반품------------------------------   
+   
     //반품목록 조회
     @Override
 	public List selectSalReturnList(SalInoutVO vo) throws Exception {
     	return salInoutDAO.selectSalReturnList(vo);
 	}
     
-    //반품목록 관리
+    //반품목록 CRUD
     @Override
 	public String insertSalReturn(LinkedHashMap vo) throws Exception {
 			LOGGER.debug(vo.toString());
@@ -150,7 +111,8 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
     
-    
+//--------------------------------모달-----------------------------------
+	
     //모달 : 제품코드 조회
 	@Override
 	public List<?> searchProductList(SalInoutVO searchVO) throws Exception {
@@ -162,6 +124,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.searchProductListTotCnt(searchVO);
 	}
 
+	
 	//모달 : 고객코드 조회
 	@Override
 	public List<?> searchCustomerList(SalInoutVO searchVO) throws Exception {
@@ -173,6 +136,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.searchCustomerListTotCnt(searchVO);
 	}
 
+	
 	//모달 : 완제품 LOT_NO 조회
 	@Override
 	public List<?> searchProductLotNoList(SalInoutVO searchVO) throws Exception {
@@ -184,6 +148,7 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.searchProductLotNoListTotCnt(searchVO);
 	}
 
+	
 	//모달 : 생산지시디테일코드 조회
 	@Override
 	public List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception {
@@ -194,8 +159,9 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchProductCodeListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.searchProductCodeListTotCnt(searchVO);
 	}
+
 	
-	//모달 : 전표번호
+	//모달 : 전표번호(x)
 	@Override
 	public List<?> searchInoutStatement(SalInoutVO searchVO) throws Exception {
 		return salInoutDAO.searchInoutStatementList(searchVO);
@@ -205,11 +171,5 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchInoutStatementListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.searchInoutStatementListTotCnt(searchVO);
 	}
-
-	
-
-	
-	
-
 	
 }

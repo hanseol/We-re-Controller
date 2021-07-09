@@ -64,20 +64,20 @@
 						<input type="date" id="dateGubun" name="dateGubun">
 				</div>
 				<div class="col-md-3">
-						입/출고구분 &nbsp;
+						구분 &nbsp;
 						<input type="checkbox" id="inGubun" name="gubun" value="1" checked>입고
 						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
 				</div>
 				<div class="col-md-3">
 						제품코드
 						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="searchProductCode.do">						
+						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-3">
 						완제품 LOT_NO
 						<input type="text" id="productLotNo" name="productLotNo">	
-						<a id="searchProductLotNo" href="searchProductLotNo.do">						
+						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -102,6 +102,14 @@
 </div>
 
 <script>
+$('#salNav').addClass('active');
+
+$('#subPages2').addClass('in');
+$('#subPages2').attr('aria-expanded','true');
+$('#subPages2').attr('style','');
+
+$('.salesProdView').addClass('active');
+
 let mgrid;
 	$(document).ready(function() {	
 		$(document).on("click", "button[id=search]",

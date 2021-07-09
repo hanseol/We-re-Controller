@@ -11,6 +11,7 @@
 		<result property="salMatchQty" column="SAL_MATCH_QTY" />
 		<result property="comProductCode" column="COM_PRODUCT_CODE" />
 		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
+		<result property="comProductName" column="COM_PRODUCT_NAME" />
 	</resultMap>
 	
 	<!-- 한 건 조회 -->
@@ -30,32 +31,31 @@
 	
 	<!-- 정산입출고 조회 -->
 	<select id="selectSalMatchList"
-		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		parameterType="mes.sal.match.service.SalMatchVO" resultType="egovMap">
 		SELECT * FROM (
 		SELECT A.*, ROWNUM RNUM FROM (
-		SELECT
-		SAL_MATCH_STATEMENT
-		, COM_PRODUCT_CODE
-		, SAL_MATCH_INOUT
-		, SAL_MATCH_QTY
-		, SAL_MATCH_DATE
-		, COM_PRODUCT_CODE
-		, PRO_PROCESS_LOT_NO
-		FROM SAL_MATCH
-		WHERE 1=1
-		<if test="searchKeyword != null and searchKeyword != ''">
-			<if test="searchCondition == 0">AND
-				SAL_MATCH_DATE = #{SAL_MATCH_DATE}
+										SELECT SAL_MATCH_STATEMENT, SAL_MATCH_INOUT,
+										TO_CHAR(SAL_MATCH_DATE, 'YYYY/MM/dd') as SAL_MATCH_DATE,
+										S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
+										TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
+										C.COM_PRODUCT_NAME, SAL_MATCH_QTY
+										FROM SAL_MATCH S, COM_PRODUCT C
+										WHERE 1=1
+										AND S.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE
+			<if test="salMatchDate != null and salMatchDate != ''"> AND
+					SAL_MATCH_DATE = #{salMatchDate}
 			</if>
-			<if test="searchCondition == 1">AND
-				SAL_MATCH_INOUT = #{SAL_MATCH_INOUT}
+			<if test="salMatchInout != null and salMatchInout != ''"> AND
+					SAL_MATCH_INOUT = #{salMatchInout}
 			</if>
-			<if test="searchCondition == 2">AND
-				COM_PRODUCT_CODE LIKE '%v' || #{searchKeyword} || '%'
+			<if test="comProductCode != null and comProductCode != ''">AND
+					S.COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
 			</if>
-		</if>
+			<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
+					S.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+			</if>
 		ORDER BY
-		SAL_MATCH_STATEMENT DESC	
+		SAL_MATCH_DATE DESC	
 				<![CDATA[						
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
@@ -63,35 +63,36 @@
 	</select>
 	
 	<!-- 정산입출고 삽입 -->
-	<insert id="insertSalMatch"
-		parameterType="mes.sal.match.service.SalMatchVO">
+	<insert id="insertSalMatch">
 		INSERT INTO SAL_MATCH
-		VALUES (#{SAL_MATCH_STATEMENT}
-		, #{SAL_MATCH_INOUT}
-		, #{SAL_MATCH_DATE}
-		, #{SAL_MATCH_QTY}
-		, #{COM_PRODUCT_CODE}
-		, #{PRO_PROCESS_LOT_NO});
+		VALUES (#{salMatchStatement}
+		, #{salMatchInout}
+		, #{salMatchDate}
+		, #{salMatchQty}
+		, #{comProductCode}
+		, #{proProcessLotNo}
+		, SYSDATE)
 	</insert>
 	
 	<!-- 정산입출고목록 수정 -->
-	<update id="updateSalMatch" parameterType="mes.sal.match.service.SalMatchVO">
+	<update id="updateSalMatch">
 		UPDATE SAL_MATCH SET
-		SAL_MATCH_STATEMENT = #{SAL_MATCH_STATEMENT}
-		, SAL_MATCH_INOUT = #{SAL_MATCH_INOUT}
-		, COM_PRODUCT_CODE = #{COM_PRODUCT_CODE}
-		, SAL_INOUT_DATE = #{SAL_INOUT_DATE}
-		, SAL_INOUT_QUANTITY = #{SAL_INOUT_QUANTITY}
-		, SAL_INOUT_CODE = #{SAL_INOUT_CODE}
-		WHERE SAL_INOUT_STATEMENT = #{SAL_INOUT_STATEMENT}
+		SAL_MATCH_DATE = #{salMatchDate}
+		, SAL_MATCH_INOUT = #{salMatchInout}
+		, SAL_MATCH_QTY = #{salMatchQty}
+		, COM_PRODUCT_CODE = #{comProductCode}
+		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+		, SAL_WRITE_DATE = #{salWriteDate}
+		WHERE SAL_MATCH_STATEMENT = #{salMatchStatement}
 	</update>
 	
 	<!-- 정산입출고목록 삭제 -->
-	<delete id="deleteSalMatch" parameterType="mes.sal.match.service.SalMatchVO">
+	<delete id="deleteSalMatch">
 		DELETE FROM SAL_MATCH
-		WHERE SAL_MATCH_STATEMENT=#{SAL_INOUT_STATEMENT}
+		WHERE SAL_MATCH_STATEMENT = #{salMatchStatement}
 	</delete>
 	
+	<!-- 페이지 -->
 	<select id="selectSalMatchListTotCnt" parameterType="mes.sal.match.service.SalMatchVO" resultType="int">
 			SELECT COUNT(*) totcnt
 			FROM SAL_MATCH

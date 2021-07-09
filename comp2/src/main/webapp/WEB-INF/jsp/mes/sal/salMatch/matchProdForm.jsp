@@ -5,7 +5,6 @@
 
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-
 <style>
 .my-panel {
 	text-align: right;
@@ -33,17 +32,18 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>입/출고목록관리</h2>
+		<h2>정산입/출고목록관리</h2>
 	</div>
 </div>
 
 <!-- 관리, 지시 탭 이동 -->
 <div id="tabs">
    <ul class="nav nav-tabs" role="tablist">
-     <li class="active"><a onclick='location.href="salesProdForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
-     <li class=""><a onclick='location.href="salesProdView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
+     <li class="active"><a onclick='location.href="matchProdForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
+     <li class=""><a onclick='location.href="matchProdView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
    </ul>
 </div>
+
 
 <div class="content-fluid">
 	<div>
@@ -55,7 +55,6 @@
 	</div>
 </div>
 
-
 <form id="option">
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -66,20 +65,20 @@
 						<input type="date" id="dateGubun" name="dateGubun">
 				</div>
 				<div class="col-md-3">
-						입/출고구분 &nbsp;
-						<input type="checkbox" id="inGubun" name="gubun" value="1" checked>입고
-						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
+						구분 &nbsp;
+						<input type="checkbox" id="inMatch" name="gubun" value="1" checked>정산입고
+						<input type="checkbox" id="outMatch" name="gubun" value="2">정산출고
 				</div>
 				<div class="col-md-3">
 						제품코드
 						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="searchProductCode.do">												
+						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-3">
 						완제품 LOT_NO
 						<input type="text" id="productLotNo" name="productLotNo">	
-						<a id="searchProductLotNo" href="searchProductLotNo.do">						
+						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -87,12 +86,13 @@
 	</div>
 </div>
 </form>
+
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">완제품 입/출고 목록</p>
+					<p class="panel-subtitle">완제품 정산 입/출고 목록</p>
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button" id="appendRow">추가</button>
@@ -106,38 +106,33 @@
 	</div>
 </div>
 
-<!-- 추가 모달 -->
-<a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
-<a id="searchCustomerCode" href="searchCustomerCode.do"></a>
-
 <script>
-let mgrid; //모달그리드
-
-	$(document).ready(function() {
+let mgrid;
+	$(document).ready(function() {	
 		//Read
 		$(document).on("click", "button[id=search]",
 				function() {
 					var date = $("#dateGubun").val();
-					var inGubun = $("#inGubun").val();
-					var outGubun = $("#outGubun").val();
+					var inMatch = $("#inMatch").val();
+					var outMatch = $("#outMatch").val();
 					var gubun;
 					var productCode = $("#productCode").val();
 					var productLotNo = $("#productLotNo").val();
 					
 					//체크박스 옵션
-					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
+					if ($('input:checkbox[id="inMatch"]').is(":checked") && $('input:checkbox[id="outMatch"]').is(":checked") == true) {
 						gubun = null;
-					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'INOUT003';
-					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = 'INOUT002';
+					} else if ($('input:checkbox[id="inMatch"]').is(":checked") == true) {
+						gubun = 'INOUT004';
+					} else if ($('input:checkbox[id="outMatch"]').is(":checked") == true) {
+						gubun = 'INOUT005';
 					} else {
 						gubun = null;
 					}
 										
 					var readParams = {
-						'salInoutDate' : date,
-						'salInoutGubun' : gubun,
+						'salMatchDate' : date,
+						'salMatchInout' : gubun,
 						'comProductCode' : productCode,
 						'proProcessLotNo' : productLotNo
 					};
@@ -147,13 +142,12 @@ let mgrid; //모달그리드
 		//Insert
 		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData =[{
-					salInoutDate : "",
-					salInoutGubun : "",
-					salInoutCode : "",
+					salMatchDate : "",
+					salMatchInout : "",
 					comProductCode : "",
-					salInoutQuantity : "",
+					salMatchQty : "",
 					proProcessLotNo : "",
-					salWriteDate : ""
+					salWriteDate : "",
 			}];
 			grid.appendRow(rowData, {
 				at : 0,
@@ -173,22 +167,20 @@ let mgrid; //모달그리드
 			grid.request('modifyData');
 		});
 		
-		
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/ajax/sal/readSalesProduct',
+					url : '${pageContext.request.contextPath}/ajax/sal/readSalesMatch',
 					method : 'GET'
 				},
 				modifyData : {
-					url : '${pageContext.request.contextPath}/ajax/modifySalInoutList',
+					url : '${pageContext.request.contextPath}/ajax/sal/modifySalMatchList',
 					method : 'PUT'
 				}
 			},
 			initialRequest: false, 
 			contentType : "application/json"
 		};
-		
 
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
@@ -200,7 +192,7 @@ let mgrid; //모달그리드
 	        rowHeight: 30,
 			columns : [ {
 				header : '입/출고일자',
-				name : 'salInoutDate',
+				name : 'salMatchDate',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -208,29 +200,25 @@ let mgrid; //모달그리드
 						language: 'ko'
 					} 
 				}
-			}, {
+			},{
 				header : '입/출고구분',
-				name : 'salInoutGubun',
+				name : 'salMatchInout',
 				editor : {
 					type: 'select',
 					options : {
 					listItems: [
-						{text : '입고', value : 'INOUT002'},
-						{text : '출고', value : 'INOUT003'}
+						{text : '정산입고', value : 'INOUT004'},
+						{text : '정산출고', value : 'INOUT005'}
 						]
 					}
 				}
-			}, {
-				header : '지시/거래처코드',
-				name : 'salInoutCode',
-				editor : 'text'
 			}, {
 				header : '제품코드',
 				name : 'comProductCode',
 				editor : 'text'
 			}, {
-				header : '수량',
-				name : 'salInoutQuantity',
+				header : '정산수량',
+				name : 'salMatchQty',
 				editor : 'text'
 			}, {
 				header : '완제품 LOT_NO',
@@ -238,58 +226,37 @@ let mgrid; //모달그리드
 				editor : 'text'
 			}, {
 				header : '전표번호',
-				name : 'salInoutStatement',
+				name : 'salMatchStatement',
 				hidden : true
 			}]
-		}); 
-		
-	 mgrid = grid;
-	 
-	 //모달 클릭 이벤트
-	 //모달 : 제품코드
-	   grid.on('dblclick', ev => {
-	      if(ev.columnName == 'comProductCode'){  
-	    	  productCodeSearch(ev.rowKey);
-	    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
-	      }
-	   });
-	 
-	 $('#searchProductCode').click(function(event) {
-			productCodeSearch(-1); //매개변수 -1로 함수 실행
 		});
 		
-	 //모달 : 완제품 LOT_NO
-	   grid.on('dblclick', ev => {
-	      if(ev.columnName == 'proProcessLotNo'){    
-	    	  productLotNoSearch(ev.rowKey);         
-	      }
-	   });
-	 
-		$('#searchProductLotNo').click(function(event) {
-		 	productLotNoSearch(-1);
-		});
-	 
-	 
-
-	 //모달 : 지시/거래처코드 구분
-	 grid.on('dblclick', ev => {		 
-	 	var i = ev.rowKey;
-		if(ev.columnName == 'salInoutCode') {
-	      if(grid.getValue(i, 'salInoutGubun') == null) {
-	    	  alert('입고/출고를 먼저 구분해주세요.');
-	      } else {
-	         	if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') { //입고 -> 지시 모달 오픈
-	         		$('#searchOrderCode').click();
-	         		return;
-	         	} else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') { //출고 -> 거래처 모달 오픈
-	         		$('#searchCustomerCode').click();
-	         		customerCodeSearch(0);
-	         		return;
-	      	 	}
-		  } 
-		}
-	});
+		mgrid = grid;
+		 
 		
+		//모달 : 제품코드
+		   grid.on('dblclick', ev => {
+		      if(ev.columnName == 'comProductCode'){  
+		    	  productCodeSearch(ev.rowKey);
+		    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
+		      }
+		   });
+		 
+		 $('#searchProductCode').click(function(event) {
+				productCodeSearch(-1); //매개변수 -1로 함수 실행
+			});
+			
+		 //모달 : 완제품 LOT_NO
+		   grid.on('dblclick', ev => {
+		      if(ev.columnName == 'proProcessLotNo'){    
+		    	  productLotNoSearch(ev.rowKey);         
+		      }
+		   });
+		 
+			$('#searchProductLotNo').click(function(event) {
+			 	productLotNoSearch(-1);
+			});
+	
 	// option form reset  
 	 $(document).ready(function() {  
 	    $("#reset").click(function() {  
@@ -299,46 +266,33 @@ let mgrid; //모달그리드
 	    });  
 	 });  
 	
-	
 }); //end of document ready
 
-	//모달 실행 함수
-	var rowId;
-	
-	//제품코드 모달
-	function productCodeSearch(c) {
-		  rowId = c;
-		  event.preventDefault();
-		  $(".modal").remove();
-		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
-		  $.get("searchProductCode.do", function(html) {
-		    $(html).appendTo('body').modal();
-		  });
-	}
-	
-	//완제품 LOT_NO 모달
-	function productLotNoSearch(c) {
-		  rowId = c;
-		  event.preventDefault();
-		  $(".modal").remove();
-		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
-		  $.get("searchProductLotNo.do", function(html) {
-		    $(html).appendTo('body').modal();
-		  });
-	}
-	
-	//업체코드 모달
-	function customerCodeSearch(c) {
-		  rowId = c;
-		  event.preventDefault();
-		  $(".modal").remove();
-		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
-		  $.get("searchCustomerCode.do", function(html) {
-		    $(html).appendTo('body').modal();
-		  });
-	}
+//모달 실행 함수
+var rowId;
+
+//제품코드 모달
+function productCodeSearch(c) {
+	  rowId = c;
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchProductCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
+//완제품 LOT_NO 모달
+function productLotNoSearch(c) {
+	  rowId = c;
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchProductLotNo.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
 
 </script>

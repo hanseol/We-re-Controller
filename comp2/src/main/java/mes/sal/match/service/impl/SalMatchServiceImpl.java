@@ -34,59 +34,7 @@ public class SalMatchServiceImpl extends EgovAbstractServiceImpl implements
     @Resource(name="salMatchMapper")
     private SalMatchMapper salMatchDAO;
     
-    //@Resource(name="salMatchDAO")
-    //private SalMatchDAO salMatchDAO;
-    
-    /** ID Generation */
-    //@Resource(name="{egovSalMatchIdGnrService}")    
-    //private EgovIdGnrService egovIdGnrService;
-
-	/**
-	 * SAL_MATCH을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 SalMatchVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    public String insertSalMatch(LinkedHashMap vo) throws Exception {
-    	LOGGER.debug(vo.toString());
-    	
-    	/** ID Generation Service */
-    	//TODO 해당 테이블 속성에 따라 ID 제너레이션 서비스 사용
-    	//String id = egovIdGnrService.getNextStringId();
-    	//vo.setId(id);
-    	LOGGER.debug(vo.toString());
-    	
-    	salMatchDAO.insertSalMatch(vo);
-    	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
-    }
-
-    /**
-	 * SAL_MATCH을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 SalMatchVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    public void updateSalMatch(LinkedHashMap vo) throws Exception {
-        salMatchDAO.updateSalMatch(vo);
-    }
-
-    /**
-	 * SAL_MATCH을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 SalMatchVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    public void deleteSalMatch(LinkedHashMap vo) throws Exception {
-        salMatchDAO.deleteSalMatch(vo);
-    }
-
-    /**
-	 * SAL_MATCH을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 SalMatchVO
-	 * @return 조회한 SAL_MATCH
-	 * @exception Exception
-	 */
+    //조회
     public SalMatchVO selectSalMatch(SalMatchVO vo) throws Exception {
         SalMatchVO resultVO = salMatchDAO.selectSalMatch(vo);
         if (resultVO == null)
@@ -94,24 +42,57 @@ public class SalMatchServiceImpl extends EgovAbstractServiceImpl implements
         return resultVO;
     }
 
-    /**
-	 * SAL_MATCH 목록을 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return SAL_MATCH 목록
-	 * @exception Exception
-	 */
     public List<?> selectSalMatchList(SalMatchVO searchVO) throws Exception {
         return salMatchDAO.selectSalMatchList(searchVO);
     }
 
-    /**
-	 * SAL_MATCH 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return SAL_MATCH 총 갯수
-	 * @exception
-	 */
-    public int selectSalMatchListTotCnt(SalMatchVO searchVO) {
-		return salMatchDAO.selectSalMatchListTotCnt(searchVO);
+    
+    //관리 CRUD
+    public String insertSalMatch(LinkedHashMap vo) throws Exception {
+    	LOGGER.debug(vo.toString());
+    	LOGGER.debug(vo.toString());
+    	
+    	salMatchDAO.insertSalMatch(vo);
+
+        return null;
+    }
+
+    
+    public void updateSalMatch(LinkedHashMap vo) throws Exception {
+        salMatchDAO.updateSalMatch(vo);
+    }
+
+    
+    public void deleteSalMatch(LinkedHashMap vo) throws Exception {
+        salMatchDAO.deleteSalMatch(vo);
+    }
+
+    
+    
+//--------------------------모달-----------------------------    
+	
+    //완제품 LOT_NO
+    @Override
+	public List<?> searchProductLotNoList(SalMatchVO searchVO) throws Exception {		
+    	return salMatchDAO.searchProductLotNoList(searchVO);
 	}
+
+	@Override
+	public int searchProductLotNoListTotCnt(SalMatchVO searchVO) {
+		return salMatchDAO.searchProductLotNoListTotCnt(searchVO);
+	}
+	
+	//제품코드
+	@Override
+	public List<?> searchProductList(SalMatchVO searchVO) throws Exception {
+		return salMatchDAO.searchProductList(searchVO);
+	}
+
+	@Override
+	public int searchProductListTotCnt(SalMatchVO searchVO) {
+		return salMatchDAO.searchProductListTotCnt(searchVO);
+	}
+
+   
     
 }

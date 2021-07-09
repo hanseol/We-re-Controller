@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<!-- 210705 김현경 지시/고객사구분 모달창 -->
+
+<div class="modal">
+<!-- 210707 김현경 전표번호 모달창 -->
+<!-- 210708 하지만 쓰지 않는 것으로 결정... -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>지시 코드</h3>
+		<h3>출고 전표번호</h3>
 	</div>
 </div>
 
@@ -14,10 +16,10 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					생산지시디테일코드 <input type="text" id="proOrderDetailCode" name="proOrderDetailCode" placeholder="생산지시디테일코드" />
+					전표번호 <input type="text" id="salInoutStatement" name="salInoutStatement" placeholder="전표번호" /> &nbsp;
 					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" />
 					<button id="findRow">검색</button>
-					<br> <br>
+					<br>
 				<div id="modalGrid"></div>
 			</div>
 		</div>
@@ -41,12 +43,16 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'proOrderDetailCode');
+			code = grid.getValue(chkRowKeys[i],'salInoutStatement');
 			console.log(code);
 			
-			mgrid.blur();
-			mgrid.setValue(rowId, 'salInoutCode', code, false);
-
+			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
+				$("#inoutStatement").val(code);
+				code = [];
+			} else { //아니면 mgrid(모달그리드)에 뿌려준다
+				mgrid.blur();
+				mgrid.setValue(rowId, 'salInoutStatement', code, false);
+			}
 		}
 		
 		
@@ -54,11 +60,11 @@ $(document).ready(function() {
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
-		var code = $("#proOrderDetailCode").val();
+		var code = $("#salInoutStatement").val();
 		var no = $("#proProcessLotNo").val();
 		console.log(code, no);
 		var readParams = { //실제컬럼명 : ~
-				'proOrderDetailCode' : code,
+				'salInoutStatement' : code,
 				'proProcessLotNo' : no
 			};
 		grid.readData(1, readParams, true);
@@ -67,7 +73,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/mes/salInout/searchOrderCode',
+				url : '${pageContext.request.contextPath}/ajax/searchInoutStatement',
 				method : 'GET'
 			}
 		},
@@ -83,14 +89,14 @@ $(document).ready(function() {
 	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
-			header : '생산지시디테일코드',
-			name : 'proOrderDetailCode'
+			header : '전표번호',
+			name : 'salInoutStatement'
 		}, {
-			header : '고객사',
-			name : 'erpCustomerCode'
+			header : '업체코드',
+			name : 'salInoutCode'
 		}, {
 			header : '제품코드',
-			name : 'erpProductCode'
+			name : 'comProductCode'
 		}, {
 			header : '완제품 LOT_NO',
 			name : 'proProcessLotNo'
@@ -99,3 +105,4 @@ $(document).ready(function() {
 });
 //end of document ready
 </script>
+</div>	
