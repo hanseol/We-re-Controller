@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
-<!-- 210705 김현경 지시/고객사구분 모달창 -->
-
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<h3>설비 리스트</h3>
@@ -12,14 +10,15 @@
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
-			<div class="panel-body">
-				<div>
-					제품코드 <input type="text" id="comProductCode" name="comProductCode" placeholder="PROD001~PROD999" />
-					설비라인 <input type="text" id="macLineNo" name="macLineNo" placeholder="LINE001~LINE999" />
-					<button id="findRow">검색</button>
-					<br>
-				<div id="macListGrid"></div>
+		</div>
+		<div class="panel-body">
+			<div>
+				제품코드 <input type="text" id="comProductCode" name="comProductCode" placeholder="PROD001~PROD999" />
+				설비라인 <input type="text" id="macLineNo" name="macLineNo" placeholder="LINE001~LINE999" />
+				<button id="findRow">검색</button>
+				<br>
 			</div>
+			<div id="macListGrid"></div>
 		</div>
 	</div>
 </div>
@@ -37,8 +36,13 @@ $(document).ready(function() {
 	$("#ok").on("click", function(){
 		var chkRowKeys = macGrid.getCheckedRowKeys();
 		if(chkRowKeys.length!=0){
-			var code = macGrid.getValue(chkRowKeys,'macCode');			
+			var code = macGrid.getValue(chkRowKeys,'macCode');
+			var nextDate = macGrid.getValue(chkRowKeys,'macNextChkDate');
+			//존재하면..
 			$("#mac").val(code);
+			//존재하면..
+			$("#viewMacCode").val(code);
+			$("#viewMacNextChkDate").val(nextDate);
 		}
 	});
 	
@@ -69,7 +73,7 @@ $(document).ready(function() {
 		data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :500,
+	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
 			header : '설비코드',

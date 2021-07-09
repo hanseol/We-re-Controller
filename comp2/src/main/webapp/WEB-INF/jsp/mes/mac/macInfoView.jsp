@@ -5,8 +5,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
  /**
-  * @Class Name : MacList.jsp
-  * @Description : Mac List 화면
+  * @Class Name : macInfoView.jsp
+  * @Description : Mac Information 화면 (설비 상세 정보 확인 페이지)
   * @Modification Information
   * 
   * @author hanseol
@@ -18,24 +18,59 @@
   */
 %>
 <style>
-	th {
-		width:120px;
-	}
-	
+th {
+	width: 120px;
+	text-align: center;
+}
+
+#imgDiv, #searchDiv {
+	text-align: center;
+}
+
+.panel .table>thead>tr>td:last-child, .panel .table>thead>tr>th:last-child,
+	.panel .table>tbody>tr>td:last-child, .panel .table>tbody>tr>th:last-child,
+	.panel .table>tfoot>tr>td:last-child, .panel .table>tfoot>tr>th:last-child
+	{
+	padding-left: 5px;
+}
+
+.panel .table>thead>tr>td:first-child, .panel .table>thead>tr>th:first-child,
+	.panel .table>tbody>tr>td:first-child, .panel .table>tbody>tr>th:first-child,
+	.panel .table>tfoot>tr>td:first-child, .panel .table>tfoot>tr>th:first-child
+	{
+	padding-left: 5px;
+}
 </style>
 <div>
+	<!-- 관리, 조회 탭 이동 -->
+	<div id="tabs">
+	   <ul class="nav nav-tabs" role="tablist">
+	     <ul class="nav nav-tabs" role="tablist">
+	     <li class="active"><a onclick='location.href="${pageContext.request.contextPath}/mac/macInfoView.do"' 
+	    				aria-controls="tab1" role="tab" data-toggle="tab">조회</a></li>
+	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/macInfoForm.do"' 
+	     				aria-controls="tab2" role="tab" data-toggle="tab">수정/삭제</a></li>
+	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/macRegisterForm.do"' 
+	     				aria-controls="tab3" role="tab" data-toggle="tab">등록</a></li>
+	   </ul>
+	</div>
+	<!-- END 관리, 조회 탭 이동 -->
 
-	<div class="panel">
+
+	<!-- 검색  -->
+	<div class="panel" id="searchDiv">
 		<div class="panel-title">
-			<h3>설비 조회</h3>
+			<h3>설비 검색</h3>
 		</div>
 		<div class="panel-body">
-			<a id="searchProductCode" href="openMacListModal.do" rel="modal:open">
+			<a href="openMacListModal.do" rel="modal:open">
 			<input type="text" id="mac"></a>
-			<button type="button" id="showMachine">조회</button>
+			<button type="button" id="showMachine" class="btn btn-info">조회</button>
 		</div>
 	</div>
+	<!-- END 검색  -->
 	
+	<!-- 정보 (테이블 출력) -->
 	<div class="panel">
 		<div class="panel-heading">
 			<h3 class="panel-title" id="macModel"></h3>
@@ -87,7 +122,7 @@
 						<th>모델</th>
 						<td colspan="3"></td>
 						<th>기준부하율</th>
-						<td colspan="3">-</td>
+						<td colspan="3"></td>
 					</tr>
 					<tr>
 						<th>구매일자</th>
@@ -101,8 +136,20 @@
 			</table>
 		</div>
 	</div>
+	<!-- END 정보 -->
 	
-	
+	<!-- 설비 이미지 -->
+	<div class="content-fluid" id="imgDiv">
+		<div class="panel panel-headline">
+			<div class="panel-heading">
+			
+			</div>
+			<div class="panel-body">
+				<img id="macImage" src="" alt="">
+			</div>
+		</div>
+	</div>
+	<!-- END 이미지 -->
 </div>
 
 <script>
@@ -111,6 +158,7 @@
 		
 		$("#showMachine").on("click",function(){
 			var macCode = $("#mac").val();
+			var macImagePath = "${pageContext.request.contextPath}/resources/images/mac/";
 			$.ajax({
 				url: '${pageContext.request.contextPath}/ajax/mac/macInfo',
 				type: 'GET',
@@ -173,7 +221,9 @@
 					.append($('<th>').html("제작업체"))
 					.append($('<td>').html(item.macMachineConstructor))
 					.append($('<th>').html("비상연락망"))
-					.append($('<td>').html("010-1234-5678")).appendTo('tbody');
+					.append($('<td>').html(item.macConstructorPhone)).appendTo('tbody');
+					
+					$('#macImage').attr("src",macImagePath+item.macImage);
 					
 				}
 			});

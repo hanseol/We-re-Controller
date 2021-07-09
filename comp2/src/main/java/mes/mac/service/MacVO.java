@@ -1,6 +1,7 @@
 package mes.mac.service;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -90,6 +91,15 @@ public class MacVO extends SearchVO{
     
     /** MAC_CHK_CYCLE */
     private java.math.BigDecimal macChkCycle;
+    
+    //이미지 업로드 테스트 중.
+    private MultipartFile uploadFile;
+    
+    /** MAC_IMAGE */
+    private java.lang.String macImage;
+    
+    /** MAC_CONSTRUCTOR_PHONE */
+    private java.lang.String macConstructorPhone;
     
     
 }

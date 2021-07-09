@@ -1,5 +1,6 @@
 package mes.mac.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public interface MacService {
 	 * @return void형
 	 * @exception Exception
 	 */
-    void updateMac(MacVO vo) throws Exception;
+    void updateMac(LinkedHashMap vo) throws Exception;
     
     /**
 	 * MAC을 삭제한다.
@@ -38,7 +39,7 @@ public interface MacService {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    void deleteMac(MacVO vo) throws Exception;
+    void deleteMac(LinkedHashMap vo) throws Exception;
     
     /**
 	 * MAC을 조회한다.
@@ -54,14 +55,6 @@ public interface MacService {
 	 * @return MAC 목록
 	 * @exception Exception
 	 */
-    List selectMacList(MacVO searchVO) throws Exception;
-    
-    /**
-	 * MAC 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return MAC 총 갯수
-	 * @exception
-	 */
-    int selectMacListTotCnt(MacVO searchVO);
+    List<MacVO> selectMacList(MacVO searchVO) throws Exception;
     
 }

@@ -1,19 +1,17 @@
 package mes.mac.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import mes.mac.service.MacService;
 import mes.mac.service.MacVO;
-import mes.mac.service.impl.MacMapper;
 /**
  * @Class Name : MacServiceImpl.java
  * @Description : Mac Business Implement class
@@ -69,7 +67,7 @@ public class MacServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateMac(MacVO vo) throws Exception {
+    public void updateMac(LinkedHashMap vo) throws Exception {
         macDAO.updateMac(vo);
     }
 
@@ -79,7 +77,7 @@ public class MacServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteMac(MacVO vo) throws Exception {
+    public void deleteMac(LinkedHashMap vo) throws Exception {
         macDAO.deleteMac(vo);
     }
 
@@ -104,18 +102,9 @@ public class MacServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return MAC 목록
 	 * @exception Exception
 	 */
-    public List<?> selectMacList(MacVO searchVO) throws Exception {
+    public List<MacVO> selectMacList(MacVO searchVO) throws Exception {
         return macDAO.selectMacList(searchVO);
     }
 
-    /**
-	 * MAC 총 갯수를 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return MAC 총 갯수
-	 * @exception
-	 */
-    public int selectMacListTotCnt(MacVO searchVO) {
-		return macDAO.selectMacListTotCnt(searchVO);
-	}
     
 }

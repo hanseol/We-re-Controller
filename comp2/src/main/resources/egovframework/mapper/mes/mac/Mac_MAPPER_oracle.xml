@@ -26,6 +26,7 @@
 		<result property="macChkDate" column="MAC_CHK_DATE" />
 		<result property="macNextChkDate" column="MAC_NEXT_CHK_DATE" />
 		<result property="macChkCycle" column="MAC_CHK_CYCLE" />
+		<result property="macImage" column="MAC_IMAGE" />
 	</resultMap>
 	
 	<insert id="insertMac">
@@ -81,26 +82,15 @@
 			UPDATE MAC
 			SET MAC_CODE=#{macCode}
 				, MAC_LINE_NO=#{macLineNo}
-				, MAC_HOUR_QTY=#{macHourQty}
-				, COM_PRODUCT_CODE=#{comProductCode}
-				, COM_PROCESS_CODE=#{comProcessCode}
 				, MAC_UNUSED=#{macUnused}
-				, ERP_EMPLOYEE_ID=#{erpEmployeeId}
-				, MAC_USE_PURPOSE=#{macUsePurpose}
-				, MAC_GUBUN=#{macGubun}
-				, MAC_NAME=#{macName}
-				, MAC_SIZE=#{macSize}
-				, MAC_MODEL=#{macModel}
 				, MAC_MACHINE_CONSTRUCTOR=#{macMachineConstructor}
 				, MAC_POSSIBLE_SIZE=#{macPossibleSize}
-				, MAC_MACHINE_DATE=#{macMachineDate}
-				, MAC_MACHINE_COST=#{macMachineCost}
 				, MAC_BUHA=#{macBuha}
-				, MAC_TEMP=#{macTemp}
 				, MAC_CHK_DATE=#{macChkDate}
 				, MAC_NEXT_CHK_DATE=#{macNextChkDate}
 				, MAC_CHK_CYCLE=#{macChkCycle}
-						WHERE MAC_CODE=#{macCode}
+				, MAC_CONSTRUCTOR_PHONE=#{macConstructorPhone}
+				WHERE MAC_CODE=#{macCode}
 				]]>
 	</update>
 	
@@ -128,13 +118,15 @@
 				, MAC_MODEL
 				, MAC_MACHINE_CONSTRUCTOR
 				, MAC_POSSIBLE_SIZE
-				, TO_CHAR(MAC_MACHINE_DATE,'YYYY/MM/DD') AS MAC_MACHINE_DATE
+				, TO_CHAR(MAC_MACHINE_DATE,'YYYY-MM-DD') AS MAC_MACHINE_DATE
 				, TO_CHAR(MAC_MACHINE_COST,'999,999,999,999') AS MAC_MACHINE_COST
 				, MAC_BUHA
 				, MAC_TEMP
-				, TO_CHAR(MAC_CHK_DATE,'YYYY/MM/DD') AS MAC_CHK_DATE
-				, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY/MM/DD') AS MAC_NEXT_CHK_DATE
+				, TO_CHAR(MAC_CHK_DATE,'YYYY-MM-DD') AS MAC_CHK_DATE
+				, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY-MM-DD') AS MAC_NEXT_CHK_DATE
 				, MAC_CHK_CYCLE
+				, MAC_IMAGE
+				, MAC_CONSTRUCTOR_PHONE
 			FROM MAC
 						WHERE MAC_CODE=#{macCode}
 				]]>
@@ -158,20 +150,28 @@ SELECT * FROM (
 								, MAC_MODEL
 								, MAC_MACHINE_CONSTRUCTOR
 								, MAC_POSSIBLE_SIZE
-								, TO_CHAR(MAC_MACHINE_DATE,'YYYY/MM/DD') AS MAC_MACHINE_DATE
-								, MAC_MACHINE_COST
+								, TO_CHAR(MAC_MACHINE_DATE,'YYYY-MM-DD') AS MAC_MACHINE_DATE
+								, TO_CHAR(MAC_MACHINE_COST,'999,999,999,999') AS MAC_MACHINE_COST
 								, MAC_BUHA
 								, MAC_TEMP
-								, TO_CHAR(MAC_CHK_DATE,'YYYY/MM/DD') AS MAC_CHK_DATE
-								, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY/MM/DD') AS MAC_NEXT_CHK_DATE
+								, TO_CHAR(MAC_CHK_DATE,'YYYY-MM-DD') AS MAC_CHK_DATE
+								, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY-MM-DD') AS MAC_NEXT_CHK_DATE
 								, MAC_CHK_CYCLE
+								, MAC_IMAGE
+								, MAC_CONSTRUCTOR_PHONE
 						FROM MAC
 				WHERE 1=1
 				<if test="comProductCode != null and comProductCode != ''">AND
-					COM_PRODUCT_CODE = LIKE '%' || #{comProductCode} || '%'
+					COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
 				</if>
 				<if test="macLineNo != null and macLineNo != ''">AND
 					MAC_LINE_NO LIKE '%' || #{macLineNo} || '%'
+				</if>
+				<if test="macCode != null and macCode != ''">AND
+					MAC_CODE LIKE '%' || #{macCode} || '%'
+				</if>
+				<if test="macNextChkDate != null and macNextChkDate != ''">AND
+					TO_CHAR(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') = #{macNextChkDate} 
 				</if>
 					ORDER BY 
 						MAC_NEXT_CHK_DATE DESC

@@ -1,10 +1,10 @@
 package mes.mac.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
-import mes.mac.service.MacVO;
-
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import mes.mac.service.MacVO;
 
 /**
  * @Class Name : MacMapper.java
@@ -36,7 +36,7 @@ public interface MacMapper {
 	 * @return void형
 	 * @exception Exception
 	 */
-    public void updateMac(MacVO vo) throws Exception;
+    public void updateMac(LinkedHashMap vo) throws Exception;
 
     /**
 	 * MAC을 삭제한다.
@@ -44,7 +44,7 @@ public interface MacMapper {
 	 * @return void형 
 	 * @exception Exception
 	 */
-    public void deleteMac(MacVO vo) throws Exception;
+    public void deleteMac(LinkedHashMap vo) throws Exception;
 
     /**
 	 * MAC을 조회한다.
@@ -60,14 +60,8 @@ public interface MacMapper {
 	 * @return MAC 목록
 	 * @exception Exception
 	 */
-    public List<?> selectMacList(MacVO searchVO) throws Exception;
+    public List<MacVO> selectMacList(MacVO searchVO) throws Exception;
 
-    /**
-	 * MAC 총 갯수를 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return MAC 총 갯수
-	 * @exception
-	 */
-    public int selectMacListTotCnt(MacVO searchVO);
+
 
 }

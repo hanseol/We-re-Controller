@@ -28,13 +28,13 @@
 							</div>
 						</li>
 						<li>
-							<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>영업</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages2" data-toggle="collapse" class="collapsed" id="salNav"><i class="lnr lnr-file-empty"></i> <span>영업</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages2" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/salInout/salesOrderView.do" class="salesOrderView">주문내역</a></li>
 									<li><a href="${pageContext.request.contextPath}/salInout/salesProdView.do" class="salesProdView">완제품입출고</a></li>
 									<li><a href="${pageContext.request.contextPath}/salInout/retuProdView.do" class="retuProdView">반품목록</a></li>
-									<li><a href="${pageContext.request.contextPath}/salInout/matchProdView.do" class="matchProdView">재고품조정</a></li>
+									<li><a href="${pageContext.request.contextPath}/salMatch/matchProdView.do" class="matchProdView">재고품조정</a></li>
 								</ul>
 							</div>
 						</li>
@@ -66,7 +66,7 @@
 							<a href="#subPages5" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>설비</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages5" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/mac/macInfoForm.do" class="">설비정보</a></li>
+									<li><a href="${pageContext.request.contextPath}/mac/macInfoView.do" class="">설비정보</a></li>
 								</ul>
 							</div>
 						</li>
