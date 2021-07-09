@@ -31,8 +31,12 @@ public interface MatInoutMapper {
     //삭제
     public void deleteMatInout(LinkedHashMap vo) throws Exception;
     
-    //전체 입출고 리스트
+    //입고 리스트
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;
+    
+    //출고 리스트
+    public List<?> selectMatInoutPassList(MatInoutVO searchVO) throws Exception;
+    
     
     //모달 자재코드 리스트
     public List<?> searchMaterialCodeList(MatInoutVO searchVO) throws Exception;

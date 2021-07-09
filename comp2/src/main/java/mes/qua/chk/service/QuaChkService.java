@@ -3,6 +3,8 @@ package mes.qua.chk.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import mes.main.service.GridDataVO;
+
 /**
  * @Class Name : QuaMaterialChkService.java
  * @Description : QuaMaterialChk Business class
@@ -18,7 +20,10 @@ import java.util.List;
 public interface QuaChkService {
 	
     //등록
-    String insertQuaChk(LinkedHashMap vo) throws Exception;
+    String insertQuaChk(GridDataVO vo) throws Exception;
+    
+    //자재입출고로 등록
+    String insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
     void updateQuaChk(LinkedHashMap vo) throws Exception;
@@ -28,5 +33,7 @@ public interface QuaChkService {
     
     //전체 리스트 출력
     List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;
-
+    
+    //합격 리스트 조회
+    List<?> selectQuaChkPassList(QuaChkVO searchVO) throws Exception;
 }

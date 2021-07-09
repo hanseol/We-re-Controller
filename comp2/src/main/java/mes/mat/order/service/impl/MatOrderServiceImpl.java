@@ -65,4 +65,8 @@ public class MatOrderServiceImpl extends EgovAbstractServiceImpl implements
     	return matOrderMapper.selectMatOrderList(searchVO);
     }
     
+    //발주코드 모달
+    public List<?> searchMatOrderCodeList(MatOrderVO searchVO) throws Exception {
+    	return matOrderMapper.searchMatOrderCodeList(searchVO);
+    }
 }

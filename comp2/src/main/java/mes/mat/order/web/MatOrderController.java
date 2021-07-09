@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,6 +64,26 @@ public class MatOrderController {
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
+//--------------------------------------모달 페이지--------------------------------------
+    
+    //발주코드 오픈
+    @GetMapping("/matOrder/searchMatOrderCode.do")
+  	public String searchMaterialCode() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/mat/modal/searchMatOrderCode";
+  	}
   	
+  	//발주코드 결과 값 전달
+  	@RequestMapping("/ajax/searchMatOrder")
+  	@ResponseBody
+  	public Map<String, Object> searchOrder(Model model, 
+     		@ModelAttribute("searchVO") MatOrderVO searchVO) throws Exception {
+  		
 
+      	List<?> list = service.searchMatOrderCodeList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
 }

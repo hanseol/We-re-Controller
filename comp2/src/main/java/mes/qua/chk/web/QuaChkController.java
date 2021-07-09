@@ -1,5 +1,6 @@
 package mes.qua.chk.web;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
+import mes.mat.order.service.MatOrderVO;
 import mes.qua.chk.service.QuaChkService;
 import mes.qua.chk.service.QuaChkVO;
 
@@ -40,11 +43,8 @@ public class QuaChkController {
 	//공통함수 객체
 	ComFunc comFunc = new ComFunc();
 
-	//입고전표번호 객체
-	@Resource(name = "mesMatInStatementIdGnrService")
-	protected EgovIdGnrService mesMatInStatementIdGnrService;
-
 	
+
     @Resource(name = "quaChkService")
     private QuaChkService service;
     
@@ -62,7 +62,7 @@ public class QuaChkController {
 
         return "mes/qua/quaChk/matrQuaView.page";
     }
-    //자재입출고조회 리스트
+    //자재발주조회 리스트
     @RequestMapping("/ajax/readQuaChk")
     @ResponseBody
     public Map<String, Object> matQua(Model model, 
@@ -74,11 +74,24 @@ public class QuaChkController {
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
+    
+    //검사완료 리스트 조회
+    @RequestMapping("/ajax/readQuaChkPass")
+    @ResponseBody
+    public Map<String, Object> matQuaChkPass(Model model, 
+    		 @ModelAttribute("searchVO") QuaChkVO searchVO) throws Exception{
+
+    	List<?> list = service.selectQuaChkPassList(searchVO);
+    	
+    	//공통함수 객체 생성
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
 
 
 //--------------------------------------관리 페이지--------------------------------------    
     
-  	//자재입출고 [관리] 페이지
+  	//자재입고검사 [관리] 페이지
     @RequestMapping("/quaChk/matrQuaForm.do")
     public String selectQuaChkForm(@ModelAttribute("searchVO") QuaChkVO searchVO, 
     		ModelMap model) {
@@ -86,36 +99,15 @@ public class QuaChkController {
         return "mes/qua/quaChk/matrQuaForm.page";
     }
   	
-  	//자재입출고 [관리] 등록 수정 삭제
+  	//자재입고검사 [관리] 등록 수정 삭제
     @PutMapping("/ajax/modifyQuaChk")
 	@ResponseBody
-	public void modifyQuaChk(@RequestBody GridDataVO gd) throws Exception {
-    	
-		List<?> updatedList = gd.getUpdatedRows();
-		List<?> createdList = gd.getCreatedRows();
-		List<?> deletedList = gd.getDeletedRows();
-
-		if (updatedList.size() != 0) {
-			for (int i = 0; i < updatedList.size(); i++) {
-				service.updateQuaChk((LinkedHashMap) updatedList.get(i));
-			}
-		}
+	public Map<String, Object> modifyQuaChk(@RequestBody GridDataVO gd) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
+		service.insertQuaChk(gd);
 		
-		if (createdList.size() != 0) {
-			for (int i = 0; i < createdList.size(); i++) {
-				//입고전표번호 만들어서 insert맵퍼에 값 전달
-				((LinkedHashMap)createdList.get(i)).put("quaMaterialStatement", mesMatInStatementIdGnrService.getNextStringId());
-
-				service.insertQuaChk((LinkedHashMap) createdList.get(i));
-			}
-		}
-
-		if (deletedList.size() != 0)
-		{
-			for (int i = 0; i < deletedList.size(); i++) {
-				service.deleteQuaChk((LinkedHashMap) deletedList.get(i));
-			}
-		}
+		map.put("result", true);
+		
+		return map;
 	}
-
 }

@@ -24,7 +24,10 @@ public interface QuaChkMapper {
 
 	//등록
     public void insertQuaChk(LinkedHashMap vo) throws Exception;
-
+    
+    //자재입출고로 등록
+    public void insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
+    
     //수정
     public void updateQuaChk(LinkedHashMap vo) throws Exception;
 
@@ -35,5 +38,6 @@ public interface QuaChkMapper {
     //전체리스트 조회
     public List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;
 
-
+    //합격 리스트 조회
+    public List<?> selectQuaChkPassList(QuaChkVO searchVO) throws Exception;
 }

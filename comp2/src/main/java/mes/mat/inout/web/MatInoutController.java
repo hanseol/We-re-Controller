@@ -75,7 +75,18 @@ public class MatInoutController {
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
-  	
+    //자재입출고조회 리스트
+    @RequestMapping("/ajax/readMatInoutPass")
+    @ResponseBody
+    public Map<String, Object> matInoutPass(Model model, 
+    		 @ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception{
+
+    	List<?> list = service.selectMatInoutPassList(searchVO);
+    	
+    	//공통함수 객체 생성
+    	ComFunc comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
 
 //--------------------------------------관리 페이지--------------------------------------    
     

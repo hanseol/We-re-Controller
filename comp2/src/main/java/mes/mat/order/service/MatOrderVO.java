@@ -46,5 +46,6 @@ public class MatOrderVO extends SearchVO{
     @DateTimeFormat(pattern ="yyyy/MM/dd HH:MI:SS")
     private java.lang.String erpMaterialRequestDate;
 
-    
+    //자재명 추가
+    private String comMaterialName;
 }

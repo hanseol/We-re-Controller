@@ -4,7 +4,7 @@
 <mapper namespace="mes.qua.chk.service.impl.QuaChkMapper">
 
 
-	<!-- 자재입고검사조회 전체리스트  -->
+	<!-- 자재입고검사조회 발주리스트  -->
 	<select id="selectQuaChkList" parameterType="mes.qua.chk.service.QuaChkVO" resultType="egovMap">
 		SELECT *
 		FROM   (
@@ -38,9 +38,14 @@
 					                    AND     q.com_material_code = c.com_material_code
 					                    AND     q.erp_vendor_code = e.erp_vendor_code
 					                    AND     d.com_code_detail_id = q.erp_vendor_code
+					                    AND		q.qua_material_chk = '0'
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
 							        	e.erp_vendor_code = #{erpVendorCode}
+		                              	</if>
+		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
+		                              	AND
+							        	q.erp_material_order_code = #{erpMaterialOrderCode}
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
@@ -57,30 +62,90 @@
 	</select>
 	
 	
-	<!-- 자재입고검사 더미데이터 추가(QUA-*** 전표번호)근데 발주코드는 어떻게 인서트하지? -->
+	<!-- 합격 리스트 조회 -->
+	<select id="selectQuaChkPassList" parameterType="mes.qua.chk.service.QuaChkVO" resultType="egovMap">
+				SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+										SELECT  q.erp_material_order_code,
+										        q.qua_material_statement,
+										        TO_CHAR(q.qua_material_date,'YY/MM/DD')as qua_material_date,
+										        q.erp_vendor_code,
+										        d.com_code_detail_name,
+                            					q.com_material_code,                            
+										        c.com_material_name,
+										        c.com_material_size,
+										        c.com_material_unit,
+										        e.erp_material_order_qty,
+										        TO_CHAR(e.erp_material_request_date,'YY/MM/DD')as erp_material_request_date,
+										        q.qua_material_p_qty,
+										        q.qua_material_f_qty,
+										        q.qua_material_chk,
+										        e.erp_material_unit_price,
+										        TO_CHAR(e.erp_material_order_date,'YY/MM/DD')AS erp_material_order_date,
+										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD')as qua_material_chk_date
+										        
+										FROM    com_material c,
+										        erp_material_order e,
+										        qua_material_chk q,
+										        com_code_detail d
+										        
+					                    WHERE   e.com_material_code = q.com_material_code
+					                    AND     q.com_material_code = c.com_material_code
+					                    AND     q.erp_vendor_code = e.erp_vendor_code
+					                    AND     d.com_code_detail_id = q.erp_vendor_code
+					                    AND		q.qua_material_chk = '1'
+					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
+		                                AND
+							        	e.erp_vendor_code = #{erpVendorCode}
+		                              	</if>
+		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
+		                              	AND
+							        	q.erp_material_order_code = #{erpMaterialOrderCode}
+		                              	</if>
+		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	e.com_material_code = #{comMaterialCode}
+		                              	</if>
+		                              	<if test="erpMaterialRequestDate != null and erpMaterialRequestDate != ''">
+		                              	AND
+							        	e.erp_material_request_date = #{erpMaterialRequestDate}
+		                              	</if>
+		                              ORDER BY qua_material_date <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>	
+	</select>
+	
+	
+	
+	<!-- 자재입고검사 더미데이터 추가(QUA-*** 전표번호) -->
 	<insert id="insertQuaChk">
 		INSERT INTO qua_material_chk  (qua_material_statement,
+									   erp_material_order_code,
 									   qua_material_date,
 									   erp_vendor_code,
 									   com_material_code,
 									   qua_material_p_qty,
 									   qua_material_f_qty,
 									   qua_material_chk,
-									   qua_material_chk_date,
-									   erp_material_order_code)
+									   qua_material_chk_date)
 							VALUES  	(#{quaMaterialStatement},
+										#{erpMaterialOrderCode},
 										#{quaMaterialDate},
 								   		#{erpVendorCode},
 								   		#{comMaterialCode},
 								   		#{quaMaterialPQty},
 								   		#{quaMaterialFQty},
 								   		#{quaMaterialChk},
-								   		#{quaMaterialChkDate},
-								   		#{erpMaterialOrderCode})
+								   		#{quaMaterialChkDate})
 	</insert>
-	<!-- 검사 후 전표번호 발급해서 자재입출고로(MATIN-*** 전표번호) -->
+	<!-- 검사 후 전표번호 발급해서 자재입출고로(MATIN-*** 전표번호) 작업중....-->
 	<insert id="insertQuaChkMatIn">
 		INSERT INTO mat_inout  		  (mat_inout_statement,
+									   com_process_code,
 									   com_material_code,
 									   mat_inout_date,
 									   mat_inout_gubun,
@@ -88,7 +153,10 @@
 									   mat_lot_no,
 									   mat_inout_unit_price,
 									   mat_inout_price)
-							VALUES  	(#{quaMaterialStatement},
+							VALUES  	(#{matInoutStatement},
+										(select 		com_process_code
+									    from			com_bom
+									    where			com_material_code = 'MAT005'),
 										#{comMaterialCode},
 								   		#{quaMaterialChkDate},
 								   		'INOUT002',
@@ -101,7 +169,7 @@
 	
 	
 	
-	<!-- 자재검사 완료(발주코드로 구분하긴 했는데, 발주 하나에 자재 무조건 하나였나? -->
+	<!-- 자재검사 완료(발주코드로 구분하긴 했는데, 발주 하나에 자재 무조건 하나이기 때문에 가능.) -->
 	<update id="updateQuaChk">
 		UPDATE 		qua_material_chk
 		SET			qua_material_statement = #{quaMaterialStatement},
@@ -111,15 +179,17 @@
 					qua_material_p_qty = #{quaMaterialPQty},
 					qua_material_f_qty = #{quaMaterialFQty},
 					qua_material_chk = #{quaMaterialChk},
-					qua_material_chk_date = #{quaMaterialChkDate}
+					qua_material_chk_date = #{quaMaterialChkDate},
+					erp_material_order_code = #{erpMaterialOrderCode}
 					
 		WHERE	erp_material_order_code = #{erpMaterialOrderCode}
 	</update>
 	
-	<!-- 삭제 (전표번호로 구분하면 검사완료 하지 않은(더미데이터) 삭제가 안되므로 발주코드로 구분) -->
+	<!-- 삭제 (QUA-*** 전표번호가 있는 검사완료데이터만 삭제 가능 / 발주목록데이터는 삭제 불가 -->
 	<delete id="deleteQuaChk">
 		DELETE FROM	qua_material_chk
-		WHERE		erp_material_order_code = #{erpMaterialOrderCode}
+		WHERE		qua_material_statement = #{quaMaterialStatement}
+		AND			qua_material_chk = 1
 	</delete>
 	
 </mapper>

@@ -6,7 +6,7 @@
    
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>자재 검색</h3>
+		<h3>자재발주 검색</h3>
 	</div>
 </div>
 
@@ -15,8 +15,10 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					자재코드 <input type="text" id="matCode" name="matCode" placeholder="자재코드"/>
-				    자재명 <input type="text" id="materialName" name="materialName" placeholder="자재명"/>
+					발주코드 <input type="text" id="orderCode" name="orderCode" placeholder="발주코드"/>
+					
+					자재코드 <input type="text" id="materialCode" name="materialCode" placeholder="자재코드"/>
+				        자재명 <input type="text" id="materialName" name="materialName" placeholder="자재명"/>
 				    <button id="findRow">검색</button>
 				</div>
 				<div id="modalGrid"></div>
@@ -38,23 +40,23 @@ $(document).ready(function() {
 	$(document).on("click","button[id=ok]", function(){
 
 		var chkRowKeys = grid.getCheckedRowKeys();
-		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
-			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
-			comMaterialSize = grid.getValue(chkRowKeys[i],'comMaterialSize');
-			comMaterialUnit = grid.getValue(chkRowKeys[i],'comMaterialUnit');
+			erpMaterialOrderCode = grid.getValue(chkRowKeys[i],'erpMaterialOrderCode');
+			erpMaterialRequestDate = grid.getValue(chkRowKeys[i],'erpMaterialRequestDate');
+			erpMaterialOrderQty = grid.getValue(chkRowKeys[i],'erpMaterialOrderQty');
+			erpMaterialUnitPrice = grid.getValue(chkRowKeys[i],'erpMaterialUnitPrice');
 		}
-		//view 페이지에 뿌려줄 부분 아이디값
-		if(materialRowId == -1){
-			$("#materialCode").val(comMaterialCode);
+		//로우아이디
+		if(matOrderRowId == -1){
+			$("#matOrderCode").val(erpMaterialOrderCode);
 		} else {
-			materialGrid.blur();
-			console.log(materialRowId);
-			materialGrid.setValue(materialRowId, 'comMaterialCode', comMaterialCode, false);
-			materialGrid.setValue(materialRowId, 'comMaterialName', comMaterialName, false);
-			materialGrid.setValue(materialRowId, 'comMaterialSize', comMaterialSize, false);
-			materialGrid.setValue(materialRowId, 'comMaterialUnit', comMaterialUnit, false);
+			orderGrid.blur();
+			console.log(matOrderRowId);
+			orderGrid.setValue(matOrderRowId, 'erpMaterialOrderCode', erpMaterialOrderCode, false);
+			orderGrid.setValue(matOrderRowId, 'quaMaterialDate', erpMaterialRequestDate, false);
+			orderGrid.setValue(matOrderRowId, 'erpMaterialOrderQty', erpMaterialOrderQty, false);
+			orderGrid.setValue(matOrderRowId, 'erpMaterialUnitPrice', erpMaterialUnitPrice, false);
+			
 		}
 		
 
@@ -62,12 +64,15 @@ $(document).ready(function() {
 
 	
 	$(document).on("click", "button[id=findRow]", function() {
-		var matCode = $("#matCode").val();
+		var orderCode = $("#orderCode").val();
+		
+		var materialCode = $("#materialCode").val();
 		
 		var materialName = $("#materialName").val();
 	
 		var readParams = {
-				'comMaterialCode' : matCode,
+				'erpMaterialOrderCode' : orderCode,
+				'comMaterialCode' : materialCode,
 				'comMaterialName' : materialName
 			};
 		grid.readData(1, readParams, true);
@@ -76,7 +81,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/ajax/searchMaterial',
+				url : '${pageContext.request.contextPath}/ajax/searchMatOrder',
 				method : 'GET'
 			}
 		},
@@ -91,21 +96,16 @@ $(document).ready(function() {
 	        scrollY: true,
 	        bodyHeight :300,
 	        rowHeight: 30,
-		columns : [ {
-			header : '자재코드',
-			name : 'comMaterialCode'
+		columns : [{
+			header : '발주입고일자',
+			name : 'erpMaterialRequestDate'
+		}, {
+			header : '발주코드',
+			name : 'erpMaterialOrderCode'
 		}, {
 			header : '자재명',
 			name : 'comMaterialName'
-		}, {
-			header : '규격',
-			name : 'comMaterialSize',
-			hidden : true
-		}, {
-			header : '관리단위',
-			name : 'comMaterialUnit',
-			hidden : true
-		}]
+		} ]
 	});
 	
 }); //end of document ready
