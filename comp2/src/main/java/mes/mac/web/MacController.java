@@ -177,6 +177,21 @@ public class MacController {
 		 return map;
 	}
 	
+	
+	/***
+	 * 생산 모니터링 화면 구상
+	 * 
+	 */
+	@RequestMapping("/mac/monitoringView.do")
+	public String monitoringView(){
+		return "mes/mac/monitoring.page";
+	}
+	
+	@RequestMapping("/mac/openPerformance.do")
+	public String openPerformance() {
+		return "mes/mac/performance";
+	}
+	
 	/**
 	 * 설비 점검일 알림 
 	 * @throws Exception 

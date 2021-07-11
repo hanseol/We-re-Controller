@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import mes.main.service.GridDataVO;
+import mes.qua.flty.service.QuaFltyVO;
 
 /**
  * @Class Name : QuaMaterialChkService.java
@@ -36,4 +37,7 @@ public interface QuaChkService {
     
     //합격 리스트 조회
     List<?> selectQuaChkPassList(QuaChkVO searchVO) throws Exception;
+    
+    //자재불량 모달
+    List<?> searchMatFltyCodeList(QuaFltyVO searchVO) throws Exception;
 }

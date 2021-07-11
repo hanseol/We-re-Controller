@@ -64,6 +64,21 @@
 	</div>
 </form>
 
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-9">
+					<p class="panel-subtitle">자재재고현황</p>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="grid"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 //그리드 텍스트 에디터 타입 설정(최대글자수 설정) 클래스
 
@@ -114,7 +129,7 @@ $(document).ready(function () {
 
 				},
 				// 바로 값 나오지않게함
-				initialRequest : false,
+				//initialRequest : false,
 				contentType: "application/json"
 			};
 
@@ -122,51 +137,41 @@ $(document).ready(function () {
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight: 300,
+	        rowHeight: 30,
 			columns : [ {
 				header : '자재코드',
-				name : 'comMaterialCode',
-				editor : 'text'
-			},{
+				name : 'comMaterialCode'
+			}, {
 				header : '자재명',
-				name : 'comMaterialName',
-				editor : 'text'
-			},{
-				header : '바코드',
-				name : 'comMaterialSafetyStock',
-				editor : 'text'
-			},{
+				name : 'comMaterialName'
+			}, {
 				header : '규격',
-				name : 'comMaterialSize',
-				editor : 'text'
-			},{
+				name : 'comMaterialSize'
+			}, {
 				header : '관리단위',
-				name : 'comMaterialUnit',
-				editor : 'text'
-			},{
+				name : 'comMaterialUnit'
+			}, {
 				header : '공급자코드',
-				name : 'comMaterialVendorCode',
-				editor : 'text'
-			},{
+				name : 'comMaterialVendorCode'
+			}, {
 				header : '현재고',
-				name : 'materialStock',
-				editor : 'text'
-			},{
+				name : 'materialStock'
+			}, {
 				header : '안전재고',
-				name : 'comMaterialSafetyStock',
-				editor : 'text'
-			},{
+				name : 'comMaterialSafetyStock'
+			}, {
 				header : 'MIN재고',
-				name : 'comMaterialMin',
-				editor : 'text'
-			},{
+				name : 'comMaterialMin'
+			}, {
 				header : 'MAX재고',
-				name : 'comMaterialMax',
-				editor : 'text'
-			}
-			]
+				name : 'comMaterialMax'
+			}]
 		});
 		grid.on('response', ev => {
-			const { response } = ev.xhr;
+			const {response} = ev.xhr;
 			const responseObj = JSON.parse(response);
 
 			console.log('result : ', responseObj.result);

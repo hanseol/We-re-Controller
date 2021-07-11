@@ -61,10 +61,10 @@ public class MaterialController {
     public String selectMaterialList(@ModelAttribute("searchVO") MaterialVO searchVO, 
     		ModelMap model) {
 
-        return "mes/mat/material/matrView.page";
+        return "mes/mat/matMatr/matrView.page";
     }
     //자재입출고조회 리스트
-    @RequestMapping("/ajax/readMaterial")
+    @RequestMapping("/ajax/readMatMatr")
     @ResponseBody
     public Map<String, Object> Material(Model model, 
     		 @ModelAttribute("searchVO") MaterialVO searchVO) throws Exception{

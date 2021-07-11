@@ -1,7 +1,6 @@
 package mes.qua.chk.web;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
-import mes.mat.order.service.MatOrderVO;
 import mes.qua.chk.service.QuaChkService;
 import mes.qua.chk.service.QuaChkVO;
+import mes.qua.flty.service.QuaFltyVO;
 
 /**
  * @Class Name : matQuaController.java
@@ -110,4 +108,27 @@ public class QuaChkController {
 		
 		return map;
 	}
+    
+    //----------------------------------모달-----------------------------------------------
+    //자재불량 오픈
+    @GetMapping("quaFlty/searchMatFltyCode.do")
+  	public String searchVendorCode() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/mat/modal/searchMatFltyCode";
+  	}
+  	
+  	//자재불량 결과 값 전달
+  	@RequestMapping("/ajax/searchMatFlty")
+  	@ResponseBody
+  	public Map<String, Object> searchMatFlty(Model model, 
+     		@ModelAttribute("searchVO") QuaFltyVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchMatFltyCodeList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
+    
 }

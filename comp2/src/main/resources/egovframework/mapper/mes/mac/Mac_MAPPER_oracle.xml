@@ -186,7 +186,7 @@ SELECT * FROM (
 
 	
 	<select id="selectLeftDate" resultType="mes.member.service.MacDateResultVO">
-		SELECT  ROUND(MAC_NEXT_CHK_DATE - SYSDATE) || 
+		SELECT  (TO_DATE(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') - TO_DATE(sysdate, 'YYYY-MM-DD'))-1 || 
 	        		'일 : (' ||
 	        		MAC_CODE || ', ' ||
 	       			MAC_LINE_NO || ', ' ||

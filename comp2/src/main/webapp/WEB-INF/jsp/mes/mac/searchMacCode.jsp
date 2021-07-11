@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
+<style>
+	#macListGrid{
+		margin-top : 20px;
+	}
+</style>	
+	
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<h3>설비 리스트</h3>

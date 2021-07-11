@@ -244,10 +244,6 @@
 									name : 'comMaterialName',
 									editor : 'text'
 								}, {
-									header : '바코드',
-									name : 'comMaterialBarcode',
-									editor : 'text'
-								}, {
 									header : '관리단위',
 									name : 'comMaterialUnit',
 									editor : 'text'
