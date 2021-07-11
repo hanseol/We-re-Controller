@@ -76,6 +76,7 @@
 							<div id="subPages5" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/mac/macInfoView.do" class="macInfo">설비관리</a></li>
+									<li><a href="${pageContext.request.contextPath}/mac/monitoringView.do" class="macInfo">모니터링테스트</a></li>
 								</ul>
 							</div>
 						</li>

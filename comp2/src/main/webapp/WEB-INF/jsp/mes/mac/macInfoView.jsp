@@ -49,7 +49,6 @@ th {
 	<!-- 관리, 조회 탭 이동 -->
 	<div id="tabs">
 	   <ul class="nav nav-tabs" role="tablist">
-	     <ul class="nav nav-tabs" role="tablist">
 	     <li class="active"><a onclick='location.href="${pageContext.request.contextPath}/mac/macInfoView.do"' 
 	    				aria-controls="tab1" role="tab" data-toggle="tab">조회</a></li>
 	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/macInfoForm.do"' 
