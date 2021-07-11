@@ -78,7 +78,7 @@ public class ProdUseMatrController {
 	public String ProdUseMatrModal() {
 		
 		//모달창에 띄워줄 view페이지 전달.
-		return "mes/com/commodal/prodUseMatrModal";
+		return "mes/com/comModal/prodUseMatrModal";
 	}
 	
 	//모달창에 결과 값 전달
@@ -94,15 +94,15 @@ public class ProdUseMatrController {
 	
 	//모달 공정코드
 	//모달 창을 여는 버튼을 눌렀을 때 동작
-	@GetMapping("/prodUseMatr/proCodeSearchModal.do")
+	@GetMapping("/prodUseMatr/ProCodeSearchModal.do")
 	public String ProcessModal() {
 		
 		//모달창에 띄워줄 view페이지 전달.
-		return "mes/com/commodal/proCodeSearchModal";
+		return "mes/com/comModal/proCodeSearchModal";
 	}
 	
 	//모달창에 결과 값 전달
-	@RequestMapping("mes/com/prodUseMatr/proCodeSearchModal")
+	@RequestMapping("mes/com/prodUseMatr/ProCodeSearchModal")
 	@ResponseBody
 	public Map<String, Object> selectProcessModal(Model model, 
    		@ModelAttribute("searchVO") ProdUseMatrVO searchVO) throws Exception {

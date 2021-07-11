@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<div class="modal"> 
+
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<h3>제품 검색</h3>
@@ -85,3 +87,4 @@ $(document).ready(function() {
 		});
 }); //end of document ready
 </script>
+</div>

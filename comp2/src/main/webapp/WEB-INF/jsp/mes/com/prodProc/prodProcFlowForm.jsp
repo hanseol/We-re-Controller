@@ -180,6 +180,7 @@ let procGrid;
 			columns : [ {
 				header : '제품코드',
 				name : 'comProductCode',
+				
 			},{
 				header : '순서',
 				name : 'comProcessSeq',
@@ -296,7 +297,7 @@ let procGrid;
 			  $(".modal").remove();
 			  this.blur(); // Manually remove focus from clicked link.
 			  console.log(this.href);
-			  $.get("${pageContext.request.contextPath}/prodUseMatr/proCodeSearchModal.do", function(html) {
+			  $.get("${pageContext.request.contextPath}/prodUseMatr/ProCodeSearchModal.do", function(html) {
 			    $(html).appendTo('body').modal();
 			  });
 		}

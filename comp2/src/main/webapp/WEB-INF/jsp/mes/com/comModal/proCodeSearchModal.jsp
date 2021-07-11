@@ -67,7 +67,7 @@ $(document).ready(function() {
 	const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/mes/com/prodUseMatr/proCodeSearchModal',
+					url : '${pageContext.request.contextPath}/mes/com/prodUseMatr/ProCodeSearchModal',
 					method : 'GET'
 				},
 			},

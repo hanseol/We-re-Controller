@@ -35,8 +35,6 @@ public class MatrDtaListVO extends SearchVO{
     
     private java.lang.String comMaterialName;
     
-    private java.lang.String comMaterialBarcode;
-    
     private java.lang.String comMaterialSize;
     
     private java.lang.String comMaterialUnit;
