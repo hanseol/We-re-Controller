@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.mac.service.MacService;
 import mes.mac.service.MacVO;
+import mes.member.service.MacDateResultVO;
 /**
  * @Class Name : MacServiceImpl.java
  * @Description : Mac Business Implement class
@@ -106,5 +107,7 @@ public class MacServiceImpl extends EgovAbstractServiceImpl implements
         return macDAO.selectMacList(searchVO);
     }
 
-    
+    public List<MacDateResultVO> selectLeftDate() throws Exception {
+    	return macDAO.selectLeftDate();
+    }
 }

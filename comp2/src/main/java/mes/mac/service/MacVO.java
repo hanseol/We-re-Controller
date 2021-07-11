@@ -26,6 +26,13 @@ import mes.main.service.SearchVO;
 public class MacVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
+    //첨부파일
+    private MultipartFile uploadFile;
+    
+    //첨부파일명
+    /** MAC_IMAGE */
+    private java.lang.String macImage;
+    
     /** MAC_CODE */
     private java.lang.String macCode="";
     
@@ -91,12 +98,6 @@ public class MacVO extends SearchVO{
     
     /** MAC_CHK_CYCLE */
     private java.math.BigDecimal macChkCycle;
-    
-    //이미지 업로드 테스트 중.
-    private MultipartFile uploadFile;
-    
-    /** MAC_IMAGE */
-    private java.lang.String macImage;
     
     /** MAC_CONSTRUCTOR_PHONE */
     private java.lang.String macConstructorPhone;

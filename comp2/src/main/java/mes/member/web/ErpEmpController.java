@@ -1,9 +1,9 @@
 package mes.member.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import mes.mac.service.MacService;
 import mes.member.service.ErpEmpService;
 import mes.member.service.ErpEmpVO;
+import mes.member.service.MacDateResultVO;
 import mes.member.service.SessionVO;
 
 /**
@@ -43,6 +45,8 @@ public class ErpEmpController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 	
+    @Resource(name = "macService")
+	private MacService macService;
     
     /* 
      * 홈페이지에 접속하면 로그인 폼 화면이 보여진다.
@@ -73,8 +77,18 @@ public class ErpEmpController {
     		sessionVO.setErpEmployeeName(empVO.getErpEmployeeName());
     		sessionVO.setErpEmployeePosition(empVO.getErpEmployeePosition());
     		sessionVO.setErpDepartmentName(empVO.getErpDepartmentName());
+    		
+    		List<MacDateResultVO> list = macService.selectLeftDate();
+    		List<MacDateResultVO> fList = new ArrayList<>();
+    		for(int i=0; i<list.size(); i++) {
+    			if(list.get(i).getDday() <= 10) {
+    				fList.add(list.get(i));
+    			}
+    		}
+    		sessionVO.setMacDateResultList(fList); 
+    		
     		session.setAttribute("session", sessionVO);
-    	
+    		
     		mv.setViewName("redirect:home.do");
     		
     	}else {

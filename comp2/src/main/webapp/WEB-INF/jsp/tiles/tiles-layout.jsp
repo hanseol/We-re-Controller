@@ -53,6 +53,10 @@
 		background-color: white;
 	}
 	
+	/*
+	모달
+	*/
+	
 	.modal {
 		-webkit-border-radius: 0px;
 		border-radius: 0px;
@@ -79,6 +83,7 @@
 	#logout {
 		margin-top: 24px;
 	}
+	
 </style>
 </head>
 <body id="test"> 

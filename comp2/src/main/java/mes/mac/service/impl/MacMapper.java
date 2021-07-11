@@ -5,6 +5,7 @@ import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.mac.service.MacVO;
+import mes.member.service.MacDateResultVO;
 
 /**
  * @Class Name : MacMapper.java
@@ -63,5 +64,7 @@ public interface MacMapper {
     public List<MacVO> selectMacList(MacVO searchVO) throws Exception;
 
 
+    //점검일 D-DAY
+    public List<MacDateResultVO> selectLeftDate() throws Exception;
 
 }

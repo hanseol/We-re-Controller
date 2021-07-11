@@ -1,20 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+<style>
+	.nav {
+		font-family: 'Do Hyeon', sans-serif;
+	}
+	
+	@media screen and (max-width: 1024px)
+	#wrapper .sidebar {
+    	left: -230px;
+	}
+	
+	#wrapper .sidebar {
+		width: 230px;
+	}
+</style>
 <!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav">
 						<li>
-							<a href="#subPages0" data-toggle="collapse" class="collapsed" id="memberNav"><i class="lnr lnr-file-empty"></i> <span>테스트얌</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-							<div id="subPages0" class="collapse ">
-								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/home.do" class="boardList">BOARD</a></li>
-								</ul>
-							</div>
-						</li>
-						<li>
-							<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>공통</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-magic-wand"></i> <span>공통</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages1" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/comCode/ComCodeList.do" class="comCodeList">공통코드관리</a></li>
@@ -28,7 +37,7 @@
 							</div>
 						</li>
 						<li>
-							<a href="#subPages2" data-toggle="collapse" class="collapsed" id="salNav"><i class="lnr lnr-file-empty"></i> <span>영업</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages2" data-toggle="collapse" class="collapsed" id="salNav"><i class="lnr lnr-store"></i> <span>영업</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages2" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/salInout/salesOrderView.do" class="salesOrderView">주문내역</a></li>
@@ -39,7 +48,7 @@
 							</div>
 						</li>
 						<li>
-							<a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>자재</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-pushpin"></i> <span>자재</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages3" class="collapse ">
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/erpMaterialOrder/ErpMaterialOrderList.do" class="">자재발주</a></li>
@@ -63,15 +72,15 @@
 							</div>
 						</li>
 						<li>
-							<a href="#subPages5" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>설비</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages5" data-toggle="collapse" class="collapsed" id="macNav"><i class="lnr lnr-cog"></i> <span>설비</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages5" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/mac/macInfoView.do" class="">설비정보</a></li>
+									<li><a href="${pageContext.request.contextPath}/mac/macInfoView.do" class="macInfo">설비관리</a></li>
 								</ul>
 							</div>
 						</li>
 						<li>
-							<a href="#subPages6" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>품질</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages6" data-toggle="collapse" class="collapsed"><i class="lnr lnr-star-half"></i> <span>품질</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages6" class="collapse ">
 								<ul class="nav">
 									<li><a href="#" class="">자재입고검사</a></li>

@@ -3,6 +3,8 @@ package mes.mac.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import mes.member.service.MacDateResultVO;
+
 /**
  * @Class Name : MacService.java
  * @Description : Mac Business class
@@ -56,5 +58,7 @@ public interface MacService {
 	 * @exception Exception
 	 */
     List<MacVO> selectMacList(MacVO searchVO) throws Exception;
+    
+    List<MacDateResultVO> selectLeftDate() throws Exception;
     
 }

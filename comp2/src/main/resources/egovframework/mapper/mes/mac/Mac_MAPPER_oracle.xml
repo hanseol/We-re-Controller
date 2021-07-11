@@ -52,7 +52,8 @@
 				  , MAC_TEMP
 				  , MAC_CHK_DATE
 				  , MAC_NEXT_CHK_DATE
-				  , MAC_CHK_CYCLE )
+				  , MAC_CHK_CYCLE
+				  , MAC_IMAGE )
 			VALUES ( #{macCode}
 				  , #{macLineNo}
 				  , #{macHourQty}
@@ -73,7 +74,8 @@
 				  , #{macTemp}
 				  , #{macChkDate}
 				  , #{macNextChkDate}
-				  , #{macChkCycle} )
+				  , #{macChkCycle}
+				  , #{macImage} )
 		]]>
 	</insert>
 	
@@ -182,4 +184,14 @@ SELECT * FROM (
 ]]>
 	</select>	
 
+	
+	<select id="selectLeftDate" resultType="mes.member.service.MacDateResultVO">
+		SELECT  ROUND(MAC_NEXT_CHK_DATE - SYSDATE) || 
+	        		'일 : (' ||
+	        		MAC_CODE || ', ' ||
+	       			MAC_LINE_NO || ', ' ||
+	       			MAC_GUBUN || ') ' AS "result"
+       			, TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) AS "dday"
+		FROM MAC
+	</select>
 </mapper>

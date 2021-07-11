@@ -27,6 +27,10 @@ th {
 	text-align: center;
 }
 
+#macImage {
+	width : 100%;
+}
+
 .panel .table>thead>tr>td:last-child, .panel .table>thead>tr>th:last-child,
 	.panel .table>tbody>tr>td:last-child, .panel .table>tbody>tr>th:last-child,
 	.panel .table>tfoot>tr>td:last-child, .panel .table>tfoot>tr>th:last-child
@@ -141,9 +145,6 @@ th {
 	<!-- 설비 이미지 -->
 	<div class="content-fluid" id="imgDiv">
 		<div class="panel panel-headline">
-			<div class="panel-heading">
-			
-			</div>
 			<div class="panel-body">
 				<img id="macImage" src="" alt="">
 			</div>
@@ -153,12 +154,18 @@ th {
 </div>
 
 <script>
+//네비게이션 고정
+$('#macNav').addClass('active');
+$('#subPages5').addClass('in');
+$('#subPages5').attr('aria-expanded','true');
+$('#subPages5').attr('style','');
+$('.macInfo').addClass('active');
 
 	$(document).ready(function(){
 		
 		$("#showMachine").on("click",function(){
 			var macCode = $("#mac").val();
-			var macImagePath = "${pageContext.request.contextPath}/resources/images/mac/";
+			var macImagePath = "${pageContext.request.contextPath}/resources/images/upload/";
 			$.ajax({
 				url: '${pageContext.request.contextPath}/ajax/mac/macInfo',
 				type: 'GET',
