@@ -50,10 +50,6 @@
 						일자<input type="date" id="matInoutDate" name="matInoutDate">
 					</div>
 					<div class="col-md-2">
-						입/출고구분<input type="checkbox" id="inGubun" name="gubunChkBox">입고
-						<input type="checkbox" id="outGubun" name="gubunChkBox">출고
-					</div>
-					<div class="col-md-2">
 						자재코드<a href="${pageContext.request.contextPath}/searchMaterialCode.do"	rel="modal:open">
 						<input type="text" id="comMaterialCode"	name="comMaterialCode">
 						<i class="fa fa-search"></i></a>
@@ -83,6 +79,20 @@
 			</div>
 			<div class="panel-body">
 				<div id="grid"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-9">
+					<p class="panel-subtitle">검사 완료 목록</p>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="passGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -141,7 +151,7 @@ $(document).ready(function () {
 
 		},
 		// 바로 값 나오지않게함
-		initialRequest : false,
+		//initialRequest : false,
 		contentType: "application/json"
 	};
 
@@ -150,76 +160,129 @@ $(document).ready(function () {
 		rowHeaders: ['checkbox'],
 		data: dataSource,
 		columns: [{
-			header: '입출고구분',
-			name: 'matInoutGubun',
-			editor: 'text'
+			header: '발주코드',
+			name: 'erpMaterialOrderCode'
 		}, {
-			header: '일자',
-			name: 'matInoutDate',
-			editor: {
-				type: 'datePicker',
-				options: {
-					format: 'YYYY/MM/dd',
-					language: 'ko'
-				}
-			}
+			header: '입고일자',
+			name: 'quaMaterialDate'
 		}, {
 			header: '업체코드',
-			name: 'comCodeDetailId',
-			editor: 'text'
+			name: 'erpVendorCode'
 		}, {
-			header: '입고업체명',
-			name: 'comCodeDetailName',
-			editor: 'text'
+			header: '업체명',
+			name: 'comCodeDetailName'
 		}, {
 			header: '자재코드',
-			name: 'comMaterialCode',
-			editor: 'text'
+			name: 'comMaterialCode'
 		}, {
 			header: '자재명',
-			name: 'comMaterialName',
-			editor: 'text'
-		}, {
-			header: '자재LOT_NO',
-			name: 'matLotNo',
-			editor: 'text'
+			name: 'comMaterialName'
 		}, {
 			header: '규격',
-			name: 'comMaterialSize',
-			editor: 'text'
+			name: 'comMaterialSize'
 		}, {
 			header: '관리단위',
-			name: 'comMaterialUnit',
-			editor: 'text'
+			name: 'comMaterialUnit'
 		}, {
-			header: '수량',
-			name: 'matInoutQuantity',
-			editor: 'text'
+			header: '발주량',
+			name: 'erpMaterialOrderQty'
+		}, {
+			header: '합격량',
+			name: 'quaMaterialPQty'
+		}, {
+			header: '불량량',
+			name: 'quaMaterialFQty'
 		}, {
 			header: '단가',
-			name: 'matInoutUnitPrice',
-			editor: {
-				type: 'text',
-				options: {
-					maxLength: 7
-				}
-			}
+			name: 'erpMaterialUnitPrice'
 		}, {
 			header: '금액',
-			name: 'matInoutPrice',
-			editor: {
-				type: 'text',
-				options: {
-					maxLength: 7
-				}
-			}
+			name: 'matInoutPrice'
 		}, {
-			header: '재고량',
-			name: 'materialStock',
-			editor: 'text'
+			header: '검사유무',
+			name: 'quaMaterialChk'
+		}, {
+			header: '검사일자',
+			name: 'quaMaterialChkDate'
 		}]
-		
 	});
+	
+	//합격해서 입고된 자재만 등록하는 그리드 데이터
+	const passDataSource = {
+			api: {
+				readData: {
+					url: '${pageContext.request.contextPath}/ajax/readQuaChkPass',
+					method: 'GET'
+				},
+				modifyData: {
+					url: '${pageContext.request.contextPath}/ajax/modifyQuaChk',
+					method: 'PUT'
+				}
+
+			},
+			// 리스트에 값이 바로 나오지않도록 함.
+			/* initialRequest : false, */
+			contentType: "application/json"
+		};
+	//검사완료한  자재 조회
+	const passGrid = new tui.Grid({
+		el: document.getElementById('passGrid'),
+		rowHeaders: ['checkbox'],
+		data: passDataSource,
+		scrollX: true,
+        scrollY: true,
+        bodyHeight: 150, 
+        rowHeight: 30,
+        
+
+		columns: [{
+			header: '발주코드',
+			name: 'erpMaterialOrderCode'
+		}, {
+			header: '입고일자',
+			name: 'quaMaterialDate'
+		}, {
+			header: '업체코드',
+			name: 'erpVendorCode'
+		}, {
+			header: '업체명',
+			name: 'comCodeDetailName'
+		}, {
+			header: '자재코드',
+			name: 'comMaterialCode'
+		}, {
+			header: '자재명',
+			name: 'comMaterialName'
+		}, {
+			header: '규격',
+			name: 'comMaterialSize'
+		}, {
+			header: '관리단위',
+			name: 'comMaterialUnit'
+		}, {
+			header: '발주량',
+			name: 'erpMaterialOrderQty'
+		}, {
+			header: '합격량',
+			name: 'quaMaterialPQty'
+		}, {
+			header: '불량량',
+			name: 'quaMaterialFQty'
+		}, {
+			header: '단가',
+			name: 'erpMaterialUnitPrice'
+		}, {
+			header: '금액',
+			name: 'matInoutPrice'
+		}, {
+			header: '검사유무',
+			name: 'quaMaterialChk'
+		}, {
+			header: '검사일자',
+			name: 'quaMaterialChkDate'
+		}]
+	});
+	
 	
 	//자동 계산 (수량 *단가)
 	grid.on('afterChange',ev => {

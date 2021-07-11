@@ -66,7 +66,7 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     }
     //출고리스트 조회
     public List<?> selectMatInoutPassList(MatInoutVO searchVO) throws Exception {
-    	return matInoutMapper.selectMatInoutList(searchVO);
+    	return matInoutMapper.selectMatInoutPassList(searchVO);
     }
     
     //모달 자재코드 리스트 출력

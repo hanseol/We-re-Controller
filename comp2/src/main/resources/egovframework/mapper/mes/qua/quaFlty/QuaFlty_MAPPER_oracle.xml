@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.qua.flty.service.impl.QuaFltyMapper">
+
+
+	<!-- 자재입고 검사에서 가져온 불량이 있는 검사리스트  -->
+	<select id="selectQuaFltyList" parameterType="mes.qua.flty.service.QuaFltyVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+										SELECT  DISTINCT q.qua_material_statement,
+										        q.erp_material_order_code,
+										        q.qua_material_chk_date,
+										        q.erp_vendor_code,
+										        d.com_code_detail_name,
+										        e.erp_material_order_qty,
+										        e.erp_material_unit_price,
+										        e.erp_material_order_qty * e.erp_material_unit_price as erp_material_price,
+										        q.qua_material_f_qty
+										      
+										FROM    qua_material_chk q,
+										        erp_material_order e,
+										        com_code_detail d,
+										        qua_material_f f
+										
+										WHERE	  q.qua_material_statement = f.qua_material_statement
+										AND     q.erp_material_order_code = e.erp_material_order_code
+										AND     q.erp_material_order_code = f.erp_material_order_code
+										AND     q.erp_vendor_code = d.com_code_detail_id
+												
+					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
+		                                AND
+							        	q.erp_vendor_code = #{erpVendorCode}
+		                              	</if>
+		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
+		                              	AND
+							        	q.erp_material_order_code = #{erpMaterialOrderCode}
+		                              	</if>
+		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	e.com_material_code = #{comMaterialCode}
+		                              	</if>
+		                              	<if test="quaMaterialChkDate != null and quaMaterialChkDate != ''">
+		                              	AND
+							        	q.qua_material_chk_date = #{quaMaterialChkDate}
+		                              	</if>
+		                              ORDER BY qua_material_chk_date <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>	
+	</select>
+		<!-- 선택한 검사목록에 대한 불량리스트  -->
+	<select id="selectQuaFltyDetailList" parameterType="mes.qua.flty.service.QuaFltyVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+										SELECT  f.erp_material_order_code,
+												f.com_material_code,
+												c.com_material_name,
+												f.com_material_f_code,
+												m.com_material_f_name,
+												f.qua_material_f_qty,
+												f.qua_material_statement,
+												e.erp_material_unit_price
+												
+										FROM	qua_material_f f,
+												qua_material_chk q,
+												com_material c,
+												com_material_f m,
+												erp_material_order e
+										
+										WHERE	f.erp_material_order_code = q.erp_material_order_code
+										AND		f.com_material_code = c.com_material_code
+										AND		f.com_material_f_code = m.com_material_f_code
+					                   	AND   f.erp_material_order_code = e.erp_material_order_code
+					                    AND   q.qua_material_statement = f.qua_material_statement
+                   						
+					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
+		                                AND
+							        	e.erp_vendor_code = #{erpVendorCode}
+		                              	</if>
+		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
+		                              	AND
+							        	q.erp_material_order_code = #{erpMaterialOrderCode}
+		                              	</if>
+		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	e.com_material_code = #{comMaterialCode}
+		                              	</if>
+		                              	<if test="erpMaterialRequestDate != null and erpMaterialRequestDate != ''">
+		                              	AND
+							        	e.erp_material_request_date = #{erpMaterialRequestDate}
+		                              	</if>
+		                              ORDER BY qua_material_chk_date <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>	
+	</select>
+
+</mapper>

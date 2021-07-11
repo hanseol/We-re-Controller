@@ -1,4 +1,4 @@
-package mes.qua.chk.service.impl;
+package mes.qua.flty.service.impl;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import mes.main.service.GridDataVO;
-import mes.qua.chk.service.QuaChkService;
-import mes.qua.chk.service.QuaChkVO;
+import mes.qua.flty.service.QuaFltyService;
 import mes.qua.flty.service.QuaFltyVO;
 /**
- * @Class Name : QuaMaterialChkServiceImpl.java
- * @Description : QuaMaterialChk Business Implement class
+ * @Class Name : QuaMaterialFltyServiceImpl.java
+ * @Description : QuaMaterialFlty Business Implement class
  * @Modification Information
  *
  * @author sungwon
@@ -28,9 +27,9 @@ import mes.qua.flty.service.QuaFltyVO;
  *  Copyright (C)  All right reserved.
  */
 
-@Service("quaChkService")
-public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
-        QuaChkService {
+@Service("quaFltyService")
+public class QuaFltyServiceImpl extends EgovAbstractServiceImpl implements
+        QuaFltyService {
 	//자재입고전표번호 부여 객체
 	@Resource(name = "mesMatInStatementIdGnrService")
 	protected EgovIdGnrService mesMatInStatementIdGnrService;
@@ -40,20 +39,20 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 	//자재LOT_NO 부여 객체
 	@Resource(name = "mesMatLotStatementIdGnrService")
 	protected EgovIdGnrService mesMatLotStatementIdGnrService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuaChkServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuaFltyServiceImpl.class);
 
-    @Resource(name="quaChkMapper")
-    private QuaChkMapper quaChkMapper;
+    @Resource(name="quaFltyMapper")
+    private QuaFltyMapper quaFltyMapper;
     
-    //@Resource(name="quaMaterialChkDAO")
-    //private QuaMaterialChkDAO quaMaterialChkDAO;
+    //@Resource(name="quaMaterialFltyDAO")
+    //private QuaMaterialFltyDAO quaMaterialFltyDAO;
     
     /** ID Generation */
-    //@Resource(name="{egovQuaMaterialChkIdGnrService}")    
+    //@Resource(name="{egovQuaMaterialFltyIdGnrService}")    
     //private EgovIdGnrService egovIdGnrService;
 
 	//등록
-    public String insertQuaChk(GridDataVO gd) throws Exception {
+    public String insertQuaFlty(GridDataVO gd) throws Exception {
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -63,73 +62,60 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 				LinkedHashMap updatedMap =(LinkedHashMap) updatedList.get(i);
 				
 				//검사완료 업데이트
-				quaChkMapper.updateQuaChk(updatedMap);
-				
-				//자재 불량으로 업데이트
-				quaChkMapper.insertMatFlty(updatedMap);
+				quaFltyMapper.updateQuaFlty(updatedMap);
 				
 				//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트 
 				updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
 				updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
-				quaChkMapper.insertQuaChkMatIn(updatedMap);
+				quaFltyMapper.insertQuaFltyMatIn(updatedMap);
 			}
 		}
 		
-		if (createdList.size() != 0) {
+		if (createdList != null) {
 			for (int i = 0; i < createdList.size(); i++) {
 				LinkedHashMap createdMap =(LinkedHashMap) createdList.get(i);
 				//더미데이터 추가할 때 쓰는 인서트
 				createdMap.put("quaMaterialStatement", mesQuaInStatementIdGnrService.getNextStringId());
-				quaChkMapper.insertQuaChk(createdMap);
+				quaFltyMapper.insertQuaFlty(createdMap);
 			}
 		}
 
-		if (deletedList.size() != 0) {
+		if (deletedList != null) {
 			for (int i = 0; i < deletedList.size(); i++) {
 				LinkedHashMap deletedMap =(LinkedHashMap) createdList.get(i);
-				quaChkMapper.deleteQuaChk(deletedMap);
+				quaFltyMapper.deleteQuaFlty(deletedMap);
 			}
 		}
 		return null;
     }
     
     //자재입출고로 등록
-    public String insertQuaChkMatIn(LinkedHashMap vo) throws Exception {
+    public String insertQuaFltyMatIn(LinkedHashMap vo) throws Exception {
     	
-    	quaChkMapper.insertQuaChkMatIn(vo);
-    	return null;
-    }
-    //자재불량으로 등록
-    public String insertMatFlty(LinkedHashMap vo) throws Exception {
-    	quaChkMapper.insertMatFlty(vo);
+    	quaFltyMapper.insertQuaFltyMatIn(vo);
     	return null;
     }
 
     //수정
-    public void updateQuaChk(LinkedHashMap vo) throws Exception {
-    	quaChkMapper.updateQuaChk(vo);
+    public void updateQuaFlty(LinkedHashMap vo) throws Exception {
+    	quaFltyMapper.updateQuaFlty(vo);
     }
 
     //삭제
-    public void deleteQuaChk(LinkedHashMap vo) throws Exception {
-    	quaChkMapper.deleteQuaChk(vo);
+    public void deleteQuaFlty(LinkedHashMap vo) throws Exception {
+    	quaFltyMapper.deleteQuaFlty(vo);
     }
-    
 
-    //전체리스트 조회
-    public List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception {
-        return quaChkMapper.selectQuaChkList(searchVO);
+
+    //검사완료 목록 중 불량이 있는 리스트 조회
+    public List<?> selectQuaFltyList(QuaFltyVO searchVO) throws Exception {
+        return quaFltyMapper.selectQuaFltyList(searchVO);
     }
     
-    //전체리스트 조회
-    public List<?> selectQuaChkPassList(QuaChkVO searchVO) throws Exception {
-        return quaChkMapper.selectQuaChkPassList(searchVO);
+    //불량 리스트 조회
+    public List<?> selectQuaFltyDetailList(QuaFltyVO searchVO) throws Exception {
+        return quaFltyMapper.selectQuaFltyDetailList(searchVO);
     }
-    
-    //모달 자재불량코드 리스트 출력
-	public List<?> searchMatFltyCodeList(QuaFltyVO searchVO) throws Exception {
-		return quaChkMapper.searchMatFltyCodeList(searchVO);
-	}
     
     
 }

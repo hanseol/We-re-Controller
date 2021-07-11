@@ -5,6 +5,7 @@ import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.qua.chk.service.QuaChkVO;
+import mes.qua.flty.service.QuaFltyVO;
 
 /**
  * @Class Name : QuaMaterialChkMapper.java
@@ -28,16 +29,21 @@ public interface QuaChkMapper {
     //자재입출고로 등록
     public void insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
     
+    //자재불량으로 등록
+    public void insertMatFlty(LinkedHashMap vo) throws Exception;
+    
     //수정
     public void updateQuaChk(LinkedHashMap vo) throws Exception;
 
     //삭제
     public void deleteQuaChk(LinkedHashMap vo) throws Exception;
 
-
     //전체리스트 조회
     public List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;
 
     //합격 리스트 조회
     public List<?> selectQuaChkPassList(QuaChkVO searchVO) throws Exception;
+    
+    //자재불량 모달
+    public List<?> searchMatFltyCodeList(QuaFltyVO searchVO) throws Exception;
 }

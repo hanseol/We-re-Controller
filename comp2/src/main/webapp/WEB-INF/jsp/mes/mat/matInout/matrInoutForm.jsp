@@ -47,10 +47,10 @@ max-height: 600px; */
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-2">
+					<div class="col-md-3">
 						일자<input type="date" id="matInoutDate" name="matInoutDate">
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
@@ -58,13 +58,13 @@ max-height: 600px; */
 						<input type="hidden" id="matLot" name="matLot">
 						<a id="searchMatLotNo" href="searchMatLotNo.do"></a>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-3">
 						입고업체<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-4" align="right">
+				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
 					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 					<button type="button" class="btn btn-danger" id="reset">새자료</button>
@@ -85,6 +85,7 @@ max-height: 600px; */
 				</div>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-info" id="appendRow">추가</button>
+					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -102,7 +103,7 @@ max-height: 600px; */
 					<p class="panel-subtitle">출고</p>
 				</div>
 				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-warning" id="deleteRow">삭제</button>
+					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -117,7 +118,7 @@ max-height: 600px; */
 let materialGrid;
 let vendorGrid;
 let matLotGrid;
-
+let procGrid;
 //-----------------------------------------------------------
 
 
@@ -142,18 +143,20 @@ let matLotGrid;
 			function () {
 				var rowData = [{
 					//여기 수정 해야함.
-					일자: "",
+					입고일자: "",
 					업체코드: "",
 					입고업체명: "",
 					자재코드: "",
 					자재명: "",
-					자재LOT_NO: "",
 					규격: "",
 					관리단위: "",
+					자재LOT_NO: "",
 					수량: "",
 					단가: "",
 					금액: "",
-					현재고: ""
+					현재고: "",
+					공정코드: "",
+					출고공정명: ""
 				}];
 				grid.appendRow(rowData, {
 					at: 0,
@@ -173,6 +176,7 @@ let matLotGrid;
 		$(document).on("click", "button[id=deleteRow]",
 			function () {
 				grid.removeCheckedRows(false);
+				outGrid.removeCheckedRows(false);
 			});
 
 		//검색데이터 전송
@@ -187,12 +191,11 @@ let matLotGrid;
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
 						'matInoutDate': matInoutDate,
-						'erpVendorCode': erpVendorCode,
-						'matInoutGubun': matInoutGubun
+						'erpVendorCode': erpVendorCode
 					};
 					grid.readData(1, readParams, true);
 				});
-
+		//입고 목록 데이터
 		const dataSource = {
 			api: {
 				readData: {
@@ -209,7 +212,7 @@ let matLotGrid;
 			//initialRequest : false,
 			contentType: "application/json"
 		};
-
+		//입고 그리드
 		const grid = new tui.Grid({
 			el: document.getElementById('grid'),
 			rowHeaders: ['checkbox'],
@@ -257,7 +260,7 @@ let matLotGrid;
 				editor: 'text'
 			}, {
 				header: '단가',
-				name: 'erpMaterialUnitPrice'
+				name: 'matInoutUnitPrice'
 			}, {
 				header: '금액',
 				name: 'matInoutPrice'
@@ -301,7 +304,7 @@ let matLotGrid;
 		        bodyHeight: 150,
 		        rowHeight: 30,
 				columns: [{
-					header: '일자',
+					header: '입고일자',
 					name: 'matInoutDate',
 					editor: {
 						type: 'datePicker',
@@ -325,22 +328,21 @@ let matLotGrid;
 					header: '자재명',
 					name: 'comMaterialName'
 				}, {
-					header: '자재LOT_NO',
-					name: 'matLotNo'
-				}, {
 					header: '규격',
 					name: 'comMaterialSize'
 				}, {
 					header: '관리단위',
 					name: 'comMaterialUnit'
 				}, {
+					header: '자재LOT_NO',
+					name: 'matLotNo'
+				}, {
 					header: '수량',
 					name: 'matInoutQuantity',
 					editor: 'text'
 				}, {
 					header: '단가',
-					name: 'erpMaterialUnitPrice',
-					editor: 'text'
+					name: 'matInoutUnitPrice'
 				}, {
 					header: '금액',
 					name: 'matInoutPrice'
@@ -359,6 +361,7 @@ let matLotGrid;
 		materialGrid = grid;
 		vendorGrid = grid;
 		matLotGrid = grid;
+		procGrid = grid;
 //--------------------------------------------------
 		
 		
@@ -402,6 +405,12 @@ let matLotGrid;
 				matLotNoSearch(ev.rowKey);
 			}
 		});
+		//공정
+		grid.on('dblclick', ev =>{
+			if(ev.columnName == 'comProcessCode'){
+				procCodeSearch(ev.rowKey);
+			}
+		})
 		
 //-----------------------------------------------------------------
 		   
@@ -472,6 +481,19 @@ function matLotNoSearch(c) {
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
 	  $.get("searchMatLotNo.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//공정
+var comProcId;
+function procCodeSearch(c) {
+	comProcId = c;
+	  console.log(comProcId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/prodUseMatr/proCodeSearchModal.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

@@ -95,34 +95,6 @@ max-height: 600px; */
 </div>
 
 <script>
-
-//그리드 텍스트 에디터 타입 설정(최대글자수 설정) 클래스
-class CustomTextEditor {
-    constructor(props) {
-      const el = document.createElement('input');
-      const { maxLength } = props.columnInfo.editor.options;
-
-      el.type = 'text';
-      el.maxLength = maxLength;
-      el.value = String(props.value);
-
-      this.el = el;
-    }
-
-    getElement() {
-      return this.el;
-    }
-
-    getValue() {
-      return this.el.value;
-    }
-
-    mounted() {
-      this.el.select();
-    }
-  };
-
-
 	$(document).ready(function () {
 		//날짜 범위로 지정하는 방법 생각.
 		

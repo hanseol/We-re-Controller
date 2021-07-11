@@ -47,6 +47,8 @@ public class MaterialVO extends SearchVO{
     
     /** COM_MATERIAL_MAX */
     private java.lang.String comMaterialMax;
+    //업체코드
+    private String erpVendorCode;
     
 
     

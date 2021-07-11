@@ -39,6 +39,7 @@
 					                    AND     m.com_material_code = q.com_material_code
 					                    AND     m.com_process_code = p.com_process_code
 					                    AND     q.erp_vendor_code = d.com_code_detail_id
+					                    AND     q.qua_material_statement = m.qua_material_statement
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
 							        	m.mat_inout_date = #{matInoutDate}
@@ -93,6 +94,7 @@
 					                    AND     m.com_material_code = q.com_material_code
 					                    AND     m.com_process_code = p.com_process_code
 					                    AND     q.erp_vendor_code = d.com_code_detail_id
+					                    AND     q.qua_material_statement = m.qua_material_statement
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
 							        	m.mat_inout_date = #{matInoutDate}

@@ -80,6 +80,7 @@ max-height: 600px; */
 				</div>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-info" id="appendRow">추가</button>
+					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -96,7 +97,7 @@ max-height: 600px; */
 					<p class="panel-subtitle">검사 완료 목록</p>
 				</div>
 				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-warning" id="deleteRow">삭제</button>
+					<button type="button" class="btn btn-warning" id="passDeleteRow">선택삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -111,6 +112,7 @@ max-height: 600px; */
 let orderGrid;
 let materialGrid;
 let vendorGrid;
+let matFltyGrid;
 //-----------------------------------------------------------
 
 
@@ -162,15 +164,21 @@ let vendorGrid;
 			function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				grid.finishEditing('rowKey', 'columnName');
-				
 				grid.request('modifyData');
 			});
 		//삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=deleteRow]",
 			function () {
 				grid.removeCheckedRows(false);
+				
 			});
-
+		//삭제 버튼(체크된 행 삭제)
+		$(document).on("click", "button[id=passDeleteRow]",
+			function () {
+				passGrid.removeCheckedRows(false);
+				
+			});
+		
 		//검색데이터 전송
 		$(document).on("click",	"button[id=search]",
 				function () {
@@ -189,6 +197,7 @@ let vendorGrid;
 					};
 					grid.readData(1, readParams, true);
 					passGrid.readData(1, readParams, true);
+					
 				});
 
 		const dataSource = {
@@ -204,7 +213,7 @@ let vendorGrid;
 
 			},
 			// 리스트에 값이 바로 나오지않도록 함.
-			
+			/* initialRequest : false, */
 			contentType: "application/json"
 		};
 
@@ -224,36 +233,30 @@ let vendorGrid;
 				editor: 'text'
 			}, {
 				header: '입고일자',
-				name: 'quaMaterialDate',
-				editor: 'text'
+				name: 'quaMaterialDate'
 			}, {
 				header: '업체코드',
 				name: 'erpVendorCode',
 				editor: 'text'
 			}, {
 				header: '업체명',
-				name: 'comCodeDetailName',
-				editor: 'text'
+				name: 'comCodeDetailName'
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
 				editor: 'text'
 			}, {
 				header: '자재명',
-				name: 'comMaterialName',
-				editor: 'text'
+				name: 'comMaterialName'
 			}, {
 				header: '규격',
-				name: 'comMaterialSize',
-				editor: 'text'
+				name: 'comMaterialSize'
 			}, {
 				header: '관리단위',
-				name: 'comMaterialUnit',
-				editor: 'text'
+				name: 'comMaterialUnit'
 			}, {
 				header: '발주량',
-				name: 'erpMaterialOrderQty',
-				editor: 'text'
+				name: 'erpMaterialOrderQty'
 			}, {
 				header: '합격량',
 				name: 'quaMaterialPQty',
@@ -268,7 +271,7 @@ let vendorGrid;
 				editor: 'text'
 			}, {
 				header: '금액',
-				name: 'matInoutPrice',
+				name: 'erpMaterialPrice',
 				editor: 'text'
 			}, {
 				header: '검사유무',
@@ -284,12 +287,17 @@ let vendorGrid;
 						language: 'ko'
 					}
 				}
+			}, {
+				header: '자재불량코드',
+				name: 'comMaterialFCode',
+				hidden: true
 			}]
 		});
 //모달 그리드 초기화 ----------------------------------
 		orderGrid = grid;
 		materialGrid = grid;
 		vendorGrid = grid;
+		matFltyGrid = grid;
 //--------------------------------------------------
 
 		
@@ -359,7 +367,7 @@ let vendorGrid;
 				name: 'erpMaterialUnitPrice'
 			}, {
 				header: '금액',
-				name: 'matInoutPrice'
+				name: 'erpMaterialPrice'
 			}, {
 				header: '검사유무',
 				name: 'quaMaterialChk'
@@ -373,13 +381,13 @@ let vendorGrid;
 		
 		
 		
-		grid.on('afterChange',ev => {
+/* 		grid.on('afterChange',ev => {
 			//자동 계산 (수량 *단가)
 			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
 			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
 			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 			
-		});
+		}); */
 		
 		//이 컬럼은 클릭하면 안돼.
 		//grid.disableColumn('comCodeDetailName');
@@ -412,7 +420,13 @@ let vendorGrid;
 			if(ev.columnName == 'comMaterialCode'){
 				materialCodeSearch(ev.rowKey);
 			}
-		})
+		});
+		//불량
+		grid.on('dblclick', ev =>{
+			if(ev.columnName == 'quaMaterialFQty'){
+				matFltyCodeSearch(ev.rowKey);
+			}
+		});
 		
 //-----------------------------------------------------------------
 		   
@@ -440,6 +454,10 @@ let vendorGrid;
 		//업체
 		$('#searchVendorCode').click(function(event) {
 			vendorCodeSearch(-1);
+		});
+		//불량
+		$('#searchMatFltyCode').click(function(event) {
+			matFltyCodeSearch(-1);
 		});
 		
 });//end of document ready
@@ -480,6 +498,19 @@ function vendorCodeSearch(c) {
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
 	  $.get("${pageContext.request.contextPath}/matInout/searchVendorCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//불량
+var matFltyRowId;
+function matFltyCodeSearch(c) {
+	matFltyRowId = c;
+	  console.log(matFltyRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/quaFlty/searchMatFltyCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
