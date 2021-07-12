@@ -82,4 +82,6 @@ public interface ProOrderMapper {
 
 	public List<?> selectmatBomList(ProOrderVO searchVO);
 
+	public List<?> selectmatLotList(ProOrderVO searchVO);
+
 }

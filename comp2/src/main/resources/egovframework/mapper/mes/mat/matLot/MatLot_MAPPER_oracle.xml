@@ -11,7 +11,7 @@
 		              FROM   (
 		                              SELECT   m.mat_match_statement,
 		                              		   m.mat_match_inout,
-		                              		   m.mat_match_date,
+		                              		   TO_CHAR(m.mat_match_date, 'YY/MM/DD')as mat_match_date,
 		                              		   c.com_material_code,
 		                              		   c.com_material_name,
 		                              		   m.mat_lot_no,

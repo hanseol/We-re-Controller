@@ -104,7 +104,7 @@ $(document).ready(function () {
 /* 	$("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
-	             });  
+	             });
 	    });   */
 
 	

@@ -51,7 +51,7 @@
 							<a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-pushpin"></i> <span>자재</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages3" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/erpMaterialOrder/ErpMaterialOrderList.do" class="">자재발주</a></li>
+									<li><a href="${pageContext.request.contextPath}/matOrder/matrOrderView.do" class="">자재발주</a></li>
 									<li><a href="${pageContext.request.contextPath}/matInout/matrInoutView.do" class="">자재입출고</a></li>
 									<li><a href="${pageContext.request.contextPath}/matLot/matrLotForm.do" class="">자재LOT재고조정</a></li>
 									<li><a href="${pageContext.request.contextPath}/matMatr/matrView.do" class="">자재재고조회</a></li>
@@ -84,8 +84,8 @@
 							<a href="#subPages6" data-toggle="collapse" class="collapsed"><i class="lnr lnr-star-half"></i> <span>품질</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages6" class="collapse ">
 								<ul class="nav">
-									<li><a href="#" class="">자재입고검사</a></li>
-									<li><a href="#" class="">자재불량조회</a></li>
+									<li><a href="${pageContext.request.contextPath}/quaChk/matrQuaForm.do" class="">자재입고검사</a></li>
+									<li><a href="${pageContext.request.contextPath}/quaFlty/matrFaultyView.do" class="">자재불량조회</a></li>
 								</ul>
 							</div>
 						</li>

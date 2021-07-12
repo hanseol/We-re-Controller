@@ -1,6 +1,5 @@
 package mes.pro.order.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,14 +15,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
 import mes.pro.order.service.ProOrderService;
 import mes.pro.order.service.ProOrderVO;
-import mes.pro.plan.service.ProPlanVO;
 
 /**
  * @Class Name : ProOrderController.java
@@ -120,7 +117,14 @@ public class ProOrderController {
     	return comFunc.sendResult(list);
     }
     
-    
+    // 3번 그리드에 값 뿌리기
+    @RequestMapping("matLotList")
+    @ResponseBody
+    public Map<String, Object> matLotList(@ModelAttribute("searchVO") ProOrderVO searchVO) {
+    	List<?> list = service.selectmatLotList(searchVO);
+    	comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
     
     
     
@@ -155,8 +159,6 @@ public class ProOrderController {
 			for(int i = 0; i < createdList.size(); i++) {
 			}
 		 }
-
-
 		map.put("result", true);
 
 		return map;

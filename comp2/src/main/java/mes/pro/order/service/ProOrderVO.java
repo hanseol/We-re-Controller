@@ -66,7 +66,12 @@ public class ProOrderVO extends SearchVO{
     private String comMaterialName;
     private String comProcessCode;
     
-    
+    private String matLotNo;
+    private String matInoutDate;
+    private String matInoutQuantity;
+    private String matInoutGubun;
+    private String matInoutUnitPrice;
+    private String matInoutPrice;
     
 
 }
