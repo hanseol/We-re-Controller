@@ -358,14 +358,6 @@ var proOrderRowKey;
 				name : 'matInoutGubun',
 				hidden : true 
 			}, {
-				header : '단가',
-				name : 'matInoutUnitPrice',
-				hidden : true 
-			}, {
-				header : '가격',
-				name : 'matInoutPrice',
-				hidden : true 
-			}, {
 				header : '자재코드',
 				name : 'comMaterialCode',
 				hidden : true 

@@ -72,20 +72,14 @@
                             , mat_inout_gubun
                             , mat_inout_quantity
                             , mat_lot_no
-                            , com_process_code
-                            , mat_inout_unit_price
-                            , mat_inout_price
-                            , qua_material_statement )
+                            , com_process_code )
                 VALUES(  #{matInoutStatement}
                        , #{comMaterialCode}
                        , #{matInoutDate}
                        , #{matInoutGubun}
                        , #{matInoutQuantity}
                        , #{matLotNo}
-                       , #{comProcessCode}
-                       , #{matInoutUnitPrice}
-                       , #{matInoutPrice}
-                       , #{quaMaterialStatement} )
+                       , #{comProcessCode} )
       
             INSERT INTO pro_material_lot
                                ( pro_material_number
@@ -141,13 +135,9 @@
 		     , TO_CHAR(i.mat_inout_date, 'yyyy-MM-dd') as mat_inout_date
 		     , i.mat_inout_quantity
 		     , i.mat_inout_gubun
-		     , i.mat_inout_unit_price
-		     , i.mat_inout_price
-		     
 		FROM mat_inout i
 		   , com_material m
 		WHERE 	m.com_material_code = i.com_material_code
-   			AND b.com_material_code = i.com_material_code
 			AND m.com_material_code = #{comMaterialCode}
 		ORDER BY i.mat_inout_date
 	</select>
