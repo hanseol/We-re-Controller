@@ -11,7 +11,7 @@
 		                     ROWNUM rnum
 		              FROM   (
 		                              SELECT	m.mat_inout_statement,
-		                              			TO_CHAR(m.mat_inout_date,'YY/MM/DD) as mat_inout_date,
+		                              			TO_CHAR(m.mat_inout_date,'YY/MM/DD') as mat_inout_date,
                                            		m.com_material_code,
 		                                       	c.com_material_name,
 		                                       	c.com_material_size,

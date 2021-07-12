@@ -65,8 +65,6 @@ $(document).ready(function() {
 			orderGrid.setValue(matOrderRowId, 'comMaterialName', comMaterialName, false);
 			orderGrid.setValue(matOrderRowId, 'comMaterialSize', comMaterialSize, false);
 			orderGrid.setValue(matOrderRowId, 'comMaterialUnit', comMaterialUnit, false);
-			orderGrid.setValue(matOrderRowId, 'quaMaterialPQty', 0, false);
-			orderGrid.setValue(matOrderRowId, 'quaMaterialFQty', 0, false);
 			orderGrid.setValue(matOrderRowId, 'quaMaterialChk', 0, false);
 		}
 		

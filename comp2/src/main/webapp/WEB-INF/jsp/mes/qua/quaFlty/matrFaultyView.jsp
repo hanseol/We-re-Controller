@@ -42,13 +42,13 @@
 					</div>
 					<div class="col-md-3">
 						발주코드
-						<input type="text" id="erpMaterialOrderCode" name="erpMaterialOrderCode">	
+						<input type="text" id="orderCode" name="orderCode">	
 						<a href="searchMatOrderCode.do" rel="modal:open">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						업체코드
-						<input type="text" id="erpMaterialOrderCode" name="erpMaterialOrderCode">	
+						<input type="text" id="vendorCode" name="vendorCode">	
 						<a href="searchMatOrderCode.do" rel="modal:open">
                      	<i class="fa fa-search"></i></a>
 					</div>
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="grid"></div>
+				<div id="orderGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -98,6 +98,8 @@
 </div>
 
 <script>
+var orderGrid;
+
 	$(document).ready(function() {
 		
 		// 옵션 폼 리셋버튼  
@@ -137,8 +139,8 @@
 		};
 		
 		//불량이 있는 발주 그리드
-		const grid = new tui.Grid({
-			el : document.getElementById('grid'),
+		orderGrid = new tui.Grid({
+			el : document.getElementById('orderGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			scrollX: true,
@@ -169,9 +171,6 @@
 			}, {
 				header: '불량량',
 				name: 'quaMaterialFQty'
-			}, {
-				header: '내역보기버튼',
-				name: 'fltyDesc'
 			}]
 		});
 		
@@ -184,7 +183,7 @@
 					}
 				},
 				// 바로 값 나오지않게함
-				//initialRequest : false,
+				initialRequest : false,
 				contentType : "application/json"
 			};
 		
@@ -220,22 +219,27 @@
 				header: '단가',
 				name: 'erpMaterialUnitPrice'
 			}, {
-				header: '금액',
+				header: '청구금액',
 				name: 'erpMatFltyPrice'
 			}]
 		});
-	
- 	grid.on('response', ev => {
-		  const {response} = ev.xhr;
-		  const responseObj = JSON.parse(response);
+		
+		orderGrid.on('click', ev => {
+			if(ev.columnName == 'erpMaterialOrderCode'){
 
-		  console.log('result : ', responseObj.result);
-		  console.log('data : ', responseObj.data);
+				//데이터 넘겨주기.
+				var materialOrderCode = orderGrid.getFocusedCell().value;
+
+				var readParams = {
+						'erpMaterialOrderCode' : materialOrderCode
+				} 
+				fltyGrid.readData(1, readParams, true);
+
+				
+			}
 		});
-	
-	grid.on('check', (ev) => {
-		  alert(`check: ${ev.rowKey}`);
-	});
+		
+
 /* 	grid.applyTheme('custom', { 
 		  row: { 
 		    hover: { 

@@ -13,7 +13,7 @@
 		              FROM   (
 										SELECT  DISTINCT q.qua_material_statement,
 										        q.erp_material_order_code,
-										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD) as qua_material_chk_date,
+										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD') as qua_material_chk_date,
 										        q.erp_vendor_code,
 										        d.com_code_detail_name,
 										        e.erp_material_order_qty,
@@ -66,7 +66,8 @@
 												m.com_material_f_name,
 												f.qua_material_f_qty,
 												f.qua_material_statement,
-												e.erp_material_unit_price
+												e.erp_material_unit_price,
+												f.qua_material_f_qty * e.erp_material_unit_price as erp_mat_flty_price
 												
 										FROM	qua_material_f f,
 												qua_material_chk q,
@@ -74,30 +75,14 @@
 												com_material_f m,
 												erp_material_order e
 										
-										WHERE	f.erp_material_order_code = q.erp_material_order_code
-										AND		f.com_material_code = c.com_material_code
+										WHERE	f.com_material_code = c.com_material_code
 										AND		f.com_material_f_code = m.com_material_f_code
 					                   	AND   	f.erp_material_order_code = e.erp_material_order_code
 					                    AND   	q.qua_material_statement = f.qua_material_statement
-					                    AND		f.qua_material_f_qty = '1'
+					                    AND		f.erp_material_order_code = #{erpMaterialOrderCode}
+					                    AND		f.qua_material_f_qty NOT IN 0
                    						
-					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
-		                                AND
-							        	e.erp_vendor_code = #{erpVendorCode}
-		                              	</if>
-		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
-		                              	AND
-							        	q.erp_material_order_code = #{erpMaterialOrderCode}
-		                              	</if>
-		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
-		                              	AND
-							        	e.com_material_code = #{comMaterialCode}
-		                              	</if>
-		                              	<if test="erpMaterialRequestDate != null and erpMaterialRequestDate != ''">
-		                              	AND
-							        	e.erp_material_request_date = #{erpMaterialRequestDate}
-		                              	</if>
-		                              ORDER BY qua_material_chk_date <![CDATA[ ) a
+		                              ORDER BY f.erp_material_order_code <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	

@@ -143,20 +143,20 @@ let procGrid;
 			function () {
 				var rowData = [{
 					//여기 수정 해야함.
-					입고일자: "",
-					업체코드: "",
-					입고업체명: "",
-					자재코드: "",
-					자재명: "",
-					규격: "",
-					관리단위: "",
-					자재LOT_NO: "",
-					수량: "",
-					단가: "",
-					금액: "",
-					현재고: "",
-					공정코드: "",
-					출고공정명: ""
+					matInoutDate: "",
+					erpVendorCode: "",
+					comCodeDetailName: "",
+					comMaterialCode: "",
+					comMaterialName: "",
+					comMaterialSize: "",
+					comMaterialUnit: "",
+					matLotNo: "",
+					matInoutQuantity: "",
+					matInoutUnitPrice: "",
+					matInoutPrice: "",
+					materialStock: "",
+					comProcessCode: "",
+					comProcessName: ""
 				}];
 				grid.appendRow(rowData, {
 					at: 0,

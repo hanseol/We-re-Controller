@@ -60,17 +60,26 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
     	if (updatedList != null) {
 			for (int i = 0; i < updatedList.size(); i++) {
 				LinkedHashMap updatedMap =(LinkedHashMap) updatedList.get(i);
+				int passQty =  (int) updatedMap.get("quaMaterialPQty");
 				
-				//검사완료 업데이트
-				quaChkMapper.updateQuaChk(updatedMap);
-				
-				//자재 불량으로 업데이트
-				quaChkMapper.insertMatFlty(updatedMap);
-				
-				//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트 
-				updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
-				updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
-				quaChkMapper.insertQuaChkMatIn(updatedMap);
+				if(passQty == 0) {
+					//검사완료 업데이트
+					quaChkMapper.updateQuaChk(updatedMap);
+					
+					//자재 불량으로 인서트
+					quaChkMapper.insertMatFlty(updatedMap);
+				}else {
+					//검사완료 업데이트
+					quaChkMapper.updateQuaChk(updatedMap);
+					
+					//자재 불량으로 인서트
+					quaChkMapper.insertMatFlty(updatedMap);
+					
+					//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트 
+					updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
+					updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
+					quaChkMapper.insertQuaChkMatIn(updatedMap);
+				}
 			}
 		}
 		

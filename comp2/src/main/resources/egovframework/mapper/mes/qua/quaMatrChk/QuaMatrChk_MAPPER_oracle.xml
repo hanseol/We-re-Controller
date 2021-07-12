@@ -212,12 +212,12 @@
 									    from			com_bom
 									    where			com_material_code = 'MAT005'),
 										#{comMaterialCode},
-								   		#{quaMaterialChkDate},
+								   		TO_CHAR(SYSDATE, 'YY/MM/DD'),
 								   		'INOUT002',
 								   		#{quaMaterialPQty},
 								   		#{matLotNo},
 								   		#{erpMaterialUnitPrice},
-								   		#{matInoutPrice})
+								   		#{erpMaterialPrice})
 	</insert>
 	
 	<!-- 자재불량테이블로 불량자료 넘기기 -->
@@ -246,7 +246,7 @@
 					qua_material_p_qty = #{quaMaterialPQty},
 					qua_material_f_qty = #{quaMaterialFQty},
 					qua_material_chk = #{quaMaterialChk},
-					qua_material_chk_date = #{quaMaterialChkDate},
+					qua_material_chk_date = TO_CHAR(SYSDATE, 'YY/MM/DD'),
 					erp_material_order_code = #{erpMaterialOrderCode}
 					
 		WHERE	qua_material_statement = #{quaMaterialStatement}

@@ -117,7 +117,6 @@ let matFltyGrid;
 let erpMaterialOrderCode;
 
 
-
 	$(document).ready(function () {
 		
 		// 옵션 폼 리셋버튼  
@@ -294,16 +293,6 @@ let erpMaterialOrderCode;
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',
-				editor: {
-					type: 'datePicker',
-					options: {
-						format: 'YYYY/MM/dd',
-						language: 'ko'
-					}
-				}
-			}, {
-				header: '자재불량코드',
-				name: 'comMaterialFCode',
 				hidden: true
 			}]
 		});
@@ -407,14 +396,15 @@ let erpMaterialOrderCode;
 		
 		
 		
-		
-/*  		grid.on('afterChange',ev => {
-			//자동 계산 (수량 *단가)
-			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
-			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
-			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
-			
-		});  */
+		//자동 계산 합격량(발주량-불량량) AND 금액(발주량*단가)
+  		grid.on('afterChange',ev => {
+			var oQty = grid.getValue( ev.changes[0].rowKey, 'erpMaterialOrderQty');
+			var fQty = grid.getValue( ev.changes[0].rowKey, 'quaMaterialFQty');
+			var uQty = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
+			grid.setValue( ev.changes[0].rowKey, 'quaMaterialPQty', oQty-fQty);
+			grid.setValue( ev.changes[0].rowKey, 'erpMaterialPrice', oQty*uQty);
+		});
+
 		
 		//이 컬럼은 클릭하면 안돼.
 		//grid.disableColumn('comCodeDetailName');
