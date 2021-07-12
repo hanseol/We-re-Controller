@@ -116,7 +116,8 @@ let mgrid; //모달그리드
 						'salInoutDate' : date,
 						'salInoutGubun' : gubun,
 						'comProductCode' : productCode,
-						'proProcessLotNo' : productLotNo
+						'proProcessLotNo' : productLotNo,
+						'salInoutQuantity' : salInoutQuantity
 					};
 					grid.readData(1, readParams, true);
 				});

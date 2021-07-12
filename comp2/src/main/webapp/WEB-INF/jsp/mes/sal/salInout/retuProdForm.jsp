@@ -99,7 +99,7 @@ let mgrid; //모달 그리드
 					comProductCode : "",
 					salInoutQuantity : "",
 					proProcessLotNo : "",
-					salWriteDate : "",
+					salWriteDate : ""
 			}];
 			grid.appendRow(rowData, {
 				at : 0,
@@ -165,13 +165,20 @@ let mgrid; //모달 그리드
 				name : 'comProductCode',
 				editor : 'text'
 			}, {
-				header : '수량',
+				header : '주문량',
+				name : 'orderQuantity'
+			}, {
+				header : '반품량',
 				name : 'salInoutQuantity',
 				editor : 'text'
+			}, {
+				header : '최종 출고량',
+				name : 'finalQuantity'
 			}]
 		}); 
 	
 		mgrid = grid;
+		
 		
 		 //모달 : 제품코드
 		   grid.on('dblclick', ev => {

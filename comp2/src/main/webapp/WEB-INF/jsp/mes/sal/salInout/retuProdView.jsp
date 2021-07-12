@@ -131,8 +131,14 @@ let mgrid; //모달 그리드
 				header : '제품코드',
 				name : 'comProductCode',
 			}, {
-				header : '수량',
+				header : '주문량',
+				name : 'orderQuantity',
+			}, {
+				header : '반품량',
 				name : 'salInoutQuantity',
+			}, {
+				header : '최종 출고량',
+				name : 'finalQuantity',
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate',
@@ -140,6 +146,7 @@ let mgrid; //모달 그리드
 		}); 
 	
 		mgrid = grid;
+		
 		
 		$('#searchProductLotNo').click(function(event) {
 		 	productLotNoSearch(-1);
@@ -169,6 +176,12 @@ function productLotNoSearch(c) {
 	    $(html).appendTo('body').modal();
 	  });
 }
+
+//반품 수량 계산
+function total() {
+	var x = $('input[name=]')
+}
+
 
 
 </script>

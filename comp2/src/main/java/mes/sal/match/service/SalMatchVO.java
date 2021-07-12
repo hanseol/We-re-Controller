@@ -46,6 +46,7 @@ public class SalMatchVO extends SearchVO{
     
     //제품명
     private java.lang.String comProductName;
+    
    
     
 }

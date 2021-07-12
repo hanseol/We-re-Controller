@@ -37,11 +37,14 @@
 										SELECT SAL_MATCH_STATEMENT, SAL_MATCH_INOUT,
 										TO_CHAR(SAL_MATCH_DATE, 'YYYY/MM/dd') as SAL_MATCH_DATE,
 										S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
-										TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
-										C.COM_PRODUCT_NAME, SAL_MATCH_QTY
-										FROM SAL_MATCH S, COM_PRODUCT C
+										TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
+										C.COM_PRODUCT_NAME, I.SAL_INOUT_QUANTITY, SAL_MATCH_QTY, 
+                    					(I.SAL_INOUT_QUANTITY - S.SAL_MATCH_QTY) as FINAL_QUANTITY
+										FROM SAL_MATCH S, SAL_INOUT I, COM_PRODUCT C
 										WHERE 1=1
 										AND S.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE
+                    					AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
+                   						AND I.SAL_INOUT_GUBUN = 'INOUT003'
 			<if test="salMatchDate != null and salMatchDate != ''"> AND
 					SAL_MATCH_DATE = #{salMatchDate}
 			</if>
