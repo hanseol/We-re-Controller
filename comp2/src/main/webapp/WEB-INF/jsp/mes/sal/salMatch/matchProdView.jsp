@@ -155,11 +155,17 @@ let mgrid;
 				header : '제품명',
 				name : 'comProductName'
 			}, {
+				header : '완제품 LOT_NO',
+				name : 'proProcessLotNo'
+			}, {
+				header : '기존수량',
+				name : 'salInoutQuantity'
+			}, {
 				header : '정산수량',
 				name : 'salMatchQty'
 			}, {
-				header : '완제품 LOT_NO',
-				name : 'proProcessLotNo'
+				header : '최종수량',
+				name : 'finalQuantity'
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate'

@@ -197,13 +197,19 @@ let mgrid;
 				name : 'comProductCode',
 				editor : 'text'
 			}, {
+				header : '완제품 LOT_NO',
+				name : 'proProcessLotNo',
+				editor : 'text'
+			}, {
+				header : '기존수량',
+				name : 'salInoutQuantity'
+			}, {
 				header : '정산수량',
 				name : 'salMatchQty',
 				editor : 'text'
 			}, {
-				header : '완제품 LOT_NO',
-				name : 'proProcessLotNo',
-				editor : 'text'
+				header : '최종수량',
+				name : 'finalQuantity'
 			}, {
 				header : '전표번호',
 				name : 'salMatchStatement',
