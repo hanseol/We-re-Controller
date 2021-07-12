@@ -4,7 +4,7 @@
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
-			<img src="${pageContext.request.contextPath}/resources/images/home-bg.JPG" alt="Home Background" class="img-responsive"
+			<img src="${pageContext.request.contextPath}/resources/images/home-bg.JPG" alt="Home Background" class="img-responsive">
 		</div>		
 	</div>
 </div>
