@@ -10,33 +10,40 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   c.com_material_code,
-		                                       c.com_material_name,
-		                                       c.com_material_size,
-		                                       c.com_material_unit,
-		                                       c.com_material_vendor_code,
-		                                       (m.mat_inout_quantity - CASE m.mat_inout_gubun
-										                                WHEN 'INOUT003'
-										                                THEN mat_inout_quantity
-										                                ELSE 0
-										                                END						) as material_stock,
-		                                       c.com_material_safety_stock,
-		                                       c.com_material_min,
-		                                       c.com_material_max
-		                              FROM     com_material c,
-		                                       mat_inout m,
-		                                       erp_material_order e
-		                              WHERE    c.com_material_code = m.com_material_code
-		                              AND	   c.com_material_vendor_code = e.erp_vendor_code
+		                              SELECT	m.mat_inout_statement,
+		                              			TO_CHAR(m.mat_inout_date,'YY/MM/DD) as mat_inout_date,
+                                           		m.com_material_code,
+		                                       	c.com_material_name,
+		                                       	c.com_material_size,
+		                                       	c.com_material_unit,
+		                                       	q.erp_vendor_code,
+                                           		SUM(m.mat_inout_quantity) as material_stock,
+		                                       	c.com_material_safety_stock
+		                                       	
+		                              FROM     	com_material c,
+		                                       	mat_inout m,
+		                                       	qua_material_chk q
+		                                       	
+		                              WHERE    	c.com_material_code = m.com_material_code
+                                  	  AND      	m.com_material_code = q.com_material_code
+                                  	  
 		                              <if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
 							        	q.erp_vendor_code = #{erpVendorCode}
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	q.com_material_code = #{comMaterialCode}
+							        	m.com_material_code = #{comMaterialCode}
 		                              </if>
-		                              ORDER BY com_material_code DESC
+                                 	  GROUP BY 	m.mat_inout_statement,
+                                           		m.com_material_code,
+		                                       	c.com_material_name,
+		                                       	c.com_material_size,
+		                                       	c.com_material_unit,
+		                                       	q.erp_vendor_code,
+                                           		c.com_material_safety_stock
+
+		                              ORDER BY com_material_code
 		                              <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}

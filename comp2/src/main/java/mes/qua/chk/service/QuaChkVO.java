@@ -85,5 +85,8 @@ public class QuaChkVO extends SearchVO{
     //금액 추가
     private BigDecimal matInoutPrice;
     
-    
+    //자재불량코드
+    private String comMaterialFCode;
+    //공통자재불량
+    private String comMaterialFName;
 }

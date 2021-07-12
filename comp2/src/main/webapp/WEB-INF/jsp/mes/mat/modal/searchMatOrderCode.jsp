@@ -42,6 +42,12 @@ $(document).ready(function() {
 			erpMaterialRequestDate = grid.getValue(chkRowKeys[i],'erpMaterialRequestDate');
 			erpMaterialOrderQty = grid.getValue(chkRowKeys[i],'erpMaterialOrderQty');
 			erpMaterialUnitPrice = grid.getValue(chkRowKeys[i],'erpMaterialUnitPrice');
+			erpVendorCode = grid.getValue(chkRowKeys[i],'erpVendorCode');
+			comCodeDetailName = grid.getValue(chkRowKeys[i],'comCodeDetailName');
+			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
+			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
+			comMaterialSize = grid.getValue(chkRowKeys[i],'comMaterialSize');
+			comMaterialUnit = grid.getValue(chkRowKeys[i],'comMaterialUnit');
 		}
 		//로우아이디
 		if(matOrderRowId == -1){
@@ -53,7 +59,15 @@ $(document).ready(function() {
 			orderGrid.setValue(matOrderRowId, 'quaMaterialDate', erpMaterialRequestDate, false);
 			orderGrid.setValue(matOrderRowId, 'erpMaterialOrderQty', erpMaterialOrderQty, false);
 			orderGrid.setValue(matOrderRowId, 'erpMaterialUnitPrice', erpMaterialUnitPrice, false);
-			
+			orderGrid.setValue(matOrderRowId, 'erpVendorCode', erpVendorCode, false);
+			orderGrid.setValue(matOrderRowId, 'comCodeDetailName', comCodeDetailName, false);
+			orderGrid.setValue(matOrderRowId, 'comMaterialCode', comMaterialCode, false);
+			orderGrid.setValue(matOrderRowId, 'comMaterialName', comMaterialName, false);
+			orderGrid.setValue(matOrderRowId, 'comMaterialSize', comMaterialSize, false);
+			orderGrid.setValue(matOrderRowId, 'comMaterialUnit', comMaterialUnit, false);
+			orderGrid.setValue(matOrderRowId, 'quaMaterialPQty', 0, false);
+			orderGrid.setValue(matOrderRowId, 'quaMaterialFQty', 0, false);
+			orderGrid.setValue(matOrderRowId, 'quaMaterialChk', 0, false);
 		}
 		
 
@@ -102,7 +116,31 @@ $(document).ready(function() {
 		}, {
 			header : '납품요청일',
 			name : 'comMaterialName'
-		} ]
+		}, {
+			header : '업체코드',
+			name : 'erpVendorCode',
+			hidden: true
+		}, {
+			header : '업체명',
+			name : 'comCodeDetailName',
+			hidden: true
+		}, {
+			header : '자재코드',
+			name : 'comMaterialCode',
+			hidden: true
+		}, {
+			header : '자재명',
+			name : 'comMaterialName',
+			hidden: true
+		}, {
+			header : '규격',
+			name : 'comMaterialSize',
+			hidden: true
+		}, {
+			header : '관리단위',
+			name : 'comMaterialUnit',
+			hidden: true
+		}]
 	});
 	
 }); //end of document ready

@@ -5,7 +5,6 @@ import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.qua.chk.service.QuaChkVO;
-import mes.qua.flty.service.QuaFltyVO;
 
 /**
  * @Class Name : QuaMaterialChkMapper.java
@@ -45,5 +44,8 @@ public interface QuaChkMapper {
     public List<?> selectQuaChkPassList(QuaChkVO searchVO) throws Exception;
     
     //자재불량 모달
-    public List<?> searchMatFltyCodeList(QuaFltyVO searchVO) throws Exception;
+    public List<?> searchMatFltyCodeList(QuaChkVO searchVO) throws Exception;
+    
+    //자재합격량불량량 모달
+    public List<?> searchMatFltyCodeQtyList(QuaChkVO searchVO) throws Exception;
 }

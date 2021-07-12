@@ -13,7 +13,7 @@
 		              FROM   (
 										SELECT  DISTINCT q.qua_material_statement,
 										        q.erp_material_order_code,
-										        q.qua_material_chk_date,
+										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD) as qua_material_chk_date,
 										        q.erp_vendor_code,
 										        d.com_code_detail_name,
 										        e.erp_material_order_qty,
@@ -77,8 +77,9 @@
 										WHERE	f.erp_material_order_code = q.erp_material_order_code
 										AND		f.com_material_code = c.com_material_code
 										AND		f.com_material_f_code = m.com_material_f_code
-					                   	AND   f.erp_material_order_code = e.erp_material_order_code
-					                    AND   q.qua_material_statement = f.qua_material_statement
+					                   	AND   	f.erp_material_order_code = e.erp_material_order_code
+					                    AND   	q.qua_material_statement = f.qua_material_statement
+					                    AND		f.qua_material_f_qty = '1'
                    						
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND

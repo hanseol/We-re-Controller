@@ -146,6 +146,34 @@
          			WHERE ROWNUM <= #{lastIndex})
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>
+	<!-- 자재불량 모달 리스트 합격량 불량량 출력 -->
+	<select id="searchMatFltyCodeQtyList" parameterType="mes.qua.chk.service.QuaChkVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		          	SELECT a.*,
+		                     ROWNUM rnum
+		            FROM   (
+		                              SELECT   q.qua_material_statement,
+		                              		   q.qua_material_p_qty,
+		                              		   q.qua_material_f_qty,
+		                              		   e.erp_material_order_qty,
+		                              		   e.erp_material_order_code
+		                              FROM     qua_material_chk q,
+		                              		   erp_material_order e
+		                              WHERE	   q.erp_material_order_code = e.erp_material_order_code
+					                  <!-- <if test="comMaterialFCode != null and comMaterialFCode !=''"> AND
+					                     com_material_f_code LIKE '%' || #{comMaterialFCode} || '%'
+					                  </if>
+					                  <if test="comMaterialFName != null and comMaterialFName !=''">AND
+					                     com_material_f_name LIKE '%' || #{comMaterialFName} || '%'
+					                  </if> -->
+					                  <if test="erpMaterialOrderCode != null and erpMaterialOrderCode !=''">AND
+					                     erp_material_order_code = #{erpMaterialOrderCode}
+					                  </if>
+									  ORDER BY qua_material_statement <![CDATA[ ) A
+         			WHERE ROWNUM <= #{lastIndex})
+		WHERE RNUM >= #{firstIndex}]]>
+	</select>
 	
 	<!-- 자재입고검사 더미데이터 추가(QUA-*** 전표번호) -->
 	<insert id="insertQuaChk">

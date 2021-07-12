@@ -14,7 +14,6 @@ import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import mes.main.service.GridDataVO;
 import mes.qua.chk.service.QuaChkService;
 import mes.qua.chk.service.QuaChkVO;
-import mes.qua.flty.service.QuaFltyVO;
 /**
  * @Class Name : QuaMaterialChkServiceImpl.java
  * @Description : QuaMaterialChk Business Implement class
@@ -127,9 +126,12 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
     }
     
     //모달 자재불량코드 리스트 출력
-	public List<?> searchMatFltyCodeList(QuaFltyVO searchVO) throws Exception {
+	public List<?> searchMatFltyCodeList(QuaChkVO searchVO) throws Exception {
 		return quaChkMapper.searchMatFltyCodeList(searchVO);
 	}
-    
+    //모달 자재불량코드 리스트 출력
+	public List<?> searchMatFltyCodeQtyList(QuaChkVO searchVO) throws Exception {
+		return quaChkMapper.searchMatFltyCodeQtyList(searchVO);
+	}
     
 }

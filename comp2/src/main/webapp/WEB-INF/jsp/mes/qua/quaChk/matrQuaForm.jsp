@@ -114,7 +114,7 @@ let materialGrid;
 let vendorGrid;
 let matFltyGrid;
 //-----------------------------------------------------------
-
+let erpMaterialOrderCode;
 
 
 
@@ -136,23 +136,26 @@ let matFltyGrid;
 		//추가버튼 (행 추가)
 		$(document).on("click", "button[id=appendRow]",
 			function () {
-				var rowData = [{
+				var rowData = {
 					//여기 수정 해야함.
-					발주코드: "",
-					입고일자: "",
-					업체코드: "",
-					업체명: "",
-					자재코드: "",
-					자재명: "",
-					규격: "",
-					관리단위: "",
-					발주량: "",
-					합격량: "",
-					불량량: "",
-					단가: "",
-					금액: "",
-					검사일자:""
-				}];
+					erpMaterialOrderCode: "",
+					quaMaterialDate: "",
+					erpVendorCode: "",
+					comCodeDetailName: "",
+					comMaterialCode: "",
+					comMaterialName: "",
+					comMaterialSize: "",
+					comMaterialUnit: "",
+					erpMaterialOrderQty: "",
+					quaMaterialPQty: "",
+					quaMaterialFQty: "",
+					comMaterialFCode:"",
+					erpMaterialUnitPrice: "",
+					erpMaterialPrice: "",
+					quaMaterialChk:"",
+					quaMaterialChkDate:"",
+					comMaterialFCode:""
+				};
 				grid.appendRow(rowData, {
 					at: 0,
 					focus: true
@@ -236,15 +239,13 @@ let matFltyGrid;
 				name: 'quaMaterialDate'
 			}, {
 				header: '업체코드',
-				name: 'erpVendorCode',
-				editor: 'text'
+				name: 'erpVendorCode'
 			}, {
 				header: '업체명',
 				name: 'comCodeDetailName'
 			}, {
 				header: '자재코드',
-				name: 'comMaterialCode',
-				editor: 'text'
+				name: 'comMaterialCode'
 			}, {
 				header: '자재명',
 				name: 'comMaterialName'
@@ -260,11 +261,24 @@ let matFltyGrid;
 			}, {
 				header: '합격량',
 				name: 'quaMaterialPQty',
-				editor: 'text'
+				editor : 'text'
 			}, {
 				header: '불량량',
 				name: 'quaMaterialFQty',
-				editor: 'text'
+				editor : 'text'
+			}, {
+				header: '불량코드',
+				name: 'comMaterialFCode',
+				editor : {
+					type: 'select',
+					options : {
+					listItems: [
+						{text : '찢김', value : 'MATBAD001'},
+						{text : '오염', value : 'MATBAD002'},
+						{text : '끊김', value : 'MATBAD003'}
+						]
+					}
+				}
 			}, {
 				header: '단가',
 				name: 'erpMaterialUnitPrice',
@@ -374,20 +388,33 @@ let matFltyGrid;
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate'
-			}]
+			}
+			//합계
+			/* summary : {
+	            height : 40,
+	            position : 'bottom',
+	            columnContent : {
+	               repairCost : {
+	                  template(val) {
+	                     return '합계 : ' + val.sum;
+	                  }
+	               }
+	            }
+	         } */
+	         ]
 		});
 		
 		
 		
 		
 		
-/* 		grid.on('afterChange',ev => {
+/*  		grid.on('afterChange',ev => {
 			//자동 계산 (수량 *단가)
 			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
 			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
 			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 			
-		}); */
+		});  */
 		
 		//이 컬럼은 클릭하면 안돼.
 		//grid.disableColumn('comCodeDetailName');
@@ -415,18 +442,18 @@ let matFltyGrid;
 			}
 
 		});
-		//자재
+/* 		//자재
 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'comMaterialCode'){
 				materialCodeSearch(ev.rowKey);
 			}
-		});
+		}); */
 		//불량
-		grid.on('dblclick', ev =>{
+/* 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'quaMaterialFQty'){
 				matFltyCodeSearch(ev.rowKey);
 			}
-		});
+		}); */
 		
 //-----------------------------------------------------------------
 		   

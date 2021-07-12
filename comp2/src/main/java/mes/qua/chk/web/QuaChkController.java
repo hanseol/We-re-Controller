@@ -21,7 +21,6 @@ import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
 import mes.qua.chk.service.QuaChkService;
 import mes.qua.chk.service.QuaChkVO;
-import mes.qua.flty.service.QuaFltyVO;
 
 /**
  * @Class Name : matQuaController.java
@@ -122,7 +121,7 @@ public class QuaChkController {
   	@RequestMapping("/ajax/searchMatFlty")
   	@ResponseBody
   	public Map<String, Object> searchMatFlty(Model model, 
-     		@ModelAttribute("searchVO") QuaFltyVO searchVO) throws Exception {
+     		@ModelAttribute("searchVO") QuaChkVO searchVO) throws Exception {
   		
 
       	List<?> list = service.searchMatFltyCodeList(searchVO);
@@ -130,5 +129,18 @@ public class QuaChkController {
       	ComFunc comFunc = new ComFunc();
       	return comFunc.sendResult(list);
   	}
+  	//자재합격량불량량 결과 값 전달
+  	@RequestMapping("/ajax/searchMatFltyQty")
+  	@ResponseBody
+  	public Map<String, Object> searchMatFltyQty(Model model, 
+     		@ModelAttribute("searchVO") QuaChkVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchMatFltyCodeQtyList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
+    
     
 }
