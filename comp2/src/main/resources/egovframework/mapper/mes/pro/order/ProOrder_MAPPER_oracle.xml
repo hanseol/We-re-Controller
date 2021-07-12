@@ -12,34 +12,93 @@
 		<result property="proOrderDate" column="PRO_ORDER_DATE" />
 	</resultMap>
 	
-	<!-- INSERT: 생산지시M -->
+	<!-- INSERT: 생산지시 M + D -->
 	<insert id="insertProOrder">
-		<![CDATA[
-			INSERT INTO PRO_ORDER 
-				( PRO_ORDER_CODE
-				  , PRO_ORDER_GUBUN
-				  , PRO_ORDER_QTY
-				  , PRO_ORDER_RANK
-				  , PRO_ORDER_DATE )
-			VALUES ( #{proOrderCode}
-				  , #{proOrderGubun}
-				  , #{proOrderQty} 
-				  , #{proOrderRank}
-				  , #{proOrderDate} )
-		]]>
-	</insert>
-	
-	<!-- INSERT: 생산지시D  -->
-	<insert id="insertProOrderDetail">
+		{CALL 
+			DECLARE
+			BEGIN
+				INSERT INTO INSERT INTO pro_order 
+									( pro_order_code
+		                      		, pro_order_gubun
+		                    		, pro_order_qty
+		                     		, pro_order_rank
+		                     		, pro_order_date)
+		  		  VALUES(  #{proOrderCode}
+		  		  		 , #{proOrderGubun}
+		  		  		 , #{proOrderQty}
+		  		  		 , #{proOrderRank}
+		  		  		 , #{proOrderDate}  )
 		
-	
+				INSERT INTO pro_order_detail
+										 (pro_order_detail_code
+		                           	 	, pro_order_code
+		                           		, pro_plan_detail_code
+		                           		, erp_product_deadline
+		                          		, pro_work_date
+		                          		, erp_customer_code
+		                          		, pro_order_expect_qty
+		                          		, pro_order_day_qty
+		                          		, pro_order_seq
+		                        		, pro_order_qty
+		                           		, erp_product_name
+		                        		, erp_product_code
+		                           		, pro_process_lot_no)
+		      		  VALUES(  #{proOrderDetailCode}
+			  		  		 , #{proOrderCode}
+			  		  		 , #{proPlanDetailCode}
+			  		  		 , #{erpProductDeadline}
+			  		  		 , #{proWorkDate}
+			  		  		 , #{erpCustomerCode} 
+			  		  		 , #{proOrderExpectQty}
+			  		  		 , #{proOrderDayQty}
+			  		  		 , #{proOrderSeq}
+			  		  		 , #{proOrderQty}
+			  		  		 , #{erpProductName}
+			  		  		 , #{erpProductCode}
+			  		  		 , #{proProcessLotNo}  )
+			END
+		}
 	</insert>
 	
-	<!-- INSERT: 자재inout -->
-	<insert id="insertMatInout">
-		
+	<!-- INSERT: mat_inout  +  pro_material_lot -->
+	<insert id="insertMat">
+		{CALL 
+         DECLARE
+         BEGIN
+            INSERT INTO INSERT INTO MAT_INOUT 
+                           (  mat_inout_statement
+                            , com_material_code
+                            , mat_inout_date
+                            , mat_inout_gubun
+                            , mat_inout_quantity
+                            , mat_lot_no
+                            , com_process_code
+                            , mat_inout_unit_price
+                            , mat_inout_price
+                            , qua_material_statement )
+                VALUES(  #{matInoutStatement}
+                       , #{comMaterialCode}
+                       , #{matInoutDate}
+                       , #{matInoutGubun}
+                       , #{matInoutQuantity}
+                       , #{matLotNo}
+                       , #{comProcessCode}
+                       , #{matInoutUnitPrice}
+                       , #{matInoutPrice}
+                       , #{quaMaterialStatement} )
+      
+            INSERT INTO pro_material_lot
+                               ( pro_material_number
+                               , pro_order_detail_code
+                               , pro_material_lot )
+                    VALUES(  #{proMaterialNumber}
+                           , #{proOrderDetailCode}
+                           , #{proMaterialLot} )
+         END
+      }
 	
 	</insert>
+
 	
 	
 	<update id="updateProOrder">
@@ -84,9 +143,11 @@
 		     , i.mat_inout_gubun
 		     , i.mat_inout_unit_price
 		     , i.mat_inout_price
+		     
 		FROM mat_inout i
 		   , com_material m
 		WHERE 	m.com_material_code = i.com_material_code
+   			AND b.com_material_code = i.com_material_code
 			AND m.com_material_code = #{comMaterialCode}
 		ORDER BY i.mat_inout_date
 	</select>
@@ -121,6 +182,7 @@
 				pro_order_date BETWEEN #{startDate} AND #{endDate} 
 			</if>	
 	</select>
+	
 	
 	<!-- 생산지시: 생산계획에 작성된 제품 조회(모달) -->	
 	<select id="selectPlanProductList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">

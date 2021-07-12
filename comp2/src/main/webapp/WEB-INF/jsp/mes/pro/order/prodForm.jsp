@@ -325,7 +325,7 @@ var proOrderRowKey;
 			}, {
 				header : '공정코드',
 				name : 'comProcessCode'
-			} ]
+			}]
 		}); //end of grid(2번)
 	
 //======================================== 3번 그리드 ======================================== 		
@@ -354,10 +354,6 @@ var proOrderRowKey;
 				header : '수량',
 				name : 'matInoutQuantity' 
 			}, {
-				header : '사용수량', 
-				name : '',
-				editor : 'text'
-			}, {
 				header : '구분',
 				name : 'matInoutGubun',
 				hidden : true 
@@ -368,6 +364,18 @@ var proOrderRowKey;
 			}, {
 				header : '가격',
 				name : 'matInoutPrice',
+				hidden : true 
+			}, {
+				header : '자재코드',
+				name : 'comMaterialCode',
+				hidden : true 
+			}, {
+				header : '자재이름',
+				name : 'comMaterialName',
+				hidden : true 
+			}, {
+				header : '공정코드',
+				name : 'comProcessCode',
 				hidden : true 
 			} ]
 		
