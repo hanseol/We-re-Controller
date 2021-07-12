@@ -154,6 +154,22 @@ var proOrderRowKey;
 			proOrdergrid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
 		});
+		
+		// M 리셋버튼  
+		$("#reset").click(function() {  
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	proOrdergrid.clear();
+		    	matInfogrid.clear();
+		    	matLotgrid.clear();
+		    	
+		    	$('#comProductCode').val("");
+		    	$('#comProductName').val("");
+		    	
+		    	$('#comMaterialCode').val("");
+		    	$('#comMaterialName').val("");
+		    	});
+			}); 
 
 		
 //======================================== 1번 그리드 ======================================== 
@@ -194,6 +210,7 @@ var proOrderRowKey;
 		              ]
 		            }
 		          }
+			
 			}, {
 				header : '주문번호',
 				name : 'erpOrderCode'
@@ -235,6 +252,10 @@ var proOrderRowKey;
 				header : '생산계획디테일코드',
 				name : 'proPlanDetailCode',
 				hidden : true
+			}, {
+				header : '고객코드',
+				name : 'erpCustomerCode',
+				hidden : true 
 			} ]
 		}); //end of grid(1번)
 	
@@ -255,10 +276,11 @@ var proOrderRowKey;
 			el : document.getElementById('matInfogrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : matDataSource,
+			scrollX : false,
+			scrollY : true,
 			columns : [  {
 				header : '자재코드',
-				name : 'comMaterialCode',
-				editor : 'text'
+				name : 'comMaterialCode'
 			}, {
 				header : '자재이름',
 				name : 'comMaterialName'
@@ -272,7 +294,7 @@ var proOrderRowKey;
 		//dataSource	
 		const lotDataSource = {
 			api : {
-				readData : { url : '${pageContext.request.contextPath}/', method : 'GET' }
+				readData : { url : '${pageContext.request.contextPath}/matLotList', method : 'GET' }
 			},
 			initialRequest : false,
 			contentType : "application/json"
@@ -281,14 +303,34 @@ var proOrderRowKey;
 		const matLotgrid = new tui.Grid({
 			el : document.getElementById('matLotgrid'),
 			rowHeaders : [ 'checkbox' ],
-			data : dataSource,
+			data : lotDataSource,
+			scrollX : false,
+			scrollY : true,
 			columns : [  {
 				header : '로트번호',
-				name : 'matLotNo',
-				editor : 'text'
+				name : 'matLotNo'
 			}, {
 				header : '입고일자',
-				name : 'matInoutDate',
+				name : 'matInoutDate'
+			}, {
+				header : '수량',
+				name : 'matInoutQuantity' 
+			}, {
+				header : '사용수량', 
+				name : '',
+				editor : 'text'
+			}, {
+				header : '구분',
+				name : 'matInoutGubun',
+				hidden : true 
+			}, {
+				header : '단가',
+				name : 'matInoutUnitPrice',
+				hidden : true 
+			}, {
+				header : '가격',
+				name : 'matInoutPrice',
+				hidden : true 
 			} ]
 		
 	}); //end of grid(3번)
@@ -308,12 +350,14 @@ var proOrderRowKey;
 	proOrdergrid.on('click', ev => {
 		if(ev.columnName == 'erpProductCode'){
 			var comProductCode = proOrdergrid.getFocusedCell().value;
-			console.log(comProductCode);
+			var comProductName = proOrdergrid.getValue(ev.rowKey, 'erpProductName');
 			
 			var readParams = {
 					'comProductCode' : comProductCode
 			} 
 			matInfogrid.readData(1, readParams, true);
+			$("#comProductCode").val(comProductCode);
+			$("#comProductName").val(comProductName);
 		}
 	});
 	
@@ -321,12 +365,14 @@ var proOrderRowKey;
 	matInfogrid.on('click', ev => {
 		if(ev.columnName == 'comMaterialCode'){
 			var comMaterialCode = matInfogrid.getFocusedCell().value;
-			console.log(comMaterialCode);
-			
+			var comMaterialName = matInfogrid.getValue(ev.rowKey, 'comMaterialName');
+
 			var readParams = {
 					'comMaterialCode' : comMaterialCode
 			} 
 			matLotgrid.readData(1, readParams, true);
+			$("#comMaterialCode").val(comMaterialCode);
+			$("#comMaterialName").val(comMaterialName);
 		}
 	});
 	

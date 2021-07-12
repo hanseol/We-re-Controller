@@ -155,5 +155,10 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	public List<?> selectmatBomList(ProOrderVO searchVO) {
 		return proOrderDAO.selectmatBomList(searchVO);
 	}
+
+	@Override
+	public List<?> selectmatLotList(ProOrderVO searchVO) {
+		return proOrderDAO.selectmatLotList(searchVO);
+	}
     
 }

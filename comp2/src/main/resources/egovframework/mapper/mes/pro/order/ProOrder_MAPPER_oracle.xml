@@ -12,6 +12,7 @@
 		<result property="proOrderDate" column="PRO_ORDER_DATE" />
 	</resultMap>
 	
+	<!-- INSERT: 생산지시M  -->
 	<insert id="insertProOrder">
 		<![CDATA[
 			INSERT INTO PRO_ORDER 
@@ -27,6 +28,19 @@
 				  , #{proOrderDate} )
 		]]>
 	</insert>
+	
+	<!-- INSERT: 생산지시D  -->
+	<insert id="insertProOrderDetail">
+		
+	
+	</insert>
+	
+	<!-- INSERT: 자재inout -->
+	<insert id="insertMatInout">
+		
+	
+	</insert>
+	
 	
 	<update id="updateProOrder">
 		<![CDATA[
@@ -60,6 +74,22 @@
 				]]>
 	</select>
 	
+	<!-- 3번째 그리드에 자재로트 정보 뿌리기 -->
+	<select id="selectmatLotList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT m.com_material_code
+		     , m.com_material_name
+		     , i.mat_lot_no
+		     , TO_CHAR(i.mat_inout_date, 'yyyy-MM-dd') as mat_inout_date
+		     , i.mat_inout_quantity
+		     , i.mat_inout_gubun
+		     , i.mat_inout_unit_price
+		     , i.mat_inout_price
+		FROM mat_inout i
+		   , com_material m
+		WHERE 	m.com_material_code = i.com_material_code
+			AND m.com_material_code = #{comMaterialCode}
+		ORDER BY i.mat_inout_date
+	</select>
 	
 	
 	<!-- 2번째 그리드의 제품BOM 정보 -->
@@ -132,6 +162,7 @@
 						         , od.pro_order_seq
 						         , od.pro_order_code
 						         , om.pro_order_date
+						         , od.erp_customer_code
 						FROM     pro_order_detail od
 						       , pro_order om
 						       , pro_plan_detail p

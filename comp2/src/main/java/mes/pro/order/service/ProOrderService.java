@@ -78,5 +78,7 @@ public interface ProOrderService {
 
 	List<?> selectmatBomList(ProOrderVO searchVO);
 
+	List<?> selectmatLotList(ProOrderVO searchVO);
+
     
 }
