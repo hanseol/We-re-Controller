@@ -12,7 +12,7 @@
 		<result property="proOrderDate" column="PRO_ORDER_DATE" />
 	</resultMap>
 	
-	<!-- INSERT: 생산지시M  -->
+	<!-- INSERT: 생산지시M -->
 	<insert id="insertProOrder">
 		<![CDATA[
 			INSERT INTO PRO_ORDER 
@@ -23,7 +23,7 @@
 				  , PRO_ORDER_DATE )
 			VALUES ( #{proOrderCode}
 				  , #{proOrderGubun}
-				  , #{proOrderQty}
+				  , #{proOrderQty} 
 				  , #{proOrderRank}
 				  , #{proOrderDate} )
 		]]>
