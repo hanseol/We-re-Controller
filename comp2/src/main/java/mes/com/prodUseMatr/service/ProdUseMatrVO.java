@@ -24,6 +24,7 @@ public class ProdUseMatrVO extends SearchVO{
     private static final long serialVersionUID = 1L;
 
     //공통, bom
+    private java.lang.String comBomNum;
     private java.lang.String comProductCode;
     private java.lang.String comMaterialCode;
     private java.lang.String comProcessCode;
@@ -55,7 +56,6 @@ public class ProdUseMatrVO extends SearchVO{
     
     //자재
     private java.lang.String comMaterialName;
-    private java.lang.String comMaterialBarcode;
     private java.lang.String comMaterialSize;
     private java.lang.String comMaterialUnit;
     private java.lang.String comMaterialVendorCode;

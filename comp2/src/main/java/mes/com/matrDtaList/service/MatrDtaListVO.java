@@ -43,8 +43,4 @@ public class MatrDtaListVO extends SearchVO{
     
     private java.lang.String comMaterialSafetyStock;
     
-    private java.lang.String comMaterialMin;
-    
-    private java.lang.String comMaterialMax;
-    
 }

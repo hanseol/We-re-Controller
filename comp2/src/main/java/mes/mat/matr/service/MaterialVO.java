@@ -27,9 +27,6 @@ public class MaterialVO extends SearchVO{
     /** COM_MATERIAL_NAME */
     private java.lang.String comMaterialName;
     
-    /** COM_MATERIAL_BARCODE */
-    private java.lang.String comMaterialBarcode;
-    
     /** COM_MATERIAL_SIZE */
     private java.lang.String comMaterialSize;
     

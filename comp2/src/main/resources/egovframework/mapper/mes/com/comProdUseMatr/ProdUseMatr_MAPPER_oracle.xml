@@ -30,7 +30,8 @@
 	<select id="selectProdUseMatrList" parameterType="mes.com.prodUseMatr.service.ProdUseMatrVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-					SELECT b.COM_PRODUCT_CODE
+					SELECT a.COM_BOM_NUM
+							, b.COM_PRODUCT_CODE
 							, b.COM_PRODUCT_NAME
 							, b.COM_PRODUCT_UNIT
 							, b.COM_PRODUCT_USE
@@ -109,7 +110,8 @@
 	<!-- 디테일코드 삽입 -->
 	<insert id="insertProdUseMatrDetail">
 		INSERT INTO COM_BOM(
-				COM_PRODUCT_CODE
+				COM_BOM_NUM
+				, COM_PRODUCT_CODE
 				, COM_MATERIAL_CODE
 				, COM_BOM_UNIT
 				, COM_BOM_ORDER
@@ -117,7 +119,8 @@
 				, COM_PROCESS_CODE
 				, COM_BOM_ETC)
 		VALUES (
-				UPPER(#{comProductCode})
+				#{comBomNum}
+				, UPPER(#{comProductCode})
 				, UPPER(#{comMaterialCode})
 				, #{comBomUnit}
 				, #{comBomOrder}
@@ -129,8 +132,9 @@
 	<update id="updateProdUseMatrDetail">
 		UPDATE
 		COM_BOM
-		SET 
-		COM_PROCESS_CODE = UPPER(#{comProcessCode})
+		SET
+		COM_BOM_NUM = #{comBomNum}
+		, COM_PROCESS_CODE = UPPER(#{comProcessCode})
 		, COM_BOM_ORDER = #{comBomOrder}
 		, COM_BOM_PRODUCE = #{comBomProduce}
 		, COM_BOM_UNIT = #{comBomUnit}

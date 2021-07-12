@@ -58,7 +58,7 @@
 					<div class="col-md-4">
 						<form>
 							제품코드 <input type="text" id="productCode" name="productCode">
-							<a id="ProdUseMatrModal" href="${pageContext.request.contextPath}/prodUseMatr/ProdUseMatrModal.do"
+							<a id="ProdUseMatrModal" href="ProdUseMatrModal.do"
 								rel="modal:open"> <i class="fa fa-search"></i></a>
 						</form>
 					</div>
@@ -182,9 +182,13 @@ let procGrid;
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			columns : [{
+				header : '번호',
+				name : 'comBomNum',
+				editor : 'text'
+			},{
 				header : '제품코드',
 				name : 'comProductCode',
-				hidden : true
+				//hidden : true
 			},{
 				header : '자재코드',
 				name : 'comMaterialCode',
@@ -234,6 +238,8 @@ let procGrid;
 		$(document).on("click", "button[id=appendRow]", function() {
 			
 			var rowData = {
+					
+					comBomNum : "",
 					comProductCode : productCode,
 					comMaterialCode : "",
 					comBomUnit : "",

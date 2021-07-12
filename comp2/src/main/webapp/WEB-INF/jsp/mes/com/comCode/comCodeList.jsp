@@ -237,6 +237,7 @@
 							},{
 								header : '코드',
 								name : 'comCodeDetailId',
+								editor : 'text',
 								validation: {
 						               required:true
 						            },
