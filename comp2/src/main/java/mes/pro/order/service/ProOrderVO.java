@@ -73,5 +73,6 @@ public class ProOrderVO extends SearchVO{
     private String matInoutUnitPrice;
     private String matInoutPrice;
     
+    private String proPlanQty;
 
 }

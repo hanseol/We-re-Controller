@@ -52,6 +52,7 @@ $(document).ready(function() {
 			erpOrderQty = gridModal.getValue(chkRowKeys[i],'erpOrderQty');
 			macHourQty = gridModal.getValue(chkRowKeys[i],'macHourQty');
 			proOrderDayQty = gridModal.getValue(chkRowKeys[i],'proOrderDayQty');
+			proPlanQty = gridModal.getValue(chkRowKeys[i],'proPlanQty');
 			
 			console.log(proPlanDetailCode);
 			console.log(erpProductCode);
@@ -70,6 +71,7 @@ $(document).ready(function() {
 			proOrdergrid.setValue(proOrderRowKey, 'erpOrderQty', erpOrderQty, false);
 			proOrdergrid.setValue(proOrderRowKey, 'macHourQty', macHourQty, false);
 			proOrdergrid.setValue(proOrderRowKey, 'proOrderDayQty', proOrderDayQty, false);
+			proOrdergrid.setValue(proOrderRowKey, 'proPlanQty', proPlanQty, false);
 		}
 	});
 	
@@ -119,6 +121,10 @@ $(document).ready(function() {
 		}, {
 			header : '주문코드',
 			name : 'erpOrderCode'
+		}, {
+			header : '계획량',
+			name : 'proPlanQty',
+			hidden : true
 		}, {
 			header : '납기일자',
 			name : 'erpProductDeadline',

@@ -47,8 +47,8 @@
 					</div>
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
-						<button type="reset" class="btn btn-danger">새자료</button>
-					</div> 
+						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+					</div>  
 				</form>
 			</div>
 		</div>
@@ -93,6 +93,23 @@
 		         };
 		         grid.readData(1, readParams, true);
 		      });
+		
+		
+		// M 리셋버튼  
+		$("#reset").click(function() {  
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+		    	
+		    	$('#startDate').val("");
+		    	$('#endDate').val("");
+		    	$('#erpProductCode').val("");
+		    	$('#erpCustomerCode').val("");
+		    	});
+			}); 
+
+		
+		
 
 		//dataSource	
 		const dataSource = {
@@ -146,6 +163,9 @@
 			} , {
 				header : '작업순서',
 				name : 'proPlanSeq',
+			}, {
+				header : '지시코드',
+				name : 'proOrderDetailCode'
 			} ]
 		});
 		

@@ -91,6 +91,8 @@
 					<div>
 						자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" readonly>
 						자재명   <input type="text" id="comMaterialName" name="comMaterialName" readonly>
+						
+						<button type="button" id="modifyLot">저장</button>
 					</div>
 					<div class="panel-body">
 						<div id="matLotgrid"></div>
@@ -170,6 +172,16 @@ var proOrderRowKey;
 		    	$('#comMaterialName').val("");
 		    	});
 			}); 
+		
+		
+		//D-D 저장버튼 **수정예정
+		$('#modifyLot').on("click", function() {
+			
+		
+			});
+		
+		
+		}
 
 		
 //======================================== 1번 그리드 ======================================== 
@@ -218,6 +230,9 @@ var proOrderRowKey;
 				header : '납기일자',
 				name : 'erpProductDeadline'
 			}, {
+				header : '계획량',
+				name : 'proPlanQty'
+			},{
 				header : '주문량',
 				name : 'erpOrderQty'
 			}, {
@@ -256,8 +271,31 @@ var proOrderRowKey;
 				header : '고객코드',
 				name : 'erpCustomerCode',
 				hidden : true 
-			} ]
+			} ],
+			/* summary : {
+	            height : 40,
+	            position : 'bottom',
+	            columnContent : {
+	            	proOrderQty : {
+	                  template(val) {
+	                     return '합 : ' + val.sum;
+	                  }
+	             }, proOrderExpectQty : {
+	                  template(val) {
+	                     return '합 : ' + val.sum;
+	                  }
+	             }
+	        } */
+	            
 		}); //end of grid(1번)
+		
+
+		// 예상소요일 구하기
+		proOrdergrid.on('afterChange',ev => {
+			var proOrderQty = proOrdergrid.getValue( ev.changes[0].rowKey, 'proOrderQty')
+			var proOrderDayQty = proOrdergrid.getValue( ev.changes[0].rowKey, 'proOrderDayQty');
+			proOrdergrid.setValue(ev.changes[0].rowKey, 'proOrderExpectQty', (proOrderQty/proOrderDayQty).toFixed(1));
+		});
 	
 	
 	

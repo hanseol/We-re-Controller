@@ -48,7 +48,7 @@
 					</div>
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
-						<button type="reset" class="btn btn-danger">새자료</button>
+						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
 					</div>
 				</form>
 			</div>
@@ -93,6 +93,19 @@
 		         };
 		         grid.readData(1, readParams, true);
 		      });
+		
+		// M 리셋버튼  
+		$("#reset").click(function() {  
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+
+		    	$('#startDate').val("");
+		    	$('#endDate').val("");
+		    	$('#erpProductCode').val("");
+		    	$('#erpCustomerCode').val("");
+		    	});
+			}); 
 
 		
 		//dataSource	

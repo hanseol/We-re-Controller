@@ -136,6 +136,22 @@
 		});
 		
 		
+		
+		// M 리셋버튼  
+		$("#reset").click(function() {  
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	proPlanGrid.clear();
+		    	
+		    	$('#date').val("");
+		    	$('#proPlanName').val("");
+		    	
+		    	});
+			}); 
+
+		
+		
+		
 		//dataSource		
 		const dataSource = {
 			api : {
@@ -206,7 +222,18 @@
 			}, {
 				header : '생산계획코드',
 				name : 'proPlanCode'
-			}]
+			} ],
+			summary : {
+	            height : 40,
+	            position : 'bottom',
+	            columnContent : {
+	            	proPlanQty : {
+	                  template(val) {
+	                     return '계획 합 : ' + val.sum;
+	                  }
+	               }
+	            }
+	         }
 		});
 		
 	//디테일의 제품코드cell 더블클릭으로 모달창 띄우기	

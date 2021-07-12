@@ -35,7 +35,6 @@
 								     , ERP_PRODUCT_DEADLINE
 								     , PRO_WORK_DATE
 								     , ERP_CUSTOMER_CODE
-								     , PRO_PLAN_EXPECT_QTY
 								     , PRO_PLAN_DAY_QTY
 								     , PRO_PLAN_SEQ
 								     , ERP_ORDER_QTY
@@ -48,7 +47,6 @@
 								  , #{erpProductDeadline}
 								  , #{proWorkDate}
 								  , #{erpCustomerCode}
-								  , #{proPlanExpectQty}
 								  , #{proPlanDayQty}
 								  , #{proPlanSeq}
 								  , #{erpOrderQty}
@@ -137,6 +135,7 @@
 						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
 						     , d.pro_plan_seq
 						     , m.pro_plan_name
+                 			 , d.pro_order_detail_code
 						FROM pro_plan_detail d
 						   , erp_product_order e
 						   , pro_plan m

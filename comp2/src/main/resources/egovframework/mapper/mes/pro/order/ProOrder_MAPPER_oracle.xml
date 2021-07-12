@@ -128,13 +128,15 @@
 			     , pd.erp_product_code
 			     , pd.erp_product_name
 			     , pd.erp_order_code
-			     , pd.erp_product_deadline
+			     , TO_CHAR(pd.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
 			     , pd.erp_order_qty
 			     , m.mac_hour_qty
 			     , (m.mac_hour_qty*24) as pro_order_day_qty
+			     , pd.pro_plan_qty
 		FROM 	  pro_plan_detail pd
 		   		, mac m 
 		WHERE 	  pd.erp_product_code = m.com_product_code
+		  AND     pd.pro_order_detail_code IS NULL
 			<if test="erpProductCode != null and erpProductCode != ''"> AND
 				pd.erp_product_code LIKE '%' || #{erpProductCode} || '%'
 			</if>
@@ -153,7 +155,7 @@
 						         , om.pro_order_gubun
 						         , p.erp_order_code
 						         , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
-						         , p.erp_order_qty
+						         , p.pro_plan_qty
 						         , od.pro_order_qty
 						         , m.mac_hour_qty
 						         , od.pro_order_day_qty
