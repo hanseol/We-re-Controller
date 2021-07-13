@@ -142,7 +142,7 @@ let mgrid; //모달 그리드
 	        scrollY: true,
 	        bodyHeight :30, 
 	        rowHeight: 30,
-			columns : [{
+			columns : [ {
 				header : '반품일자',
 				name : 'salInoutDate',
 				editor : {
@@ -158,22 +158,24 @@ let mgrid; //모달 그리드
 				editor : 'text'
 			}, {
 				header : '업체코드',
-				name : 'salInoutCode',
-				editor : 'text'
+				name : 'salInoutCode'
 			}, {
 				header : '제품코드',
-				name : 'comProductCode',
-				editor : 'text'
+				name : 'comProductCode'
 			}, {
 				header : '주문량',
-				name : 'orderQuantity'
+				name : 'salInoutQuantity'
 			}, {
 				header : '반품량',
-				name : 'salInoutQuantity',
+				name : 'returnQuantity',
 				editor : 'text'
 			}, {
 				header : '최종 출고량',
 				name : 'finalQuantity'
+			}, {
+				header : '전표번호',
+				name : 'salInoutStatement',
+				hidden : true
 			}]
 		}); 
 	

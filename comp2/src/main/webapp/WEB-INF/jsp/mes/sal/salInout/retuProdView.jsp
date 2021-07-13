@@ -132,10 +132,10 @@ let mgrid; //모달 그리드
 				name : 'comProductCode',
 			}, {
 				header : '주문량',
-				name : 'orderQuantity',
+				name : 'salInoutQuantity',
 			}, {
 				header : '반품량',
-				name : 'salInoutQuantity',
+				name : 'returnQuantity',
 			}, {
 				header : '최종 출고량',
 				name : 'finalQuantity',

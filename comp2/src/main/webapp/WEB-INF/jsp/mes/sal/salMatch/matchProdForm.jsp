@@ -193,13 +193,12 @@ let mgrid;
 					}
 				}
 			}, {
-				header : '제품코드',
-				name : 'comProductCode',
-				editor : 'text'
-			}, {
 				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
 				editor : 'text'
+			}, {
+				header : '제품코드',
+				name : 'comProductCode'
 			}, {
 				header : '기존수량',
 				name : 'salInoutQuantity'

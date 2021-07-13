@@ -27,6 +27,7 @@
 		<result property="comCodeDetailId" column="COM_CODE_DETAIL_ID" />
 		<result property="comCodeDetailName" column="COM_CODE_DETAIL_NAME" />
 		<result property="comProductName" column="COM_PRODUCT_NAME" />
+		<result property="proProcessQuantity" column="PRO_PROCESS_QUANTITY" />
 	</resultMap>
 
 	<!-- 한 건 조회 -->
@@ -85,7 +86,8 @@
 				ROWNUM RNUM FROM (
 									SELECT SAL_INOUT_STATEMENT, I.COM_PRODUCT_CODE,
 									TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
-									SAL_INOUT_QUANTITY, SAL_INOUT_GUBUN, P.PRO_PROCESS_LOT_NO,
+									P.PRO_PROCESS_QUANTITY as SAL_INOUT_QUANTITY,
+                  					SAL_INOUT_GUBUN, P.PRO_PROCESS_LOT_NO,
 									C.COM_PRODUCT_NAME, SAL_INOUT_CODE,
 									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
 									FROM SAL_INOUT I, PRO_PROCESS P, COM_PRODUCT C
@@ -129,7 +131,7 @@
 		UPDATE SAL_INOUT SET
 		COM_PRODUCT_CODE = #{comProductCode}
 		, SAL_INOUT_DATE = #{salInoutDate}
-		, SAL_INOUT_QUANTITY = #{salInoutQuantity}
+		, SAL_INOUT_QUANTITY = #{proProcessQuantity}
 		, SAL_INOUT_CODE = #{salInoutCode}
 		, SAL_INOUT_GUBUN = #{salInoutGubun}
 		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
@@ -154,23 +156,25 @@
 				SELECT A.*,
 				ROWNUM RNUM FROM (
 									SELECT
+									I.SAL_INOUT_STATEMENT as SAL_INOUT_STATEMENT,
 									TO_CHAR(S.SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
-									S.SAL_INOUT_STATEMENT, S.SAL_INOUT_CODE, 
-									S.COM_PRODUCT_CODE,
-									TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
-									S.PRO_PROCESS_LOT_NO, I.SAL_INOUT_STATEMENT as OUT_STATEMENT,
-									S.SAL_INOUT_QUANTITY as ORDER_QUANTITY, I.SAL_INOUT_QUANTITY,
-									(S.SAL_INOUT_QUANTITY - I.SAL_INOUT_QUANTITY) as FINAL_QUANTITY
+									S.COM_PRODUCT_CODE as COM_PRODUCT_CODE,
+									S.SAL_INOUT_CODE as SAL_INOUT_CODE,
+									S.PRO_PROCESS_LOT_NO as PRO_PROCESS_LOT_NO,
+									S.SAL_INOUT_QUANTITY as SAL_INOUT_QUANTITY,
+									I.SAL_INOUT_QUANTITY as RETURN_QUANTITY,
+									(S.SAL_INOUT_QUANTITY - I.SAL_INOUT_QUANTITY) as FINAL_QUANTITY,
+									TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
 									FROM SAL_INOUT S, SAL_INOUT I
 									WHERE 1=1
 									AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
 									AND S.SAL_INOUT_GUBUN = 'INOUT003'
 									AND I.SAL_INOUT_GUBUN = 'INOUT001'
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
-					SAL_INOUT_DATE = #{salInoutDate}
+					I.SAL_INOUT_DATE = #{salInoutDate}
 				</if>
 				<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
-					PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+					I.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 				</if>
 		ORDER BY SAL_INOUT_DATE DESC		
 			<![CDATA[						
@@ -185,7 +189,7 @@
 		VALUES (#{salInoutStatement}
 			, #{comProductCode}
 			, #{salInoutDate}
-			, #{salInoutQuantity}
+			, #{returnQuantity}
 			, #{salInoutCode}
 			, 'INOUT001'
 			, #{proProcessLotNo}
@@ -197,7 +201,7 @@
 		UPDATE SAL_INOUT SET
 		COM_PRODUCT_CODE = #{comProductCode}
 		, SAL_INOUT_DATE = #{salInoutDate}
-		, SAL_INOUT_QUANTITY = #{salInoutQuantity}
+		, SAL_INOUT_QUANTITY = #{returnQuantity}
 		, SAL_INOUT_CODE = #{salInoutCode}
 		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
@@ -320,22 +324,24 @@
 	<select id="searchProductLotNoList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT P.PRO_PROCESS_LOT_NO, C.COM_PRODUCT_NAME, C.COM_PRODUCT_CODE
-						FROM PRO_PROCESS P, COM_PRODUCT C
-						WHERE 1=1
-						AND P.ERP_PRODUCT_NAME = C.COM_PRODUCT_NAME
-						AND P.PRO_PROCESS_LOT_NO IS NOT NULL
+											SELECT
+											D.PRO_PROCESS_LOT_NO, D.ERP_PRODUCT_CODE,
+											D.ERP_PRODUCT_NAME,
+											P.PRO_PROCESS_QUANTITY as PRO_PROCESS_QUANTITY,
+											D.ERP_CUSTOMER_CODE, D.PRO_ORDER_DETAIL_CODE
+											FROM PRO_PROCESS P, PRO_ORDER_DETAIL D
+											WHERE P.PRO_PROCESS_LOT_NO = D.PRO_PROCESS_LOT_NO
 						<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
 							PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 						</if>
-						<if test="comProductName != null and comProductName != ''">AND
-							COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+						<if test="erpProductName != null and erpProductName != ''">AND
+							ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
 						</if>
-						<if test="comProductCode != null and comProductCode != ''">AND
-							COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+						<if test="erpProductCode != null and erpProductCode != ''">AND
+							ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
 						</if>
 						ORDER BY 
-								P.PRO_PROCESS_LOT_NO
+								D.PRO_PROCESS_LOT_NO
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
@@ -345,39 +351,38 @@
 	<!-- 모달 : 완제품 LOT_NO 목록 총 갯수 -->
 	<select id="searchProductLotNoListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
 		SELECT COUNT(*)
-		FROM PRO_PROCESS P, COM_PRODUCT C
-		WHERE P.ERP_PRODUCT_NAME = C.COM_PRODUCT_NAME
-		AND P.PRO_PROCESS_LOT_NO IS NOT NULL
+		FROM PRO_PROCESS P, PRO_ORDER_DETAIL D
+		WHERE P.PRO_PROCESS_LOT_NO = D.PRO_PROCESS_LOT_NO
 		<if test="(proProcessLotNo != null and proProcessLotNo != '')
-					|| (comProductName !=null and comProductName != '')
-					|| (comProductCode !=null and comProductCode != '')">
+					|| (erpProductName !=null and erpProductName != '')
+					|| (erpProductCode !=null and erpProductCode != '')">
 			<if test="searchCondition == 0">
 				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 			</if>
 			<if test="searchCondition == 1">
-				COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+				ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
 			</if>
 			<if test="searchCondition == 2">
-				COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+				ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
 			</if>
 			
 			<if test="searchCondition == 3">
 				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
-				AND COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+				AND ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
 			</if>
 			<if test="searchCondition == 4">
 				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
-				AND COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+				AND ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
 			</if>
 			<if test="searchCondition == 5">
-				COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
-				AND COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+				ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+				AND ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
 			</if>
 			
 			<if test="searchCondition == 6">
 				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
-				AND COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
-				AND COM_PRODUCT_CODE LIKE '%' || #{comProductCode} '%'
+				AND ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+				AND ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} '%'
 			</if>
 		</if>
 	</select>
@@ -423,6 +428,8 @@
 		</if>
 	</select>
 	
+	
+	<!-- 사용 x -->
 	<!-- 모달 : 전표번호(반품) 목록 -->
 	<select id="searchInoutStatementList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT * FROM (
