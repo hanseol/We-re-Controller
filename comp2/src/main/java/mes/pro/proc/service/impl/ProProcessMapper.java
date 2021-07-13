@@ -2,9 +2,8 @@ package mes.pro.proc.service.impl;
 
 import java.util.List;
 
-import mes.pro.proc.service.ProProcessVO;
-
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import mes.pro.proc.service.ProProcessVO;
 
 /**
  * @Class Name : ProProcessMapper.java
@@ -69,5 +68,14 @@ public interface ProProcessMapper {
 	 * @exception
 	 */
     public int selectProProcessListTotCnt(ProProcessVO searchVO);
+    
+    //공정흐름관리 페이지에 넘겨줄 공정이름 조회
+    public List<ProProcessVO> selectProProcessName();
+    
+    //공정흐름관리 시 필요한 지시코드 조회
+    public List<String> selectProOrderDetailCode(ProProcessVO vo);
+    
+    //선택된 지시에 사용되도록 설정된 자재 LOT 조회
+    public List<ProProcessVO> selectMatrLot(ProProcessVO vo);
 
 }

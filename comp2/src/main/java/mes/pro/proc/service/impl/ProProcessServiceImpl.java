@@ -115,5 +115,24 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
     public int selectProProcessListTotCnt(ProProcessVO searchVO) {
 		return proProcessDAO.selectProProcessListTotCnt(searchVO);
 	}
+
+    
+    //공정흐름 관리시 필요한 지시코드 조회
+	@Override
+	public List<String> selectProOrderDetailCode(ProProcessVO vo) {
+		return proProcessDAO.selectProOrderDetailCode(vo);
+	}
+
+	//선택된 지시에 사용되도록 설정된 자재 LOT 조회
+	@Override
+	public List<ProProcessVO> selectMatrLot(ProProcessVO vo) {
+		return proProcessDAO.selectMatrLot(vo);
+	}
+
+	//공정흐름관리 페이지에 넘겨줄 공정이름 조회
+	@Override
+	public List<ProProcessVO> selectProProcessName() {
+		return proProcessDAO.selectProProcessName();
+	}
     
 }

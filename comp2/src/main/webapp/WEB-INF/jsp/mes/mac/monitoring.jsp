@@ -2,6 +2,15 @@
     pageEncoding="UTF-8"%>
 
 <div>
+<h3>공정관리 테스트</h3>
+<a href="${pageContext.request.contextPath }/pro/openProcessManage.do" rel="modal:open">
+공정관리
+</a>
+
+</div>
+
+<div>
+<h3>모니터링 테스트</h3>
 공정별 생산 계획대비 실적 - 라인별로 (제작+검사 / 포장)
 <a href="${pageContext.request.contextPath}/mac/openPerformance.do" rel="modal:open">						
 공정별 생산 계획대비 실적
@@ -18,10 +27,10 @@
 <div>
 일별 종합현황
 </div>
-
+<!-- 
 <div class="row">
 	<div class="col-md-6">
-		<!-- RECENT PURCHASES -->
+		RECENT PURCHASES
 		<div class="panel">
 			<div class="panel-heading">
 				<h3 class="panel-title">Recent Purchases</h3>
@@ -87,10 +96,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- END RECENT PURCHASES -->
+		END RECENT PURCHASES
 	</div>
 	<div class="col-md-6">
-		<!-- MULTI CHARTS -->
+		MULTI CHARTS
 		<div class="panel">
 			<div class="panel-heading">
 				<h3 class="panel-title">Projection vs. Realization</h3>
@@ -103,14 +112,14 @@
 				<div id="visits-trends-chart" class="ct-chart"></div>
 			</div>
 		</div>
-		<!-- END MULTI CHARTS -->
+		END MULTI CHARTS
 	</div>
 </div>
 
 
 <div class="row">
 <div class="col-md-4">
-	<!-- TASKS -->
+	TASKS
 	<div class="panel">
 		<div class="panel-heading">
 			<h3 class="panel-title">My Tasks</h3>
@@ -164,10 +173,10 @@
 			</ul>
 		</div>
 	</div>
-	<!-- END TASKS -->
+	END TASKS
 </div>
 <div class="col-md-4">
-	<!-- VISIT CHART -->
+	VISIT CHART
 	<div class="panel">
 		<div class="panel-heading">
 			<h3 class="panel-title">Website Visits</h3>
@@ -180,10 +189,10 @@
 			<div id="visits-chart" class="ct-chart"></div>
 		</div>
 	</div>
-	<!-- END VISIT CHART -->
+	END VISIT CHART
 </div>
 <div class="col-md-4">
-	<!-- REALTIME CHART -->
+	REALTIME CHART
 	<div class="panel">
 		<div class="panel-heading">
 			<h3 class="panel-title">System Load</h3>
@@ -206,7 +215,7 @@
 			</ul>
 		</div>
 	</div>
-	<!-- END REALTIME CHART -->
+	END REALTIME CHART
 	</div>
 </div>
 
@@ -329,4 +338,4 @@
 
 	});
 	
-	</script>
+	</script> -->

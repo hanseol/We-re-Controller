@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,8 @@ import mes.mac.service.MacService;
 import mes.mac.service.MacVO;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
+import mes.pro.proc.service.ProProcessService;
+import mes.pro.proc.service.ProProcessVO;
 
 /**
  * @Class Name : MacController.java
@@ -44,6 +47,9 @@ public class MacController {
 
 	@Resource(name = "macService")
 	private MacService macService;
+	
+	@Resource(name = "proProcessService")
+	private ProProcessService proProcService;
 
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
@@ -192,6 +198,42 @@ public class MacController {
 		return "mes/mac/performance";
 	}
 	
+	
+	/**
+	 * 공정 관리 화면 구상
+	 * 
+	 * */
+
+	//모달창을 열 때 선택가능한 공정명 정보를 전달.
+	@RequestMapping("/pro/openProcessManage.do")
+	public String openProcessmanage(Model model) {
+
+		List<ProProcessVO> procgList = proProcService.selectProProcessName();
+		
+		model.addAttribute("procgs", procgList);
+		return "mes/mac/processManage";
+	}
+	
+	//공정명이 선택되면 해당 공정에 대기중인 작업지시 정보를 전달.
+	@RequestMapping("ajax/pro/getProOrderDetailCode")
+	@ResponseBody
+	public Map<String, Object> getProOrderDetailCode(@ModelAttribute ProProcessVO vo){
+		
+		List<String> orderCodeList = proProcService.selectProOrderDetailCode(vo);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("list", orderCodeList);
+		
+		return map;
+	}
+	
+	@RequestMapping("ajax/pro/readMaterial")
+	@ResponseBody
+	public Map<String, Object> readMaterial(@ModelAttribute ProProcessVO vo){
+		
+		List<ProProcessVO> list = proProcService.selectMatrLot(vo);
+		return comFunc.sendResult(list);
+	}
 	/**
 	 * 설비 점검일 알림 
 	 * @throws Exception 

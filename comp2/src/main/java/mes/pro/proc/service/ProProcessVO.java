@@ -1,5 +1,8 @@
 package mes.pro.proc.service;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import mes.main.service.SearchVO;
 
 /**
@@ -14,6 +17,10 @@ import mes.main.service.SearchVO;
  *  
  *  Copyright (C)  All right reserved.
  */
+
+@Data
+@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
 public class ProProcessVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
@@ -50,92 +57,12 @@ public class ProProcessVO extends SearchVO{
     /** PRO_PROCESS_QUANTITY */
     private java.math.BigDecimal proProcessQuantity;
     
-    public java.lang.String getComProcessCode() {
-        return this.comProcessCode;
-    }
-    
-    public void setComProcessCode(java.lang.String comProcessCode) {
-        this.comProcessCode = comProcessCode;
-    }
-    
-    public java.lang.String getProOrderDetailCode() {
-        return this.proOrderDetailCode;
-    }
-    
-    public void setProOrderDetailCode(java.lang.String proOrderDetailCode) {
-        this.proOrderDetailCode = proOrderDetailCode;
-    }
-    
-    public java.lang.String getComProductFCode() {
-        return this.comProductFCode;
-    }
-    
-    public void setComProductFCode(java.lang.String comProductFCode) {
-        this.comProductFCode = comProductFCode;
-    }
-    
-    public java.math.BigDecimal getProProcessFQty() {
-        return this.proProcessFQty;
-    }
-    
-    public void setProProcessFQty(java.math.BigDecimal proProcessFQty) {
-        this.proProcessFQty = proProcessFQty;
-    }
-    
-    public java.math.BigDecimal getMacLineNo() {
-        return this.macLineNo;
-    }
-    
-    public void setMacLineNo(java.math.BigDecimal macLineNo) {
-        this.macLineNo = macLineNo;
-    }
-    
-    public java.sql.Date getProProcessStartTime() {
-        return this.proProcessStartTime;
-    }
-    
-    public void setProProcessStartTime(java.sql.Date proProcessStartTime) {
-        this.proProcessStartTime = proProcessStartTime;
-    }
-    
-    public java.sql.Date getProProcessEndTime() {
-        return this.proProcessEndTime;
-    }
-    
-    public void setProProcessEndTime(java.sql.Date proProcessEndTime) {
-        this.proProcessEndTime = proProcessEndTime;
-    }
-    
-    public java.math.BigDecimal getErpEmployeeId() {
-        return this.erpEmployeeId;
-    }
-    
-    public void setErpEmployeeId(java.math.BigDecimal erpEmployeeId) {
-        this.erpEmployeeId = erpEmployeeId;
-    }
-    
-    public java.lang.String getMacCode() {
-        return this.macCode;
-    }
-    
-    public void setMacCode(java.lang.String macCode) {
-        this.macCode = macCode;
-    }
-    
-    public java.lang.String getProProcessLotNo() {
-        return this.proProcessLotNo;
-    }
-    
-    public void setProProcessLotNo(java.lang.String proProcessLotNo) {
-        this.proProcessLotNo = proProcessLotNo;
-    }
-    
-    public java.math.BigDecimal getProProcessQuantity() {
-        return this.proProcessQuantity;
-    }
-    
-    public void setProProcessQuantity(java.math.BigDecimal proProcessQuantity) {
-        this.proProcessQuantity = proProcessQuantity;
-    }
+    //확장
+    //pro_material_lot 테이블의 자재로트번호
+    private String matLotNo;
+    //자재명
+    private String comMaterialName;
+    //공정명
+    private String comProcessName;
     
 }

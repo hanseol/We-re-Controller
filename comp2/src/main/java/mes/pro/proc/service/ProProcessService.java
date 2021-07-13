@@ -65,4 +65,13 @@ public interface ProProcessService {
 	 */
     int selectProProcessListTotCnt(ProProcessVO searchVO);
     
+    //공정흐름관리 페이지에 넘겨줄 공정이름 조회
+    List<ProProcessVO> selectProProcessName();
+    
+    //공정흐름관리시 필요한 지시코드 조회
+    List<String> selectProOrderDetailCode(ProProcessVO vo);
+    
+    //선택된 지시에 사용되도록 설정된 자재 LOT 조회
+    List<ProProcessVO> selectMatrLot(ProProcessVO vo);
+    
 }
