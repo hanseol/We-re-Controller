@@ -53,6 +53,7 @@ $(document).ready(function() {
 			macHourQty = gridModal.getValue(chkRowKeys[i],'macHourQty');
 			proOrderDayQty = gridModal.getValue(chkRowKeys[i],'proOrderDayQty');
 			proPlanQty = gridModal.getValue(chkRowKeys[i],'proPlanQty');
+			erpCustomerCode = gridModal.getValue(chkRowKeys[i],'erpCustomerCode');
 			
 			console.log(proPlanDetailCode);
 			console.log(erpProductCode);
@@ -72,6 +73,7 @@ $(document).ready(function() {
 			proOrdergrid.setValue(proOrderRowKey, 'macHourQty', macHourQty, false);
 			proOrdergrid.setValue(proOrderRowKey, 'proOrderDayQty', proOrderDayQty, false);
 			proOrdergrid.setValue(proOrderRowKey, 'proPlanQty', proPlanQty, false);
+			proOrdergrid.setValue(proOrderRowKey, 'erpCustomerCode', erpCustomerCode, false);
 		}
 	});
 	
@@ -141,7 +143,11 @@ $(document).ready(function() {
 			header : '일생산량',
 			name : 'proOrderDayQty',
 			hidden : true
-		}]
+		}, {
+			header : '고객코드',
+			name : 'erpCustomerCode',
+			hidden : true
+		} ]
 	});
 	
 	

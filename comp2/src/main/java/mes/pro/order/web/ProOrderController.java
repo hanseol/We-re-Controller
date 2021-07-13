@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
@@ -55,6 +56,9 @@ public class ProOrderController {
     
     @Resource(name = "mesMatOutStatementIdGnrService")
     protected EgovIdGnrService mesMatOutStatementIdGnrService;
+    
+    @Resource(name = "productLotCodeService")
+    protected EgovIdGnrService productLotCodeService;
     
     ComFunc comFunc = new ComFunc();
 
@@ -150,6 +154,7 @@ public class ProOrderController {
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
+		
 
 		//수정
 		if (updatedList.size() != 0) {
@@ -173,8 +178,11 @@ public class ProOrderController {
 			poId = proOrderCodeService.getNextStringId();
 			
 			for(int i = 0; i < createdList.size(); i++) {
+				((LinkedHashMap)createdList.get(i)).put("proOrderDate", gd.getProOrderDate());
 				((LinkedHashMap)createdList.get(i)).put("proOrderCode", poId);
-				((LinkedHashMap)createdList.get(i)).put("proOrderDitailCode", proOrderCodeDetailService.getNextStringId());
+				((LinkedHashMap)createdList.get(i)).put("proOrderDetailCode", proOrderCodeDetailService.getNextStringId());
+				((LinkedHashMap)createdList.get(i)).put("proProcessLotNo", productLotCodeService.getNextStringId());
+				
 				service.insertProOrder((LinkedHashMap)createdList.get(i));
 			}
 		 }
@@ -212,13 +220,12 @@ public class ProOrderController {
 		//생성
 		//시퀀스 포멧팅  **수정하기
 		if(createdList.size() != 0) { 
-			String outId = null;
-			
-			outId = mesMatOutStatementIdGnrService.getNextStringId();
 			
 			for(int i = 0; i < createdList.size(); i++) {
-				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", outId);
-				service.insertMat((LinkedHashMap)createdList.get(i));
+				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", mesMatOutStatementIdGnrService.getNextStringId());
+				((LinkedHashMap)createdList.get(i)).put("matLotNo", productLotCodeService.getNextStringId());
+				
+				/* service.insertMat((LinkedHashMap)createdList.get(i)); */
 			}
 		 }
 		
@@ -226,7 +233,15 @@ public class ProOrderController {
 		return map;
 	}
 	
-	
+	@RequestMapping("/ajax/proOrder/insertMat")
+	@ResponseBody
+	public Map<String, Object> insertMat(@ModelAttribute("searchVO") ProOrderVO searchVO) throws FdlException {
+		searchVO.setMatInoutStatement(mesMatOutStatementIdGnrService.getNextStringId());
+		searchVO.setProProcessLotNo(productLotCodeService.getNextStringId());
+		
+		service.insertMat(searchVO);
+		return null;
+	}
 	
 	
 	

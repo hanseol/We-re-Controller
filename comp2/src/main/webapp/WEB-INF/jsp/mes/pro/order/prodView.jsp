@@ -156,7 +156,7 @@
 				name : 'proOrderGubun'
 			},{
 				header : '제품LOT_NO',
-				name : 'proMaterialLot'
+				name : 'proProcessLotNo'
 			},{
 				header : '작업순서',
 				name : 'proOrderSeq'

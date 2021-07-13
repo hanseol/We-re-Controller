@@ -22,4 +22,5 @@ import mes.board.service.BoardVO;
 	private String matInoutStatus;
 	private String proPlanDate;
 	private String proPlanName;
+	private String proOrderDate;
 }

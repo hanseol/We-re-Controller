@@ -152,8 +152,14 @@ var proOrderRowKey;
 		
 		// D 저장 버튼
 		$("#modifyRow").on("click", function() {
+			var proOrderDate = $("#proOrderDate").val();
+			console.log(proOrderDate);
+			var params = {
+					'proOrderDate' : proOrderDate					
+			}
+			proOrdergrid.setRequestParams(params);
 			proOrdergrid.finishEditing('rowKey', 'columnName');
-			grid.request('modifyData');
+			proOrdergrid.request('modifyData');
 		});
 		
 		// M 리셋버튼  
@@ -173,11 +179,54 @@ var proOrderRowKey;
 			}); 
 		
 		
-		//D-D 저장버튼 **수정예정
-		/* $('#modifyLot').on("click", function() {
+		//D-D 저장버튼 
+		$('#modifyLot').on("click", function() {
 			
-		
-			}); */
+			var chkRows = matLotgrid.getCheckedRowKeys();
+		 	for(var i=0; i<chkRows.length; i++){
+				matLotNo = matLotgrid.getValue(chkRows[i], 'matLotNo');
+				matInoutQuantity = matLotgrid.getValue(chkRows[i], 'matInoutQuantity');
+				comMaterialCode = matLotgrid.getValue(chkRows[i], 'comMaterialCode');
+				comProcessCode = matLotgrid.getValue(chkRows[i], 'comProcessCode');
+				proWorkDate = $("#proWorkDate").val();
+				proOrderDetailCode = proOrdergrid.getValue(chkRows[i], 'proOrderDetailCode');
+				
+				console.log(proOrderDetailCode)
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath}/ajax/proOrder/insertMat',
+					data : {'matLotNo': matLotNo,
+						'matInoutQuantity' : matInoutQuantity,
+						'comMaterialCode' : comMaterialCode,
+						'comProcessCode' : comProcessCode,
+						'proWorkDate' : proWorkDate
+						},
+					dataType :'JSON',
+					contentType :'application/json',
+					success: function(result){
+						console.log(result);
+					}
+				});
+		 	}
+		 	
+		/*  	console.log(matLotNo);
+			
+			var params = {
+					'matLotNo': matLotNo,
+					'matInoutDate' : matInoutDate,
+					'matInoutQuantity' : matInoutQuantity,
+					'matInoutGubun' : matInoutGubun,
+					'comMaterialCode' : comMaterialCode,
+					'comMaterialName' : comMaterialName,
+					'comProcessCode' : comProcessCode,
+					'matInoutStatement' : matInoutStatement,
+					'proWorkDate' : proWorkDate					
+			} 
+			
+			matLotgrid.setRequestParams(params);
+			matLotgrid.finishEditing('rowKey', 'columnName');
+			matLotgrid.request('modifyData'); */
+		});
 		
 		
 		
@@ -267,9 +316,13 @@ var proOrderRowKey;
 				name : 'proPlanDetailCode',
 				hidden : true
 			}, {
+				header : '생산지시디테일코드',
+				name : 'proOrderDetailCode',
+				hidden : true
+			}, {
 				header : '고객코드',
 				name : 'erpCustomerCode',
-				hidden : true 
+				hidden : true
 			} ],
 			summary: {
 		        height: 40,
@@ -333,7 +386,7 @@ var proOrderRowKey;
 		const lotDataSource = {
 			api : {
 				readData : { url : '${pageContext.request.contextPath}/matLotList', method : 'GET' },
-				modifyMat : { url: '${pageContext.request.contextPath}/ajax/proOrder/modifyMat', method : 'PUT'}
+				modifyData : { url: '${pageContext.request.contextPath}/ajax/proOrder/modifyMat', method : 'PUT'}
 			},
 			initialRequest : false,
 			contentType : "application/json"
@@ -356,32 +409,19 @@ var proOrderRowKey;
 				name : 'matInoutQuantity' 
 			}, {
 				header : '구분',
-				name : 'matInoutGubun',
-				hidden : true 
+				name : 'matInoutGubun'
 			}, {
 				header : '자재코드',
-				name : 'comMaterialCode',
-				hidden : true 
+				name : 'comMaterialCode'
 			}, {
 				header : '자재이름',
-				name : 'comMaterialName',
-				hidden : true 
+				name : 'comMaterialName'
 			}, {
 				header : '공정코드',
-				name : 'comProcessCode',
-				hidden : true 
+				name : 'comProcessCode'
 			}, {
-				header : '자재출고전표번호',
-				name : 'matInoutStatement',
-				hidden : true 
-			}, {
-				header : '자재출고일자',
-				name : 'proWorkDate',
-				hidden : true 
-			} , {
 				header : '자재로트번호',
-				name : 'matLotNo',
-				hidden : true 
+				name : 'matLotNo'
 			}  ]
 		
 	}); //end of grid(3번)

@@ -14,8 +14,7 @@
 	
 	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 M + D -->
 	<insert id="insertProOrder">
-		{CALL 
-			DECLARE
+		DECLARE
 			BEGIN
 				INSERT INTO pro_order 
 									( pro_order_code
@@ -26,8 +25,8 @@
 		  		  VALUES(  #{proOrderCode}
 		  		  		 , #{proOrderGubun}
 		  		  		 , #{proOrderQty}
-		  		  		 , #{proOrderRank}
-		  		  		 , #{proOrderDate}  )
+		  		  		 , #{proOrderSeq}
+		  		  		 , #{proOrderDate}  );
 		
 				INSERT INTO pro_order_detail
 										 (pro_order_detail_code
@@ -55,9 +54,13 @@
 			  		  		 , #{proOrderQty}
 			  		  		 , #{erpProductName}
 			  		  		 , #{erpProductCode}
-			  		  		 , #{proProcessLotNo}  )
-			END
-		}
+			  		  		 , #{proProcessLotNo}  );
+			  		  		 
+			  	UPDATE    pro_plan_detail
+				  SET     pro_order_detail_code = #{proOrderDetailCode}
+				  WHERE   pro_plan_detail_code = #{proPlanDetailCode} ;
+			END;
+		
 	</insert>
 	
 	<!-- 1번 그리드 저장버튼 > UPDATE: 생산계획 D -->
@@ -82,8 +85,7 @@
 	
 	<!-- 3번 그리드 저장버튼 > INSERT: mat_inout  +  pro_material_lot -->
 	<insert id="insertMat">
-		{CALL 
-         DECLARE
+	  DECLARE
          BEGIN
             INSERT INTO MAT_INOUT 
                            (  mat_inout_statement
@@ -99,18 +101,17 @@
                        , 'INOUT003'
                        , #{matInoutQuantity}
                        , #{matLotNo}
-                       , #{comProcessCode} )
+                       , #{comProcessCode} );
       
             INSERT INTO pro_material_lot
                                ( pro_material_number
                                , pro_order_detail_code
-                               , pro_material_lot )
-                    VALUES(  #{proMaterialNumber}
+                               , mat_lot_no )
+                    VALUES(  '1'
                            , #{proOrderDetailCode}
-                           , #{proMaterialLot} )
-         END
-      }
-	
+                           , #{matLotNo} );
+         END;
+
 	</insert>
 
 	<!-- 3번 그리드 저장버튼 > UPDATE: ?? -->	
@@ -154,10 +155,13 @@
 		     , TO_CHAR(i.mat_inout_date, 'yyyy-MM-dd') as mat_inout_date
 		     , i.mat_inout_quantity
 		     , i.mat_inout_gubun
+		     , i.com_process_code
 		FROM mat_inout i
 		   , com_material m
 		WHERE 	m.com_material_code = i.com_material_code
-			AND m.com_material_code = #{comMaterialCode}
+		  AND   m.com_material_code = #{comMaterialCode}
+		  AND   i.mat_lot_no NOT IN ( SELECT mat_lot_no
+		                              FROM   pro_material_lot)
 		ORDER BY i.mat_inout_date
 	</select>
 	
@@ -204,6 +208,7 @@
 			     , m.mac_hour_qty
 			     , (m.mac_hour_qty*24) as pro_order_day_qty
 			     , pd.pro_plan_qty
+			     , pd.erp_customer_code
 		FROM 	  pro_plan_detail pd
 		   		, mac m 
 		WHERE 	  pd.erp_product_code = m.com_product_code
@@ -236,6 +241,7 @@
 						         , od.pro_order_code
 						         , om.pro_order_date
 						         , od.erp_customer_code
+						         , p.erp_order_qty
 						FROM     pro_order_detail od
 						       , pro_order om
 						       , pro_plan_detail p
@@ -273,7 +279,7 @@
 								     , p.erp_order_qty
 								     , d.pro_order_qty
 								     , m.pro_order_gubun
-								     , l.pro_material_lot 
+								     , l.mat_lot_no 
 								     , d.pro_order_seq
 								     , d.pro_process_lot_no
 								     , TO_CHAR(m.pro_order_date, 'yyyy/MM/dd') as pro_order_date

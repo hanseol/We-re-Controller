@@ -82,7 +82,7 @@ public interface ProOrderService {
 
 	void updatePlan(LinkedHashMap linkedHashMap);
 
-	void insertMat(LinkedHashMap linkedHashMap);
+	void insertMat(ProOrderVO searchVO);
 
     
 }
