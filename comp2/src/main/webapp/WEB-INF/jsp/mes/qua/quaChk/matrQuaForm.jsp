@@ -46,16 +46,16 @@ max-height: 600px; */
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						일자<input type="date" id="erpMaterialRequestDate" name="erpMaterialRequestDate">
-					</div>
-					<div class="col-md-3">
-						발주코드<input type="text" id="matOrderCode" name="matOrderCode">
-						<a id="searchMatOrderCode" href="searchMatOrderCode.do">
-						<i class="fa fa-search"></i></a>
+						일자<input type="date" id="materialDate" name="materialDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-3">
+						업체코드<input type="text" id="vendorCode" name="vendorCode">
+						<a id="searchVendorCode" href="searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
@@ -186,16 +186,14 @@ let erpMaterialOrderCode;
 				function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
-					var erpMaterialRequestDate = $("#erpMaterialRequestDate").val();
-					var matOrderCode = $("#matOrderCode").val();
+					var materialDate = $("#materialDate").val();
 					var materialCode = $("#materialCode").val();
-					var erpVendorCode = $("#vendorCode").val();
+					var vendorCode = $("#vendorCode").val();
 
 					var readParams = {
-						'erpMaterialRequestDate' : erpMaterialRequestDate,
-						'erpMaterialOrderCode': matOrderCode,
+						'quaMaterialDate' : materialDate,
 						'comMaterialCode': materialCode,
-						'erpVendorCode': erpVendorCode
+						'erpVendorCode': vendorCode
 					};
 					grid.readData(1, readParams, true);
 					passGrid.readData(1, readParams, true);
@@ -235,7 +233,9 @@ let erpMaterialOrderCode;
 				editor: 'text'
 			}, {
 				header: '입고일자',
-				name: 'quaMaterialDate'
+				name: 'quaMaterialDate',
+				width: '80',
+				align: 'center'
 			}, {
 				header: '업체코드',
 				name: 'erpVendorCode'
@@ -289,7 +289,15 @@ let erpMaterialOrderCode;
 			}, {
 				header: '검사유무',
 				name: 'quaMaterialChk',
-				editor: 'text'
+				editor : {
+					type: 'select',
+					options : {
+					listItems: [
+						{text : '검사중', value : '0'},
+						{text : '검사완료', value : '1'}
+						]
+					}
+				}
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',
@@ -337,7 +345,9 @@ let erpMaterialOrderCode;
 				name: 'erpMaterialOrderCode'
 			}, {
 				header: '입고일자',
-				name: 'quaMaterialDate'
+				name: 'quaMaterialDate',
+				width: '80',
+				align: 'center'
 			}, {
 				header: '업체코드',
 				name: 'erpVendorCode'
@@ -376,7 +386,9 @@ let erpMaterialOrderCode;
 				name: 'quaMaterialChk'
 			}, {
 				header: '검사일자',
-				name: 'quaMaterialChkDate'
+				name: 'quaMaterialChkDate',
+				width: '80',
+				align: 'center',
 			}
 			//합계
 			/* summary : {
@@ -396,18 +408,26 @@ let erpMaterialOrderCode;
 		
 		
 		
-		//자동 계산 합격량(발주량-불량량) AND 금액(발주량*단가)
+		//자동 계산
   		grid.on('afterChange',ev => {
+  			//합격량
+  			var pQty = grid.getValue( ev.changes[0].rowKey, 'quaMaterialPQty');
+  			//발주량
 			var oQty = grid.getValue( ev.changes[0].rowKey, 'erpMaterialOrderQty');
+  			//불량량
 			var fQty = grid.getValue( ev.changes[0].rowKey, 'quaMaterialFQty');
+  			//단가
 			var uQty = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
+			//합격량(발주량-불량량)
 			grid.setValue( ev.changes[0].rowKey, 'quaMaterialPQty', oQty-fQty);
+			//금액(발주량*단가)
 			grid.setValue( ev.changes[0].rowKey, 'erpMaterialPrice', oQty*uQty);
+			
+			//불량량에 값이 존재할 경우 불량코드 활성화
+			if((fQty == null)||(fQty == '0')) {
+				grid.setValue( ev.changes[0].rowKey, 'comMaterialFCode', '');
+			}
 		});
-
-		
-		//이 컬럼은 클릭하면 안돼.
-		//grid.disableColumn('comCodeDetailName');
 
 		
 		
@@ -437,7 +457,7 @@ let erpMaterialOrderCode;
 			if(ev.columnName == 'comMaterialCode'){
 				materialCodeSearch(ev.rowKey);
 			}
-		}); */
+		});*/
 		//불량
 /* 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'quaMaterialFQty'){
@@ -472,10 +492,10 @@ let erpMaterialOrderCode;
 		$('#searchVendorCode').click(function(event) {
 			vendorCodeSearch(-1);
 		});
-		//불량
+/* 		//불량
 		$('#searchMatFltyCode').click(function(event) {
 			matFltyCodeSearch(-1);
-		});
+		}); */
 		
 });//end of document ready
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------
@@ -518,7 +538,7 @@ function vendorCodeSearch(c) {
 	    $(html).appendTo('body').modal();
 	  });
 }
-//불량
+/* //불량
 var matFltyRowId;
 function matFltyCodeSearch(c) {
 	matFltyRowId = c;
@@ -530,6 +550,6 @@ function matFltyCodeSearch(c) {
 	  $.get("${pageContext.request.contextPath}/quaFlty/searchMatFltyCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
-}
+} */
 //---------------------------------------------------------------
 </script>

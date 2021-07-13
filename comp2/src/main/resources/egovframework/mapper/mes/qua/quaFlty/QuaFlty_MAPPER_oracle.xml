@@ -20,7 +20,7 @@
 										        e.erp_material_unit_price,
 										        e.erp_material_order_qty * e.erp_material_unit_price as erp_material_price,
 										        q.qua_material_f_qty
-										      
+										
 										FROM    qua_material_chk q,
 										        erp_material_order e,
 										        com_code_detail d,

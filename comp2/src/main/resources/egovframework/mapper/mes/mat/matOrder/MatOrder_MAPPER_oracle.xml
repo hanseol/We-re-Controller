@@ -75,7 +75,7 @@
 					                  <if test="comMaterialName != null and comMaterialName !=''">AND
 					                     c.com_material_name LIKE '%' || #{comMaterialName} || '%'
 					                  </if>
-                  					  ORDER BY com_material_code <![CDATA[ ) A
+                  					  ORDER BY e.erp_material_order_date <![CDATA[ ) A
 					  WHERE ROWNUM <= #{lastIndex} )
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>

@@ -17,7 +17,6 @@
 		                                       	c.com_material_size,
 		                                       	c.com_material_unit,
 		                                       	q.erp_vendor_code,
-                                           		SUM(m.mat_inout_quantity) as material_stock,
 		                                       	c.com_material_safety_stock
 		                                       	
 		                              FROM     	com_material c,
@@ -36,6 +35,7 @@
 							        	m.com_material_code = #{comMaterialCode}
 		                              </if>
                                  	  GROUP BY 	m.mat_inout_statement,
+		                              			m.mat_inout_date,
                                            		m.com_material_code,
 		                                       	c.com_material_name,
 		                                       	c.com_material_size,

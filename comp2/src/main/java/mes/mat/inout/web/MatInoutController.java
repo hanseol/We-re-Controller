@@ -127,8 +127,7 @@ public class MatInoutController {
 			}
 		}
 
-		if (deletedList.size() != 0)
-		{
+		if (deletedList.size() != 0) {
 			for (int i = 0; i < deletedList.size(); i++) {
 				service.deleteMatInout((LinkedHashMap) deletedList.get(i));
 			}

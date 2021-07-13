@@ -48,7 +48,7 @@ max-height: 600px; */
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						일자<input type="date" id="matInoutDate" name="matInoutDate">
+						일자<input type="date" id="inoutDate" name="inoutDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -118,7 +118,6 @@ max-height: 600px; */
 let materialGrid;
 let vendorGrid;
 let matLotGrid;
-let procGrid;
 //-----------------------------------------------------------
 
 
@@ -185,12 +184,12 @@ let procGrid;
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 					var comMaterialCode = $("#materialCode").val();
-					var matInoutDate = $("#matInoutDate").val();
+					var inoutDate = $("#inoutDate").val();
 					var erpVendorCode = $("#vendorCode").val();
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
-						'matInoutDate': matInoutDate,
+						'matInoutDate': inoutDate,
 						'erpVendorCode': erpVendorCode
 					};
 					grid.readData(1, readParams, true);
@@ -224,6 +223,8 @@ let procGrid;
 			columns: [{
 				header: '입고일자',
 				name: 'matInoutDate',
+				width: '80',
+				align: 'center',
 				editor: {
 					type: 'datePicker',
 					options: {
@@ -234,45 +235,66 @@ let procGrid;
 			}, {
 				header: '업체코드',
 				name: 'erpVendorCode',
+				width: '100',
+				align: 'center',
 				editor: 'text'
 			}, {
 				header: '입고업체명',
-				name: 'comCodeDetailName'
+				name: 'comCodeDetailName',
+				width: '100',
+				align: 'center'
+				
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
+				width: '80',
+				align: 'center',
 				editor: 'text'
 			}, {
 				header: '자재명',
-				name: 'comMaterialName'
+				name: 'comMaterialName',
+				width: '100',
+				align: 'center'
 			}, {
 				header: '규격',
-				name: 'comMaterialSize'
+				name: 'comMaterialSize',
+				width: '150',
+				align: 'center'
 			}, {
 				header: '관리단위',
-				name: 'comMaterialUnit'
+				name: 'comMaterialUnit',
+				width: '70',
+				align: 'center'
 			}, {
 				header: '자재LOT_NO',
-				name: 'matLotNo'
+				width: '200',
+				name: 'matLotNo',
+				align: 'center'
 			}, {
 				header: '수량',
 				name: 'matInoutQuantity',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right',
 				editor: 'text'
 			}, {
 				header: '단가',
-				name: 'matInoutUnitPrice'
+				name: 'matInoutUnitPrice',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}, {
 				header: '금액',
-				name: 'matInoutPrice'
+				name: 'matInoutPrice',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}, {
 				header: '현재고',
-				name: 'materialStock'
-			}, {
-				header: '공정코드',
-				name: 'comProcessCode'
-			}, {
-				header: '출고공정명',
-				name: 'comProcessName'
+				name: 'materialStock',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}]
 		});
 		
@@ -306,62 +328,84 @@ let procGrid;
 				columns: [{
 					header: '입고일자',
 					name: 'matInoutDate',
-					editor: {
-						type: 'datePicker',
-						options: {
-							format: 'YYYY/MM/dd',
-							language: 'ko'
-						}
-					}
+					width: '80',
+					align: 'center'
 				}, {
 					header: '업체코드',
 					name: 'erpVendorCode',
-					editor: 'text'
+					width: '100',
+					align: 'center'
 				}, {
 					header: '입고업체명',
-					name: 'comCodeDetailName'
+					name: 'comCodeDetailName',
+					width: '100',
+					align: 'center'
+					
 				}, {
 					header: '자재코드',
 					name: 'comMaterialCode',
-					editor: 'text'
+					width: '80',
+					align: 'center'
 				}, {
 					header: '자재명',
-					name: 'comMaterialName'
+					name: 'comMaterialName',
+					width: '100',
+					align: 'center'
 				}, {
 					header: '규격',
-					name: 'comMaterialSize'
+					name: 'comMaterialSize',
+					width: '150',
+					align: 'center'
 				}, {
 					header: '관리단위',
-					name: 'comMaterialUnit'
+					name: 'comMaterialUnit',
+					width: '70',
+					align: 'center'
 				}, {
 					header: '자재LOT_NO',
-					name: 'matLotNo'
+					width: '200',
+					name: 'matLotNo',
+					align: 'center'
 				}, {
 					header: '수량',
 					name: 'matInoutQuantity',
-					editor: 'text'
+					width: 'auto',
+					minWidth: 100,
+					align: 'right'
 				}, {
 					header: '단가',
-					name: 'matInoutUnitPrice'
+					name: 'matInoutUnitPrice',
+					width: 'auto',
+					minWidth: 100,
+					align: 'right'
 				}, {
 					header: '금액',
-					name: 'matInoutPrice'
+					name: 'matInoutPrice',
+					width: 'auto',
+					minWidth: 100,
+					align: 'right'
 				}, {
 					header: '현재고',
-					name: 'materialStock'
+					name: 'materialStock',
+					width: 'auto',
+					minWidth: 100,
+					align: 'right'
 				}, {
 					header: '공정코드',
-					name: 'comProcessCode'
+					name: 'comProcessCode',
+					width: '100',
+					align: 'center'
 				}, {
 					header: '출고공정명',
-					name: 'comProcessName'
+					name: 'comProcessName',
+					width: '100',
+					align: 'center'
 				}]
 			});
 //모달 그리드 초기화 ----------------------------------
 		materialGrid = grid;
 		vendorGrid = grid;
 		matLotGrid = grid;
-		procGrid = grid;
 //--------------------------------------------------
 		
 		
@@ -405,12 +449,6 @@ let procGrid;
 				matLotNoSearch(ev.rowKey);
 			}
 		});
-		//공정
-		grid.on('dblclick', ev =>{
-			if(ev.columnName == 'comProcessCode'){
-				procCodeSearch(ev.rowKey);
-			}
-		})
 		
 //-----------------------------------------------------------------
 		   
@@ -481,19 +519,6 @@ function matLotNoSearch(c) {
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
 	  $.get("searchMatLotNo.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
-//공정
-var comProcId;
-function procCodeSearch(c) {
-	comProcId = c;
-	  console.log(comProcId);
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/prodUseMatr/proCodeSearchModal.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

@@ -41,33 +41,36 @@
 </div>
 
 
-<form id="option">
-	<div class="content-fluid">
-		<div class="panel panel-headline">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-2">
-						일자<input type="date" id="matInoutDate" name="matInoutDate">
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<form id="option">
+					<div class="col-md-3">
+						일자<input type="date" id="inoutDate" name="inoutDate">
 					</div>
-					<div class="col-md-2">
-						자재코드<a href="${pageContext.request.contextPath}/searchMaterialCode.do"	rel="modal:open">
-						<input type="text" id="comMaterialCode"	name="comMaterialCode">
+					<div class="col-md-3">
+						자재코드<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+						
+						<input type="hidden" id="matLot" name="matLot">
+						<a id="searchMatLotNo" href="searchMatLotNo.do"></a>
+					</div>
+					<div class="col-md-3">
+						입고업체<input type="text" id="vendorCode" name="vendorCode">
+						<a id="searchVendorCode" href="searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
-						입고업체<a href="${pageContext.request.contextPath}/searchVendorCode.do" rel="modal:open">
-							<input type="text" id="comCodeDetailId"	name="comCodeDetailId">
-							<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3">
-						<button type="button" class="btn btn-success" id="search">조회</button>
-						<button type="reset" class="btn btn-danger">새자료</button>
-					</div>
+				</form>
+				<div class="col-md-3" align="right">
+					<button type="button" class="btn btn-success" id="search">조회</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
 	</div>
-</form>
+</div>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -100,32 +103,18 @@
 
 <script>
 $(document).ready(function () {
-	//reset(새자료) 버튼 (문제 시 되돌리기)
-/* 	$("#reset").click(function() {  
-	         $("form").each(function() {  
-	                if(this.id == "option") this.reset();  
-	             });
-	    });   */
 
-	
-	//입출고구분 체크박스 하나만 체크되거나 해제가능.
-	$('input[type="checkbox"][name="gubunChkBox"]').click(function(){
-			if($(this).prop('checked')){
-			$('input[type="checkbox"][name="gubunChkBox"]').prop('checked',false);
-			$(this).prop('checked',true);
-		}
-	});
+	// 옵션 폼 리셋버튼  
+	$("#reset").click(function() {  
+		$("form").each(function() {  
+	    	if(this.id == "option") this.reset();
+	    	grid.clear();
+	    	outGrid.clear();
+	    	});
+		}); 
 
 	$(document).on("click", "button[id=search]",
 		function () {
-			//입출고구분
-			var inGubun = $('input:checkbox[id="inGubun"]').is(":checked")
-			var outGubun = $('input:checkbox[id="outGubun"]').is(":checked")
-			if(inGubun == true && outGubun == false){
-				var matInoutGubun = 'INOUT002';
-			}else if(inGubun == false && outGubun == true){
-				var matInoutGubun = 'INOUT003';
-			}
 			//데이터를 변수에 담아서 parameter로 만들기.
 			var comMaterialCode = $("#comMaterialCode").val();
 			var comCodeDetailId = $("#comCodeDetailId").val();
@@ -133,8 +122,7 @@ $(document).ready(function () {
 			var readParams = {
 				'comMaterialCode': comMaterialCode,
 				'comCodeDetailId': comCodeDetailId,
-				'matInoutDate': matInoutDate,
-				'matInoutGubun': matInoutGubun
+				'matInoutDate': matInoutDate
 
 			};
 			grid.readData(1, readParams, true);

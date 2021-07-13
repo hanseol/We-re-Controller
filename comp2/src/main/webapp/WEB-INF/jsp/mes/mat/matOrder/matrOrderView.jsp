@@ -168,7 +168,7 @@
 	
 
 	// 그리드 테마
-	Grid.applyTheme('clean', 
+	tui.Grid.applyTheme('clean', 
 		{
 			row: {
 	       		hover: {

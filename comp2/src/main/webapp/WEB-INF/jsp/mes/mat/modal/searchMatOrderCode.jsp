@@ -66,6 +66,8 @@ $(document).ready(function() {
 			orderGrid.setValue(matOrderRowId, 'comMaterialSize', comMaterialSize, false);
 			orderGrid.setValue(matOrderRowId, 'comMaterialUnit', comMaterialUnit, false);
 			orderGrid.setValue(matOrderRowId, 'quaMaterialChk', 0, false);
+			orderGrid.setValue(matOrderRowId, 'quaMaterialPQty', 0, false);
+			orderGrid.setValue(matOrderRowId, 'quaMaterialFQty', 0, false);
 		}
 		
 
@@ -110,10 +112,10 @@ $(document).ready(function() {
 			name : 'erpMaterialOrderCode'
 		}, {
 			header : '발주신청일자',
-			name : 'erpMaterialRequestDate'
+			name : 'erpMaterialOrderDate'
 		}, {
 			header : '납품요청일',
-			name : 'comMaterialName'
+			name : 'erpMaterialRequestDate'
 		}, {
 			header : '업체코드',
 			name : 'erpVendorCode',

@@ -41,24 +41,19 @@
 					                    AND     d.com_code_detail_id = q.erp_vendor_code
 					                    AND     q.erp_material_order_code = e.erp_material_order_code
 					                    AND		q.qua_material_chk = '0'
-					                    
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	e.erp_vendor_code = #{erpVendorCode}
-		                              	</if>
-		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
-		                              	AND
-							        	q.erp_material_order_code = #{erpMaterialOrderCode}
+							        	q.erp_vendor_code = #{erpVendorCode}
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	e.com_material_code = #{comMaterialCode}
+							        	q.com_material_code = #{comMaterialCode}
 		                              	</if>
-		                              	<if test="erpMaterialRequestDate != null and erpMaterialRequestDate != ''">
+		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	e.erp_material_request_date = #{erpMaterialRequestDate}
+							        	q.qua_material_date = #{quaMaterialDate}
 		                              	</if>
-		                              ORDER BY qua_material_date <![CDATA[ ) a
+		                              ORDER BY q.qua_material_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
@@ -77,7 +72,7 @@
 										        TO_CHAR(q.qua_material_date,'YY/MM/DD')as qua_material_date,
 										        q.erp_vendor_code,
 										        d.com_code_detail_name,
-                            					q.com_material_code,                            
+                            					q.com_material_code,
 										        c.com_material_name,
 										        c.com_material_size,
 										        c.com_material_unit,
@@ -104,21 +99,17 @@
 					                    AND		q.qua_material_chk = '1'
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	e.erp_vendor_code = #{erpVendorCode}
-		                              	</if>
-		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
-		                              	AND
-							        	q.erp_material_order_code = #{erpMaterialOrderCode}
+							        	q.erp_vendor_code = #{erpVendorCode}
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	e.com_material_code = #{comMaterialCode}
+							        	q.com_material_code = #{comMaterialCode}
 		                              	</if>
-		                              	<if test="erpMaterialRequestDate != null and erpMaterialRequestDate != ''">
+		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	e.erp_material_request_date = #{erpMaterialRequestDate}
+							        	q.qua_material_date = #{quaMaterialDate}
 		                              	</if>
-		                              ORDER BY qua_material_date <![CDATA[ ) a
+		                              ORDER BY q.qua_material_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
@@ -197,8 +188,7 @@
 	<!-- 검사 후 전표번호 발급해서 자재입출고로(MATIN-*** 전표번호) 작업중....-->
 	<insert id="insertQuaChkMatIn">
 		INSERT INTO mat_inout  		  (mat_inout_statement,
-										qua_material_statement,
-									   com_process_code,
+									   qua_material_statement,
 									   com_material_code,
 									   mat_inout_date,
 									   mat_inout_gubun,
@@ -208,9 +198,6 @@
 									   mat_inout_price)
 							VALUES  	(#{matInoutStatement},
 										 #{quaMaterialStatement},
-										(select 		com_process_code
-									    from			com_bom
-									    where			com_material_code = 'MAT005'),
 										#{comMaterialCode},
 								   		TO_CHAR(SYSDATE, 'YY/MM/DD'),
 								   		'INOUT002',

@@ -50,7 +50,7 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						입고일자<input type="date" id="matInoutDate" name="matInoutDate">
+						입고일자<input type="date" id="inoutDate" name="inoutDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -107,6 +107,12 @@
 </div>
 
 <script>
+//그리드모달창을 위한 그리드 선언-------------------------------------
+let materialGrid;
+let vendorGrid;
+let matLotGrid;
+//-----------------------------------------------------------
+
 $(document).ready(function () {
 	
 	// 옵션 폼 리셋버튼  
@@ -124,12 +130,12 @@ $(document).ready(function () {
 
 				//데이터를 변수에 담아서 parameter로 만들기.
 				var comMaterialCode = $("#materialCode").val();
-				var matInoutDate = $("#matInoutDate").val();
+				var inoutDate = $("#inoutDate").val();
 				var erpVendorCode = $("#vendorCode").val();
 
 				var readParams = {
 					'comMaterialCode': comMaterialCode,
-					'matInoutDate': matInoutDate,
+					'matInoutDate': inoutDate,
 					'erpVendorCode': erpVendorCode
 				};
 				grid.readData(1, readParams, true);
@@ -156,47 +162,71 @@ $(document).ready(function () {
         bodyHeight: 150, 
         rowHeight: 30,
 		columns: [{
-			header: '자재입고일자',
-			name: 'matInoutDate'
+			header: '입고일자',
+			name: 'matInoutDate',
+			width: '80',
+			align: 'center'
+			
 		}, {
 			header: '업체코드',
-			name: 'erpVendorCode'
+			name: 'erpVendorCode',
+			width: '100',
+			align: 'center'
 		}, {
 			header: '입고업체명',
-			name: 'comCodeDetailName'
+			name: 'comCodeDetailName',
+			width: '100',
+			align: 'center'
+			
 		}, {
 			header: '자재코드',
-			name: 'comMaterialCode'
+			name: 'comMaterialCode',
+			width: '80',
+			align: 'center'
 		}, {
 			header: '자재명',
-			name: 'comMaterialName'
+			name: 'comMaterialName',
+			width: '100',
+			align: 'center'
 		}, {
 			header: '규격',
-			name: 'comMaterialSize'
+			name: 'comMaterialSize',
+			width: '150',
+			align: 'center'
 		}, {
 			header: '관리단위',
-			name: 'comMaterialUnit'
+			name: 'comMaterialUnit',
+			width: '70',
+			align: 'center'
 		}, {
 			header: '자재LOT_NO',
-			name: 'matLotNo'
+			width: '200',
+			name: 'matLotNo',
+			align: 'center'
 		}, {
 			header: '수량',
-			name: 'matInoutQuantity'
+			name: 'matInoutQuantity',
+			width: 'auto',
+			minWidth: 100,
+			align: 'right'
 		}, {
 			header: '단가',
-			name: 'matInoutUnitPrice'
+			name: 'matInoutUnitPrice',
+			width: 'auto',
+			minWidth: 100,
+			align: 'right'
 		}, {
 			header: '금액',
-			name: 'matInoutPrice'
+			name: 'matInoutPrice',
+			width: 'auto',
+			minWidth: 100,
+			align: 'right'
 		}, {
 			header: '현재고',
-			name: 'materialStock'
-		}, {
-			header: '공정코드',
-			name: 'comProcessCode'
-		}, {
-			header: '출고공정명',
-			name: 'comProcessName'
+			name: 'materialStock',
+			width: 'auto',
+			minWidth: 100,
+			align: 'right'
 		}]
 	});
 	//출고 목록 데이터
@@ -227,55 +257,93 @@ $(document).ready(function () {
 	        bodyHeight: 150,
 	        rowHeight: 30,
 			columns: [{
-				header: '자재입고일자',
-				name: 'matInoutDate'
+				header: '입고일자',
+				name: 'matInoutDate',
+				width: '80',
+				align: 'center'
 			}, {
 				header: '업체코드',
-				name: 'erpVendorCode'
+				name: 'erpVendorCode',
+				width: '100',
+				align: 'center'
 			}, {
 				header: '입고업체명',
-				name: 'comCodeDetailName'
+				name: 'comCodeDetailName',
+				width: '100',
+				align: 'center'
+				
 			}, {
 				header: '자재코드',
-				name: 'comMaterialCode'
+				name: 'comMaterialCode',
+				width: '80',
+				align: 'center'
 			}, {
 				header: '자재명',
-				name: 'comMaterialName'
+				name: 'comMaterialName',
+				width: '100',
+				align: 'center'
 			}, {
 				header: '규격',
-				name: 'comMaterialSize'
+				name: 'comMaterialSize',
+				width: '150',
+				align: 'center'
 			}, {
 				header: '관리단위',
-				name: 'comMaterialUnit'
+				name: 'comMaterialUnit',
+				width: '70',
+				align: 'center'
 			}, {
 				header: '자재LOT_NO',
-				name: 'matLotNo'
+				width: '200',
+				name: 'matLotNo',
+				align: 'center'
 			}, {
 				header: '수량',
-				name: 'matInoutQuantity'
+				name: 'matInoutQuantity',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}, {
 				header: '단가',
-				name: 'matInoutUnitPrice'
+				name: 'matInoutUnitPrice',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}, {
 				header: '금액',
-				name: 'matInoutPrice'
+				name: 'matInoutPrice',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}, {
 				header: '현재고',
-				name: 'materialStock'
+				name: 'materialStock',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
 			}, {
 				header: '공정코드',
-				name: 'comProcessCode'
+				name: 'comProcessCode',
+				width: '100',
+				align: 'center'
 			}, {
 				header: '출고공정명',
-				name: 'comProcessName'
+				name: 'comProcessName',
+				width: '100',
+				align: 'center'
 			}]
 		});
+//모달 그리드 초기화 ----------------------------------
+		materialGrid = grid;
+		vendorGrid = grid;
+//--------------------------------------------------
 /* 	//자동 계산 (수량 *단가)
 	grid.on('afterChange',ev => {
 		var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
 		var unitPrice = grid.getValue( ev.changes[0].rowKey, 'matInoutUnitPrice');
 		grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 	}); */
+	
 	//데이터 제이슨타입으로 보내기
 	grid.on('response', ev => {
 		const { response } = ev.xhr;
@@ -284,5 +352,43 @@ $(document).ready(function () {
 		console.log('result : ', responseObj.result);
 		console.log('data : ', responseObj.data);
 	});
+	//그리드 로우아이디 지정--------------------------------------
+	//자재
+	$('#searchMaterialCode').click(function(event) {
+		materialCodeSearch(-1);
+	});
+	//업체
+	$('#searchVendorCode').click(function(event) {
+		vendorCodeSearch(-1);
+	});
+	//-----------------------------------------------------
 });
+//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+//자재
+var materialRowId;
+function materialCodeSearch(c) {
+	materialRowId = c;
+	  console.log(materialRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchMaterialCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//업체
+var vendorRowId;
+function vendorCodeSearch(c) {
+	vendorRowId = c;
+	  console.log(vendorRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("searchVendorCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//---------------------------------------------------------------
 </script>
