@@ -56,13 +56,11 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-5">
-						<form>
-							불량코드 
-							<input type="text" id="prodFault" name="prodFault">
-							<a id="ProdFaultModal" href="${pageContext.request.contextPath}/comModal/ProdFaultModal.do"
-								rel="modal:open"> <i class="fa fa-search"></i></a> 
-
-						</form>
+						불량코드 <input type="text" id="comCodeDetailId"
+							name="comCodeDetailId"> <a id="ProdFaultModal"
+							href="${pageContext.request.contextPath}/comModal/ProdFaultModal.do">
+							<i class="fa fa-search"></i>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -97,13 +95,13 @@ let procGrid;
 
 	$(document).ready(function() {
 		//변수생성
-		var productCode = 0;
+		var productFCode = 0;
 		//코드명 검색
 		$(document).on("click", "button[id=search]",
 				function() {
-					productCode = $("#productCode").val();
+					productFCode = $("#comCodeDetailId").val();
 					var readParams = {
-						'comProductCode' : productCode,
+						'comProductFCode' : productFCode,
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -115,12 +113,11 @@ let procGrid;
 					url : '${pageContext.request.contextPath}/prodFaulty/prodFaultyList',
 					method : 'GET'
 				}, 
-/* 				modifyData: { 
-					url: '${pageContext.request.contextPath}/ajax/modifyProdUseMatr',
+ 				modifyData: { 
+					url: '${pageContext.request.contextPath}/ajax/modifyProdFaulty',
 					method: 'PUT'
-				}, */
+				},
 			},
-			initialRequest: false, 
 			contentType : "application/json"
 		};
 		
@@ -129,10 +126,12 @@ let procGrid;
 			el : document.getElementById('prodFaultyGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
-			columns : [{
+			columns : [ {
+				header : '불량번호',
+				name : 'comProductFNo',
+			},{
 				header : '제품불량코드',
 				name : 'comProductFCode',
-				editor : 'text',
 					validation: {
 			               required:true
 			            } 
@@ -146,17 +145,20 @@ let procGrid;
 				editor : 'text'
 			}, {
 				header : '발생공정코드',
-				name : 'comProductFProcessCode',
-				editor : 'text'
+				name : 'comProcessCode',
 			}, {
 				header : '발생공정명',
-				name : 'comProductFProcessName',
+				name : 'comProcessName',
+				validation: {
+		               required:true
+		            } 
 			}, {
 				header : '비고',
 				name : 'comProductFEtc',
 				editor : 'text',
 			}]
 		}); 
+		
 		
 		//Insert
 		$(document).on("click", "button[id=appendRow]", function() {
@@ -207,7 +209,7 @@ let procGrid;
 		})
 		//공정코드
 		grid.on('dblclick', ev =>{
-			if(ev.columnName == 'comProductFProcessCode'){
+			if(ev.columnName == 'comProcessName'){
 				procCodeSearch(ev.rowKey);
 			}
 		})
@@ -225,7 +227,7 @@ let procGrid;
 		
 		//분석필요
 		//불량
-		$('#prodFaultSerchModal').click(function(event) {
+		$('#ProdFaultModal').click(function(event) {
 			prodFaultSerch(-1);
 		});
 		//공정
@@ -246,6 +248,7 @@ let procGrid;
 	
 	}); //end of document ready
 	//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+	
 	//불량코드
 	var FaultCode;
 	function prodFaultSerch(c) {

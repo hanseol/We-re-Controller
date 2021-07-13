@@ -94,9 +94,9 @@ let mgrid;
 					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
 						gubun = null;
 					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'INOUT003';
-					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
 						gubun = 'INOUT002';
+					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
+						gubun = 'INOUT003';
 					} else {
 						gubun = null;
 					}

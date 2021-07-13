@@ -87,6 +87,9 @@ public class SalInoutVO extends SearchVO {
     //생산지시디테일코드
     private java.lang.String proOrderDetailCode;
     
+    //작업량
+    private java.math.BigDecimal proProcessQuantity;
+    
 
 
     

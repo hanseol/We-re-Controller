@@ -101,7 +101,7 @@ public class SalMatchController {
 				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salMatchInout");
 						
 				if(gubun.equals("INOUT004")) {
-					((LinkedHashMap)createdList.get(i)).put("salMatchStatement", salMatchInStatementIdGnrService.getNextStringId());	
+					((LinkedHashMap)createdList.get(i)).put("salMatchStatement", salMatchInStatementIdGnrService.getNextStringId());
 					} else if(gubun.equals("INOUT005")) {
 						((LinkedHashMap)createdList.get(i)).put("salMatchStatement", salMatchOutStatementIdGnrService.getNextStringId());
 					}			

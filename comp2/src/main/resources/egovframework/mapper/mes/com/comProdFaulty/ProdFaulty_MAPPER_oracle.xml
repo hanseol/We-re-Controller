@@ -23,35 +23,47 @@
 	
 	<!-- 삽입 -->
 	<insert id="insertProdFaulty">
-		INSERT INTO COM_PRODUCT_F(
-			COM_PRODUCT_F_CODE            
-			, COM_PRODUCT_F_NAME          
-			, COM_PRODUCT_F_DETAIL       
-			, COM_PRODUCT_F_PROCESS_CODE 
-			, COM_PRODUCT_F_PROCESS_NAME 
-			, COM_PRODUCT_F_ETC          
-			, COM_PRODUCT_F_SEQ)         
-		VALUES(
-			#{comProductFCode}
+		INSERT INTO 
+			COM_PRODUCT_F(
+				COM_PRODUCT_F_NO
+				, COM_PRODUCT_F_CODE
+				, COM_PRODUCT_F_NAME
+				, COM_PRODUCT_F_DETAIL
+				, COM_PROCESS_CODE
+				, COM_PROCESS_NAME
+				, COM_PRODUCT_F_ETC
+				, COM_PRODUCT_F_SEQ)
+		VALUES
+			(F_SEQ.NEXTVAL
+			, #{comProductFCode}
 			, #{comProductFName}
 			, #{comProductFDetail}
-			, #{comProductFProcessCode}
-			, #{comProductFProcessName}
+			, #{comProcessCode}
+			, #{comProcessName}
 			, #{comProductFEtc}
 			, #{comProductFSeq});
 	</insert>
 	
 	<update id="updateProdFault">
-		UPDATE 
-			com_product_f 
+		UPDATE
+			COM_PRODUCT_F
 		SET
-			com_product_f_detail = #{comProductFDetail}
-			, com_product_f_process_code = #{comProductFProcessCode}
-			, com_product_f_etc = #{comProductFEtc}
-			, com_product_f_seq = #{comProductFSeq}
-		WHERE 
-			com_product_f_code = #{comProductFCode}
-			AND com_product_f_process_code = #{comProductFProcessCode}
+			COM_PRODUCT_F_CODE = #{comProductFCode}
+			, COM_PRODUCT_F_NAME = #{comProductFName}
+			, COM_PRODUCT_F_DETAIL = #{comProductFDetail}
+			, COM_PROCESS_CODE = #{comProcessCode}
+			, COM_PROCESS_NAME = #{comProcessName}
+			, COM_PRODUCT_F_ETC = #{comProductFEtc}
+			, COM_PRODUCT_F_SEQ = #{comProductFSeq}
+		WHERE
+			COM_PRODUCT_F_NO = #{comProductFNo}
 	</update>
+	
+	<delete id="deleteProdFault" parameterType="mes.com.prodFaulty.service.ProdFaultyVO">
+		DELETE FROM 
+			COM_PRODUCT_F
+		WHERE 
+			COM_PRODUCT_F_NO = #{comProductFNo}
+	</delete>
 
 </mapper>

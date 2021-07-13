@@ -105,9 +105,9 @@ let mgrid; //모달그리드
 					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
 						gubun = null;
 					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'INOUT003';
-					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
 						gubun = 'INOUT002';
+					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
+						gubun = 'INOUT003';
 					} else {
 						gubun = null;
 					}
@@ -116,8 +116,7 @@ let mgrid; //모달그리드
 						'salInoutDate' : date,
 						'salInoutGubun' : gubun,
 						'comProductCode' : productCode,
-						'proProcessLotNo' : productLotNo,
-						'salInoutQuantity' : salInoutQuantity
+						'proProcessLotNo' : productLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -200,16 +199,13 @@ let mgrid; //모달그리드
 				}
 			}, {
 				header : '지시/거래처코드',
-				name : 'salInoutCode',
-				editor : 'text'
+				name : 'salInoutCode'
 			}, {
 				header : '제품코드',
-				name : 'comProductCode',
-				editor : 'text'
+				name : 'comProductCode'
 			}, {
 				header : '수량',
-				name : 'salInoutQuantity',
-				editor : 'text'
+				name : 'salInoutQuantity'
 			}, {
 				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
@@ -225,12 +221,12 @@ let mgrid; //모달그리드
 	 
 	 //모달 클릭 이벤트
 	 //모달 : 제품코드
-	   grid.on('dblclick', ev => {
+	  /*  grid.on('dblclick', ev => {
 	      if(ev.columnName == 'comProductCode'){  
 	    	  productCodeSearch(ev.rowKey);
 	    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
 	      }
-	   });
+	   }); */
 	 
 	 $('#searchProductCode').click(function(event) {
 			productCodeSearch(-1); //매개변수 -1로 함수 실행
@@ -238,9 +234,14 @@ let mgrid; //모달그리드
 		
 	 //모달 : 완제품 LOT_NO
 	   grid.on('dblclick', ev => {
-	      if(ev.columnName == 'proProcessLotNo'){    
-	    	  productLotNoSearch(ev.rowKey);     
-	      }
+		   var i = ev.rowKey;
+	      if(ev.columnName == 'proProcessLotNo') {
+	    	  if(grid.getValue(i, 'salInoutGubun') == null) {
+	    		  alert('입고/출고를 먼저 구분해주세요.');
+	    	  } else {
+	    	  	 productLotNoSearch(ev.rowKey);	    	  	 
+	    	  } 
+	    	}
 	   });
 	 
 		$('#searchProductLotNo').click(function(event) {
@@ -250,7 +251,7 @@ let mgrid; //모달그리드
 	 
 
 	 //모달 : 지시/거래처코드 구분
-	 grid.on('dblclick', ev => {		 
+	/*  grid.on('dblclick', ev => {		 
 	 	var i = ev.rowKey;
 		if(ev.columnName == 'salInoutCode') {
 	      if(grid.getValue(i, 'salInoutGubun') == null) {
@@ -266,7 +267,7 @@ let mgrid; //모달그리드
 	      	 	}
 		  } 
 		}
-	});
+	}); */
 		
 	// option form reset  
 	 $(document).ready(function() {  

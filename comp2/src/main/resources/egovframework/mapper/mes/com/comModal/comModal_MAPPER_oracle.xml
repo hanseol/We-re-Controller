@@ -14,6 +14,13 @@
 					com_code_detail
 				WHERE 1=1
 					AND com_code_id = 'MES013'
+					<if test="comCodeDetailId != null and comCodeDetailId != '' ">
+					AND com_code_detail_id LIKE '%' || UPPER(#{comCodeDetailId}) || '%'
+					</if>
+					<if test="comCodeDetailName != null and comCodeDetailName != '' ">
+					AND com_code_detail_name LIKE '%' || UPPER(#{comCodeDetailName}) || '%'
+					</if>
+					
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}

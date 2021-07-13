@@ -141,7 +141,7 @@ public class SalInoutController {
 	
 // ------------------------------관리--------------------------------
 	
-	// 입출고목록 수정
+	// 입출고목록 CRUD
 	@PutMapping("/ajax/modifySalInoutList")
 	@ResponseBody
 	public void modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {

@@ -42,31 +42,49 @@ $(document).ready(function() {
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
 		var chkRowKeys = grid.getCheckedRowKeys();
-		var code = [];
-		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'proProcessLotNo');
-		
-		}
-		
-		//view 페이지에 뿌려줄 부분 아이디값
-		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-			$("#productLotNo").val(code);
-			code = [];
-		} else { //아니면 mgrid(모달그리드)에 뿌려준다
-			mgrid.blur();
-			mgrid.setValue(rowId, 'proProcessLotNo', code, false);
-		}
 
+		for(var i=0; i<chkRowKeys.length; i++){
+			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
+			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
+			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
+			proOrderDetailCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
+			proProcessQuantity = grid.getValue(chkRowKeys[i], 'proProcessQuantity');
+			
+			console.log(proProcessLotNo);
+			console.log(erpProductCode);
+			console.log(erpCustomerCode);
+			console.log(proOrderDetailCode);
+			console.log(proProcessQuantity);
+			
+			//view 페이지에 뿌려줄 부분 아이디값
+			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
+				$("#productLotNo").val(proProcessLotNo);
+				proProcessLotNo = [];
+			} else { //아니면 mgrid(모달그리드)에 뿌려준다
+				mgrid.blur();
+				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
+				mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
+				mgrid.setValue(rowId, 'salInoutQuantity', proProcessQuantity, false);
+								
+				if (mgrid.getValue(chkRowKeys[i], 'salInoutGubun') == 'INOUT002') { //입고이면 지시코드
+					mgrid.setValue(rowId, 'salInoutCode', proOrderDetailCode, false);
+					console.log('안녕 난 입고')
+				} else { //출고이거나 다른 곳에서 부르면 고객사코드
+					mgrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false);
+					console.log('안녕 난 출고')
+				}
+			}
+		}
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
 		var no = $("#proProcessLotNo").val();
-		var code = $("#comProductCode").val();
-		var name = $("#comProductName").val();
+		var code = $("#erpProductCode").val();
+		var name = $("#erpProductName").val();
 		var readParams = {
 				'proProcessLotNo' : no,
-				'comProductCode' : code,
-				'comProductName' : name
+				'erpProductCode' : code,
+				'erpProductName' : name
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -94,10 +112,10 @@ $(document).ready(function() {
 			name : 'proProcessLotNo'
 		}, {
 			header : '제품코드',
-			name : 'comProductCode'
+			name : 'erpProductCode'
 		}, {
 			header : '제품명',
-			name : 'comProductName'
+			name : 'erpProductName'
 		}]
 	});
 });

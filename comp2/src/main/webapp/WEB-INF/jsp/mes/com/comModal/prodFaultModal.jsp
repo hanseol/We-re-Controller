@@ -16,7 +16,7 @@
 				<div>
 					불량코드 <input type="text" id="comCodeDetailId" placeholder="불량코드"/>
 					불량코드명 <input type="text" id="comCodeDetailName" placeholder="불량코드명"/>
-					<button id="findRowComCodeModal">검색</button>
+					<button id="findRow">검색</button>
 				</div>
 				<div id="prodFaultGrid"></div>
 			</div>
@@ -52,7 +52,7 @@ $(document).ready(function() {
 	});
 	
 	//검색버튼
-	$(document).on("click", "button[id=findRowProcModal]", function() {
+	$(document).on("click", "button[id=findRow]", function() {
 		var comCodeDetailId = $("#comCodeDetailId").val();
 		console.log(comCodeDetailId);
 		var comCodeDetailName = $("#comCodeDetailName").val();
@@ -61,7 +61,7 @@ $(document).ready(function() {
 				'comCodeDetailId' : comCodeDetailId,
 				'comCodeDetailName' : comCodeDetailName
 			};
-		prodGrid.readData(1, readParams, true);
+		grid.readData(1, readParams, true);
 	});
 	
 	const dataSource = {

@@ -34,6 +34,7 @@ $(document).ready(function() {
 	
 	//체크박스 값 변수 저장
 	$(document).on("click","button[id=ok]", function(){
+		
 		var chkRowKeys = grid.getCheckedRowKeys();
 		var ProductCode = [];
 		for(var i=0; i<chkRowKeys.length; i++){
@@ -59,32 +60,32 @@ $(document).ready(function() {
 	const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/mes/com/prodUseMatr/ProdUseMatrModal',
+					url : '${pageContext.request.contextPath}/ajax/ProdUseMatrModal',
 					method : 'GET'
 				},
 			},
 			contentType : "application/json"
 		};
 		
-		const grid = new tui.Grid({
-			el : document.getElementById('modalGrid'),
-			rowHeaders : [ 'checkbox' ],
-			data : dataSource,
-		    scrollX: true,
-		    scrollY: true,
-		    bodyHeight :300,
-		    rowHeight: 30,
-			columns : [ {
-				header : '제품코드',
-				name : 'comProductCode'
-			}, {
-				header : '제품명',
-				name : 'comProductName'
-			}, {
-				header : '규격',
-				name : 'comProductUnit'
-			} ]
-		});
+	const grid = new tui.Grid({
+		el : document.getElementById('modalGrid'),
+		rowHeaders : [ 'checkbox' ],
+		data : dataSource,
+	    scrollX: true,
+	    scrollY: true,
+	    bodyHeight :300,
+	    rowHeight: 30,
+		columns : [ {
+			header : '제품코드',
+			name : 'comProductCode'
+		}, {
+			header : '제품명',
+			name : 'comProductName'
+		}, {
+			header : '규격',
+			name : 'comProductUnit'
+		} ]
+	});
 }); //end of document ready
 </script>
 </div>
