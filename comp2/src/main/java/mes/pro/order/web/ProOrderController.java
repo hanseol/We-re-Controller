@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
@@ -44,6 +45,16 @@ public class ProOrderController {
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
+    
+    //전표번호 부여
+    @Resource(name = "proOrderCodeService")
+    protected EgovIdGnrService proOrderCodeService;
+    
+    @Resource(name = "proOrderCodeDetailService")
+    protected EgovIdGnrService proOrderCodeDetailService;
+    
+    @Resource(name = "mesMatOutStatementIdGnrService")
+    protected EgovIdGnrService mesMatOutStatementIdGnrService;
     
     ComFunc comFunc = new ComFunc();
 
@@ -128,7 +139,8 @@ public class ProOrderController {
     
     
     
-    //생산지시리스트 추가, 수정, 삭제 (****수정하기)
+    // 생산지시리스트 추가, 수정, 삭제 (****수정하기)
+    // 1번 그리드의 modify
 	@PutMapping("ajax/proOrder/modifyProdOrder")
 	@ResponseBody
 	public Map<String, Object> modifyProdOrder(@RequestBody GridDataVO gd) throws Exception {
@@ -142,26 +154,81 @@ public class ProOrderController {
 		//수정
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
-				service.updateProOrder((LinkedHashMap) updatedList.get(i));
+				service.updatePlan((LinkedHashMap) updatedList.get(i));
 			}
 		}
 		
 		//삭제
-		if (deletedList.size() != 0) {
-			for (int i = 0; i < deletedList.size(); i++) {
-				service.deleteProOrder((LinkedHashMap) deletedList.get(i));
-			}
-		}		
+//		if (deletedList.size() != 0) {
+//			for (int i = 0; i < deletedList.size(); i++) {
+//				service.deleteProOrder((LinkedHashMap) deletedList.get(i));
+//			}
+//		}		
 
 		//생성
-		//시퀀스 포멧팅(pro_plan테이블) **수정하기
+		//시퀀스 포멧팅  **수정하기
 		if(createdList.size() != 0) { 
+			String poId = null;
+			
+			poId = proOrderCodeService.getNextStringId();
+			
 			for(int i = 0; i < createdList.size(); i++) {
+				((LinkedHashMap)createdList.get(i)).put("proOrderCode", poId);
+				((LinkedHashMap)createdList.get(i)).put("proOrderDitailCode", proOrderCodeDetailService.getNextStringId());
+				service.insertProOrder((LinkedHashMap)createdList.get(i));
 			}
 		 }
 		map.put("result", true);
-
 		return map;
 	}
+	
+	
+	// 생산지시리스트 추가, 수정, 삭제 (****수정하기)
+    // 3번 그리드의 modify
+	@PutMapping("ajax/proOrder/modifyMat")
+	@ResponseBody
+	public Map<String, Object> modifyMat(@RequestBody GridDataVO gd) throws Exception {
+
+		Map<String, Object> map = new HashMap<>();
+		
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+
+		//수정
+//		if (updatedList.size() != 0) {
+//			for (int i = 0; i < updatedList.size(); i++) {
+//				service.insertProOrder((LinkedHashMap) updatedList.get(i));
+//			}
+//		}
+		
+		//삭제
+//		if (deletedList.size() != 0) {
+//			for (int i = 0; i < deletedList.size(); i++) {
+//				service.deleteProOrder((LinkedHashMap) deletedList.get(i));
+//			}
+//		}		
+
+		//생성
+		//시퀀스 포멧팅  **수정하기
+		if(createdList.size() != 0) { 
+			String outId = null;
+			
+			outId = mesMatOutStatementIdGnrService.getNextStringId();
+			
+			for(int i = 0; i < createdList.size(); i++) {
+				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", outId);
+				service.insertMat((LinkedHashMap)createdList.get(i));
+			}
+		 }
+		
+		map.put("result", true);
+		return map;
+	}
+	
+	
+	
+	
+	
 	
 }

@@ -80,5 +80,9 @@ public interface ProOrderService {
 
 	List<?> selectmatLotList(ProOrderVO searchVO);
 
+	void updatePlan(LinkedHashMap linkedHashMap);
+
+	void insertMat(LinkedHashMap linkedHashMap);
+
     
 }

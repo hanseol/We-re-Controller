@@ -1,133 +1,184 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%
- /**
-  * @Class Name : ProProcessList.jsp
-  * @Description : ProProcess List 화면
-  * @Modification Information
-  * 
-  * @author dahee
-  * @since 20210707
-  * @version 1.0
-  * @see
-  *  
-  * Copyright (C) All right reserved.
-  */
-%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>목록</title>
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
-<script type="text/javaScript" language="javascript" defer="defer">
-<!--
-/* 글 수정 화면 function */
-
-
-function fn_egov_select(comProcessCode, proOrderDetailCode) {
-	document.getElementById("listForm").comProcessCode.value = comProcessCode;
-	document.getElementById("listForm").proOrderDetailCode.value = proOrderDetailCode;
-   	document.getElementById("listForm").action = "<c:url value='/proProcess/updateProProcessView.do'/>";
-   	document.getElementById("listForm").submit();
-}
-
-/* 글 등록 화면 function */
-function fn_egov_addView() {
-   	document.getElementById("listForm").action = "<c:url value='/proProcess/addProProcessView.do'/>";
-   	document.getElementById("listForm").submit();		
-}
-
-/* pagination 페이지 링크 function */
-function fn_egov_link_page(pageNo){
-	document.getElementById("listForm").pageIndex.value = pageNo;
-	document.getElementById("listForm").action = "<c:url value='/proProcess/ProProcessList.do'/>";
-   	document.getElementById("listForm").submit();
-}
-
- // -->
-</script>
-</head>
-<body>
-<form:form commandName="searchVO" name="listForm" id="listForm" method="post">
-	<input type="hidden" name="comProcessCode" />
-	<input type="hidden" name="proOrderDetailCode" />
-<div id="content_pop">
-	<!-- 타이틀 -->
-	<div id="title">
-		<ul>
-			<li><img src="<c:url value='/images/egovframework/example/title_dot.gif'/>" alt="title" /> List </li>
-		</ul>
-	</div>
-	<!-- // 타이틀 -->
-	<!-- List -->
-	<div id="table">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<colgroup>
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-								<col/>				
-							</colgroup>		  
-			<tr>
-								<th align="center">ComProcessCode</th>
-								<th align="center">ProOrderDetailCode</th>
-								<th align="center">ComProductFCode</th>
-								<th align="center">ProProcessFQty</th>
-								<th align="center">MacLineNo</th>
-								<th align="center">ProProcessStartTime</th>
-								<th align="center">ProProcessEndTime</th>
-								<th align="center">ErpEmployeeId</th>
-								<th align="center">MacCode</th>
-								<th align="center">ProProcessLotNo</th>
-								<th align="center">ProProcessQuantity</th>
-							</tr>
-			<c:forEach var="result" items="${resultList}" varStatus="status">
-			<tr>
-																			<td align="center" class="listtd"><a href="javascript:fn_egov_select('<c:out value="${result.comProcessCode}"/>', '<c:out value="${result.proOrderDetailCode}"/>')"><c:out value="${result.comProcessCode}"/></a>&nbsp;</td>
-						<td align="center" class="listtd"><a href="javascript:fn_egov_select('<c:out value="${result.comProcessCode}"/>', '<c:out value="${result.proOrderDetailCode}"/>')"><c:out value="${result.proOrderDetailCode}"/></a>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.comProductFCode}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proProcessFQty}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.macLineNo}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proProcessStartTime}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proProcessEndTime}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.erpEmployeeId}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.macCode}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proProcessLotNo}"/>&nbsp;</td>
-						<td align="center" class="listtd"><c:out value="${result.proProcessQuantity}"/>&nbsp;</td>
-				    			</tr>
-			</c:forEach>
-		</table>
-	</div>
-	<!-- /List -->
-	<div id="paging">
-		<ui:pagination paginationInfo = "${paginationInfo}"
-				   type="image"
-				   jsFunction="fn_egov_link_page"
-				   />
-		<form:hidden path="pageIndex" />
-	</div>
-	<div id="sysbtn1">
-		<ul>
-			<li>
-				<div id="sysbtn">
-					<span class="btn_blue_l"><a href="javascript:fn_egov_addView();">등록</a><img src="<c:url value='/images/egovframework/example/btn_bg_r.gif'/>" alt="" />
-					</span>
-				</div>
-			</li>
-		</ul>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+	
+<!-- 타이틀 -->
+<div class="content-fluid">
+	<div>
+		<h2>공정별 자재 소요 조회</h2>
 	</div>
 </div>
-</form:form>
-</body>
-</html>
+
+<!-- 관리, 조회 탭 이동 -->
+<!-- <div id="tabs">
+   <ul class="nav nav-tabs" role="tablist">
+     <li class=""><a onclick='location.href="prodForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
+     <li class="active"><a onclick='location.href="prodView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
+   </ul>
+</div> -->
+
+
+<!-- 마스터 테이블 -->
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<form action="">
+					<div class="col-md-6">
+					* 작업일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
+						~ <input type="date" id="endDate" name="endDate"> <br/><br/>
+					* 공정이름 <br/>
+						<input type="radio" id="gubun1" name="gubun" value="1" checked> 마스크면결합공정
+						<input type="radio" id="gubun2" name="gubun" value="2" > 끈결합공정
+						<input type="radio" id="gubun3" name="gubun" value="3" > 철사결합공정
+						<input type="radio" id="gubun4" name="gubun" value="4" > 포장공정
+						<br/><br/>
+					* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
+					</div>
+					<div class="col-md-6" align="right">
+						<button type="button" class="btn btn-success" id="findRow">조회</button>
+						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 디테일 테이블 -->
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-7">
+					<p class="panel-subtitle">생산지시조회</p>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="grid"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		
+		//M 조회 버튼	
+		$(document).on("click", "button[id=findRow]",
+		      function() {
+		 	   var gubun = $("input[name=gubun]:checked").val();
+		 	   console.log(gubun);
+		         var startDate = $("#startDate").val();
+		         var endDate = $("#endDate").val();
+		         var erpProductCode = $("#erpProductCode").val();
+		         var erpCustomerCode = $("#erpCustomerCode").val();
+		         var readParams = {
+		      	  'searchCondition' : gubun,
+		            'startDate' : startDate,
+		            'endDate' : endDate,
+		            'erpProductCode' : erpProductCode,
+		            'erpCustomerCode' : erpCustomerCode
+		         };
+		         grid.readData(1, readParams, true);
+		      });
+		
+		// M 리셋버튼  
+		$("#reset").click(function() {  
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+
+		    	$('#startDate').val("");
+		    	$('#endDate').val("");
+		    	$('#erpProductCode').val("");
+		    	$('#erpCustomerCode').val("");
+		    	});
+			}); 
+
+		
+		//dataSource	
+		const dataSource = {
+			api : {
+				readData : {
+					url : '${pageContext.request.contextPath}/',
+					method : 'GET'
+				}
+			},
+			initialRequest : false,
+			contentType : "application/json"
+		};
+
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
+			rowHeaders : [ 'checkbox' ],
+			data : dataSource,
+			columns : [ {
+				header : '공정명',
+				name : 'proWorkDate'
+			}, {
+				header : '지시번호',
+				name : 'proOrderCode'
+			}, {
+				header : '제품코드',
+				name : 'erpCustomerCode'
+			}, {
+				header : '제품명',
+				name : 'erpProductName'
+			}, {
+				header : '작업일자',
+				name : 'erpOrderCode'
+			}, {
+				header : '자재코드',
+				name : 'erpProductDeadline'
+			}, {
+				header : '자재명',
+				name : 'erpOrderQty'
+			},{
+				header : '규격',
+				name : 'proOrderQty'
+			},{
+				header : '계획량',
+				name : 'proOrderGubun'
+			},{
+				header : '현재고',
+				name : 'proMaterialLot'
+			} ]
+		});
+	
+	grid.on('response', ev => {
+		  const {response} = ev.xhr;
+		  const responseObj = JSON.parse(response);
+
+		  console.log('result : ', responseObj.result);
+		  console.log('data : ', responseObj.data);
+		});
+	
+	grid.on('check', (ev) => {
+		  alert(`check: ${ev.rowKey}`);
+	});
+	
+
+	// 그리드 테마
+	tui.Grid.applyTheme('clean', 
+		{
+			row: {
+	       		hover: {
+	       			background: "#d5dae1"
+	       		}
+			},
+			cell: {
+				header: {
+					background: "#003458",
+					text: "white"
+				},
+				currentRow : {
+					background: "#d5dae1"
+				}
+			}
+	});
+	
+}); //end of document ready
+</script>
+
+
+

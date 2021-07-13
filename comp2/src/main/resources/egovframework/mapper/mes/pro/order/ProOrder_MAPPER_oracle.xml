@@ -12,12 +12,12 @@
 		<result property="proOrderDate" column="PRO_ORDER_DATE" />
 	</resultMap>
 	
-	<!-- INSERT: 생산지시 M + D -->
+	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 M + D -->
 	<insert id="insertProOrder">
 		{CALL 
 			DECLARE
 			BEGIN
-				INSERT INTO INSERT INTO pro_order 
+				INSERT INTO pro_order 
 									( pro_order_code
 		                      		, pro_order_gubun
 		                    		, pro_order_qty
@@ -60,12 +60,32 @@
 		}
 	</insert>
 	
-	<!-- INSERT: mat_inout  +  pro_material_lot -->
+	<!-- 1번 그리드 저장버튼 > UPDATE: 생산계획 D -->
+	<update id="updatePlan">
+		UPDATE pro_plan_detail
+  		   SET pro_order_detail_code = #{proOrderDetailCode} 
+	</update>
+	
+	<!-- 1번 그리드 저장버튼 > UPDATE: ?? -->	
+	<update id="updateProOrder">
+		<![CDATA[
+			UPDATE PRO_ORDER
+			SET PRO_ORDER_CODE=#{proOrderCode}
+				, PRO_ORDER_GUBUN=#{proOrderGubun}
+				, PRO_ORDER_QTY=#{proOrderQty}
+				, PRO_ORDER_RANK=#{proOrderRank}
+				, PRO_ORDER_DATE=#{proOrderDate}
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</update>
+	
+	
+	<!-- 3번 그리드 저장버튼 > INSERT: mat_inout  +  pro_material_lot -->
 	<insert id="insertMat">
 		{CALL 
          DECLARE
          BEGIN
-            INSERT INTO INSERT INTO MAT_INOUT 
+            INSERT INTO MAT_INOUT 
                            (  mat_inout_statement
                             , com_material_code
                             , mat_inout_date
@@ -75,8 +95,8 @@
                             , com_process_code )
                 VALUES(  #{matInoutStatement}
                        , #{comMaterialCode}
-                       , #{matInoutDate}
-                       , #{matInoutGubun}
+                       , #{proWorkDate}
+                       , 'INOUT003'
                        , #{matInoutQuantity}
                        , #{matLotNo}
                        , #{comProcessCode} )
@@ -93,9 +113,8 @@
 	
 	</insert>
 
-	
-	
-	<update id="updateProOrder">
+	<!-- 3번 그리드 저장버튼 > UPDATE: ?? -->	
+	<update id="">
 		<![CDATA[
 			UPDATE PRO_ORDER
 			SET PRO_ORDER_CODE=#{proOrderCode}

@@ -80,7 +80,6 @@
 					<div>
 						제품코드 <input type="text" id="comProductCode" name="comProductCode" readonly>
 						제품명   <input type="text" id="comProductName" name="comProductName" readonly>
-						<!-- 지시량  <input type="text" id="proOrderSeq" name="proOrderSeq" readonly> -->
 					</div>
 					<div class="panel-body">
 						<div id="matInfogrid"></div>
@@ -189,7 +188,7 @@ var proOrderRowKey;
 		const dataSource = {
 			api : {
 				readData : { url : '${pageContext.request.contextPath}/ajax/proOrder/prodFormList', method : 'GET' },
-				modifyData : { url: '${pageContext.request.contextPath}/ajax/proOrder/prodView', method : 'PUT' }
+				modifyData : { url: '${pageContext.request.contextPath}/ajax/proOrder/modifyProdOrder', method : 'PUT' }
 				
 			},
 			initialRequest : false,
@@ -272,21 +271,22 @@ var proOrderRowKey;
 				name : 'erpCustomerCode',
 				hidden : true 
 			} ],
-			/* summary : {
-	            height : 40,
-	            position : 'bottom',
-	            columnContent : {
-	            	proOrderQty : {
-	                  template(val) {
-	                     return '합 : ' + val.sum;
-	                  }
-	             }, proOrderExpectQty : {
-	                  template(val) {
-	                     return '합 : ' + val.sum;
-	                  }
-	             }
-	        } */
-	            
+			summary: {
+		        height: 40,
+		        position: 'bottom', // or 'top'
+		        columnContent: {
+		        	proOrderQty: {
+		            template: function(valueMap) {
+		              return 'TOTAL:' + valueMap.sum;
+		            }
+		          },
+		          proOrderExpectQty: {
+		            template: function(valueMap) {
+		              return 'TOTAL:' + valueMap.sum;
+		            }
+		          }
+		        }
+		      }	            
 		}); //end of grid(1번)
 		
 
@@ -332,7 +332,8 @@ var proOrderRowKey;
 		//dataSource	
 		const lotDataSource = {
 			api : {
-				readData : { url : '${pageContext.request.contextPath}/matLotList', method : 'GET' }
+				readData : { url : '${pageContext.request.contextPath}/matLotList', method : 'GET' },
+				modifyMat : { url: '${pageContext.request.contextPath}/ajax/proOrder/modifyMat', method : 'PUT'}
 			},
 			initialRequest : false,
 			contentType : "application/json"
@@ -369,7 +370,19 @@ var proOrderRowKey;
 				header : '공정코드',
 				name : 'comProcessCode',
 				hidden : true 
-			} ]
+			}, {
+				header : '자재출고전표번호',
+				name : 'matInoutStatement',
+				hidden : true 
+			}, {
+				header : '자재출고일자',
+				name : 'proWorkDate',
+				hidden : true 
+			} , {
+				header : '자재로트번호',
+				name : 'matLotNo',
+				hidden : true 
+			}  ]
 		
 	}); //end of grid(3번)
 		

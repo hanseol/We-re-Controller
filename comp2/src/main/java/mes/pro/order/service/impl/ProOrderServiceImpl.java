@@ -50,19 +50,19 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public String insertProOrder(ProOrderVO vo) throws Exception {
-    	LOGGER.debug(vo.toString());
-    	
-    	/** ID Generation Service */
-    	//TODO 해당 테이블 속성에 따라 ID 제너레이션 서비스 사용
-    	//String id = egovIdGnrService.getNextStringId();
-    	//vo.setId(id);
-    	LOGGER.debug(vo.toString());
-    	
-    	proOrderDAO.insertProOrder(vo);
-    	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
-    }
+//    public String insertProOrder(ProOrderVO vo) throws Exception {
+//    	LOGGER.debug(vo.toString());
+//    	
+//    	/** ID Generation Service */
+//    	//TODO 해당 테이블 속성에 따라 ID 제너레이션 서비스 사용
+//    	//String id = egovIdGnrService.getNextStringId();
+//    	//vo.setId(id);
+//    	LOGGER.debug(vo.toString());
+//    	
+//    	proOrderDAO.insertProOrder(vo);
+//    	//TODO 해당 테이블 정보에 맞게 수정    	
+//        return null;
+//    }
 
     /**
 	 * PRO_ORDER을 수정한다.
@@ -123,6 +123,7 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 
 	@Override
 	public String insertProOrder(LinkedHashMap linkedHashMap) throws Exception {
+		proOrderDAO.insertProOrder(linkedHashMap);
 		return null;
 	}
 
@@ -159,6 +160,16 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public List<?> selectmatLotList(ProOrderVO searchVO) {
 		return proOrderDAO.selectmatLotList(searchVO);
+	}
+
+	@Override
+	public void updatePlan(LinkedHashMap linkedHashMap) {
+		proOrderDAO.updatePlan(linkedHashMap);
+	}
+
+	@Override
+	public void insertMat(LinkedHashMap linkedHashMap) {
+		proOrderDAO.insertMat(linkedHashMap);
 	}
     
 }

@@ -1,5 +1,6 @@
 package mes.pro.order.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import mes.pro.order.service.ProOrderVO;
@@ -26,11 +27,11 @@ public interface ProOrderMapper {
 
 	/**
 	 * PRO_ORDER을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 ProOrderVO
+	 * @param linkedHashMap - 등록할 정보가 담긴 ProOrderVO
 	 * @return 등록 결과
 	 * @exception Exception
 	 */
-    public void insertProOrder(ProOrderVO vo) throws Exception;
+    public void insertProOrder(LinkedHashMap linkedHashMap) throws Exception;
 
     /**
 	 * PRO_ORDER을 수정한다.
@@ -83,5 +84,10 @@ public interface ProOrderMapper {
 	public List<?> selectmatBomList(ProOrderVO searchVO);
 
 	public List<?> selectmatLotList(ProOrderVO searchVO);
+
+	public void updatePlan(LinkedHashMap linkedHashMap);
+
+	public void insertMat(LinkedHashMap linkedHashMap);
+
 
 }
