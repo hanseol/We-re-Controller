@@ -204,7 +204,7 @@
 								   		#{quaMaterialPQty},
 								   		#{matLotNo},
 								   		#{erpMaterialUnitPrice},
-								   		#{erpMaterialPrice})
+								   		(#{quaMaterialPQty}*#{erpMaterialUnitPrice}))
 	</insert>
 	
 	<!-- 자재불량테이블로 불량자료 넘기기 -->

@@ -232,5 +232,24 @@ $(document).ready(function () {
 		console.log('result : ', responseObj.result);
 		console.log('data : ', responseObj.data);
 	});
+	
+	// 그리드 테마
+	tui.Grid.applyTheme('clean', 
+		{
+			row: {
+	       		hover: {
+	       			background: "#DFEFF7"
+	       		}
+			},
+			cell: {
+				header: {
+					background: "#D5ECED"
+				},
+				currentRow : {
+					background: "#d5dae1"
+				}
+			}
+	});
+	
 });
 </script>

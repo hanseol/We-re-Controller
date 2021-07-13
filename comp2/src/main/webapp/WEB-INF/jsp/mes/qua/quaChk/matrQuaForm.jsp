@@ -479,6 +479,24 @@ let erpMaterialOrderCode;
 			console.log('data : ', responseObj.data);
 		});
 		
+		// 그리드 테마
+		tui.Grid.applyTheme('clean', 
+			{
+				row: {
+		       		hover: {
+		       			background: "#DFEFF7"
+		       		}
+				},
+				cell: {
+					header: {
+						background: "#D5ECED"
+					},
+					currentRow : {
+						background: "#d5dae1"
+					}
+				}
+		});
+		
 		//발주코드 모달 로우아이디 값--------------------------------------
 		//발주
 		$('#searchMatOrderCode').click(function(event) {

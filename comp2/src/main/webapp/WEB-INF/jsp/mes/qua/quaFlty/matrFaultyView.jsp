@@ -239,14 +239,22 @@ var orderGrid;
 			}
 		});
 		
-
-/* 	grid.applyTheme('custom', { 
-		  row: { 
-		    hover: { 
-		      background: '#00eeff' 
-		    }
-		  }
+		// 그리드 테마
+		tui.Grid.applyTheme('clean', 
+			{
+				row: {
+		       		hover: {
+		       			background: "#DFEFF7"
+		       		}
+				},
+				cell: {
+					header: {
+						background: "#D5ECED"
+					},
+					currentRow : {
+						background: "#d5dae1"
+					}
+				}
 		});
-	 */
 }); //end of document ready
 </script>

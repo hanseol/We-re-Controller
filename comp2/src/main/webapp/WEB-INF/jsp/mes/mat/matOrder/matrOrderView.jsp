@@ -154,10 +154,9 @@
 			}, {
 				header: '금액',
 				name: 'erpMaterialPrice'
-			}
-			]
+			}]
 		});
-	
+	//데이터 제이슨타입으로 보내기
  	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);

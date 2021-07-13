@@ -256,10 +256,24 @@ max-height: 600px; */
 			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 		});
 		
-		//이 컬럼은 클릭하면 안돼.
-		
-		//grid.disableColumn('comCodeDetailName');
-		
+		// 그리드 테마
+		tui.Grid.applyTheme('clean', 
+			{
+				row: {
+		       		hover: {
+		       			background: "#DFEFF7"
+		       		}
+				},
+				cell: {
+					header: {
+						background: "#D5ECED"
+					},
+					currentRow : {
+						background: "#d5dae1"
+					}
+				}
+		});
+
 		
 		
 		
