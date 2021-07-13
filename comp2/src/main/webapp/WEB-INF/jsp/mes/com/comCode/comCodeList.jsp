@@ -23,6 +23,7 @@
 	z-index: 1200;
 }
 </style>
+
 <div class="content-fluid">
 	<div>
 		<h2>공통자료 관리</h2>
@@ -34,54 +35,39 @@
 	<div class="content-fluid">
 		<div>
 			<div class="my-panel">
-				<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				<!-- 				<button type="button" class="btn btn-danger" id="reset">새자료</button> -->
 				<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<!--  -->
+<!--  -->
+<div>
 	<form id="option">
 		<div class="content-fluid">
 			<div class="panel panel-headline">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-7"></div>
-						<div class="col-md-5" align="right">
+						<div class="col-md-12" align="right">
 							<button type="button" id=appendRow>추가</button>
 							<button type="button" id="deleteRow">삭제</button>
 						</div>
 					</div>
+					
 					<div class="panel-body">
 						<div class="row">
-							<div>
-								<label>공통코드명</label>
-								<!-- 체크박스 값 input에 받기 -->
-								<input id="comCodeName" />
-								<!-- 모달창 사용x -->
-								<%-- 					<a href="${pageContext.request.contextPath}/comCodeModal.do" rel="modal:open" id="getData">
-						<i class="fa fa-search"></i>
-						</a> 
---%>
-								<button id="findRowCodeId" type="button">검색</button>
-							</div>
 							<!-- 마스터데이터 호출 -->
 							<div class="col-md-4" id="grid"></div>
 							<!-- Detail 표현 -->
 							<div class="col-md-8" id="gridDetail"></div>
 						</div>
-						<tbody>
-							<!-- 마스터데이터 호출 -->
-							<div class="col-md-4" id="grid"></div>
-							<!-- Detail 표현 -->
-							<div class="col-md-8" id="gridDetail"></div>
-						</tbody>
 					</div>
 				</div>
 			</div>
 		</div>
+	</form>
 </div>
-</form>
 
 <!-- 마스터데이터 -->
 <script>

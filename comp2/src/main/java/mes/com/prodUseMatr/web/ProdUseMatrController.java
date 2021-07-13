@@ -82,7 +82,7 @@ public class ProdUseMatrController {
 	}
 	
 	//모달창에 결과 값 전달
-	@RequestMapping("mes/com/prodUseMatr/ProdUseMatrModal")
+	@RequestMapping("/ajax/ProdUseMatrModal")
 	@ResponseBody
 	public Map<String, Object> selectBomModal(Model model, 
    		@ModelAttribute("searchVO") ProdUseMatrVO searchVO) throws Exception {

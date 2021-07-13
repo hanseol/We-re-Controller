@@ -11,11 +11,13 @@ import mes.main.service.SearchVO;
 public class ProdFaultyVO extends SearchVO{
     private static final long serialVersionUID = 1L;
 
+    
+    private java.math.BigDecimal comProductFNo;
     private java.lang.String comProductFCode;
     private java.lang.String comProductFName;
     private java.lang.String comProductFDetail;
-    private java.lang.String comProductFProcessCode;
-    private java.lang.String comProductFProcessName;
+    private java.lang.String comProcessCode;
+    private java.lang.String comProcessName;
     private java.lang.String comProductFEtc;
     private java.math.BigDecimal comProductFSeq;
     

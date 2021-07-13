@@ -56,11 +56,11 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-4">
-						<form>
-							제품코드 <input type="text" id="productCode" name="productCode">
-							<a id="ProdUseMatrModal" href="ProdUseMatrModal.do"
-								rel="modal:open"> <i class="fa fa-search"></i></a>
-						</form>
+						제품코드 <input type="text" id="productCode" name="productCode">
+						<a id="ProdUseMatrModal" 
+						href="ProdUseMatrModal.do">
+							<i class="fa fa-search"></i>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -303,6 +303,10 @@ let procGrid;
 			procCodeSearch(-1);
 		});
 		
+		$('#ProdUseMatrModal').click(function(event) {
+			ProdUseMatrModal(-1);
+		});
+		
 
 		// option form reset  
 		 $(document).ready(function() {  
@@ -317,6 +321,7 @@ let procGrid;
 	//그리드모달 :모달페이지로 값 넘기기----------------------------------------
 	//공정
 	var comProcId;
+	
 	function procCodeSearch(c) {
 		comProcId = c;
 		  console.log(comProcId);
@@ -324,7 +329,18 @@ let procGrid;
 		  $(".modal").remove();
 		  this.blur(); // Manually remove focus from clicked link.
 		  console.log(this.href);
-		  $.get("${pageContext.request.contextPath}/prodUseMatr/ProCodeSearchModal.do", function(html) {
+		  $.get("ProCodeSearchModal.do", function(html) {
+		    $(html).appendTo('body').modal();
+		  });
+	}
+	
+	function ProdUseMatrModal(c) {
+		comProcId = c;
+		  event.preventDefault();
+		  $(".modal").remove();
+		  this.blur(); // Manually remove focus from clicked link.
+		  console.log(this.href);
+		  $.get("ProdUseMatrModal.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
 	}
