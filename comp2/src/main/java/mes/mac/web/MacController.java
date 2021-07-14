@@ -186,7 +186,7 @@ public class MacController {
 	
 	
 	/***
-	 * 생산 모니터링 화면 구상
+	 * 생산 모니터링 화면 
 	 * 
 	 */
 	@RequestMapping("/mac/monitoringView.do")
@@ -201,7 +201,7 @@ public class MacController {
 	
 	
 	/**
-	 * 공정 관리 화면 구상
+	 * 공정 관리 화면 
 	 * 
 	 * */
 

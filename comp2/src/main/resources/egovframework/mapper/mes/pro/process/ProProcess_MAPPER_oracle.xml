@@ -134,14 +134,17 @@ SELECT * FROM (
 	
 	<!-- 선택된 지시에 필요한 자재 LOT 정보를 자재 종류별로 보여준다. -->
 	<select id="selectMatrLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="mes.pro.proc.service.ProProcessVO">
-		SELECT DISTINCT MI.COM_MATERIAL_CODE,
-      	CM.COM_MATERIAL_NAME, 
-     	PML.MAT_LOT_NO, 
-      	PML.PRO_ORDER_DETAIL_CODE
-		FROM PRO_MATERIAL_LOT PML, MAT_INOUT MI, COM_MATERIAL CM
+		SELECT MI.COM_MATERIAL_CODE, 
+     			PML.MAT_LOT_NO, 
+		      	PML.PRO_ORDER_DETAIL_CODE,
+		        CM.COM_MATERIAL_NAME
+				FROM PRO_MATERIAL_LOT PML, MAT_INOUT MI, COM_MATERIAL CM
 		WHERE PML.MAT_LOT_NO = MI.MAT_LOT_NO
+   		 AND MI.MAT_INOUT_GUBUN = 'INOUT003'
 		AND MI.COM_MATERIAL_CODE = CM.COM_MATERIAL_CODE
+    	AND MI.COM_PROCESS_CODE = #{comProcessCode}
 		AND PML.PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+		ORDER BY CM.COM_MATERIAL_CODE
 	</select>
 	
 	<!-- procg001(첫번째공정에서) start 버튼 눌렀을 때 . -->
@@ -218,11 +221,19 @@ SELECT * FROM (
 	
 	<!-- end 버튼이 눌렸을 때. -->
 	<update id="updateProProcess">
+		<selectKey resultType="string" keyProperty="proProcessLotNo" order="BEFORE">
+       		 SELECT PRO_PROCESS_LOT_NO 
+       		 FROM PRO_ORDER_DETAIL
+       		 WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+   		</selectKey>    
 		DECLARE
 			BEGIN
 				UPDATE PRO_PROCESS
 				SET	PRO_PROCESS_END_TIME=#{proProcessEndTime},
 					PRO_PROCESS_QUANTITY=#{proProcessQuantity}
+				<if test="comProcessCode=='PROCG003'">,
+					PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+				</if>
 				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
 				AND COM_PROCESS_CODE = #{comProcessCode};
 				

@@ -37,7 +37,7 @@ public class ProProcessVO extends SearchVO{
     private java.math.BigDecimal proProcessFQty;
     
     /** MAC_LINE_NO */
-    private java.math.BigDecimal macLineNo;
+    private String macLineNo;
     
     /** PRO_PROCESS_START_TIME */
     private java.lang.String proProcessStartTime;
@@ -46,7 +46,7 @@ public class ProProcessVO extends SearchVO{
     private java.lang.String proProcessEndTime;
     
     /** ERP_EMPLOYEE_ID */
-    private java.math.BigDecimal erpEmployeeId;
+    private String erpEmployeeId;
     
     /** MAC_CODE */
     private java.lang.String macCode;
@@ -60,11 +60,14 @@ public class ProProcessVO extends SearchVO{
     //확장
     //pro_material_lot 테이블의 자재로트번호
     private String matLotNo;
+    //자재코드
+    private String comMaterialCode;
     //자재명
     private String comMaterialName;
     //공정명
     private String comProcessName;
     //제품명
     private String erpProductName;
+    
     
 }

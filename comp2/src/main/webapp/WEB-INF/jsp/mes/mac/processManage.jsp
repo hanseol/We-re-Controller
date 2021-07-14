@@ -20,14 +20,6 @@
 	</div>
 </div>
 
-작업일자 공정명 작업자
-지시번호 
-작업시작시간
-작업종료시간
-현재실적량
-달성률
-불량량
-
 	<!-- 정보 (테이블 출력) -->
 <div class="panel">
 	<div class="panel-body">
@@ -50,22 +42,26 @@
 							<option value="">--------선택--------</option>
 						</select>
 					</td>
-					
+					<th>제품명</th>
+					<td><input id="comProductName" name="comProductName"></td>
 				</tr>
 				<tr>
 					<th>라인번호</th>
 					<td><input id="macLineNo" name="macLineNo"></td>
+					<th>설비코드</th>
+					<td><input id="macCode" name="macCode"></td>
 					<th>작업자</th>
 					<td><input id="erpEmployeeId" name="erpEmployeeId"></td>
 				</tr>
 				<tr>
 					<th>작업시작시간</th>
 					<td><input id="proProcessStartTime" name="proProcessStartTime">
-						<button type="button" id="startBtn" class="btn btn-danger">시작</button>
-					</td>
-					<th>작업종료시간</th>
+						<button type="button" id="startBtn" class="btn btn-danger" disabled>시작</button>
+					<th>작업량</th>
+					<td><input id="proProcessQuantity" name="proProcessQuantity"></td>
+					</td><th>작업종료시간</th>
 					<td><input id="proProcessEndTime" name="proProcessEndTime">
-						<button type="button" id="endBtn" class="btn btn-success">종료</button>
+						<button type="button" id="endBtn" class="btn btn-success" disabled>종료</button>
 					</td>
 				</tr>
 			</tbody>
@@ -86,8 +82,13 @@
 		
 		//1. 공정을 먼저 선택한다.
 		$("#comProcessCode").on("change", function() {
-			var comProcGubunCode = $("#comProcessCode option:selected").val();
 			
+			//시간, 작업량 초기화.
+			$("#proProcessStartTime").val("");
+			$("#proProcessEndTime").val("");
+			$("#proProcessQuantity").val("");
+			
+			var comProcGubunCode = $("#comProcessCode option:selected").val();
 			$.ajax({
 				url:'${pageContext.request.contextPath}/ajax/pro/getProOrderDetailCode',
 				type: 'GET',
@@ -96,17 +97,15 @@
 				data:{"comProcessCode": comProcGubunCode},
 				success: function(result){
 					
-					//result 갯수만큼 select 태그에 option태그 붙여 줘야함..
-					$("select[name='proOrderDetailCode']").empty(); //셀렉트박스 비우기
+					//기존 셀렉트박스 값 비우기
+					$("select[name='proOrderDetailCode']").empty(); 
 					$("select[name='proOrderDetailCode']").append('<option value="">--------선택--------</option>');
-					
-					//결과값을 select box option으로 넘겨주기.
+					//결과를 select box option으로 만들기.
 					var data = result.list;
 					$.each(data,function(index,item){
 						var rdata = "<option value='"+item+"'>"+ item + "</option>";
 						$("select[name='proOrderDetailCode']").append(rdata);
 					});
-					
 				}
 			});
 			
@@ -114,36 +113,51 @@
 		
 		//2. 해당공정에서 작업해야 할 지시 코드를 선택한다.
 		$("#proOrderDetailCode").on("change", function() {
+			
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
 			var comProcessCode = $("#comProcessCode option:selected").val();
-			
 			var readParams = {
 					'proOrderDetailCode' : proOrderDetailCode,
 					'comProcessCode' : comProcessCode
 			};
+			//해당 지시에 필요한 자재정보를 가지고 온다.
 			proOrderGrid.readData(1, readParams, true);
+			//시작버튼 활성화
+			$("#startBtn").prop("disabled",false);
 		});
 		
 		//3. 작업을 시작한다.
 		$("#startBtn").on("click",function(){
+			//시작버튼 비활성화 & 종료버튼 활성화
+			$(this).prop("disabled", true);
+			$("#endBtn").prop("disabled",false);
+			
+			//시:분 형태로 현재 시간 값을 생성.
 			var today = new Date();
 			var h = today.getHours();
 			var m = today.getMinutes();
 			var proProcessStartTime = h +":"+m;
 			$("#proProcessStartTime").val(proProcessStartTime);
+			console.log(proProcessStartTime);
 			
+			//필요한 데이터 담기.
 			var comProcessCode = $("#comProcessCode option:selected").val();
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
-			console.log(comProcessCode);
-			console.log(proOrderDetailCode);
+			var erpEmployeeId = $("#erpEmployeeId").val();
+			var macLineNo = $("#macLineNo").val();
+			var macCode = $("#macCode").val();
 			
 			$.ajax({
 				url:'${pageContext.request.contextPath}/ajax/pro/startProProcess',
 				type: 'POST',
 				dataType : "json",
-				data:{"comProcessCode": comProcessCode,
-						"proOrderDetailCode": proOrderDetailCode,
-						"proProcessStartTime": proProcessStartTime},
+				data:{"comProcessCode": comProcessCode
+						, "proOrderDetailCode": proOrderDetailCode
+						, "proProcessStartTime": proProcessStartTime
+						, "erpEmployeeId" : erpEmployeeId
+						, "macLineNo" : macLineNo
+						, "macCode" : macCode
+				},
 				success: function(result){
 					
 				}
@@ -152,23 +166,26 @@
 		
 		//4. 작업을 종료한다.
 		$("#endBtn").on("click",function(){
+			//종료버튼 비활성화.
+			$(this).prop("disabled", true);
+			//종료시간 시:분 형태로 저장.
 			var today = new Date();
 			var h = today.getHours();
 			var m = today.getMinutes();
 			var proProcessEndTime = h + ":" + m;
 			$("#proProcessEndTime").val(proProcessEndTime);
-			
+			//전달 데이터			
 			var comProcessCode = $("#comProcessCode option:selected").val();
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
-			console.log(comProcessCode);
-			console.log(proOrderDetailCode);
+			var proProcessQuantity = $("#proProcessQuantity").val();
 			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/ajax/pro/endProProcess",
 				type: 'POST',
 				data: {"comProcessCode" : comProcessCode,
 					"proOrderDetailCode" : proOrderDetailCode,
-					"proProcessEndTime" : proProcessEndTime},
+					"proProcessEndTime" : proProcessEndTime,
+					"proProcessQuantity" : proProcessQuantity},
 				dataType : "JSON",
 				success : function(result){
 						
@@ -193,9 +210,13 @@
 			data : dataSource,
 			scrollX : true,
 			scrollY : true,
-			bodyHeight :300, //테이블 높이
+			bodyHeight :200, //테이블 높이
 	        rowHeight: 30, //테이블 행 높이
 			columns : [ {
+				header : '자재코드',
+				name : 'comMaterialCode',
+				align : 'center'
+			},{
 				header : '자재명',
 				name : 'comMaterialName',
 				align : 'center'
