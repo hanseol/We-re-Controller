@@ -73,7 +73,15 @@
 	</div>
 </div>
 <script>
+
 	$(document).ready(function() {
+		
+		//네비게이션 바 고정.
+		$('#proNav').addClass('active');
+		$('#subPages4').addClass('in');
+		$('#subPages4').attr('aria-expanded','true');
+		$('#subPages4').attr('style','');
+		$('.proProdOrder').addClass('active');
 		
 		//M 조회 버튼	
 		$(document).on("click", "button[id=findRow]",
