@@ -12,7 +12,7 @@ public class ProdFaultyVO extends SearchVO{
     private static final long serialVersionUID = 1L;
 
     
-    private java.math.BigDecimal comProductFNo;
+    private int comProductFNo;
     private java.lang.String comProductFCode;
     private java.lang.String comProductFName;
     private java.lang.String comProductFDetail;

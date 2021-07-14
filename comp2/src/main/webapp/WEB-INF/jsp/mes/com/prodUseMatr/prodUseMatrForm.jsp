@@ -1,38 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal {
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-	max-height: 600px; */
-}
-
-.blocker {
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>

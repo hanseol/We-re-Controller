@@ -1,32 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal {
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-}
-
-.blocker {
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>
-		<h2>공통자료 관리</h2>
+		<h2>자재정보관리/안전재고관리</h2>
 	</div>
 </div>
 

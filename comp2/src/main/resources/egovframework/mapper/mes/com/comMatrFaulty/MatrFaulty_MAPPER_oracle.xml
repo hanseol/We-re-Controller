@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.matrFaulty.service.impl.MatrFaultyMapper">
+	
+	<!-- 조회 -->
+	<select id="selectMatrFaulty" parameterType="mes.com.matrFaulty.service.MatrFaultyVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT 
+					     * 
+					FROM 
+					     COM_MATERIAL_F
+					WHERE 1=1
+					<if test="comMaterialFNo != null and comMaterialFNo != '' ">
+					AND COM_MATERIAL_F_NO = UPPER(#{comMaterialFNo})
+					</if>
+					
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 삽입 -->
+	<insert id="insertMatrFaulty">
+		INSERT INTO COM_MATERIAL_F(
+			COM_MATERIAL_F_NO
+			,COM_MATERIAL_F_CODE
+			,COM_MATERIAL_F_NAME
+			,COM_MATERIAL_F_DESC)
+		VALUES(
+			MATRF_SEQ.NEXTVAL
+			, #{comMaterialFCode}
+			, #{comMaterialFName}
+			, #{comMaterialFDesc})
+	</insert>
+	
+	<update id="updateMatrFaulty">
+		UPDATE 
+		     COM_MATERIAL_F
+		SET
+		     COM_MATERIAL_F_CODE = #{comMaterialFCode}
+		     ,COM_MATERIAL_F_NAME = #{comMaterialFName}
+		     ,COM_MATERIAL_F_DESC = #{comMaterialFDesc}
+		WHERE
+		     COM_MATERIAL_F_NO = #{comMaterialFNo}
+	</update>
+	
+	<delete id="deleteMatrFaulty" parameterType="mes.com.matrFaulty.service.MatrFaultyVO">
+		DELETE FROM
+		     COM_MATERIAL_F
+		WHERE
+		     COM_MATERIAL_F_NO = #{comMaterialFNo}
+	</delete>
+
+</mapper>

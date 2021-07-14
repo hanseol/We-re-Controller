@@ -1,38 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal {
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-	max-height: 600px; */
-}
-
-.blocker {
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>
@@ -49,24 +16,6 @@
 		</div>
 	</div>
 </div>
-
-<form id="option">
-	<div class="content-fluid">
-		<div class="panel panel-headline">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-5">
-						불량코드 <input type="text" id="comCodeDetailId"
-							name="comCodeDetailId"> <a id="ProdFaultModal"
-							href="${pageContext.request.contextPath}/comModal/ProdFaultModal.do">
-							<i class="fa fa-search"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -132,13 +81,17 @@ let procGrid;
 			},{
 				header : '제품불량코드',
 				name : 'comProductFCode',
-					validation: {
-			               required:true
-			            } 
+				editor : 'text',
+				validation: {
+		               required:true
+		            } 
 			}, {
 				header : '불량명',
 				name : 'comProductFName',
-				editor : 'text'
+				editor : 'text',
+				validation: {
+		               required:true
+	            } 
 			}, {
 				header : '불량내역',
 				name : 'comProductFDetail',
@@ -196,17 +149,11 @@ let procGrid;
 
 		
 //모달 그리드 초기화 ----------------------------------
-		prodGrid = grid;
+	//	prodGrid = grid;
 		procGrid = grid;
 //--------------------------------------------------
 
 //그리드 모달 더블클릭--------------------------------------------------
-		//불량코드
-		grid.on('dblclick', ev =>{
-			if(ev.columnName == 'comProductFCode'){
-				prodFaultSerch(ev.rowKey);
-			}
-		})
 		//공정코드
 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'comProcessName'){
@@ -227,9 +174,9 @@ let procGrid;
 		
 		//분석필요
 		//불량
-		$('#ProdFaultModal').click(function(event) {
+/* 		$('#ProdFaultModal').click(function(event) {
 			prodFaultSerch(-1);
-		});
+		}); */
 		//공정
 		$('#proCodeSearchModal').click(function(event) {
 			procCodeSearch(-1);
@@ -249,7 +196,7 @@ let procGrid;
 	}); //end of document ready
 	//그리드모달 :모달페이지로 값 넘기기----------------------------------------
 	
-	//불량코드
+/* 	//불량코드
 	var FaultCode;
 	function prodFaultSerch(c) {
 		FaultCode = c;
@@ -261,7 +208,7 @@ let procGrid;
 		  $.get("${pageContext.request.contextPath}/comModal/ProdFaultModal.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
-	}
+	} */
 	
 	//공정
 	var comProcId;

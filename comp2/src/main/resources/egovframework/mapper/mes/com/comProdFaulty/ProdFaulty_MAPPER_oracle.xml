@@ -15,6 +15,7 @@
 					<if test="comProductFCode != null and comProductFCode != '' ">
 					AND COM_PRODUCT_F_CODE = UPPER(#{comProductFCode})
 					</if>
+					
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
@@ -31,8 +32,7 @@
 				, COM_PRODUCT_F_DETAIL
 				, COM_PROCESS_CODE
 				, COM_PROCESS_NAME
-				, COM_PRODUCT_F_ETC
-				, COM_PRODUCT_F_SEQ)
+				, COM_PRODUCT_F_ETC)
 		VALUES
 			(F_SEQ.NEXTVAL
 			, #{comProductFCode}
@@ -40,8 +40,7 @@
 			, #{comProductFDetail}
 			, #{comProcessCode}
 			, #{comProcessName}
-			, #{comProductFEtc}
-			, #{comProductFSeq});
+			, #{comProductFEtc})
 	</insert>
 	
 	<update id="updateProdFault">
