@@ -74,4 +74,7 @@ public interface ProProcessService {
     //선택된 지시에 사용되도록 설정된 자재 LOT 조회
     List<ProProcessVO> selectMatrLot(ProProcessVO vo);
     
+    //생산 공정 시작 시간 & 공정 작업 상태 업데이트
+    void updateStartTime(ProProcessVO vo) throws Exception;
+    
 }

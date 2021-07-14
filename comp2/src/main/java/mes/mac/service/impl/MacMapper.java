@@ -6,6 +6,7 @@ import java.util.List;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.mac.service.MacVO;
 import mes.member.service.MacDateResultVO;
+import mes.pro.proc.service.ProProcessVO;
 
 /**
  * @Class Name : MacMapper.java

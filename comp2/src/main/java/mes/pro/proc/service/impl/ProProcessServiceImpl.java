@@ -134,5 +134,12 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 	public List<ProProcessVO> selectProProcessName() {
 		return proProcessDAO.selectProProcessName();
 	}
+	
+	//생산 공정 시작 시간 & 공정 작업 상태 업데이트
+	@Override
+	public void updateStartTime(ProProcessVO vo) throws Exception {
+		proProcessDAO.updateStartTime(vo);
+	}
+
     
 }

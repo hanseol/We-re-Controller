@@ -48,9 +48,10 @@ public class MacController {
 	@Resource(name = "macService")
 	private MacService macService;
 	
+	//생산
 	@Resource(name = "proProcessService")
 	private ProProcessService proProcService;
-
+	
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -227,6 +228,7 @@ public class MacController {
 		return map;
 	}
 	
+	//작업지시가 선택되면 해당 작업에 필요한 자재 정보를 전달.
 	@RequestMapping("ajax/pro/readMaterial")
 	@ResponseBody
 	public Map<String, Object> readMaterial(@ModelAttribute ProProcessVO vo){
@@ -234,6 +236,31 @@ public class MacController {
 		List<ProProcessVO> list = proProcService.selectMatrLot(vo);
 		return comFunc.sendResult(list);
 	}
+	
+	//선택한 작업지시가 start 되었을 때.
+	@RequestMapping("ajax/pro/startProProcess")
+	@ResponseBody
+	public Map<String,Object> startProProcess(ProProcessVO vo) throws Exception{
+		if(vo.getComProcessCode().equals("PROCG001")) {
+			proProcService.insertProProcess(vo);
+		}else {
+			proProcService.updateStartTime(vo);
+		}
+		
+		return null;
+	}
+	
+	//선택한 작업지시가 end 되었을 때.
+	@RequestMapping("ajax/pro/endProProcess")
+	@ResponseBody
+	public Map<String,Object> endProProcess(@ModelAttribute ProProcessVO vo) throws Exception{
+	
+		proProcService.updateProProcess(vo);
+		
+		return null;
+	}
+	
+	
 	/**
 	 * 설비 점검일 알림 
 	 * @throws Exception 

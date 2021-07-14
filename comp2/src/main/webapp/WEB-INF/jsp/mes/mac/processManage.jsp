@@ -31,7 +31,7 @@
 	<!-- 정보 (테이블 출력) -->
 <div class="panel">
 	<div class="panel-body">
-	<form name="frm" id="frm" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+	<form name="frm" id="frm" method="post">
 		<table class="table table-bordered" id="process">
 			<thead>
 			</thead>
@@ -54,33 +54,22 @@
 				</tr>
 				<tr>
 					<th>라인번호</th>
-					<td><input id="" name=""></td>
+					<td><input id="macLineNo" name="macLineNo"></td>
 					<th>작업자</th>
-					<td><input id="" name=""></td>
+					<td><input id="erpEmployeeId" name="erpEmployeeId"></td>
 				</tr>
 				<tr>
 					<th>작업시작시간</th>
-					<td><input id="" name="" style="width:40px;">시
-									<input id="" name="" style="width:40px;">분
-						<button type="button" id="registerMac" class="btn btn-danger">시작</button>
+					<td><input id="proProcessStartTime" name="proProcessStartTime">
+						<button type="button" id="startBtn" class="btn btn-danger">시작</button>
 					</td>
 					<th>작업종료시간</th>
-					<td><input id="" name="" style="width:40px;">시
-									<input id="" name="" style="width:40px;">분
-						<button type="button" id="registerMac" class="btn btn-success">종료</button>
+					<td><input id="proProcessEndTime" name="proProcessEndTime">
+						<button type="button" id="endBtn" class="btn btn-success">종료</button>
 					</td>
-				</tr>
-				<tr>
-					<th>현재실적량</th>
-					<td><input id="" name=""></td>
-					<th>달성율</th>
-					<td><input id="" name=""></td>
 				</tr>
 			</tbody>
 		</table>
-		<div>
-			<button type="button" id="registerMac" class="btn btn-info">등록</button>
-		</div>
 	</form>
 	</div>
 </div>
@@ -93,14 +82,11 @@
 </div>
 
 <script>
-
 	$(document).ready(function(){
-		
 		
 		//1. 공정을 먼저 선택한다.
 		$("#comProcessCode").on("change", function() {
 			var comProcGubunCode = $("#comProcessCode option:selected").val();
-			console.log(comProcGubunCode);
 			
 			$.ajax({
 				url:'${pageContext.request.contextPath}/ajax/pro/getProOrderDetailCode',
@@ -110,7 +96,6 @@
 				data:{"comProcessCode": comProcGubunCode},
 				success: function(result){
 					
-					console.log(result);
 					//result 갯수만큼 select 태그에 option태그 붙여 줘야함..
 					$("select[name='proOrderDetailCode']").empty(); //셀렉트박스 비우기
 					$("select[name='proOrderDetailCode']").append('<option value="">--------선택--------</option>');
@@ -127,16 +112,70 @@
 			
 		});
 		
+		//2. 해당공정에서 작업해야 할 지시 코드를 선택한다.
 		$("#proOrderDetailCode").on("change", function() {
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
-			console.log(proOrderDetailCode);
+			var comProcessCode = $("#comProcessCode option:selected").val();
 			
 			var readParams = {
-					'proOrderDetailCode' : proOrderDetailCode
+					'proOrderDetailCode' : proOrderDetailCode,
+					'comProcessCode' : comProcessCode
 			};
 			proOrderGrid.readData(1, readParams, true);
 		});
-
+		
+		//3. 작업을 시작한다.
+		$("#startBtn").on("click",function(){
+			var today = new Date();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var proProcessStartTime = h +":"+m;
+			$("#proProcessStartTime").val(proProcessStartTime);
+			
+			var comProcessCode = $("#comProcessCode option:selected").val();
+			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
+			console.log(comProcessCode);
+			console.log(proOrderDetailCode);
+			
+			$.ajax({
+				url:'${pageContext.request.contextPath}/ajax/pro/startProProcess',
+				type: 'POST',
+				dataType : "json",
+				data:{"comProcessCode": comProcessCode,
+						"proOrderDetailCode": proOrderDetailCode,
+						"proProcessStartTime": proProcessStartTime},
+				success: function(result){
+					
+				}
+			});
+		});
+		
+		//4. 작업을 종료한다.
+		$("#endBtn").on("click",function(){
+			var today = new Date();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var proProcessEndTime = h + ":" + m;
+			$("#proProcessEndTime").val(proProcessEndTime);
+			
+			var comProcessCode = $("#comProcessCode option:selected").val();
+			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
+			console.log(comProcessCode);
+			console.log(proOrderDetailCode);
+			
+			$.ajax({
+				url: "${pageContext.request.contextPath}/ajax/pro/endProProcess",
+				type: 'POST',
+				data: {"comProcessCode" : comProcessCode,
+					"proOrderDetailCode" : proOrderDetailCode,
+					"proProcessEndTime" : proProcessEndTime},
+				dataType : "JSON",
+				success : function(result){
+						
+				}
+			});
+		});
+		
 		const dataSource = {
 				api : {
 					readData : {
@@ -152,8 +191,10 @@
 			el : document.getElementById('proOrderGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
-			scrollX : false,
+			scrollX : true,
 			scrollY : true,
+			bodyHeight :300, //테이블 높이
+	        rowHeight: 30, //테이블 행 높이
 			columns : [ {
 				header : '자재명',
 				name : 'comMaterialName',

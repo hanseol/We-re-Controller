@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import mes.member.service.MacDateResultVO;
+import mes.pro.proc.service.ProProcessVO;
 
 /**
  * @Class Name : MacService.java
@@ -60,5 +61,6 @@ public interface MacService {
     List<MacVO> selectMacList(MacVO searchVO) throws Exception;
     
     List<MacDateResultVO> selectLeftDate() throws Exception;
+    
     
 }

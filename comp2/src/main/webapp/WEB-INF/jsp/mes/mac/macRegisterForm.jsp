@@ -151,13 +151,13 @@ th {
 </div>
 
 <script>
-	
 //네비게이션 고정
 $('#macNav').addClass('active');
 $('#subPages5').addClass('in');
 $('#subPages5').attr('aria-expanded','true');
 $('#subPages5').attr('style','');
 $('.macInfo').addClass('active');
+
 	$(document).ready(function(){
 		var erpEmployeeId = ${session.erpEmployeeId };
 		console.log(erpEmployeeId);

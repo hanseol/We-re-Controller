@@ -40,10 +40,10 @@ public class ProProcessVO extends SearchVO{
     private java.math.BigDecimal macLineNo;
     
     /** PRO_PROCESS_START_TIME */
-    private java.sql.Date proProcessStartTime;
+    private java.lang.String proProcessStartTime;
     
     /** PRO_PROCESS_END_TIME */
-    private java.sql.Date proProcessEndTime;
+    private java.lang.String proProcessEndTime;
     
     /** ERP_EMPLOYEE_ID */
     private java.math.BigDecimal erpEmployeeId;
@@ -64,5 +64,7 @@ public class ProProcessVO extends SearchVO{
     private String comMaterialName;
     //공정명
     private String comProcessName;
+    //제품명
+    private String erpProductName;
     
 }

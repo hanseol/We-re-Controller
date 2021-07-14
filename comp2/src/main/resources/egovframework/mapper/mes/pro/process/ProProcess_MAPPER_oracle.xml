@@ -18,52 +18,7 @@
 		<result property="proProcessQuantity" column="PRO_PROCESS_QUANTITY" />
 	</resultMap>
 	
-	<insert id="insertProProcess">
-		<![CDATA[
-			INSERT INTO PRO_PROCESS 
-				( COM_PROCESS_CODE
-				  , PRO_ORDER_DETAIL_CODE
-				  , COM_PRODUCT_F_CODE
-				  , PRO_PROCESS_F_QTY
-				  , MAC_LINE_NO
-				  , PRO_PROCESS_START_TIME
-				  , PRO_PROCESS_END_TIME
-				  , ERP_EMPLOYEE_ID
-				  , MAC_CODE
-				  , PRO_PROCESS_LOT_NO
-				  , PRO_PROCESS_QUANTITY )
-			VALUES ( #{comProcessCode}
-				  , #{proOrderDetailCode}
-				  , #{comProductFCode}
-				  , #{proProcessFQty}
-				  , #{macLineNo}
-				  , #{proProcessStartTime}
-				  , #{proProcessEndTime}
-				  , #{erpEmployeeId}
-				  , #{macCode}
-				  , #{proProcessLotNo}
-				  , #{proProcessQuantity} )
-		]]>
-	</insert>
 	
-	<update id="updateProProcess">
-		<![CDATA[
-			UPDATE PRO_PROCESS
-			SET COM_PROCESS_CODE=#{comProcessCode}
-				, PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
-				, COM_PRODUCT_F_CODE=#{comProductFCode}
-				, PRO_PROCESS_F_QTY=#{proProcessFQty}
-				, MAC_LINE_NO=#{macLineNo}
-				, PRO_PROCESS_START_TIME=#{proProcessStartTime}
-				, PRO_PROCESS_END_TIME=#{proProcessEndTime}
-				, ERP_EMPLOYEE_ID=#{erpEmployeeId}
-				, MAC_CODE=#{macCode}
-				, PRO_PROCESS_LOT_NO=#{proProcessLotNo}
-				, PRO_PROCESS_QUANTITY=#{proProcessQuantity}
-						WHERE COM_PROCESS_CODE=#{comProcessCode}
-								AND PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
-				]]>
-	</update>
 	
 	<delete id="deleteProProcess">
 		<![CDATA[
@@ -153,32 +108,33 @@ SELECT * FROM (
 	</select>
 	
 	<!-- 각 공정에서 작업 대기중인 지시 항목 불러오기. (오늘 지시목록 중에 해당공정에서 작업중이거나 작업완료된 지시는 필터링 되어야함.) -->
-	<!-- PROCG001:제작, PROCG002:검사, PROCG003:포장 -->
+	<!-- PROCG001:제작 - 오늘 해야 할 작업 중 제작 대기중인 지시 조회 -->
+	<!-- PROCG002:검사 - 오늘 해야 할 작업 중 제작을 마치고 검사 대기중인 지시 조회 --> 
+	<!-- PROCG003:포장 - 오늘 해야 할 작업 중 검사를 마치고 포장 대기중인 지시 조회 -->
 	<select id="selectProOrderDetailCode" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
 		<if test="comProcessCode == 'PROCG001'">
-			SELECT OD.PRO_ORDER_DETAIL_CODE
-			FROM PRO_ORDER_DETAIL OD
-			WHERE OD.PRO_ORDER_DETAIL_CODE NOT IN (SELECT PRO_ORDER_DETAIL_CODE FROM PRO_PROCESS)
-			AND OD.PRO_WORK_DATE = TRUNC(sysdate)
-			ORDER BY OD.PRO_ORDER_SEQ
+			SELECT PRO_ORDER_DETAIL_CODE
+			FROM PRO_ORDER_DETAIL
+			WHERE PRO_WORK_DATE = TRUNC(SYSDATE)
+			AND PRO_PROCESS_STATUS IS NULL
 		</if>
 		<if test="comProcessCode == 'PROCG002'">
-			SELECT OD.PRO_ORDER_DETAIL_CODE
-			FROM PRO_ORDER_DETAIL OD, PRO_PROCESS P
-			WHERE OD.PRO_ORDER_DETAIL_CODE = P.PRO_ORDER_DETAIL_CODE
-			AND P.COM_PROCESS_CODE = 'PROCG001' AND P.PRO_PROCESS_END_TIME IS NOT NULL
-			AND P.COM_PROCESS_CODE NOT IN ('PROCG002')
-			AND OD.PRO_WORK_DATE = TRUNC(sysdate)
-			ORDER BY OD.PRO_ORDER_SEQ
+			SELECT PRO_ORDER_DETAIL_CODE
+			FROM PRO_ORDER_DETAIL
+			WHERE PRO_WORK_DATE = TRUNC(SYSDATE)
+			AND PRO_PROCESS_STATUS = 2
 		</if>
 		<if test="comProcessCode == 'PROCG003'">
-			
+			SELECT PRO_ORDER_DETAIL_CODE
+			FROM PRO_ORDER_DETAIL
+			WHERE PRO_WORK_DATE = TRUNC(SYSDATE)
+			AND PRO_PROCESS_STATUS = 4
 		</if>
 	</select>
 	
 	<!-- 선택된 지시에 필요한 자재 LOT 정보를 자재 종류별로 보여준다. -->
 	<select id="selectMatrLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="mes.pro.proc.service.ProProcessVO">
-		SELECT MI.COM_MATERIAL_CODE,
+		SELECT DISTINCT MI.COM_MATERIAL_CODE,
       	CM.COM_MATERIAL_NAME, 
      	PML.MAT_LOT_NO, 
       	PML.PRO_ORDER_DETAIL_CODE
@@ -187,4 +143,129 @@ SELECT * FROM (
 		AND MI.COM_MATERIAL_CODE = CM.COM_MATERIAL_CODE
 		AND PML.PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
 	</select>
+	
+	<!-- procg001(첫번째공정에서) start 버튼 눌렀을 때 . -->
+	<insert id="insertProProcess">
+		DECLARE
+			BEGIN
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , MAC_LINE_NO
+				  , PRO_PROCESS_START_TIME
+				  , ERP_EMPLOYEE_ID
+				  , MAC_CODE
+				  , ERP_PRODUCT_NAME)
+			VALUES ( #{comProcessCode}
+				  , #{proOrderDetailCode}
+				  , #{macLineNo}
+				  , #{proProcessStartTime}
+				  , #{erpEmployeeId}
+				  , #{macCode} 
+				  , #{erpProductName});
+	
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , ERP_PRODUCT_NAME)
+			VALUES ( 'PROCG002'
+				  , #{proOrderDetailCode}
+				  , #{erpProductName});
+				  
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , ERP_PRODUCT_NAME)
+			VALUES ( 'PROCG003'
+				  , #{proOrderDetailCode}
+				  , #{erpProductName});
+				  
+			UPDATE PRO_ORDER_DETAIL
+			SET PRO_PROCESS_STATUS = 1
+			WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+			
+		END;
+	</insert>
+	
+	<!-- procg002, procg003에서 start버튼이 눌렸을때. -->
+	<update id="updateStartTime">
+		DECLARE
+			BEGIN
+				UPDATE PRO_PROCESS
+				SET	PRO_PROCESS_START_TIME=#{proProcessStartTime},
+					MAC_LINE_NO=#{macLineNo},
+					ERP_EMPLOYEE_ID=#{erpEmployeeId},
+					MAC_CODE=#{macCode},
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+				AND COM_PROCESS_CODE = #{comProcessCode};
+				
+			<if test="comProcessCode=='PROCG002'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 3
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+			</if>
+			<if test="comProcessCode=='PROCG003'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 5
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+			</if>
+			
+		END;
+		
+		
+	</update>
+	
+	
+	<!-- end 버튼이 눌렸을 때. -->
+	<update id="updateProProcess">
+		DECLARE
+			BEGIN
+				UPDATE PRO_PROCESS
+				SET	PRO_PROCESS_END_TIME=#{proProcessEndTime},
+					PRO_PROCESS_QUANTITY=#{proProcessQuantity}
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+				AND COM_PROCESS_CODE = #{comProcessCode};
+				
+				<if test="comProcessCode=='PROCG001'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 2
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+				</if>
+				<if test="comProcessCode=='PROCG002'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 4
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+				</if>
+				<if test="comProcessCode=='PROCG003'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 6
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+				</if>
+		END;
+	</update>
+	
+	<!-- 선택한 지시를 시작 또는 종료 했을 때 (1.pro_process 테이블에 시간 업데이트, 2.pro_order_detail 테이블에 상태 업데이트)-->
+	<update id="updateProcg2">
+		<if test="proProcessEndTime !=null and proProcessEndTime !='' ">
+			DECLARE
+				BEGIN
+					UPDATE PRO_PROCESS
+					SET COM_PROCESS_CODE=#{comProcessCode}
+						, PRO_PROCESS_END_TIME=#{proProcessEndTime}
+					WHERE PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode};
+					
+					UPDATE PRO_ORDER_DETAIL
+					SET PRO_PROCESS_STATUS = 4
+					WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+		
+		</if>
+		UPDATE PRO_PROCESS
+		SET COM_PROCESS_CODE=#{comProcessCode}
+				, MAC_LINE_NO=#{macLineNo}
+				, PRO_PROCESS_START_TIME=#{proProcessStartTime}
+				, ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				, MAC_CODE=#{macCode}
+		WHERE PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				
+	</update>
 </mapper>
