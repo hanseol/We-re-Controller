@@ -95,12 +95,16 @@
                        , 'INOUT003'
                        , #{matInoutQuantity}
                        , #{matLotNo}
-                       , #{comProcessCode} );
-      
-      	<!-- 	<selectKey keyProperty="seqNo" order="BEFORE" resultType="long">
-				select seqno.nextval from dual
-			</selectKey> -->
-			<!-- SELECT MAX(NVL(PRO_MATERIAL_NUMBER,0))+1 FROM PRO_MATERIAL_LOT -->
+                       <choose>
+	                       <when test="comMaterialCode == 'MAT0011' and comMaterialCode == 'MAT0012' 
+	                       				and comMaterialCode == 'MAT0013' and comMaterialCode == 'MAT0014'">
+	                       		, 'PROCG003'
+	                       </when>
+	                       <otherwise>
+	                       		, 'PROCG001'
+	                       </otherwise>
+                       </choose>
+                        );
 			
     		 INSERT INTO pro_material_lot
                             ( pro_material_number
@@ -158,6 +162,7 @@
 		FROM mat_inout i
 		   , com_material m
 		WHERE 	m.com_material_code = i.com_material_code
+		  AND   i.mat_inout_gubun = 'INOUT003'
 		  AND   m.com_material_code = #{comMaterialCode}
 		  AND   i.mat_lot_no NOT IN ( SELECT mat_lot_no
 		                              FROM   pro_material_lot)

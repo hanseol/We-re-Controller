@@ -75,7 +75,7 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<p class="panel-subtitle">자재정보</p>
 					<div>
 						제품코드 <input type="text" id="comProductCode" name="comProductCode" readonly>
@@ -85,7 +85,7 @@
 						<div id="matInfogrid"></div>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<p class="panel-subtitle">로트정보</p>	
 					<div>
 						자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" readonly>
@@ -208,16 +208,13 @@ var proOrderRowKey;
 					success: function(result){
 						console.log(result);
 					}
-				});
-		 	}
+				}); // end of ajax
+				
+		 	} // end of for... 
 		 	
-		 	
-
+			matLotgrid.reloadData();
 		});
 		
-		
-		
-
 		
 //======================================== 1번 그리드 ======================================== 
 		//dataSource	
@@ -368,6 +365,7 @@ var proOrderRowKey;
 		}); //end of grid(2번)
 	
 //======================================== 3번 그리드 ======================================== 		
+	
 		//dataSource	
 		const lotDataSource = {
 			api : {
@@ -402,6 +400,9 @@ var proOrderRowKey;
 			}, {
 				header : '자재이름',
 				name : 'comMaterialName'
+			}, {
+				header : '공정코드',
+				name : 'comProcessCode'
 			} ]
 		
 	}); //end of grid(3번)
@@ -423,9 +424,12 @@ var proOrderRowKey;
 			var comProductCode = proOrdergrid.getFocusedCell().value;
 			var comProductName = proOrdergrid.getValue(ev.rowKey, 'erpProductName');
 			test = proOrdergrid.getValue(ev.rowKey,'proOrderDetailCode');
+			
+			
 			var readParams = {
-					'comProductCode' : comProductCode
+					'comProductCode' : comProductCode,
 			} 
+			
 			matInfogrid.readData(1, readParams, true);
 			$("#comProductCode").val(comProductCode);
 			$("#comProductName").val(comProductName);
@@ -438,11 +442,11 @@ var proOrderRowKey;
 			var comMaterialCode = matInfogrid.getFocusedCell().value;
 			var comMaterialName = matInfogrid.getValue(ev.rowKey, 'comMaterialName');
 			
-			console.log(test);
 
 			var readParams = {
 					'comMaterialCode' : comMaterialCode
 			} 
+			
 			matLotgrid.readData(1, readParams, true);
 			$("#comMaterialCode").val(comMaterialCode);
 			$("#comMaterialName").val(comMaterialName);
