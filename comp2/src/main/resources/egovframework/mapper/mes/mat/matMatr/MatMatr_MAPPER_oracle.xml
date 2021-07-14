@@ -10,39 +10,30 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT	m.mat_inout_statement,
-		                              			TO_CHAR(m.mat_inout_date,'YY/MM/DD') as mat_inout_date,
-                                           		m.com_material_code,
-		                                       	c.com_material_name,
-		                                       	c.com_material_size,
-		                                       	c.com_material_unit,
-		                                       	q.erp_vendor_code,
-		                                       	c.com_material_safety_stock
-		                                       	
-		                              FROM     	com_material c,
-		                                       	mat_inout m,
-		                                       	qua_material_chk q
-		                                       	
-		                              WHERE    	c.com_material_code = m.com_material_code
-                                  	  AND      	m.com_material_code = q.com_material_code
-                                  	  
-		                              <if test="erpVendorCode != null and erpVendorCode != ''">
-		                                AND
-							        	q.erp_vendor_code = #{erpVendorCode}
-		                              </if>
+										select    
+										          m.com_material_code,
+										          c.com_material_name,
+										          c.com_material_size,
+										          c.com_material_unit,
+										          sum(m.mat_inout_quantity)as   material_stock,
+										          c.com_material_safety_stock
+										
+										from      mat_inout m,
+										          com_material c
+										          
+										where     c.com_material_code = m.com_material_code
+										AND       m.mat_inout_gubun = 'INOUT002'
+
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
 							        	m.com_material_code = #{comMaterialCode}
 		                              </if>
-                                 	  GROUP BY 	m.mat_inout_statement,
-		                              			m.mat_inout_date,
-                                           		m.com_material_code,
-		                                       	c.com_material_name,
-		                                       	c.com_material_size,
-		                                       	c.com_material_unit,
-		                                       	q.erp_vendor_code,
-                                           		c.com_material_safety_stock
-
+ 										group by  
+										          m.com_material_code,
+										          c.com_material_name,
+										          c.com_material_size,
+										          c.com_material_unit,
+												  c.com_material_safety_stock 
 		                              ORDER BY com_material_code
 		                              <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )

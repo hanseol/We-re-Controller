@@ -106,7 +106,7 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 
 		if (deletedList.size() != 0) {
 			for (int i = 0; i < deletedList.size(); i++) {
-				LinkedHashMap deletedMap =(LinkedHashMap) createdList.get(i);
+				LinkedHashMap deletedMap =(LinkedHashMap) deletedList.get(i);
 				quaChkMapper.deleteQuaChk(deletedMap);
 			}
 		}

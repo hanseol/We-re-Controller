@@ -199,6 +199,16 @@ $('.matrLot').addClass('active');
 			data: dataSource,
 			
 			columns: [{
+				header : '입/출고일자',
+				name : 'matMatchDate',
+				editor : {
+					type : 'datePicker',
+					options : {
+						format : 'YYYY/MM/dd',
+						language: 'ko'
+					} 
+				}
+			}, {
 				header: '정산입출고구분',
 				name: 'matMatchInout',
 				editor : {
@@ -211,57 +221,48 @@ $('.matrLot').addClass('active');
 					}
 				}
 			}, {
-				header: '정산일자',
-				name: 'matMatchDate',
-				editor: {
-					type: 'datePicker',
-					options: {
-						format: 'YYYY/MM/dd',
-						language: 'ko'
-					}
-				}
+				header: '자재LOT_NO',
+				name: 'matLotNo'
 			}, {
 				header: '자재코드',
-				name: 'comMaterialCode',
-				editor: 'text'
+				name: 'comMaterialCode'
 			}, {
 				header: '자재명',
 				name: 'comMaterialName'
 			}, {
-				header: '자재LOT_NO',
-				name: 'matLotNo'
-			}, {
-				header: '규격',
-				name: 'comMaterialSize'
-			}, {
-				header: '관리단위',
-				name: 'comMaterialUnit'
+				header: '현재수량',
+				name: 'matInoutQuantity'
 			}, {
 				header: '정산량',
 				name: 'matMatchQty',
 				editor: 'text'
 			}, {
-				header: '단가',
-				name: 'matInoutUnitPrice',
-				editor: 'text'
-			}, {
-				header: '금액',
-				name: 'matInoutPrice',
-				editor: 'text'
-			}, {
-				header: '현재고',
-				name: 'materialStock'
+				header: '최종수량',
+				name: 'finalQuantity'
 			}]
 		});
 		
-		
+
+
 		
 		//자동 계산 (수량 *단가)
-		grid.on('afterChange',ev => {
-			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
-			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'matInoutUnitPrice');
-			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
+  		grid.on('afterChange', ev => { 			
+  			if (ev.changes[0].columnName == 'matMatchQty') {
+  				var match = grid.getValue(ev.changes[0].rowKey, 'matMatchQty');
+  				var order = grid.getValue(ev.changes[0].rowKey, 'matInoutQuantity');
+  				if(grid.getValue(ev.changes[0].rowKey, 'matMatchInout') == 'INOUT004') {
+  					grid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) + parseInt(match));
+  				} else {
+  					grid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(match));
+  				}
+  			}
+/*   			var iQty = grid.getValue(rowKey, 'matInoutQuantity');
+  			var mQty = grid.getValue(rowKey, 'matMatchQty');
+  			if(iQty == mQty){
+  				console.log('hi');
+  			} */
 		});
+
 		
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 

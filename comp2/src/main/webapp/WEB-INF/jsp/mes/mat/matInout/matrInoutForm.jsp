@@ -48,7 +48,7 @@ max-height: 600px; */
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						일자<input type="date" id="inoutDate" name="inoutDate">
+						일자<input type="date" id="inoutDate" name="inoutDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -190,13 +190,16 @@ $('.matrInout').addClass('active');
 					var comMaterialCode = $("#materialCode").val();
 					var inoutDate = $("#inoutDate").val();
 					var erpVendorCode = $("#vendorCode").val();
+					var inoutEndDate = $("#inoutEndDate").val();
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
 						'matInoutDate': inoutDate,
-						'erpVendorCode': erpVendorCode
+						'erpVendorCode': erpVendorCode,
+						'matInoutEndDate' : inoutEndDate
 					};
 					grid.readData(1, readParams, true);
+					outGrid.readData(1, readParams, true);
 				});
 		//입고 목록 데이터
 		const dataSource = {
@@ -467,6 +470,29 @@ $('.matrInout').addClass('active');
 			console.log('result : ', responseObj.result);
 			console.log('data : ', responseObj.data);
 		});
+		
+		
+		//날짜 범위 검색 옵션
+		var start = $("#inoutDate");
+		var end = $("#inoutEndDate");
+		start.change(function(){
+			if(end.val() == ""){
+				end.val(start.val());
+			}
+		});
+		end.change(function(){
+			if(start.val() == ""){
+				start.val(end.val());
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 

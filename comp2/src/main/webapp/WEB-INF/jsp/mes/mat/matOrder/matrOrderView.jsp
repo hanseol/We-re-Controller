@@ -38,7 +38,7 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						발주일자<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">	
+						발주일자<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">~<input type="date" id="erpMaterialOrderEndDate" name="erpMaterialOrderEndDate">	
 					</div>
 					<div class="col-md-3">			
 						발주코드
@@ -105,8 +105,10 @@ $('.matrOrder').addClass('active');
 					var comMaterialCode = $("#comMaterialCode").val();
 					var erpMaterialOrderDate = $("#erpMaterialOrderDate").val();
 					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
+					var erpMaterialOrderEndDate = $("#erpMaterialOrderEndDate").val();
 
 					var readParams = {
+						'erpMaterialOrderEndDate' : erpMaterialOrderEndDate,
 						'comMaterialCode': comMaterialCode,
 						'erpMaterialOrderDate': erpMaterialOrderDate,
 						'erpMaterialOrderCode': erpMaterialOrderCode
@@ -173,7 +175,21 @@ $('.matrOrder').addClass('active');
 		  console.log('data : ', responseObj.data);
 		});
 	
-
+	//날짜 범위 검색 옵션
+	var start = $("#erpMaterialOrderDate");
+	var end = $("#erpMaterialOrderEndDate");
+	start.change(function(){
+		if(end.val() == ""){
+			end.val(start.val());
+		}
+	});
+	end.change(function(){
+		if(start.val() == ""){
+			start.val(end.val());
+		}
+	});
+	
+	
 	// 그리드 테마
 	tui.Grid.applyTheme('clean', 
 		{

@@ -46,7 +46,7 @@ max-height: 600px; */
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						일자<input type="date" id="materialDate" name="materialDate">
+						일자<input type="date" id="materialDate" name="materialDate"> ~ <input type="date" id="materialEndDate" name="materialEndDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -168,26 +168,37 @@ let erpMaterialOrderCode;
 				});
 				grid.enable();
 			});
-		//저장버튼 (등록, 수정, 삭제)
+		//그리드1 저장버튼 (등록, 수정, 삭제)
 		$(document).on("click", "button[id=modifyRow]",
 			function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				grid.finishEditing('rowKey', 'columnName');
 				grid.request('modifyData');
 			});
-		//삭제 버튼(체크된 행 삭제)
+		
+		
+		//그리드2 삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=deleteRow]",
 			function () {
 				grid.removeCheckedRows(false);
 				
 			});
-		//삭제 버튼(체크된 행 삭제)
+		//그리드2 저장버튼 (등록, 수정, 삭제)
+		$(document).on("click", "button[id=modifyRow]",
+			function () {
+			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
+				passGrid.finishEditing('rowKey', 'columnName');
+				passGrid.request('modifyData');
+			});
+		
+		
+		//그리드2 삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=passDeleteRow]",
 			function () {
 				passGrid.removeCheckedRows(false);
 				
 			});
-		
+
 		//검색데이터 전송
 		$(document).on("click",	"button[id=search]",
 				function () {
@@ -196,11 +207,13 @@ let erpMaterialOrderCode;
 					var materialDate = $("#materialDate").val();
 					var materialCode = $("#materialCode").val();
 					var vendorCode = $("#vendorCode").val();
+					var materialEndDate = $("#materialEndDate").val();
 
 					var readParams = {
 						'quaMaterialDate' : materialDate,
 						'comMaterialCode': materialCode,
-						'erpVendorCode': vendorCode
+						'erpVendorCode': vendorCode,
+						'quaMaterialEndDate' : materialEndDate
 					};
 					grid.readData(1, readParams, true);
 					passGrid.readData(1, readParams, true);
@@ -308,6 +321,10 @@ let erpMaterialOrderCode;
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',
+				hidden: true
+			}, {
+				header: '전표',
+				name: 'quaMaterialStatement',
 				hidden: true
 			}]
 		});
@@ -426,7 +443,11 @@ let erpMaterialOrderCode;
   			//단가
 			var uQty = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
 			//합격량(발주량-불량량)
-			grid.setValue( ev.changes[0].rowKey, 'quaMaterialPQty', oQty-fQty);
+			if (ev.changes[0].columnName == 'quaMaterialFQty'){
+				grid.setValue( ev.changes[0].rowKey, 'quaMaterialPQty', oQty-fQty);
+			} else if (ev.changes[0].columnName == 'quaMaterialPQty'){
+				grid.setValue( ev.changes[0].rowKey, 'quaMaterialFQty', oQty-pQty);
+			}
 			//금액(발주량*단가)
 			grid.setValue( ev.changes[0].rowKey, 'erpMaterialPrice', oQty*uQty);
 			
@@ -434,7 +455,12 @@ let erpMaterialOrderCode;
 			if((fQty == null)||(fQty == '0')) {
 				grid.setValue( ev.changes[0].rowKey, 'comMaterialFCode', '');
 			}
+			
 		});
+		
+		
+		
+		
 
 		
 		
@@ -452,13 +478,13 @@ let erpMaterialOrderCode;
 
 		});		
 		
-		//업체
+/* 		//업체
 		grid.on('dblclick', ev => {
 			if(ev.columnName == 'erpVendorCode'){
 				vendorCodeSearch(ev.rowKey);
 			}
 
-		});
+		}); */
 /* 		//자재
 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'comMaterialCode'){
@@ -485,6 +511,23 @@ let erpMaterialOrderCode;
 			console.log('result : ', responseObj.result);
 			console.log('data : ', responseObj.data);
 		});
+		
+		
+		//날짜 범위 검색 옵션
+		var start = $("#materialDate");
+		var end = $("#materialEndDate");
+		start.change(function(){
+			if(end.val() == ""){
+				end.val(start.val());
+			}
+		});
+		end.change(function(){
+			if(start.val() == ""){
+				start.val(end.val());
+			}
+		});
+		
+		
 		
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 

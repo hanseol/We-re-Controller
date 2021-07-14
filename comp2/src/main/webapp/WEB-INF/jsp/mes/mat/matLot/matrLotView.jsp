@@ -159,76 +159,34 @@ $(document).ready(function () {
 		data: dataSource,
 		
 		columns: [{
+			header : '입/출고일자',
+			name : 'matMatchDate'
+		}, {
 			header: '정산입출고구분',
-			name: 'matMatchInout',
-			editor : {
-				type: 'select',
-				options : {
-				listItems: [
-					{text : '정산입고', value : 'PNS004'},
-					{text : '정산출고', value : 'PNS005'}
-					]
-				}
-			}
-		}, {
-			header: '정산일자',
-			name: 'matMatchDate',
-			editor: {
-				type: 'datePicker',
-				options: {
-					format: 'YYYY/MM/dd',
-					language: 'ko'
-				}
-			}
-		}, {
-			header: '자재코드',
-			name: 'comMaterialCode',
-			editor: 'text'
-		}, {
-			header: '자재명',
-			name: 'comMaterialName'
+			name: 'matMatchInout'
 		}, {
 			header: '자재LOT_NO',
 			name: 'matLotNo'
 		}, {
-			header: '규격',
-			name: 'comMaterialSize'
+			header: '자재코드',
+			name: 'comMaterialCode'
 		}, {
-			header: '관리단위',
-			name: 'comMaterialUnit'
+			header: '자재명',
+			name: 'comMaterialName'
+		}, {
+			header: '현재수량',
+			name: 'matInoutQty'
 		}, {
 			header: '정산량',
-			name: 'matMatchQty',
-			editor: 'text'
+			name: 'matMatchQty'
 		}, {
-			header: '단가',
-			name: 'matInoutUnitPrice',
-			editor: 'text'
-		}, {
-			header: '금액',
-			name: 'matInoutPrice',
-			editor: 'text'
-		}, {
-			header: '현재고',
-			name: 'materialStock'
+			header: '최종수량',
+			name: 'finalQty'
 		}]
 	});
 	
-	//자동 계산 (수량 *단가)
-	grid.on('afterChange',ev => {
-		var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
-		var unitPrice = grid.getValue( ev.changes[0].rowKey, 'matInoutUnitPrice');
-		grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
-	});
-	
-	//컬럼 더블클릭 이벤트
-	grid.on('dblclick', ev => {
-		if((ev.columnName == 'erpVendorCode') && (ev.rowKey != null)){
-	         $('#searchVendorModal').click();
-		} else if((ev.columnName == 'comMaterialCode') && (ev.rowKey != null)){
-	    	  $('#searchMaterialModal').click();
-		}
-	});
+
+
 
 
 	grid.on('response', ev => {

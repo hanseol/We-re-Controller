@@ -89,4 +89,9 @@ public class QuaChkVO extends SearchVO{
     private String comMaterialFCode;
     //공통자재불량
     private String comMaterialFName;
+    
+    
+    //날짜 범위검색 End 날짜 추가
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private String quaMaterialEndDate;
 }

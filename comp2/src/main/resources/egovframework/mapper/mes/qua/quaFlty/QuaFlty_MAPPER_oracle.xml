@@ -35,17 +35,13 @@
 		                                AND
 							        	q.erp_vendor_code = #{erpVendorCode}
 		                              	</if>
-		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
+		                              	<if test="quaMaterialChkDate != null and quaMaterialChkDate != ''">
 		                              	AND
-							        	q.erp_material_order_code = #{erpMaterialOrderCode}
+							        	q.qua_material_chk_date BETWEEN #{quaMaterialChkDate} AND #{quaMaterialChkEndDate}
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
 							        	e.com_material_code = #{comMaterialCode}
-		                              	</if>
-		                              	<if test="quaMaterialChkDate != null and quaMaterialChkDate != ''">
-		                              	AND
-							        	q.qua_material_chk_date = #{quaMaterialChkDate}
 		                              	</if>
 		                              ORDER BY qua_material_chk_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )

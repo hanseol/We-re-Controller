@@ -31,6 +31,14 @@ public class MatLotController {
     @Resource(name = "matLotService")
     private MatLotService service;
     
+	//정산입고전표번호 부여 객체
+	@Resource(name = "mesMatMatchInStatementIdGnrService")
+	protected EgovIdGnrService mesMatMatchInStatementIdGnrService;
+	
+	//정산출고전표번호 부여 객체
+	@Resource(name = "mesMatMatchOutStatementIdGnrService")
+	protected EgovIdGnrService mesMatMatchOutStatementIdGnrService;
+	
     
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
@@ -69,7 +77,7 @@ public class MatLotController {
         return "mes/mat/matLot/matrLotForm.page";
     }
   	
-  	//자재입출고 [관리] 등록 수정 삭제 
+  	//자재 정산 [관리] 등록 수정 삭제 
     @PutMapping("/ajax/modifyMatLot")
 	@ResponseBody
 	public void modifyMatLot(@RequestBody GridDataVO gd) throws Exception {
@@ -80,13 +88,23 @@ public class MatLotController {
 
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
-				service.updateMatLot((LinkedHashMap) updatedList.get(i));
+				service.updateMatLot((LinkedHashMap)updatedList.get(i));
+				service.updateMatInout((LinkedHashMap)updatedList.get(i));
 			}
 		}
 		
 		if (createdList.size() != 0) {
 			for (int i = 0; i < createdList.size(); i++) {
-				service.insertMatLot((LinkedHashMap) createdList.get(i));
+			String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("matMatchInout");
+			
+			if(gubun.equals("INOUT004")) {
+				((LinkedHashMap)createdList.get(i)).put("matMatchStatement", mesMatMatchInStatementIdGnrService.getNextStringId());
+			} else if(gubun.equals("INOUT005")) {
+				((LinkedHashMap)createdList.get(i)).put("matMatchStatement", mesMatMatchOutStatementIdGnrService.getNextStringId());
+			}
+			service.insertMatLot((LinkedHashMap)createdList.get(i));
+			service.updateMatInout((LinkedHashMap)createdList.get(i));
+				
 			}
 		}
 

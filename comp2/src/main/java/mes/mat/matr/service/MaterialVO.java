@@ -1,5 +1,7 @@
 package mes.mat.matr.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mes.main.service.SearchVO;
@@ -47,6 +49,10 @@ public class MaterialVO extends SearchVO{
     //업체코드
     private String erpVendorCode;
     
-
-    
+    //날짜 범위 검색 Start
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private String matInoutEndDate;
+    //날짜 범위 검색 End
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private String matInoutDate;
 }

@@ -15,7 +15,10 @@ public interface MatLotMapper {
 
     //수정
     public void updateMatLot(LinkedHashMap vo) throws Exception;
-
+    
+    //입출고 추가
+    public void updateMatInout(LinkedHashMap vo) throws Exception;
+    
     //삭제
     public void deleteMatLot(LinkedHashMap vo) throws Exception;
 

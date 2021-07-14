@@ -38,7 +38,7 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						검사일자<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">	
+						검사일자<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" value="">~<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" value="">	
 					</div>
 					<div class="col-md-3">
 						발주코드
@@ -124,15 +124,17 @@ var orderGrid;
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 					var comMaterialCode = $("#comMaterialCode").val();
-					var erpMaterialOrderDate = $("#erpMaterialOrderDate").val();
+					var quaMaterialChkDate = $("#quaMaterialChkDate").val();
 					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
+					var quaMaterialChkEndDate = $("#quaMaterialChkEndDate").val();
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
-						'erpMaterialOrderDate': erpMaterialOrderDate,
-						'erpMaterialOrderCode': erpMaterialOrderCode
+						'quaMaterialChkDate': quaMaterialChkDate,
+						'erpMaterialOrderCode': erpMaterialOrderCode,
+						'quaMaterialChkEndDate' : quaMaterialChkEndDate
 					};
-					grid.readData(1, readParams, true);
+					orderGrid.readData(1, readParams, true);
 				});
 		
 		const dataSource = {
@@ -245,6 +247,22 @@ var orderGrid;
 				
 			}
 		});
+		
+
+		//날짜 범위 검색 옵션
+		var start = $("#quaMaterialChkDate");
+		var end = $("#quaMaterialChkEndDate");
+		start.change(function(){
+			if(end.val() == ""){
+				end.val(start.val());
+			}
+		});
+		end.change(function(){
+			if(start.val() == ""){
+				start.val(end.val());
+			}
+		});
+		
 		
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 

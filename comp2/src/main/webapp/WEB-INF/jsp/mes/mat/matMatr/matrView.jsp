@@ -38,7 +38,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-3">
-						일자<input type="date" id="matInoutDate" name="matInoutDate">
+						일자<input type="date" id="matInoutDate" name="matInoutDate"> ~ <input type="date" id="matInoutEndDate" name="matInoutEndDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -96,10 +96,12 @@ $(document).ready(function () {
 			var comMaterialCode = $("#materialCode").val();
 			var erpVendorCode = $("#vendorCode").val();
 			var matInoutDate = $("#matInoutDate").val();
+			var matInoutEndDate = $("#matInoutEndDate").val();
 			var readParams = {
 				'comMaterialCode': comMaterialCode,
 				'erpVendorCode': erpVendorCode,
-				'matInoutDate': matInoutDate
+				'matInoutDate': matInoutDate,
+				'matInoutEndDate': matInoutEndDate 
 
 			};
 			grid.readData(1, readParams, true);
@@ -129,9 +131,6 @@ $(document).ready(function () {
 	        bodyHeight: 300,
 	        rowHeight: 30,
 			columns : [ {
-				header : '입고일자',
-				name : 'matInoutDate'
-			}, {
 				header : '자재코드',
 				name : 'comMaterialCode'
 			}, {
@@ -143,9 +142,6 @@ $(document).ready(function () {
 			}, {
 				header : '관리단위',
 				name : 'comMaterialUnit'
-			}, {
-				header : '업체코드',
-				name : 'erpVendorCode'
 			}, {
 				header : '현재고',
 				name : 'materialStock'
@@ -167,6 +163,25 @@ $(document).ready(function () {
 			console.log('result : ', responseObj.result);
 			console.log('data : ', responseObj.data);
 		});
+		
+		
+		//날짜 범위 검색 옵션
+		var start = $("#matInoutDate");
+		var end = $("#matInoutEndDate");
+		start.change(function(){
+			if(end.val() == ""){
+				end.val(start.val());
+			}
+		});
+		end.change(function(){
+			if(start.val() == ""){
+				start.val(end.val());
+			}
+		});
+		
+		
+		
+		
 		
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 

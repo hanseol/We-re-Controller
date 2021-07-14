@@ -62,5 +62,8 @@ public class MatInoutVO extends SearchVO{
     
     //입고업체명 추가
     private String comCodeDetailName;
+    
+    //날짜 범위검색 End 날짜 추가
+    private String matInoutEndDate;
 
 }

@@ -14,7 +14,7 @@ public interface MatLotService {
     
     //수정
     void updateMatLot(LinkedHashMap vo) throws Exception;
-    
+    void updateMatInout(LinkedHashMap vo) throws Exception;
     //삭제
     void deleteMatLot(LinkedHashMap vo) throws Exception;
 	

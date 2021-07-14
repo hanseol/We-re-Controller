@@ -54,7 +54,10 @@ public class MatLotServiceImpl extends EgovAbstractServiceImpl implements
     public void updateMatLot(LinkedHashMap vo) throws Exception {
     	matLotMapper.updateMatLot(vo);
     }
-
+    //입출고 수정 추가
+    public void updateMatInout(LinkedHashMap vo) throws Exception {
+    	matLotMapper.updateMatInout(vo);
+    }
     //삭제
     public void deleteMatLot(LinkedHashMap vo) throws Exception {
     	matLotMapper.deleteMatLot(vo);

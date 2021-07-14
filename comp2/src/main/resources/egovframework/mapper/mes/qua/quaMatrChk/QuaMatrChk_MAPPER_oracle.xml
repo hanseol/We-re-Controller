@@ -51,7 +51,7 @@
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	q.qua_material_date = #{quaMaterialDate}
+							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
 		                              ORDER BY q.qua_material_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
@@ -107,7 +107,7 @@
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	q.qua_material_date = #{quaMaterialDate}
+							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
 		                              ORDER BY q.qua_material_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
@@ -243,7 +243,6 @@
 	<delete id="deleteQuaChk">
 		DELETE FROM	qua_material_chk
 		WHERE		qua_material_statement = #{quaMaterialStatement}
-		AND			qua_material_chk = 1
 	</delete>
 	
 </mapper>

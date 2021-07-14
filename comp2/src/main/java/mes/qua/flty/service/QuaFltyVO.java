@@ -70,6 +70,8 @@ public class QuaFltyVO extends SearchVO{
     //단가
     private BigDecimal erpMaterialUnitPrice;
     
+
+    
     
     
     //공통코드 디테일----------------------------------
@@ -82,4 +84,9 @@ public class QuaFltyVO extends SearchVO{
     
     //공통자재불량
     private String comMaterialFName;
+    
+    //날짜 범위 검색 End날짜 추가
+    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    private String quaMaterialChkEndDate;
+    
 }

@@ -9,28 +9,24 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   m.mat_match_statement,
-		                              		   m.mat_match_inout,
-		                              		   TO_CHAR(m.mat_match_date, 'YY/MM/DD')as mat_match_date,
-		                              		   c.com_material_code,
-		                              		   c.com_material_name,
-		                              		   m.mat_lot_no,
-		                              		   c.com_material_unit,
-		                              		   m.mat_match_qty,
-		                              		   i.mat_inout_unit_price,
-		                              		   i.mat_inout_price,
-		                              		   (q.qua_material_p_qty - CASE m.mat_match_inout
-                                                                    	WHEN 'PNS005'
-                                                                    	THEN mat_inout_quantity
-                                                                    	ELSE 0
-                                                                    	END						) as material_stock
-		                              FROM     com_material c,
-		                                       mat_inout i,
-		                                       mat_match m,
-		                                       qua_material_chk q
-		                              WHERE    c.com_material_code = i.com_material_code
-		                              AND	   c.com_material_code = q.com_material_code
-		                              AND	   c.com_material_code = m.com_material_code
+										SELECT    m.mat_match_statement,
+										          TO_CHAR(m.mat_match_date, 'YY/MM/DD')as mat_match_date,
+										          m.mat_match_inout,
+										          m.mat_lot_no,
+										          m.com_material_code,
+										          c.com_material_name,
+										          i.mat_inout_quantity,
+										          CASE WHEN m.MAT_MATCH_INOUT = 'INOUT004'
+										          THEN (I.MAT_INOUT_QUANTITY + M.MAT_MATCH_QTY)
+										          ELSE (I.MAT_INOUT_QUANTITY - M.MAT_MATCH_QTY)
+										          END AS FINAL_QUANTITY,
+										          m.mat_match_qty
+										FROM      com_material c,
+										          mat_inout i,
+										          mat_match m
+										WHERE     c.com_material_code = m.com_material_code
+										AND       m.mat_lot_no = i.mat_lot_no
+										AND       i.MAT_INOUT_GUBUN = 'INOUT002'
 		                              <if test="matMatchDate != null and matMatchDate != ''">
 		                              	AND
 							        	m.mat_match_date = #{matMatchDate}
@@ -49,4 +45,35 @@
 		WHERE  rnum >= #{firstIndex}
 		]]>
 	</select>
+	
+		<!-- 정산입출고 삽입 -->
+	<insert id="insertMatLot">
+			INSERT INTO mat_match
+			VALUES (#{matMatchStatement}
+			, #{matMatchInout}
+			, #{matMatchDate}
+			, #{matMatchQty}
+			, #{comMaterialCode}
+			, #{matLotNo}
+			, TO_CHAR(SYSDATE,'YY/MM/DD))
+	</insert>
+	
+	<update id="updateMatInout">
+			UPDATE mat_inout
+			SET MAT_INOUT_QUANTITY = #{finalQuantity}
+			WHERE MAT_LOT_NO = #{matLotNo}
+			AND MAT_INOUT_GUBUN = 'INOUT002'
+	</update>
+	
+	<update id="updateMatLot">
+			UPDATE mat_match
+			SET mat_match_qty = #{finalQuantity}
+			WHERE MAT_LOT_NO = #{matLotNo}
+	</update>
+	
+	<!-- 정산입출고목록 삭제 -->
+	<delete id="deleteMatLot">
+		DELETE FROM MAT_MATCH
+		WHERE MAT_MATCH_STATEMENT = #{matMatchStatement}
+	</delete>
 </mapper>

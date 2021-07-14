@@ -52,5 +52,10 @@ public class MatLotVO extends SearchVO{
     private BigDecimal matInoutUnitPrice;
     //금액
     private BigDecimal matInoutPrice;
-
+    //최종수량
+    private BigDecimal finalQty;
+    //입출고 수량
+    private BigDecimal matInoutQuantity;
+    //입출고 구분
+    private BigDecimal matInoutGubun;
 }
