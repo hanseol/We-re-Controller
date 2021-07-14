@@ -39,6 +39,8 @@ public interface SalMatchMapper {
 	public int searchProductListTotCnt(SalMatchVO searchVO);
 
     
+	//
+	public void updateSalInout(LinkedHashMap vo) throws Exception;
     
 
 }

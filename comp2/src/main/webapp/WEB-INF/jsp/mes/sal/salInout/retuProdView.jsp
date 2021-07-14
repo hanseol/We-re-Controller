@@ -106,7 +106,7 @@ let mgrid; //모달 그리드
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :30, 
+	        bodyHeight :300, 
 	        rowHeight: 30,
 			columns : [{
 				header : '반품일자',

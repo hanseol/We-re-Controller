@@ -86,7 +86,7 @@
 				ROWNUM RNUM FROM (
 									SELECT SAL_INOUT_STATEMENT, I.COM_PRODUCT_CODE,
 									TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
-									P.PRO_PROCESS_QUANTITY as SAL_INOUT_QUANTITY,
+									I.SAL_INOUT_QUANTITY as SAL_INOUT_QUANTITY,
                   					SAL_INOUT_GUBUN, P.PRO_PROCESS_LOT_NO,
 									C.COM_PRODUCT_NAME, SAL_INOUT_CODE,
 									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
@@ -323,7 +323,7 @@
 	<!-- 모달 : 완제품 LOT_NO 목록 -->
 	<select id="searchProductLotNoList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT * FROM (
-			SELECT A.*, ROWNUM RNUM FROM (
+			SELECT A.*, ROWNUM RNUM FROM (	
 											SELECT
 											D.PRO_PROCESS_LOT_NO, D.ERP_PRODUCT_CODE,
 											D.ERP_PRODUCT_NAME,
@@ -352,7 +352,8 @@
 	<select id="searchProductLotNoListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
 		SELECT COUNT(*)
 		FROM PRO_PROCESS P, PRO_ORDER_DETAIL D
-		WHERE P.PRO_PROCESS_LOT_NO = D.PRO_PROCESS_LOT_NO
+		WHERE  P.PRO_ORDER_DETAIL_CODE = D.PRO_ORDER_DETAIL_CODE
+				AND P.COM_PROCESS_CODE = 'PROCG001'
 		<if test="(proProcessLotNo != null and proProcessLotNo != '')
 					|| (erpProductName !=null and erpProductName != '')
 					|| (erpProductCode !=null and erpProductCode != '')">

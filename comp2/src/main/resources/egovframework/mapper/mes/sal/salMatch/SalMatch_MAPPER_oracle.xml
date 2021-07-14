@@ -39,12 +39,15 @@
 										S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
 										TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
 										C.COM_PRODUCT_NAME, I.SAL_INOUT_QUANTITY, SAL_MATCH_QTY,
-										(I.SAL_INOUT_QUANTITY - S.SAL_MATCH_QTY) as FINAL_QUANTITY
+										CASE WHEN S.SAL_MATCH_INOUT = 'INOUT004'
+						                THEN (I.SAL_INOUT_QUANTITY + S.SAL_MATCH_QTY)
+						               	ELSE (I.SAL_INOUT_QUANTITY - S.SAL_MATCH_QTY)
+						                END AS FINAL_QUANTITY              
 										FROM SAL_MATCH S, SAL_INOUT I, COM_PRODUCT C
 										WHERE 1=1
 										AND S.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE
-                    					AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
-                   						AND I.SAL_INOUT_GUBUN = 'INOUT003'
+					                    AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
+					                    AND I.SAL_INOUT_GUBUN = 'INOUT003'
 			<if test="salMatchDate != null and salMatchDate != ''"> AND
 					SAL_MATCH_DATE = #{salMatchDate}
 			</if>
@@ -67,15 +70,22 @@
 	
 	<!-- 정산입출고 삽입 -->
 	<insert id="insertSalMatch">
-		INSERT INTO SAL_MATCH
-		VALUES (#{salMatchStatement}
-		, #{salMatchInout}
-		, #{salMatchDate}
-		, #{salMatchQty}
-		, #{comProductCode}
-		, #{proProcessLotNo}
-		, SYSDATE)
+			INSERT INTO SAL_MATCH
+			VALUES (#{salMatchStatement}
+			, #{salMatchInout}
+			, #{salMatchDate}
+			, #{salMatchQty}
+			, #{comProductCode}
+			, #{proProcessLotNo}
+			, SYSDATE)
 	</insert>
+	
+	<update id="updateSalInout">		
+			UPDATE SAL_INOUT
+			SET SAL_INOUT_QUANTITY = #{finalQuantity}
+			WHERE PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+			AND SAL_INOUT_GUBUN = 'INOUT002'
+	</update> 
 	
 	<!-- 정산입출고목록 수정 -->
 	<update id="updateSalMatch">

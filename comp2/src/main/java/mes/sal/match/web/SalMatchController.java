@@ -106,6 +106,7 @@ public class SalMatchController {
 						((LinkedHashMap)createdList.get(i)).put("salMatchStatement", salMatchOutStatementIdGnrService.getNextStringId());
 					}			
 					salMatchService.insertSalMatch((LinkedHashMap)(createdList.get(i)));
+					salMatchService.updateSalInout((LinkedHashMap)(createdList.get(i)));
 				}
 		}
 				
@@ -113,6 +114,7 @@ public class SalMatchController {
 		if (updatedList.size() != 0) {
 			for (int i=0; i<updatedList.size(); i++) {
 				salMatchService.updateSalMatch((LinkedHashMap) updatedList.get(i));
+				salMatchService.updateSalInout((LinkedHashMap) updatedList.get(i));
 			}
 		}
 		

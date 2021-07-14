@@ -140,7 +140,7 @@ let mgrid; //모달 그리드
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :30, 
+	        bodyHeight :300, 
 	        rowHeight: 30,
 			columns : [ {
 				header : '반품일자',
@@ -181,14 +181,16 @@ let mgrid; //모달 그리드
 	
 		mgrid = grid;
 		
+		//수량 계산
+  		mgrid.on('afterChange', ev => { 			
+  			if (ev.changes[0].columnName == 'returnQuantity') {
+  				var ret = mgrid.getValue(ev.changes[0].rowKey, 'returnQuantity');
+  				var order = mgrid.getValue(ev.changes[0].rowKey, 'salInoutQuantity');	
+  				
+				mgrid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(ret));
+  			}
+		});
 		
-		 //모달 : 제품코드
-		   grid.on('dblclick', ev => {
-		      if(ev.columnName == 'comProductCode'){  
-		    	  productCodeSearch(ev.rowKey);
-		    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
-		      }
-		   });
 
 		//모달 : 완제품 LOT_NO
 		   grid.on('dblclick', ev => {
@@ -201,14 +203,6 @@ let mgrid; //모달 그리드
 			 	productLotNoSearch(-1);
 			});
 		
-			//모달 : 거래처코드
-		   	grid.on('dblclick', ev => {
-		      if(ev.columnName == 'salInoutCode'){  
-		    	  customerCodeSearch(ev.rowKey);
-		    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
-		      }
-		   });
-
 	
 	// option form reset  
 	 $(document).ready(function() {  
