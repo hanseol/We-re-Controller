@@ -108,6 +108,13 @@ max-height: 600px; */
 </div>
 
 <script>
+//네비게이션 고정
+$('#quaNav').addClass('active');
+$('#subPages6').addClass('in');
+$('#subPages6').attr('aria-expanded','true');
+$('#subPages6').attr('style','');
+$('.matrQua').addClass('active');
+
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let orderGrid;
 let materialGrid;

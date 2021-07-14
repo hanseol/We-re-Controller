@@ -81,11 +81,11 @@
 							</div>
 						</li>
 						<li>
-							<a href="#subPages6" data-toggle="collapse" class="collapsed"><i class="lnr lnr-star-half"></i> <span>품질</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<a href="#subPages6" data-toggle="collapse" class="collapsed" id="quaNav"><i class="lnr lnr-star-half"></i> <span>품질</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages6" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/quaChk/matrQuaForm.do" class="">자재입고검사</a></li>
-									<li><a href="${pageContext.request.contextPath}/quaFlty/matrFaultyView.do" class="">자재불량조회</a></li>
+									<li><a href="${pageContext.request.contextPath}/quaChk/matrQuaForm.do" class="matrQua">자재입고검사</a></li>
+									<li><a href="${pageContext.request.contextPath}/quaFlty/matrFaultyView.do" class="matrFaulty">자재불량조회</a></li>
 								</ul>
 							</div>
 						</li>
