@@ -296,12 +296,6 @@ $('.matrInout').addClass('active');
 				width: 'auto',
 				minWidth: 100,
 				align: 'right'
-			}, {
-				header: '현재고',
-				name: 'materialStock',
-				width: 'auto',
-				minWidth: 100,
-				align: 'right'
 			}]
 		});
 		
@@ -388,12 +382,6 @@ $('.matrInout').addClass('active');
 				}, {
 					header: '금액',
 					name: 'matInoutPrice',
-					width: 'auto',
-					minWidth: 100,
-					align: 'right'
-				}, {
-					header: '현재고',
-					name: 'materialStock',
 					width: 'auto',
 					minWidth: 100,
 					align: 'right'
