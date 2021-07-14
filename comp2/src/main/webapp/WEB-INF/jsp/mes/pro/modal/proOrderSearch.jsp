@@ -39,6 +39,7 @@ $(document).ready(function() {
 			proOrderCode = gridModal.getValue(chkRowKeys[i],'proOrderCode');
 			proOrderDate = gridModal.getValue(chkRowKeys[i],'proOrderDate');
 			proOrderGubun = gridModal.getValue(chkRowKeys[i],'proOrderGubun');
+			proOrderDetailCode = gridModal.getValue(chkRowKeys[i],'proOrderDetailCode');
 			
 			console.log(proOrderCode);
 			console.log(proOrderDate);
@@ -47,6 +48,7 @@ $(document).ready(function() {
 			$("#proOrderCode").val(proOrderCode);
 			$("#proOrderDate").val(proOrderDate);
 			$("#proOrderGubun").val(proOrderGubun);
+			$("#proOrderDetailCode").val(proOrderDetailCode);
 			
 		}
 	}); //end of click button
@@ -100,6 +102,10 @@ $(document).ready(function() {
 		}, {
 			header : '지시구분',
 			name : 'proOrderGubun'
+		}, {
+			header : '생산계획디테일코드',
+			name : 'proOrderDetailCode',
+			hidden : true
 		}]
 	});
 	

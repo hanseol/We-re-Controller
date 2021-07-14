@@ -63,12 +63,6 @@
 		
 	</insert>
 	
-	<!-- 1번 그리드 저장버튼 > UPDATE: 생산계획 D -->
-	<update id="updatePlan">
-		UPDATE pro_plan_detail
-  		   SET pro_order_detail_code = #{proOrderDetailCode} 
-	</update>
-	
 	<!-- 1번 그리드 저장버튼 > UPDATE: ?? -->	
 	<update id="updateProOrder">
 		<![CDATA[
@@ -97,17 +91,22 @@
                             , com_process_code )
                 VALUES(  #{matInoutStatement}
                        , #{comMaterialCode}
-                       , #{proWorkDate}
+                       , #{proOrderDate}
                        , 'INOUT003'
                        , #{matInoutQuantity}
                        , #{matLotNo}
                        , #{comProcessCode} );
       
-            INSERT INTO pro_material_lot
-                               ( pro_material_number
-                               , pro_order_detail_code
-                               , mat_lot_no )
-                    VALUES(  '1'
+      	<!-- 	<selectKey keyProperty="seqNo" order="BEFORE" resultType="long">
+				select seqno.nextval from dual
+			</selectKey> -->
+			<!-- SELECT MAX(NVL(PRO_MATERIAL_NUMBER,0))+1 FROM PRO_MATERIAL_LOT -->
+			
+    		 INSERT INTO pro_material_lot
+                            ( pro_material_number
+                            , pro_order_detail_code
+                            , mat_lot_no )
+                    VALUES(  #{proMaterialNumber}
                            , #{proOrderDetailCode}
                            , #{matLotNo} );
          END;
@@ -186,11 +185,13 @@
 	
 	<!-- 생산지시: 생산지시관리에서 입력한 지시 조회(모달) -->
 	<select id="selectOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
-		SELECT pro_order_code
-		     , TO_CHAR(pro_order_date, 'yyyy-MM-dd') as pro_order_date
-		     , pro_order_gubun
-		FROM pro_order
-		WHERE 1=1
+		SELECT m.pro_order_code
+		     , TO_CHAR(m.pro_order_date, 'yyyy-MM-dd') as pro_order_date
+		     , m.pro_order_gubun
+		     , d.pro_order_detail_code
+		FROM  pro_order m 
+			, pro_order_detail d
+		WHERE m.pro_order_code = d.pro_order_code
 			<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
 				pro_order_date BETWEEN #{startDate} AND #{endDate} 
 			</if>	
@@ -242,6 +243,7 @@
 						         , om.pro_order_date
 						         , od.erp_customer_code
 						         , p.erp_order_qty
+						         , od.pro_order_detail_code
 						FROM     pro_order_detail od
 						       , pro_order om
 						       , pro_plan_detail p

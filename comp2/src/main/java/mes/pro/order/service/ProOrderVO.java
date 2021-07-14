@@ -79,5 +79,8 @@ public class ProOrderVO extends SearchVO{
     
     private String matInoutStatement;
     
+    private String seqNo;
+    
+    private String proMaterialNumber;
 
 }

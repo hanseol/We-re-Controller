@@ -103,7 +103,8 @@
 </div>
 
 <script>
-
+let test;
+var cnt = 0;
 var proOrdergrid;
 var proOrderRowKey;
 
@@ -128,16 +129,6 @@ var proOrderRowKey;
 			proOrdergrid.readData(1, readParams, true);
 		});
 		
-		/* //M 삭제버튼
-		$(document).on("click", "button[id=deleteOrder]", function() {
-			
-		});
-		
-		//D 삭제버튼
-		$(document).on("click", "button[id=deleteRow]", function() {
-			
-		});  */
-
 		//D 행추가버튼
 		$("#appendRow").on("click", function() {
 			var rowData = [ {
@@ -190,17 +181,18 @@ var proOrderRowKey;
 		
 		//D-D 저장버튼 
 		$('#modifyLot').on("click", function() {
-			
+			cnt = 0 ;
 			var chkRows = matLotgrid.getCheckedRowKeys();
 		 	for(var i=0; i<chkRows.length; i++){
 				matLotNo = matLotgrid.getValue(chkRows[i], 'matLotNo');
 				matInoutQuantity = matLotgrid.getValue(chkRows[i], 'matInoutQuantity');
 				comMaterialCode = matLotgrid.getValue(chkRows[i], 'comMaterialCode');
 				comProcessCode = matLotgrid.getValue(chkRows[i], 'comProcessCode');
-				proWorkDate = $("#proWorkDate").val();
-				proOrderDetailCode = proOrdergrid.getValue(chkRows[i], 'proOrderDetailCode');
+				proOrderDate = $("#proOrderDate").val();
+				proOrderDetailCode = test;
 				
-				console.log(proOrderDetailCode)
+				console.log(proOrderDate);
+				console.log(proOrderDetailCode);
 				
 				$.ajax({
 					url : '${pageContext.request.contextPath}/ajax/proOrder/insertMat',
@@ -208,7 +200,8 @@ var proOrderRowKey;
 						'matInoutQuantity' : matInoutQuantity,
 						'comMaterialCode' : comMaterialCode,
 						'comProcessCode' : comProcessCode,
-						'proWorkDate' : proWorkDate
+						'proOrderDate' : proOrderDate,
+						'proOrderDetailCode' : proOrderDetailCode
 						},
 					dataType :'JSON',
 					contentType :'application/json',
@@ -218,23 +211,8 @@ var proOrderRowKey;
 				});
 		 	}
 		 	
-		/*  	console.log(matLotNo);
-			
-			var params = {
-					'matLotNo': matLotNo,
-					'matInoutDate' : matInoutDate,
-					'matInoutQuantity' : matInoutQuantity,
-					'matInoutGubun' : matInoutGubun,
-					'comMaterialCode' : comMaterialCode,
-					'comMaterialName' : comMaterialName,
-					'comProcessCode' : comProcessCode,
-					'matInoutStatement' : matInoutStatement,
-					'proWorkDate' : proWorkDate					
-			} 
-			
-			matLotgrid.setRequestParams(params);
-			matLotgrid.finishEditing('rowKey', 'columnName');
-			matLotgrid.request('modifyData'); */
+		 	
+
 		});
 		
 		
@@ -326,8 +304,7 @@ var proOrderRowKey;
 				hidden : true
 			}, {
 				header : '생산지시디테일코드',
-				name : 'proOrderDetailCode',
-				hidden : true
+				name : 'proOrderDetailCode'
 			}, {
 				header : '고객코드',
 				name : 'erpCustomerCode',
@@ -387,7 +364,7 @@ var proOrderRowKey;
 			}, {
 				header : '공정코드',
 				name : 'comProcessCode'
-			}]
+			} ]
 		}); //end of grid(2번)
 	
 //======================================== 3번 그리드 ======================================== 		
@@ -425,13 +402,7 @@ var proOrderRowKey;
 			}, {
 				header : '자재이름',
 				name : 'comMaterialName'
-			}, {
-				header : '공정코드',
-				name : 'comProcessCode'
-			}, {
-				header : '자재로트번호',
-				name : 'matLotNo'
-			}  ]
+			} ]
 		
 	}); //end of grid(3번)
 		
@@ -451,7 +422,7 @@ var proOrderRowKey;
 		if(ev.columnName == 'erpProductCode'){
 			var comProductCode = proOrdergrid.getFocusedCell().value;
 			var comProductName = proOrdergrid.getValue(ev.rowKey, 'erpProductName');
-			
+			test = proOrdergrid.getValue(ev.rowKey,'proOrderDetailCode');
 			var readParams = {
 					'comProductCode' : comProductCode
 			} 
@@ -466,6 +437,8 @@ var proOrderRowKey;
 		if(ev.columnName == 'comMaterialCode'){
 			var comMaterialCode = matInfogrid.getFocusedCell().value;
 			var comMaterialName = matInfogrid.getValue(ev.rowKey, 'comMaterialName');
+			
+			console.log(test);
 
 			var readParams = {
 					'comMaterialCode' : comMaterialCode

@@ -60,6 +60,11 @@ public class ProOrderController {
     @Resource(name = "productLotCodeService")
     protected EgovIdGnrService productLotCodeService;
     
+    @Resource(name = "ProMaterialNoService")
+    protected EgovIdGnrService ProMaterialNoService;
+    
+    
+    
     ComFunc comFunc = new ComFunc();
 
     
@@ -203,20 +208,6 @@ public class ProOrderController {
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
 
-		//수정
-//		if (updatedList.size() != 0) {
-//			for (int i = 0; i < updatedList.size(); i++) {
-//				service.insertProOrder((LinkedHashMap) updatedList.get(i));
-//			}
-//		}
-		
-		//삭제
-//		if (deletedList.size() != 0) {
-//			for (int i = 0; i < deletedList.size(); i++) {
-//				service.deleteProOrder((LinkedHashMap) deletedList.get(i));
-//			}
-//		}		
-
 		//생성
 		//시퀀스 포멧팅  **수정하기
 		if(createdList.size() != 0) { 
@@ -224,7 +215,10 @@ public class ProOrderController {
 			for(int i = 0; i < createdList.size(); i++) {
 				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", mesMatOutStatementIdGnrService.getNextStringId());
 				((LinkedHashMap)createdList.get(i)).put("matLotNo", productLotCodeService.getNextStringId());
-				
+				/*
+				 * ((LinkedHashMap)createdList.get(i)).put("proMaterialNumber",
+				 * ProMaterialNoService.getNextStringId());
+				 */
 				/* service.insertMat((LinkedHashMap)createdList.get(i)); */
 			}
 		 }
@@ -236,11 +230,18 @@ public class ProOrderController {
 	@RequestMapping("/ajax/proOrder/insertMat")
 	@ResponseBody
 	public Map<String, Object> insertMat(@ModelAttribute("searchVO") ProOrderVO searchVO) throws FdlException {
+		
+		
 		searchVO.setMatInoutStatement(mesMatOutStatementIdGnrService.getNextStringId());
 		searchVO.setProProcessLotNo(productLotCodeService.getNextStringId());
+		searchVO.setProMaterialNumber(ProMaterialNoService.getNextStringId());
 		
 		service.insertMat(searchVO);
-		return null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", true);
+		map.put("test", "test");
+		return map;
 	}
 	
 	
