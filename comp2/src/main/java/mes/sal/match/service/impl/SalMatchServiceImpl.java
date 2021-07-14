@@ -92,6 +92,12 @@ public class SalMatchServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchProductListTotCnt(SalMatchVO searchVO) {
 		return salMatchDAO.searchProductListTotCnt(searchVO);
 	}
+	
+	//
+	@Override
+	public void updateSalInout(LinkedHashMap vo) throws Exception {
+		salMatchDAO.updateSalInout(vo);		
+	}
 
    
     

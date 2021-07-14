@@ -70,11 +70,19 @@
 
 
 <script>
+
 	var proPlanGrid;
 	var proPlanRowKey;
 	
 	$(document).ready(function() {
 
+		//네비게이션 고정
+		$('#proNav').addClass('active');
+		$('#subPages4').addClass('in');
+		$('#subPages4').attr('aria-expanded','true');
+		$('#subPages4').attr('style','');
+		$('.proProdPlan').addClass('active');
+		
 		//M 조회 버튼
 		$("#findRow").on("click", function() {
 	               var date = $("#date").val();
@@ -263,15 +271,6 @@
 				}
 			}
 	});
-	
-	
-	   $('#salNav').addClass('active');
-
-	   $('#subPages2').addClass('in');
-	   $('#subPages2').attr('aria-expanded','true');
-	   $('#subPages2').attr('style','');
-	   
-	   $('.salesOrderView').addClass('active');
 	
 	/* 	
 	proPlanGrid.on('response', ev => {

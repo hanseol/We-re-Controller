@@ -103,10 +103,19 @@
 </div>
 
 <script>
+
 var proOrdergrid;
 var proOrderRowKey;
 
 	$(document).ready(function() {
+		//네비게이션 고정
+		$('#proNav').addClass('active');
+		$('#subPages4').addClass('in');
+		$('#subPages4').attr('aria-expanded','true');
+		$('#subPages4').attr('style','');
+		$('.proProdOrder').addClass('active');
+		
+		
 		// M 조회버튼
 		$("#findRow").on("click", function() {
 			var proOrderDate = $("#proOrderDate").val();

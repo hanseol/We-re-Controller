@@ -102,6 +102,13 @@
 </div>
 
 <script>
+//네비게이션 고정
+$('#quaNav').addClass('active');
+$('#subPages6').addClass('in');
+$('#subPages6').attr('aria-expanded','true');
+$('#subPages6').attr('style','');
+$('.matrQua').addClass('active');
+
 $(document).ready(function () {
 
 	// 옵션 폼 리셋버튼  

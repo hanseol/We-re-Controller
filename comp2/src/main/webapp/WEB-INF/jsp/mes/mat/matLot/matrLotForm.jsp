@@ -95,6 +95,13 @@ max-height: 600px; */
 </div>
 
 <script>
+//네비게이션 바 고정.
+$('#matNav').addClass('active');
+$('#subPages3').addClass('in');
+$('#subPages3').attr('aria-expanded','true');
+$('#subPages3').attr('style','');
+$('.matrLot').addClass('active');
+
 	$(document).ready(function () {
 		//날짜 범위로 지정하는 방법 생각.
 		

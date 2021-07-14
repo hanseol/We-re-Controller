@@ -38,4 +38,5 @@ public interface SalMatchService {
 	List<?> searchProductList(SalMatchVO searchVO) throws Exception;
 	int searchProductListTotCnt(SalMatchVO searchVO);
 	
+	void updateSalInout(LinkedHashMap vo) throws Exception;
 }

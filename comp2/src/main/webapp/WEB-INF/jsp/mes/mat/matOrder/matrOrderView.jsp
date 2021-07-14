@@ -78,6 +78,14 @@
 </div>
 
 <script>
+//네비게이션 바 고정.
+$('#matNav').addClass('active');
+$('#subPages3').addClass('in');
+$('#subPages3').attr('aria-expanded','true');
+$('#subPages3').attr('style','');
+$('.matrOrder').addClass('active');
+
+
 	$(document).ready(function() {
 		
 		// 옵션 폼 리셋버튼  

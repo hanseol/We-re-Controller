@@ -127,7 +127,7 @@ let mgrid;
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :30, 
+	        bodyHeight :300, 
 	        rowHeight: 30,
 			columns : [ {
 				header : '입/출고일자',
@@ -146,6 +146,9 @@ let mgrid;
 				header : '전표번호',
 				name : 'salInoutStatement'
 			}, {
+				header : '완제품 LOT_NO',
+				name : 'proProcessLotNo'
+			}, {
 				header : '지시/거래처코드',
 				name : 'salInoutCode'
 			}, {
@@ -157,9 +160,6 @@ let mgrid;
 			}, {
 				header : '수량',
 				name : 'salInoutQuantity'
-			}, {
-				header : '완제품 LOT_NO',
-				name : 'proProcessLotNo'
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate'

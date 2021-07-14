@@ -112,6 +112,13 @@ let materialGrid;
 let vendorGrid;
 let matLotGrid;
 //-----------------------------------------------------------
+//네비게이션 바 고정.
+$('#matNav').addClass('active');
+$('#subPages3').addClass('in');
+$('#subPages3').attr('aria-expanded','true');
+$('#subPages3').attr('style','');
+$('.matrInout').addClass('active');
+
 
 $(document).ready(function () {
 	

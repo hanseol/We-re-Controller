@@ -168,7 +168,7 @@ let mgrid;
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :30, 
+	        bodyHeight :300, 
 	        rowHeight: 30,
 			columns : [ {
 				header : '입/출고일자',
@@ -217,15 +217,19 @@ let mgrid;
 		});
 		
 		mgrid = grid;
-		 
 		
-		//모달 : 제품코드
-		   grid.on('dblclick', ev => {
-		      if(ev.columnName == 'comProductCode'){  
-		    	  productCodeSearch(ev.rowKey);
-		    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
-		      }
-		   });
+		//수량 계산
+  		mgrid.on('afterChange', ev => { 			
+  			if (ev.changes[0].columnName == 'salMatchQty') {
+  				var match = mgrid.getValue(ev.changes[0].rowKey, 'salMatchQty');
+  				var order = mgrid.getValue(ev.changes[0].rowKey, 'salInoutQuantity');
+  				if(mgrid.getValue(ev.changes[0].rowKey, 'salMatchInout') == 'INOUT004') {
+					mgrid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) + parseInt(match));
+  				} else {
+					mgrid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(match));
+  				}
+  			}
+		});
 		 
 		 $('#searchProductCode').click(function(event) {
 				productCodeSearch(-1); //매개변수 -1로 함수 실행

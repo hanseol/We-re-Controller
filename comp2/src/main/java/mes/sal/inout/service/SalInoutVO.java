@@ -90,6 +90,8 @@ public class SalInoutVO extends SearchVO {
     //작업량
     private java.math.BigDecimal proProcessQuantity;
     
+    private String finalQuantity;
+    
 
 
     
