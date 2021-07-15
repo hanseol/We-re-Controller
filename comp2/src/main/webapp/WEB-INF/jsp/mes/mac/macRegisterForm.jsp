@@ -159,7 +159,7 @@ $('#subPages5').attr('style','');
 $('.macInfo').addClass('active');
 
 	$(document).ready(function(){
-		var erpEmployeeId = ${session.erpEmployeeId };
+		var erpEmployeeId = "${loginVO.id }";
 		console.log(erpEmployeeId);
 		$("#registerMac").on("click",function(){
 
@@ -172,9 +172,7 @@ $('.macInfo').addClass('active');
 				enctype: "multipart/form-data",
 				success: function(response){
 					
-					console.log(response);
-					//성공메시지 토스트로 보여주기
-					//form reset.
+					alert("등록처리");
 					
 				}
 			}).submit();

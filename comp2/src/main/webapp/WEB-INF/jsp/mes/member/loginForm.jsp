@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
 <html class="fullscreen-bg">
 <head>
@@ -28,7 +32,21 @@
 	<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/scripts/klorofil-common.js"></script>
+<script>
+function actionLogin() {
+	if (document.loginForm.id.value =="") {
+        alert("<spring:message code="comUatUia.validate.idCheck" />"); <%-- 아이디를 입력하세요 --%>
+    } else if (document.loginForm.password.value =="") {
+        alert("<spring:message code="comUatUia.validate.passCheck" />"); <%-- 비밀번호를 입력하세요 --%>
+    } else {
+    	document.loginForm.userSe.value = "GNR";
+        document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
+        document.loginForm.submit();
+    }
+}
 
+
+</script>
 </head>
 
 <body>
@@ -43,28 +61,30 @@
 								<div class="logo text-center"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="Klorofil Logo"></div>
 								<p class="lead">Login to your account</p>
 							</div>
-							<form class="form-auth-small" action="login.do">
+							<form class="form-auth-small" name="loginForm" id="loginForm" action="<c:url value='/uat/uia/actionLogin.do'/>" method="post">
 								<div class="form-group">
-									<label for="login-id" class="control-label sr-only">ID</label>
-									<input type="text" class="form-control" id="erpEmployeeId" name="erpEmployeeId" placeholder="ID" required>
+									<label for="id" class="control-label sr-only">ID</label>
+									<input type="text" class="form-control" id="id" name="id" placeholder="ID" required>
 								</div>
 								<div class="form-group">
-									<label for="login-password" class="control-label sr-only">Password</label>
-									<input type="password" class="form-control" id="erpEmployeePassword" name="erpEmployeePassword" placeholder="PASSWORD" required>
+									<label for="password" class="control-label sr-only">Password</label>
+									<input type="password" class="form-control" id="password" name="password" placeholder="PASSWORD" required>
 								</div>
 								<div>
-									<p>${loginFailMsg }</p>
+									<p>${loginMessage }</p>
 								</div>
 								<div class="form-group clearfix">
 									<label class="fancy-checkbox element-left">
-										<input type="checkbox">
+										<input type="checkbox" name="checkId" class="check2" onclick="javascript:saveid(document.loginForm);" id="checkId">
 										<span>Remember me</span>
 									</label>
 								</div>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
+								<button type="button" class="btn btn-primary btn-lg btn-block" onclick="actionLogin()">LOGIN</button>
 								<div class="bottom">
 									<span class="helper-text"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
 								</div>
+								<input name="userSe" type="hidden" value="GNR"/>
+								<input name="j_username" type="hidden"/>
 							</form>
 						</div>
 					</div>

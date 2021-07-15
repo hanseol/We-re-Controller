@@ -50,6 +50,13 @@
 
 <!-- 마스터데이터 -->
 <script>
+//네비게이션고정
+$('#proNav').addClass('active');
+$('#subPages1').addClass('in');
+$('#subPages1').attr('aria-expanded','true');
+$('#subPages1').attr('style','');
+$('.prodProcFlowForm').addClass('active');
+
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let procGrid;
 //-----------------------------------------------------------

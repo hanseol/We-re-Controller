@@ -1,6 +1,9 @@
 package egovframework.com.cmm;
 
 import java.io.Serializable;
+import java.util.List;
+
+import mes.member.service.MacDateResultVO;
 
 /**
  * @Class Name : LoginVO.java
@@ -52,6 +55,17 @@ public class LoginVO implements Serializable{
 	private String ip;
 	/** GPKI인증 DN */
 	private String dn;
+	
+	
+	//설비 점검일 조회
+	private List<MacDateResultVO> macDateResultList;
+	
+	public List<MacDateResultVO> getMacDateResultList() {
+		return macDateResultList;
+	}
+	public void setMacDateResultList(List<MacDateResultVO> macDateResultList) {
+		this.macDateResultList = macDateResultList;
+	}
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String

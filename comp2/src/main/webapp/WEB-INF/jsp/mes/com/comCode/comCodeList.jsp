@@ -48,6 +48,13 @@
 
 <!-- 마스터데이터 -->
 <script>
+//네비게이션 고정
+$('#proNav').addClass('active');
+$('#subPages1').addClass('in');
+$('#subPages1').attr('aria-expanded','true');
+$('#subPages1').attr('style','');
+$('.comCodeList').addClass('active');
+
 /* 체크박스 */
  class CustomCheckboxRenderer {
     constructor(props) {

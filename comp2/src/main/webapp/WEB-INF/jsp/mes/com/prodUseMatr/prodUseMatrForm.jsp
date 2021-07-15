@@ -55,6 +55,13 @@
 </div>
 
 <script>
+//네비게이션고정
+$('#proNav').addClass('active');
+$('#subPages1').addClass('in');
+$('#subPages1').attr('aria-expanded','true');
+$('#subPages1').attr('style','');
+$('.prodUseMatrForm').addClass('active');
+
 /* 체크박스 */
 class CustomCheckboxRenderer {
    constructor(props) {

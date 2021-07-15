@@ -46,6 +46,13 @@
 
 <!-- 마스터데이터 -->
 <script>
+//네비게이션 고정
+$('#proNav').addClass('active');
+$('#subPages1').addClass('in');
+$('#subPages1').attr('aria-expanded','true');
+$('#subPages1').attr('style','');
+$('.matrDtaList').addClass('active');
+
 	$(document)
 			.ready(
 					function() {

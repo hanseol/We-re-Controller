@@ -3,6 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
+.navbar-nav > li > a {
+    padding-top: 20px;
+}
+
+.navbar-nav > li > a img {
+    width: 40px;
+    margin-right: 2px;
+}
+
 .navbar-default .brand {
     padding: 30px 10px;
     height : 50px;
@@ -23,10 +32,10 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
 								<i class="lnr lnr-alarm"></i>
-								<span class="badge bg-danger">${fn:length(session.macDateResultList)}</span>
+								<span class="badge bg-danger">${fn:length(loginVO.macDateResultList)}</span>
 							</a>
 							<ul class="dropdown-menu notifications">
-								<c:forEach var="item" items="${session.macDateResultList }">
+								<c:forEach var="item" items="${loginVO.macDateResultList }">
 									<c:choose>
 										<c:when test="${item.dday < 0}">
 											<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>${item.result }</a></li>
@@ -43,11 +52,11 @@
 							</ul>
 						</li>
 						<li class="dropdown" id="member">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${pageContext.request.contextPath}/resources/images/user.png" class="img-circle" alt="Avatar"> <span>${session.erpEmployeeId }</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${pageContext.request.contextPath}/resources/images/maskuser.PNG" class="img-circle" alt="Avatar"> <span>${loginVO.id }</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>${session.erpEmployeeName }</span></a></li>
-								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>${session.erpEmployeePosition }</span></a></li>
-								<li><a href="#"><i class="lnr lnr-cog"></i> <span></span>${session.erpDepartmentName }</a></li>
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>${loginVO.userSe }</span></a></li>
+								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>${loginVO.userSe }</span></a></li>
+								<li><a href="#"><i class="lnr lnr-cog"></i> <span></span>${loginVO.userSe }</a></li>
 							</ul>
 						</li>
 						<li><button type="button" class="btn btn-primary" id="logout">Logout</button></li>
@@ -62,7 +71,7 @@
 		<script>
 			$(document).ready(function(){
 				$("#logout").on("click",function(){
-					location.href="logout.do";
+					location.href="${pageContext.request.contextPath}/uat/uia/actionLogout.do";
 				});
 			});
 		</script>

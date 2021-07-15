@@ -77,7 +77,13 @@ public class EgovIdGnrStrategyImpl implements EgovIdGnrStrategy {
     	Date today = new Date();
     	SimpleDateFormat sdf = new SimpleDateFormat("YYMMdd-");
     	
-        return prefix + sdf.format(today) + fillString(originalId, fillChar, cipers);
+    	if("USRCNFRM_".equals(prefix)) {
+    		return prefix + fillString(originalId, fillChar, cipers);
+    		
+    	}else {
+    		
+    		return prefix + sdf.format(today) + fillString(originalId, fillChar, cipers);
+    	}
     }
 
     /**
