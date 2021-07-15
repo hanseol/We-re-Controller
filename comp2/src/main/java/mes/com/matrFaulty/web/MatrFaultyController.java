@@ -75,7 +75,7 @@ public class MatrFaultyController {
 	}
 	
 	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "matrFaulty/matrFaultyForm.do")
+	@RequestMapping(value = "com/matrFaulty/matrFaultyForm.do")
 	public String viewMatrFaulty(@ModelAttribute("searchVO") MatrFaultyVO searchVO, ModelMap model) {
 
 		return "mes/com/matrFaulty/matrFaultyForm.page";
