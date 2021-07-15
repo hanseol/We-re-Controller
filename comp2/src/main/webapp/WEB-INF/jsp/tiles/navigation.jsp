@@ -62,12 +62,10 @@
 							<a href="#subPages4" data-toggle="collapse" class="collapsed" id="proNav"><i class="fa fa-line-chart"></i> <span>생산</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages4" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/proPlan/prodPlanForm.do" class="proProdPlan">생산계획</a></li>
-									<li><a href="${pageContext.request.contextPath}/proOrder/prodForm.do" class="proProdOrder">생산지시</a></li>
-									<li><a href="#" class="">공정자재소요</a></li>
-									<li><a href="#" class="">설비비가동 </a></li>
-									<li><a href="#" class="">공정불량 </a></li>
-									<li><a href="#" class="">모니터링 </a></li>
+									<li><a href="${pageContext.request.contextPath}/pro/plan/ProdPlanView.do" class="proProdPlan">생산계획</a></li>
+									<li><a href="${pageContext.request.contextPath}/pro/order/prodView.do" class="proProdOrder">생산지시</a></li>
+									<li><a href="${pageContext.request.contextPath}/pro/proc/procMatView.do" class="proMat">공정자재소요</a></li>
+									<li><a href="${pageContext.request.contextPath}/pro/proc/mntView.do" class="proMnt">모니터링 </a></li>
 								</ul>
 							</div>
 						</li>
