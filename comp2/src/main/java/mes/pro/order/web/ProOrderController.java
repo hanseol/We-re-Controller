@@ -67,16 +67,16 @@ public class ProOrderController {
     
     ComFunc comFunc = new ComFunc();
 
-    
+      
     //proView.jsp
       
     //생산지시조회 페이지 호출(prodView.jsp)
-    @RequestMapping("proOrder/prodView.do")
+    @RequestMapping("pro/order/prodView.do")
     public String prodView(Model model){
         return "mes/pro/order/prodView.page";
     }
     //생산지시리스트 조회
-    @RequestMapping("proOrder/prodView")
+    @RequestMapping("pro/order/prodView")
     @ResponseBody
     public Map<String, Object> readOrder(@ModelAttribute("searchVO") ProOrderVO searchVO ) throws Exception {
     	List<?> list = service.selectProOrderList(searchVO);
@@ -88,7 +88,7 @@ public class ProOrderController {
     //proForm.jsp
     
     //생산지시관리 페이지 호출(prodForm.jsp)
-    @RequestMapping("proOrder/prodForm.do")
+    @RequestMapping("pro/order/prodForm.do")
     public String prodForm(Model model){
         return "mes/pro/order/prodForm.page";
     }
@@ -192,6 +192,7 @@ public class ProOrderController {
 			}
 		 }
 		map.put("result", true);
+		
 		return map;
 	}
 	

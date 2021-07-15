@@ -64,8 +64,8 @@
 								<ul class="nav">
 									<li><a href="${pageContext.request.contextPath}/pro/plan/ProdPlanView.do" class="proProdPlan">생산계획</a></li>
 									<li><a href="${pageContext.request.contextPath}/pro/order/prodView.do" class="proProdOrder">생산지시</a></li>
-									<li><a href="${pageContext.request.contextPath}/pro/proc/procMatView.do" class="">공정자재소요</a></li>
-									<li><a href="${pageContext.request.contextPath}/pro/proc/mntView.do" class="">모니터링 </a></li>
+									<li><a href="${pageContext.request.contextPath}/pro/proc/procMatView.do" class="proMat">공정자재소요</a></li>
+									<li><a href="${pageContext.request.contextPath}/pro/proc/mntView.do" class="proMnt">모니터링 </a></li>
 								</ul>
 							</div>
 						</li>

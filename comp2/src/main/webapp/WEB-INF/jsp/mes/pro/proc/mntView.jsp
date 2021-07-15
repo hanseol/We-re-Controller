@@ -74,7 +74,8 @@
 		$('#subPages4').addClass('in');
 		$('#subPages4').attr('aria-expanded','true');
 		$('#subPages4').attr('style','');
-		$('.proProdPlan').addClass('active');
+		$('.proMnt').addClass('active');
+		
 		//1. 공정을 먼저 선택한다.
 		$("#comProcessCode").on("change", function() {
 			

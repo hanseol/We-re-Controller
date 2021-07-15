@@ -8,15 +8,6 @@
 	</div>
 </div>
 
-<!-- 관리, 조회 탭 이동 -->
-<!-- <div id="tabs">
-   <ul class="nav nav-tabs" role="tablist">
-     <li class=""><a onclick='location.href="prodForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
-     <li class="active"><a onclick='location.href="prodView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
-   </ul>
-</div> -->
-
-
 <!-- 마스터 테이블 -->
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -67,7 +58,7 @@
 		$('#subPages4').addClass('in');
 		$('#subPages4').attr('aria-expanded','true');
 		$('#subPages4').attr('style','');
-		$('.proProdPlan').addClass('active');
+		$('.proMat').addClass('active');
 		//M 조회 버튼	
 		$(document).on("click", "button[id=findRow]",
 		      function() {

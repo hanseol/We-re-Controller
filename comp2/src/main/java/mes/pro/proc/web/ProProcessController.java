@@ -61,7 +61,7 @@ public class ProProcessController {
     	return null;
     }
     
-    
+     
     //모니터링 페이지 호출(생산관리) > 선택가능한 지시정보를 가지고 옴
     @RequestMapping("pro/proc/mntView.do")
     public String mntView(Model model) {
