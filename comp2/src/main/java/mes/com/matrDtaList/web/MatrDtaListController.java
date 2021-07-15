@@ -75,7 +75,7 @@ public class MatrDtaListController {
 	}
 	
 	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "matrDta/MatrDtaList.do")
+	@RequestMapping(value = "com/matrDta/MatrDtaList.do")
 	public String MatrDtaList(@ModelAttribute("searchVO") MatrDtaListVO searchVO, ModelMap model) {
 
 		return "mes/com/matrDta/matrDtaList.page";
