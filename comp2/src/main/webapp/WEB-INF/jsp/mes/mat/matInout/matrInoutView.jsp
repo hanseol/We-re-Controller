@@ -50,7 +50,7 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						입고일자<input type="date" id="inoutDate" name="inoutDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
+						일자<input type="date" id="inoutDate" name="inoutDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
@@ -122,14 +122,14 @@ $('.matrInout').addClass('active');
 
 $(document).ready(function () {
 	
-	// 옵션 폼 리셋버튼  
-	$("#reset").click(function() {  
-		$("form").each(function() {  
+	// 옵션 폼 리셋버튼
+	$("#reset").click(function() {
+		$("form").each(function() {
 	    	if(this.id == "option") this.reset();
 	    	grid.clear();
 	    	outGrid.clear();
 	    	});
-		}); 
+		});
 
 	//검색데이터 전송
 	$(document).on("click",	"button[id=search]",
@@ -229,12 +229,6 @@ $(document).ready(function () {
 			width: 'auto',
 			minWidth: 100,
 			align: 'right'
-		}, {
-			header: '현재고',
-			name: 'materialStock',
-			width: 'auto',
-			minWidth: 100,
-			align: 'right'
 		}]
 	});
 	//출고 목록 데이터
@@ -265,21 +259,20 @@ $(document).ready(function () {
 	        bodyHeight: 150,
 	        rowHeight: 30,
 			columns: [{
-				header: '입고일자',
+				header: '출고일자',
 				name: 'matInoutDate',
 				width: '80',
 				align: 'center'
 			}, {
-				header: '업체코드',
-				name: 'erpVendorCode',
+				header: '공정코드',
+				name: 'comProcessCode',
 				width: '100',
 				align: 'center'
 			}, {
-				header: '입고업체명',
+				header: '출고공정명',
 				name: 'comCodeDetailName',
 				width: '100',
 				align: 'center'
-				
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
@@ -323,22 +316,6 @@ $(document).ready(function () {
 				width: 'auto',
 				minWidth: 100,
 				align: 'right'
-			}, {
-				header: '현재고',
-				name: 'materialStock',
-				width: 'auto',
-				minWidth: 100,
-				align: 'right'
-			}, {
-				header: '공정코드',
-				name: 'comProcessCode',
-				width: '100',
-				align: 'center'
-			}, {
-				header: '출고공정명',
-				name: 'comProcessName',
-				width: '100',
-				align: 'center'
 			}]
 		});
 //모달 그리드 초기화 ----------------------------------
@@ -352,7 +329,7 @@ $(document).ready(function () {
 		grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 	}); */
 	
-	//데이터 제이슨타입으로 보내기
+	//데이터 제이슨타입 보기
 	grid.on('response', ev => {
 		const { response } = ev.xhr;
 		const responseObj = JSON.parse(response);
@@ -419,7 +396,7 @@ function materialCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchMaterialCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
@@ -432,7 +409,7 @@ function vendorCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchVendorCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

@@ -48,7 +48,7 @@ public class QuaFltyController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("/quaFlty/matrFaultyView.do")
+    @RequestMapping("/qua/flty/matrFaultyView.do")
     public String selectmatQuaList(@ModelAttribute("searchVO") QuaFltyVO searchVO, 
     		ModelMap model) {
 

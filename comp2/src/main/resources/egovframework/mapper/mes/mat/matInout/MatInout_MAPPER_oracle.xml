@@ -60,9 +60,7 @@
 		              FROM   (
 										SELECT    m.mat_inout_statement,
 										          m.qua_material_statement,
-										          m.mat_inout_date,
-										          q.erp_vendor_code,
-										          d.com_code_detail_name,
+										          TO_CHAR(m.mat_inout_date,'YY/MM/DD') as mat_inout_date,
 										          m.com_material_code,
 										          c.com_material_name,
 										          c.com_material_size,
@@ -71,22 +69,20 @@
 										          m.mat_inout_quantity,
 										          m.mat_inout_unit_price,
 										          m.mat_inout_price,
-										          m.com_process_code
+										          m.com_process_code,
+                              					  d.com_code_detail_name
 										FROM      mat_inout m,
 										          com_material c,
-										          qua_material_chk q,
-										          com_code_detail d
-										WHERE     m.mat_inout_gubun = 'INOUT003'
-										AND       m.com_material_code = c.com_material_code
-										AND       q.erp_vendor_code = d.com_code_detail_id
-										AND		  m.qua_material_code = q.qua_material_code
+										          com_code_detail d,
+                              					  qua_material_chk q
+										WHERE     m.com_material_code = c.com_material_code
+					                    AND       m.com_process_code = d.com_code_detail_id
+					                    AND       m.qua_material_statement = q.qua_material_statement
+					                    AND       m.mat_inout_gubun = 'INOUT003'
+										AND       d.com_code_id = 'MES007'
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
 							        	m.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
-		                              </if>
-		                              <if test="erpVendorCode != null and erpVendorCode != ''">
-		                                AND
-							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
@@ -198,7 +194,9 @@
 		            FROM   (
 		                              SELECT   c.com_material_code,
 		                                       c.com_material_name,
-		                                       m.mat_lot_no
+		                                       m.mat_lot_no,
+		                                       m.mat_inout_quantity,
+		                                       m.mat_inout_date
 		                              FROM     mat_inout m,
 		                              		   com_material c
 		                              WHERE	   c.com_material_code = m.com_material_code
@@ -212,5 +210,4 @@
          			WHERE ROWNUM <= #{lastIndex})
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>
-	
 </mapper>

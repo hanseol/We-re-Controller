@@ -47,7 +47,7 @@ public class MatLotController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("/matLot/matrLotView.do")
+    @RequestMapping("/mat/lot/matrLotView.do")
     public String selectMatLotList(@ModelAttribute("searchVO") MatLotVO searchVO, 
     		ModelMap model) {
 
@@ -70,7 +70,7 @@ public class MatLotController {
 //--------------------------------------관리 페이지--------------------------------------    
     
   	//자재입출고 [관리] 페이지
-    @RequestMapping("/matLot/matrLotForm.do")
+    @RequestMapping("/mat/lot/matrLotForm.do")
     public String selectMatLotForm(@ModelAttribute("searchVO") MatLotVO searchVO, 
     		ModelMap model) {
 
@@ -115,7 +115,8 @@ public class MatLotController {
 			}
 		}
 	}
-
+    
+    
 
 
     

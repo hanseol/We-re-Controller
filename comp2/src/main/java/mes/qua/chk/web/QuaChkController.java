@@ -53,7 +53,7 @@ public class QuaChkController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("/quaChk/matrQuaView.do")
+    @RequestMapping("/qua/chk/matrQuaView.do")
     public String selectmatQuaList(@ModelAttribute("searchVO") QuaChkVO searchVO, 
     		ModelMap model) {
 
@@ -89,7 +89,7 @@ public class QuaChkController {
 //--------------------------------------관리 페이지--------------------------------------    
     
   	//자재입고검사 [관리] 페이지
-    @RequestMapping("/quaChk/matrQuaForm.do")
+    @RequestMapping("/qua/chk/matrQuaForm.do")
     public String selectQuaChkForm(@ModelAttribute("searchVO") QuaChkVO searchVO, 
     		ModelMap model) {
 
@@ -110,7 +110,7 @@ public class QuaChkController {
     
     //----------------------------------모달-----------------------------------------------
     //자재불량 오픈
-    @GetMapping("quaFlty/searchMatFltyCode.do")
+    @GetMapping("/qua/flty/searchMatFltyCode.do")
   	public String searchVendorCode() {
   		
   		//모달창에 띄워줄 view페이지 전달.

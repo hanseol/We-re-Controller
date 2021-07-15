@@ -431,7 +431,7 @@ function materialCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/matInout/searchMaterialCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
@@ -444,7 +444,7 @@ function vendorCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/matInout/searchVendorCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

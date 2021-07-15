@@ -57,7 +57,7 @@ public class MatInoutController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("/matInout/matrInoutView.do")
+    @RequestMapping("/mat/inout/matrInoutView.do")
     public String selectMatInoutList(@ModelAttribute("searchVO") MatInoutVO searchVO, 
     		ModelMap model) {
 
@@ -91,7 +91,7 @@ public class MatInoutController {
 //--------------------------------------관리 페이지--------------------------------------    
     
   	//자재입출고 [관리] 페이지
-    @RequestMapping("/matInout/matrInoutForm.do")
+    @RequestMapping("/mat/inout/matrInoutForm.do")
     public String selectMatInoutForm(@ModelAttribute("searchVO") MatInoutVO searchVO, 
     		ModelMap model) {
 
@@ -141,7 +141,7 @@ public class MatInoutController {
 //--------------------------------------모달 페이지--------------------------------------
     
     //자재코드 오픈
-    @GetMapping("matInout/searchMaterialCode.do")
+    @GetMapping("/mat/inout/searchMaterialCode.do")
   	public String searchMaterialCode() {
   		
   		//모달창에 띄워줄 view페이지 전달.
@@ -162,7 +162,7 @@ public class MatInoutController {
   	}
   	
     //입고업체 오픈
-    @GetMapping("matInout/searchVendorCode.do")
+    @GetMapping("/mat/inout/searchVendorCode.do")
   	public String searchVendorCode() {
   		
   		//모달창에 띄워줄 view페이지 전달.
@@ -183,7 +183,7 @@ public class MatInoutController {
   	}
   	
     //자재LOT_NO 오픈
-    @GetMapping("matInout/searchMatLotNo.do")
+    @GetMapping("/mat/lot/searchMatLotNo.do")
   	public String searchMaterialLotNo() {
   		
   		//모달창에 띄워줄 view페이지 전달.

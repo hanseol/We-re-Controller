@@ -16,10 +16,10 @@
 										          m.com_material_code,
 										          c.com_material_name,
 										          i.mat_inout_quantity,
-										          CASE WHEN m.MAT_MATCH_INOUT = 'INOUT004'
-										          THEN (I.MAT_INOUT_QUANTITY + M.MAT_MATCH_QTY)
-										          ELSE (I.MAT_INOUT_QUANTITY - M.MAT_MATCH_QTY)
-										          END AS FINAL_QUANTITY,
+										          CASE WHEN m.mat_match_inout = 'INOUT004'
+										          THEN (i.mat_inout_quantity + m.mat_match_qty)
+										          ELSE (i.mat_inout_quantity - m.mat_match_qty)
+										          END AS final_qty,
 										          m.mat_match_qty
 										FROM      com_material c,
 										          mat_inout i,
@@ -29,7 +29,7 @@
 										AND       i.MAT_INOUT_GUBUN = 'INOUT002'
 		                              <if test="matMatchDate != null and matMatchDate != ''">
 		                              	AND
-							        	m.mat_match_date = #{matMatchDate}
+							        	m.mat_match_date BETWEEN #{matMatchDate} AND #{matMatchEndDate}
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
@@ -46,7 +46,7 @@
 		]]>
 	</select>
 	
-		<!-- 정산입출고 삽입 -->
+	<!-- 정산입출고 삽입 -->
 	<insert id="insertMatLot">
 			INSERT INTO mat_match
 			VALUES (#{matMatchStatement}

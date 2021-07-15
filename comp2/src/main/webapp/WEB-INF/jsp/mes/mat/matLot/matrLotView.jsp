@@ -43,38 +43,38 @@
 </div>
 
 
-<form id="option">
-	<div class="content-fluid">
-		<div class="panel panel-headline">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-2">
-						일자<input type="date" id="matInoutDate" name="matInoutDate">
+
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<form id="option">
+					<div class="col-md-12">
+						일자<input type="date" id="matchDate" name="matchDate">~<input type="date" id="matchEndDate" name="matchEndDate">
 					</div>
-					<div class="col-md-2">
-						자료구분<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
+					<div class="col-md-3">
+						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
 						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
 					</div>
-					<div class="col-md-2">
-						자재코드<a href="${pageContext.request.contextPath}/searchMaterialCode.do"	rel="modal:open">
-						<input type="text" id="comMaterialCode"	name="comMaterialCode">
+					<div class="col-md-3">
+						자재코드<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						입고업체<a href="${pageContext.request.contextPath}/searchVendorCode.do" rel="modal:open">
-						<input type="text" id="comCodeDetailId"	name="comCodeDetailId">
+						자재LOT_NO<input type="text" id="matLot" name="matLot">
+						<a id="searchMatLotNo" href="searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
-						<button type="button" class="btn btn-success" id="search">조회</button>
-						<button type="reset" class="btn btn-danger">새자료</button>
-					</div>
+				</form>
+				<div class="col-md-3" align="right">
+					<button type="button" class="btn btn-success" id="search">조회</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
 	</div>
-</form>
-
+</div>
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
@@ -98,13 +98,21 @@ $('#subPages3').attr('aria-expanded','true');
 $('#subPages3').attr('style','');
 $('.matrLot').addClass('active');
 
+//그리드모달창을 위한 그리드 선언-------------------------------------
+let materialGrid;
+let matLotGrid;
+//-----------------------------------------------------------
+
+
 $(document).ready(function () {
-	//reset(새자료) 버튼 (문제 시 되돌리기)
-/* 	$("#reset").click(function() {  
-	         $("form").each(function() {  
-	                if(this.id == "option") this.reset();  
-	             });  
-	    });   */
+	
+	// 옵션 폼 리셋버튼  
+	$("#reset").click(function() {  
+		$("form").each(function() {  
+	    	if(this.id == "option") this.reset();
+	    	grid.clear();
+	    	});
+		}); 
 
 	
 	//입출고구분 체크박스 하나만 체크되거나 해제가능.
@@ -128,14 +136,17 @@ $(document).ready(function () {
 
 				//데이터를 변수에 담아서 parameter로 만들기.
 
-				var matMatchDate = $("#matMatchDate").val();
-				var erpVendorCode = $("#erpVendorCode").val();
+				var matchDate = $("#matchDate").val();
+				var materialCode = $("#materialCode").val();
 				var matMatchInout = $("#matMatchInout").val();
-
+				var matchEndDate = $("#matchEndDate").val();
+				var matLot = $("#matLot").val();
 				var readParams = {
-					'matMatchDate': matMatchDate,
-					'erpVendorCode': erpVendorCode,
-					'matMatchInout': matMatchInout
+					'matMatchDate': matchDate,
+					'comMaterialCode': materialCode,
+					'matMatchInout': matMatchInout,
+					'matchEndDate' : matchEndDate,
+					'matLot' : matLot
 				};
 				grid.readData(1, readParams, true);
 			});
@@ -175,7 +186,7 @@ $(document).ready(function () {
 			name: 'comMaterialName'
 		}, {
 			header: '현재수량',
-			name: 'matInoutQty'
+			name: 'matInoutQuantity'
 		}, {
 			header: '정산량',
 			name: 'matMatchQty'
@@ -185,10 +196,33 @@ $(document).ready(function () {
 		}]
 	});
 	
+	//모달 그리드 초기화 ----------------------------------
+	materialGrid = grid;
+	matLotGrid = grid;
+//--------------------------------------------------
 
-
-
-
+	
+		//자동 계산 (수량 *단가)
+  		grid.on('afterChange', ev => {
+  			if (ev.changes[0].columnName == 'matMatchQty') {
+  				var match = grid.getValue(ev.changes[0].rowKey, 'matMatchQty');
+  				var order = grid.getValue(ev.changes[0].rowKey, 'matInoutQuantity');
+  				if(grid.getValue(ev.changes[0].rowKey, 'matMatchInout') == 'INOUT004') {
+  					grid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) + parseInt(match));
+  				} else {
+  					grid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(match));
+  				}
+  			}
+/*   			var iQty = grid.getValue(rowKey, 'matInoutQuantity');
+  			var mQty = grid.getValue(rowKey, 'matMatchQty');
+  			if(iQty == mQty){
+  				console.log('hi');
+  			} */
+		});
+	
+	
+	
+	//데이터 제이슨타입 보기
 	grid.on('response', ev => {
 		const { response } = ev.xhr;
 		const responseObj = JSON.parse(response);
@@ -197,7 +231,40 @@ $(document).ready(function () {
 		console.log('data : ', responseObj.data);
 	});
 	
-	// 그리드 테마
+	//날짜 범위 검색 옵션
+	var start = $("#inoutDate");
+	var end = $("inoutEndDate");
+	start.change(function(){
+		if(end.val() == ""){
+			end.val(start.val());
+		}
+	});
+	end.change(function(){
+		if(start.val() == ""){
+			start.val(end.val());
+		}
+	});
+	
+//그리드 모달 더블클릭--------------------------------------------------
+
+	//자재
+	grid.on('dblclick', ev =>{
+		if(ev.columnName == 'comMaterialCode'){
+			materialCodeSearch(ev.rowKey);
+		}
+	});
+	//자재LOT_NO
+	grid.on('dblclick', ev =>{
+		if(ev.columnName == 'matLotNo'){
+			matLotNoSearch(ev.rowKey);
+		}
+	});
+	
+//-----------------------------------------------------------------
+	
+	
+	
+	//그리드 테마
 	tui.Grid.applyTheme('clean', 
 		{
 			row: {
@@ -215,5 +282,46 @@ $(document).ready(function () {
 			}
 	});
 	
+	
+	//그리드 로우아이디 지정--------------------------------------
+	//자재
+	$('#searchMaterialCode').click(function(event) {
+		materialCodeSearch(-1);
+	});
+
+	//LOT
+	$('#searchMatLotNo').click(function(event) {
+		matLotNoSearch(-1);
+	});
+	//-----------------------------------------------------
+	
 });
+//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+//자재
+var materialRowId;
+function materialCodeSearch(c) {
+	materialRowId = c;
+	  console.log(materialRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//자재LOT_NO
+var matrLotRowId;
+function matLotNoSearch(c) {
+	matrLotRowId = c;
+	  console.log(matrLotRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//---------------------------------------------------------------
 </script>

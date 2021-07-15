@@ -86,6 +86,12 @@ $('#subPages3').attr('style','');
 $('.matrOrder').addClass('active');
 
 
+//그리드모달창을 위한 그리드 선언-------------------------------------
+let orderGrid;
+let materialGrid;
+//-----------------------------------------------------------
+
+
 	$(document).ready(function() {
 		
 		// 옵션 폼 리셋버튼  
@@ -166,6 +172,12 @@ $('.matrOrder').addClass('active');
 				name: 'erpMaterialPrice'
 			}]
 		});
+		
+		//모달 그리드 초기화 ----------------------------------
+		orderGrid = grid;
+		materialGrid = grid;
+		//--------------------------------------------------
+		
 	//데이터 제이슨타입으로 보내기
  	grid.on('response', ev => {
 		  const {response} = ev.xhr;
@@ -208,5 +220,45 @@ $('.matrOrder').addClass('active');
 			}
 	});
 	
+	//발주코드 모달 로우아이디 값--------------------------------------
+
+	//자재
+	$('#searchMaterialCode').click(function(event) {
+		materialCodeSearch(-1);
+	});
+	//발주
+	$('#searchMatOrderCode').click(function(event) {
+		matOrderCodeSearch(-1);
+	});
+	
+	
 }); //end of document ready
+//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+//자재
+var materialRowId;
+function materialCodeSearch(c) {
+	materialRowId = c;
+	  console.log(materialRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//발주
+var matOrderRowId;
+function matOrderCodeSearch(c) {
+	matOrderRowId = c;
+	  console.log(matOrderRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+
 </script>

@@ -19,7 +19,7 @@
 					자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" placeholder="자재코드"/>
 				 	자재명 <input type="text" id="comMaterialName" name="comMaterialName" placeholder="자재명"/>
 				    <button id="findRow">검색</button>
-				</div>matLot
+				</div>
 				<div id="modalGrid"></div>
 			</div>
 		</div>
@@ -44,6 +44,7 @@ $(document).ready(function() {
 			matLotNo = grid.getValue(chkRowKeys[i], 'matLotNo');
 			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
 			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
+			matInoutQuantity = grid.getValue(chkRowKeys[i],'matInoutQuantity');
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
 		if(matrLotRowId == -1){
@@ -53,6 +54,7 @@ $(document).ready(function() {
 			materialGrid.setValue(matrLotRowId, 'matLotNo', matLotNo, false);
 			materialGrid.setValue(matrLotRowId, 'comMaterialCode', comMaterialCode, false);
 			materialGrid.setValue(matrLotRowId, 'comMaterialName', comMaterialName, false);
+			materialGrid.setValue(matrLotRowId, 'matInoutQuantity', matInoutQuantity, false);
 		}
 		
 

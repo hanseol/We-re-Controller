@@ -47,7 +47,7 @@ max-height: 600px; */
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
+					<div class="col-md-12">
 						일자<input type="date" id="inoutDate" name="inoutDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
 					</div>
 					<div class="col-md-3">
@@ -61,6 +61,11 @@ max-height: 600px; */
 					<div class="col-md-3">
 						입고업체<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="searchVendorCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-3">
+						자재LOT_NO<input type="text" id="matLot" name="matLot">
+						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
@@ -191,12 +196,14 @@ $('.matrInout').addClass('active');
 					var inoutDate = $("#inoutDate").val();
 					var erpVendorCode = $("#vendorCode").val();
 					var inoutEndDate = $("#inoutEndDate").val();
+					var matLot = $("#matLot").val();
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
 						'matInoutDate': inoutDate,
 						'erpVendorCode': erpVendorCode,
-						'matInoutEndDate' : inoutEndDate
+						'matInoutEndDate' : inoutEndDate,
+						'matLot' : matLot
 					};
 					grid.readData(1, readParams, true);
 					outGrid.readData(1, readParams, true);
@@ -327,21 +334,20 @@ $('.matrInout').addClass('active');
 		        bodyHeight: 150,
 		        rowHeight: 30,
 				columns: [{
-					header: '입고일자',
+					header: '출고일자',
 					name: 'matInoutDate',
 					width: '80',
 					align: 'center'
 				}, {
-					header: '업체코드',
-					name: 'erpVendorCode',
+					header: '공정코드',
+					name: 'comProcessCode',
 					width: '100',
 					align: 'center'
 				}, {
-					header: '입고업체명',
+					header: '출고공정명',
 					name: 'comCodeDetailName',
 					width: '100',
 					align: 'center'
-					
 				}, {
 					header: '자재코드',
 					name: 'comMaterialCode',
@@ -385,16 +391,6 @@ $('.matrInout').addClass('active');
 					width: 'auto',
 					minWidth: 100,
 					align: 'right'
-				}, {
-					header: '공정코드',
-					name: 'comProcessCode',
-					width: '100',
-					align: 'center'
-				}, {
-					header: '출고공정명',
-					name: 'comProcessName',
-					width: '100',
-					align: 'center'
 				}]
 			});
 //모달 그리드 초기화 ----------------------------------
@@ -525,7 +521,7 @@ function materialCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchMaterialCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
@@ -538,7 +534,7 @@ function vendorCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchVendorCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
@@ -551,7 +547,7 @@ function matLotNoSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchMatLotNo.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

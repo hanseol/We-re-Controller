@@ -57,7 +57,7 @@ public class MaterialController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("/matMatr/matrView.do")
+    @RequestMapping("/mat/matr/matrView.do")
     public String selectMaterialList(@ModelAttribute("searchVO") MaterialVO searchVO, 
     		ModelMap model) {
 

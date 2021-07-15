@@ -46,7 +46,7 @@ public class MatOrderController {
 //--------------------------------------조회 페이지-------------------------------------
     
     //페이지 넘겨주기
-    @RequestMapping("/matOrder/matrOrderView.do")
+    @RequestMapping("/mat/order/matrOrderView.do")
     public String selectMatOrderList(@ModelAttribute("searchVO") MatOrderVO searchVO, 
     		ModelMap model) {
 
@@ -67,7 +67,7 @@ public class MatOrderController {
 //--------------------------------------모달 페이지--------------------------------------
     
     //발주코드 오픈
-    @GetMapping("/matOrder/searchMatOrderCode.do")
+    @GetMapping("/mat/order/searchMatOrderCode.do")
   	public String searchMaterialCode() {
   		
   		//모달창에 띄워줄 view페이지 전달.
