@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
 
 <div class="modal">  
-<!-- 20210703 주성원 자재검색 모달창 -->
+<!-- 20210703 주성원 자재불량코드 검색 모달창 -->
    
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>자재 검색</h3>
+		<h3>불량코드 검색</h3>
 	</div>
 </div>
 
@@ -19,8 +19,7 @@
 				    불량명 <input type="text" id="fltyName" name="fltyName" placeholder="불량명"/>
 				    <button id="findRow">검색</button>
 				</div>
-				<div class="col-md-6" id="matPassGrid"></div>
-				<div class="col-md-6" id="matFltyGrid"></div>
+				<div id="modalGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -43,24 +42,16 @@ $(document).ready(function() {
 		for(var i=0; i<chkRowKeys.length; i++){
 			comMaterialFCode = grid.getValue(chkRowKeys[i],'comMaterialFCode');
 			comMaterialFName = grid.getValue(chkRowKeys[i],'comMaterialFName');
-			quaMaterialPQty = grid.getValue(chkRowKeys[i],'quaMaterialPQty');
-			quaMaterialFQty = grid.getValue(chkRowKeys[i],'quaMaterialFQty');
 		}
 		//view 페이지에 뿌려줄 부분 아이디값
 		if(matFltyRowId == -1){
-			$("#materialCode").val(comMaterialFCode);
+			$("#matFltyCode").val(comMaterialFCode);
 		} else {
 			matFltyGrid.blur();
 			console.log(matFltyRowId);
 			matFltyGrid.setValue(matFltyRowId, 'comMaterialFCode', comMaterialFCode, false);
 			matFltyGrid.setValue(matFltyRowId, 'comMaterialFName', comMaterialFName, false);
-			matFltyGrid.setValue(matFltyRowId, 'quaMaterialPQty', quaMaterialPQty, false);
-			matFltyGrid.setValue(matFltyRowId, 'quaMaterialFQty', quaMaterialFQty, false);
-			if ((quaMaterialPQty == null) || (quaMaterialFQty == null)){
-				matFltyGrid.setValue(matFltyRowId, 'quaMaterialChk', 0, false);	
-			}else{
-				matFltyGrid.setValue(matFltyRowId, 'quaMaterialChk', 1, false);
-			}
+
 			
 		}
 		
@@ -78,40 +69,10 @@ $(document).ready(function() {
 				'comMaterialFCode' : matFltyCode,
 				'comMaterialFName' : fltyName
 			};
-		grid.readData(1, readParams, true);
+		matFltyGrid.readData(1, readParams, true);
 	});
 	
-	const matPassDataSource = {
-		api : {
-			readData : {
-				url : '${pageContext.request.contextPath}/ajax/searchMatFltyQty',
-				method : 'GET'
-			}
-		},
-		contentType : "application/json"
-	};
-	const matPassGrid = new tui.Grid({
-		el : document.getElementById('matPassGrid'),
-		data : matPassDataSource,
-		scrollX: false,
-        scrollY: true,
-        bodyHeight :500,
-        rowHeight: 30,
-		columns : [ {
-			header : '발주량',
-			name : 'erpMaterialOrderQty'
-		}, {
-			header : '합격량',
-			name : 'quaMaterialPQty',
-			editor: 'text'
-		}, {
-			header : '불량량',
-			name : 'quaMaterialFQty',
-			editor: 'text'
-		}]
-	});
-	
-	const matFltyDataSource = {
+	const dataSource = {
 		api : {
 			readData : {
 				url : '${pageContext.request.contextPath}/ajax/searchMatFlty',
@@ -121,13 +82,13 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const matFltyGrid = new tui.Grid({
-		el : document.getElementById('matFltyGrid'),
+	const grid = new tui.Grid({
+		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
-		data : matFltyDataSource,
-			scrollX: false,
+		data : dataSource,
+			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :500,
+	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
 			header : '자재불량코드',
@@ -139,20 +100,6 @@ $(document).ready(function() {
 			header : '불량내역',
 			name : 'comMaterialFDesc'
 		}]
-	});
-	
-	//발주코드 값 들고오기
-	var readParam = {
-			'erpMaterialOrderCode' : erpMaterialOrderCode
-		};
-	matPassGrid.readData(1, readParam, true);
-	
-	
-		matPassGrid.on('afterChange',ev => {
-		//자동 계산 
-		var qty = matPassGrid.getValue( ev.changes[0].rowKey, 'quaMaterialPQty');
-		var unitPrice = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
-		grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
 		
 	}); 
 }); //end of document ready

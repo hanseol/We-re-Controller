@@ -163,6 +163,10 @@ $(document).ready(function () {
 		el: document.getElementById('grid'),
 		rowHeaders: ['checkbox'],
 		data: dataSource,
+		scrollX: true,
+        scrollY: true,
+        bodyHeight :150,
+        rowHeight: 30,
 		columns: [{
 			header: '발주코드',
 			name: 'erpMaterialOrderCode'

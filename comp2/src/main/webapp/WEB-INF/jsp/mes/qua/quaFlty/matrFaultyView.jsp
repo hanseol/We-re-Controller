@@ -43,18 +43,17 @@
 					<div class="col-md-3">
 						발주코드
 						<input type="text" id="orderCode" name="orderCode">	
-						<a href="searchMatOrderCode.do" rel="modal:open">
+						<a id="searchMatOrderCodePure" href="searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						업체코드
-						<input type="text" id="vendorCode" name="vendorCode">	
-						<a href="searchMatOrderCode.do" rel="modal:open">
-                     	<i class="fa fa-search"></i></a>
+						입고업체<input type="text" id="vendorCode" name="vendorCode">
+						<a id="searchVendorCode" href="searchVendorCode.do">
+						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
 				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="search">조회</button>
+					<button type="button" class="btn btn-success" id="searchOne">조회</button>
 					<button type="reset" class="btn btn-danger">새자료</button>
 				</div>
 			</div>
@@ -79,14 +78,17 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<div class="panel-heading">
+		<div class="panel-body">
 			<div class="row">
 				<div>
 					<p class="panel-subtitle">자재 불량 목록</p>
-					<div class="col-md-3">
-						자재불량코드<input type="text" id="comMaterialCode" name="comMaterialCode">
-						<a href="searchMaterialCode.do" rel="modal:open">
+					<div class="col-md-6">
+						자재불량코드<input type="text" id="matFltyCode" name="matFltyCode">
+						<a id="searchMatFltyCode" href="searchMatFltyCode.do">
 						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-6" align="right">
+						<button type="button" class="btn btn-success" id="searchTwo">조회</button>
 					</div>
 				</div>
 			</div>
@@ -105,7 +107,12 @@ $('#subPages6').attr('aria-expanded','true');
 $('#subPages6').attr('style','');
 $('.matrFaulty').addClass('active');
 		
-var orderGrid;
+var oGrid;
+//그리드모달창을 위한 그리드 선언-------------------------------------
+let orderGrid;
+let vendorGrid;
+//-----------------------------------------------------------
+
 
 	$(document).ready(function() {
 		
@@ -119,7 +126,7 @@ var orderGrid;
 
 		
 		//검색데이터 전송
-		$(document).on("click",	"button[id=search]",
+		$(document).on("click",	"button[id=searchOne]",
 				function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
@@ -127,15 +134,33 @@ var orderGrid;
 					var quaMaterialChkDate = $("#quaMaterialChkDate").val();
 					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
 					var quaMaterialChkEndDate = $("#quaMaterialChkEndDate").val();
+					var matFltyCode = $("#matFltyCode").val();
+					
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
 						'quaMaterialChkDate': quaMaterialChkDate,
 						'erpMaterialOrderCode': erpMaterialOrderCode,
-						'quaMaterialChkEndDate' : quaMaterialChkEndDate
+						'quaMaterialChkEndDate' : quaMaterialChkEndDate,
+						'comMaterialFCode' : matFltyCode
 					};
 					orderGrid.readData(1, readParams, true);
 				});
+		
+		//검색데이터 전송
+		$(document).on("click",	"button[id=searchTwo]",
+				function () {
+
+					//데이터를 변수에 담아서 parameter로 만들기.
+					var matFltyCode = $("#matFltyCode").val();
+					
+
+					var readParams = {
+						'comMaterialFCode' : matFltyCode
+					};
+					fltyGrid.readData(1, readParams, true);
+				});
+		
 		
 		const dataSource = {
 			api : {
@@ -148,7 +173,7 @@ var orderGrid;
 		};
 		
 		//불량이 있는 발주 그리드
-		orderGrid = new tui.Grid({
+		oGrid = new tui.Grid({
 			el : document.getElementById('orderGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
@@ -182,6 +207,17 @@ var orderGrid;
 				name: 'quaMaterialFQty'
 			}]
 		});
+		
+		
+		//모달 그리드 초기화 ----------------------------------
+				orderGrid = oGrid;
+				vendorGrid = oGrid;
+		//-------------------------------------------------
+
+		
+		//그리드모달창을 위한 그리드 선언-------------------------------------
+				let matFltyGrid;
+		//-----------------------------------------------------------
 		
 		
 		const fltyDataSource = {
@@ -232,6 +268,11 @@ var orderGrid;
 				name: 'erpMatFltyPrice'
 			}]
 		});
+
+		//모달 그리드 초기화 ----------------------------------
+		matFltyGrid = fltyGrid;
+		//--------------------------------------------------
+		
 		
 		orderGrid.on('click', ev => {
 			if(ev.columnName == 'erpMaterialOrderCode'){
@@ -281,5 +322,66 @@ var orderGrid;
 					}
 				}
 		});
+		
+		
+		//발주코드 모달 로우아이디 값--------------------------------------
+		//발주
+		$('#searchMatOrderCodePure').click(function(event) {
+			matOrderCodeSearch(-1);
+		});
+		
+		//업체
+		$('#searchVendorCode').click(function(event) {
+			vendorCodeSearch(-1);
+		});
+		//불량
+		$('#searchMatFltyCode').click(function(event) {
+			matFltyCodeSearch(-1);
+		});
+		
 }); //end of document ready
+
+//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+//발주
+var matOrderRowId;
+function matOrderCodeSearch(c) {
+	matOrderRowId = c;
+	  console.log(matOrderRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//업체
+var vendorRowId;
+function vendorCodeSearch(c) {
+	vendorRowId = c;
+	  console.log(vendorRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//불량
+var matFltyRowId;
+function matFltyCodeSearch(c) {
+	matFltyRowId = c;
+	  console.log(matFltyRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/qua/flty/searchMatFltyCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//---------------------------------------------------------------
+
+
 </script>

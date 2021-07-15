@@ -43,13 +43,14 @@
 					<div class="col-md-3">			
 						발주코드
 						<input type="text" id="erpMaterialOrderCode" name="erpMaterialOrderCode">	
-						<a href="searchMatOrderCode.do" rel="modal:open">						
+						<a id="searchMatOrderCodePure" href="searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						자재코드
 						<input type="text" id="comMaterialCode" name="comMaterialCode">
-						<a href="searchMaterialCode.do" rel="modal:open">					
+						<a id="searchMaterialCode" href="searchMaterialCode.do">					
+						
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
@@ -227,7 +228,7 @@ let materialGrid;
 		materialCodeSearch(-1);
 	});
 	//발주
-	$('#searchMatOrderCode').click(function(event) {
+	$('#searchMatOrderCodePure').click(function(event) {
 		matOrderCodeSearch(-1);
 	});
 	
@@ -256,7 +257,7 @@ function matOrderCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

@@ -33,5 +33,6 @@ public interface MatOrderService {
     //발주코드 모달
     List<?> searchMatOrderCodeList(MatOrderVO searchVO) throws Exception;
     
-    
+    //순수발주코드 모달
+    List<?> searchMatOrderCodePureList(MatOrderVO searchVO) throws Exception;
 }

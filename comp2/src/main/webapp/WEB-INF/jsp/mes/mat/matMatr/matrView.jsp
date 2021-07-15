@@ -37,9 +37,9 @@
 		<div class="panel panel-headline">
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-3">
+<!-- 				<div class="col-md-3">
 						일자<input type="date" id="matInoutDate" name="matInoutDate"> ~ <input type="date" id="matInoutEndDate" name="matInoutEndDate">
-					</div>
+					</div> -->
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="searchMaterialCode.do">
@@ -95,13 +95,13 @@ $(document).ready(function () {
 			//데이터를 변수에 담아서 parameter로 만들기.
 			var comMaterialCode = $("#materialCode").val();
 			var erpVendorCode = $("#vendorCode").val();
-			var matInoutDate = $("#matInoutDate").val();
-			var matInoutEndDate = $("#matInoutEndDate").val();
+			//var matInoutDate = $("#matInoutDate").val();
+			//var matInoutEndDate = $("#matInoutEndDate").val();
 			var readParams = {
 				'comMaterialCode': comMaterialCode,
 				'erpVendorCode': erpVendorCode,
-				'matInoutDate': matInoutDate,
-				'matInoutEndDate': matInoutEndDate 
+				//'matInoutDate': matInoutDate,
+				//'matInoutEndDate': matInoutEndDate 
 
 			};
 			grid.readData(1, readParams, true);
@@ -166,7 +166,7 @@ $(document).ready(function () {
 		
 		
 		//날짜 범위 검색 옵션
-		var start = $("#matInoutDate");
+/*		var start = $("#matInoutDate");
 		var end = $("#matInoutEndDate");
 		start.change(function(){
 			if(end.val() == ""){
@@ -177,7 +177,7 @@ $(document).ready(function () {
 			if(start.val() == ""){
 				start.val(end.val());
 			}
-		});
+		});*/
 		
 		
 		

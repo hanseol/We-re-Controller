@@ -250,7 +250,10 @@ let erpMaterialOrderCode;
 			columns: [{
 				header: '발주코드',
 				name: 'erpMaterialOrderCode',
-				editor: 'text'
+				editor: 'text',
+				validation: {
+			           required:true
+			        }
 			}, {
 				header: '입고일자',
 				name: 'quaMaterialDate',

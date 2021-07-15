@@ -43,7 +43,7 @@
 		]]>
 	</select>
 	
-	<!-- 발주코드 모달 리스트 출력(자재입고검사관리에 있는 모달)
+	<!-- 발주코드 모달 리스트 출력(자재입고검사관리에 있는 더블클릭 모달)
 		발주코드로 자재입고검사관리에서 더미데이터 만들 때 자동 완성용.-->
 	<select id="searchMatOrderCodeList" parameterType="mes.mat.order.service.MatOrderVO" resultType="egovMap">
 		SELECT *
@@ -79,6 +79,40 @@
 					  WHERE ROWNUM <= #{lastIndex} )
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>
+	
+	<select id="searchMatOrderCodePureList" parameterType="mes.mat.order.service.MatOrderVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   e.erp_material_order_code,
+		                                       e.com_material_code,
+		                                       c.com_material_name,
+		                                       c.com_material_size,
+		                                       c.com_material_unit,
+		                                       e.erp_material_order_qty,
+		                                       e.erp_vendor_code,
+		                                       e.erp_material_unit_price,
+		                                       d.com_code_detail_name,
+		                                       TO_CHAR(e.erp_material_order_date, 'YY/MM/DD')as erp_material_order_date,
+		                                       TO_CHAR(e.erp_material_request_date, 'YY/MM/DD')as erp_material_request_date
+		                              FROM     erp_material_order e,
+		                              		   com_material c,
+		                              		   com_code_detail d
+		                              WHERE	   e.com_material_code = c.com_material_code
+		                              AND	   e.erp_vendor_code = d.com_code_detail_id
+					                  <if test="erpMaterialOrderCode != null and erpMaterialOrderCode !=''">AND
+					                     e.erp_material_order_code LIKE '%' || UPPER(#{erpMaterialOrderCode}) || '%'
+					                  </if>
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     c.com_material_name LIKE '%' || #{comMaterialName} || '%'
+					                  </if>
+                  					  ORDER BY e.erp_material_order_date <![CDATA[ ) A
+					  WHERE ROWNUM <= #{lastIndex} )
+		WHERE RNUM >= #{firstIndex}]]>
+	</select>
+	
 
 	
 </mapper>

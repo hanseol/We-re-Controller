@@ -36,4 +36,7 @@ public interface MatOrderMapper {
     
     //발주코드 모달
     public List<?> searchMatOrderCodeList(MatOrderVO searchVO) throws Exception;
+    
+    //순수발주코드 모달
+    public List<?> searchMatOrderCodePureList(MatOrderVO searchVO) throws Exception;
 }

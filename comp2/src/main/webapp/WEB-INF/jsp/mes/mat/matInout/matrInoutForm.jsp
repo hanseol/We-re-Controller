@@ -54,9 +54,6 @@ max-height: 600px; */
 						자재코드<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
-						
-						<input type="hidden" id="matLot" name="matLot">
-						<a id="searchMatLotNo" href="searchMatLotNo.do"></a>
 					</div>
 					<div class="col-md-3">
 						입고업체<input type="text" id="vendorCode" name="vendorCode">
