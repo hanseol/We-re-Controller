@@ -4,24 +4,22 @@
 <mapper namespace="mes.com.matrDtaList.service.impl.MatrDtaListMapper">
 	
 	<!-- 마스터코드 조회 -->
-	<select id="selectMatrDtaList" parameterType="mes.com.matrDtaList.service.MatrDtaListVO" resultType="egovMap">
-		SELECT * FROM (
-			SELECT A.*, ROWNUM RNUM FROM (
-					SELECT a.COM_CODE_DETAIL_ID
-							, a.COM_CODE_DETAIL_NAME
-							, b.COM_MATERIAL_SIZE
-					FROM COM_CODE_DETAIL a
-							, COM_MATERIAL b
-					WHERE 1=1 
-					AND a.COM_CODE_DETAIL_ID = b.COM_MATERIAL_CODE
-				<![CDATA[					
-			) A WHERE ROWNUM <= #{lastIndex}
-		)WHERE RNUM >= #{firstIndex}
-		]]>
+	<select id="selectMatrDtaList" resultType="mes.com.matrDtaList.service.MatrDtaListVO">
+		SELECT a.COM_CODE_DETAIL_ID
+		     , a.COM_CODE_DETAIL_NAME
+		     , b.COM_MATERIAL_SIZE
+		     , b.COM_MATERIAL_NAME
+		     , b.COM_MATERIAL_UNIT
+		     , b.COM_MATERIAL_VENDOR_CODE
+		     , b.COM_MATERIAL_SAFETY_STOCK
+		FROM COM_CODE_DETAIL a
+		     , COM_MATERIAL b
+		WHERE 1=1
+		AND a.COM_CODE_DETAIL_ID = b.COM_MATERIAL_CODE
 	</select>
 		
 	<!-- 디테일코드 조회 -->
-	<select id="selectMatrDtaListDetailList" parameterType="mes.com.matrDtaList.service.MatrDtaListVO" resultType="egovMap">
+	<select id="selectMatrDtaListDetailList" parameterType="mes.com.matrDtaList.service.MatrDtaListVO" resultType="mes.com.matrDtaList.service.MatrDtaListVO">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
 					SELECT b.COM_CODE_DETAIL_ID

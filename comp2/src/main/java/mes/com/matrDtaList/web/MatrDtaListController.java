@@ -1,8 +1,6 @@
 package mes.com.matrDtaList.web;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -50,34 +48,37 @@ public class MatrDtaListController {
 	// 마스터코드 조회
 	@RequestMapping(value = "/matrDta/MatrDtaList")
 	@ResponseBody
-	public Map<String, Object> readMatrDtaList(Model model, @ModelAttribute("searchVO") MatrDtaListVO searchVO)
-			throws Exception {
-		
-    	List<?> list = service.selectMatrDtaList(searchVO);
+	public List<MatrDtaListVO> readMatrDtaList(Model model){
     	
-    	
-    	return comFunc.sendResult(list);
+		return service.selectMatrDtaList();
 	}
 	
-	// 디테일코드 조회
 	@RequestMapping(value = "/matrDta/MatrDtaDetailList")
 	@ResponseBody
-	public Map<String, Object> readMatrDtaListDetail(Model model, @ModelAttribute("searchVO") MatrDtaListVO searchVO)
-			throws Exception {
-
-		List<?> list = new ArrayList<>();
-
-		list = service.selectMatrDtaListDetailList(searchVO);
-
-		model.addAttribute("MatrDta", matrDtaListMapper.selectMatrDtaListDetailList(searchVO));
-		
-		return comFunc.sendResult(list);
+	public MatrDtaListVO selectMatrDtaListDetailList(Model model, MatrDtaListVO vo) { // 자재 리스트에서 클릭시 자재 상세 정보 출력
+		return service.selectMatrDtaListDetailList(vo);
 	}
+	
+//	// 디테일코드 조회
+//	@RequestMapping(value = "/matrDta/MatrDtaDetailList")
+//	@ResponseBody
+//	public Map<String, Object> readMatrDtaListDetail(Model model, @ModelAttribute("searchVO") MatrDtaListVO searchVO)
+//			throws Exception {
+//
+//		List<?> list = new ArrayList<>();
+//
+//		list = service.selectMatrDtaListDetailList(searchVO);
+//
+//		model.addAttribute("MatrDta", matrDtaListMapper.selectMatrDtaListDetailList(searchVO));
+//		
+//		return comFunc.sendResult(list);
+//	}
 	
 	// 뷰페이지만 넘겨준다.
 	@RequestMapping(value = "matrDta/MatrDtaList.do")
-	public String MatrDtaList(@ModelAttribute("searchVO") MatrDtaListVO searchVO, ModelMap model) {
-
+	public String MatrDtaList(Model model) {
+		model.addAttribute("mats",service.getMatNo());
+		model.addAttribute("units",service.getUnitNo());
 		return "mes/com/matrDta/matrDtaList.page";
 	}
 

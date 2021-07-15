@@ -22,10 +22,10 @@ import mes.com.matrDtaList.service.MatrDtaListVO;
 public interface MatrDtaListMapper {
 	
 	// 마스터테이블 조회
-    public List<?> selectMatrDtaList(MatrDtaListVO searchVO) throws Exception;
+    public List<MatrDtaListVO> selectMatrDtaList();
 
     //디테일 코드 조회
-    public List<?> selectMatrDtaListDetailList(MatrDtaListVO searchVO) throws Exception;
+    public MatrDtaListVO selectMatrDtaListDetailList(MatrDtaListVO vo);
 
 
 }

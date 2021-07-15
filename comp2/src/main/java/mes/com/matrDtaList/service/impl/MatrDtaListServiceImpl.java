@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -33,14 +34,17 @@ public class MatrDtaListServiceImpl extends EgovAbstractServiceImpl implements M
 	@Resource(name = "matrDtaListMapper")
 	private MatrDtaListMapper matrDtaListDAO;
 	
-	// 마스터테이블 조회
-	public List<?> selectMatrDtaList(MatrDtaListVO searchVO) throws Exception {
-		return matrDtaListDAO.selectMatrDtaList(searchVO);
+	@Autowired
+	MatrDtaListMapper mapper;
+	
+	@Override
+	public List<MatrDtaListVO> selectMatrDtaList() {
+		return mapper.selectMatrDtaList();
 	}
 
-	// 디테일 코드 조회
-	public List<?> selectMatrDtaListDetailList(MatrDtaListVO searchVO) throws Exception {
-		return matrDtaListDAO.selectMatrDtaListDetailList(searchVO);
+	@Override
+	public MatrDtaListVO selectMatrDtaListDetailList(MatrDtaListVO vo) {
+		return mapper.selectMatrDtaListDetailList(vo);
 	}
 
 }
