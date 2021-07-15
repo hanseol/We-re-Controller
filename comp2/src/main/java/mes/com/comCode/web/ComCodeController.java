@@ -154,7 +154,7 @@ public class ComCodeController {
 	
 	
 	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "comCode/ComCodeList.do")
+	@RequestMapping(value = "com/comCode/ComCodeList.do")
 	public String selectComCodeList(@ModelAttribute("searchVO") ComCodeVO searchVO, ModelMap model) {
 
 		return "mes/com/comCode/comCodeList.page";
