@@ -141,7 +141,7 @@ public class ProdUseMatrController {
 	}
 	
 	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "prodUseMatr/ProdUseMatrForm.do")
+	@RequestMapping(value = "com/prodUseMatr/ProdUseMatrForm.do")
 	public String viewProdUseMatr(@ModelAttribute("searchVO") ProdUseMatrVO searchVO, ModelMap model) {
 
 		return "mes/com/prodUseMatr/prodUseMatrForm.page";
