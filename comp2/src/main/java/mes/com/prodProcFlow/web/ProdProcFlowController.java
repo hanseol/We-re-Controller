@@ -99,7 +99,7 @@ public class ProdProcFlowController {
 	}
 
 	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "prodProc/prodProcFlowForm.do")
+	@RequestMapping(value = "com/prodProc/prodProcFlowForm.do")
 	public String prodProcFlow(@ModelAttribute("searchVO") ProdProcFlowVO searchVO, ModelMap model) {
 		
 		return "mes/com/prodProc/prodProcFlowForm.page";
