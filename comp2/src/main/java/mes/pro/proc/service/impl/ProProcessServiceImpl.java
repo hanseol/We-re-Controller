@@ -141,5 +141,10 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 		proProcessDAO.updateStartTime(vo);
 	}
 
+	@Override
+	public String selectProdName(ProProcessVO vo) {
+		return proProcessDAO.selectProdName(vo);
+	}
+
     
 }

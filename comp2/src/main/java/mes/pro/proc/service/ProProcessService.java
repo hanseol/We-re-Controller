@@ -76,5 +76,7 @@ public interface ProProcessService {
     
     //생산 공정 시작 시간 & 공정 작업 상태 업데이트
     void updateStartTime(ProProcessVO vo) throws Exception;
+
+    String selectProdName(ProProcessVO vo);
     
 }

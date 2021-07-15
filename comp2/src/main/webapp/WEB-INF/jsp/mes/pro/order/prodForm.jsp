@@ -75,7 +75,7 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<p class="panel-subtitle">자재정보</p>
 					<div>
 						제품코드 <input type="text" id="comProductCode" name="comProductCode" readonly>
@@ -85,7 +85,7 @@
 						<div id="matInfogrid"></div>
 					</div>
 				</div>
-				<div class="col-md-8">
+				<div class="col-md-6">
 					<p class="panel-subtitle">로트정보</p>	
 					<div>
 						자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" readonly>
@@ -190,9 +190,10 @@ var proOrderRowKey;
 				comProcessCode = matLotgrid.getValue(chkRows[i], 'comProcessCode');
 				proOrderDate = $("#proOrderDate").val();
 				proOrderDetailCode = test;
+				matInoutUnitPrice = matLotgrid.getValue(chkRows[i], 'matInoutUnitPrice');
+				matInoutPrice = matLotgrid.getValue(chkRows[i], 'matInoutPrice');
+				quaMaterialStatement = matLotgrid.getValue(chkRows[i], 'quaMaterialStatement');
 				
-				console.log(proOrderDate);
-				console.log(proOrderDetailCode);
 				
 				$.ajax({
 					url : '${pageContext.request.contextPath}/ajax/proOrder/insertMat',
@@ -201,7 +202,10 @@ var proOrderRowKey;
 						'comMaterialCode' : comMaterialCode,
 						'comProcessCode' : comProcessCode,
 						'proOrderDate' : proOrderDate,
-						'proOrderDetailCode' : proOrderDetailCode
+						'proOrderDetailCode' : proOrderDetailCode,
+						'matInoutUnitPrice' : matInoutUnitPrice,
+						'matInoutPrice' : matInoutPrice,
+						'quaMaterialStatement' : quaMaterialStatement
 						},
 					dataType :'JSON',
 					contentType :'application/json',
@@ -212,7 +216,7 @@ var proOrderRowKey;
 				
 		 	} // end of for... 
 		 	
-			matLotgrid.reloadData();
+			matLotgrid.clear();
 		});
 		
 		
@@ -266,7 +270,8 @@ var proOrderRowKey;
 				name : 'proPlanQty'
 			},{
 				header : '주문량',
-				name : 'erpOrderQty'
+				name : 'erpOrderQty',
+				/* formatter: (ev)=> {return ev.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} */
 			}, {
 				header : '지시량',
 				name : 'proOrderQty',
@@ -393,16 +398,31 @@ var proOrderRowKey;
 				name : 'matInoutQuantity' 
 			}, {
 				header : '구분',
-				name : 'matInoutGubun'
+				name : 'matInoutGubun',
+				hidden : true
 			}, {
 				header : '자재코드',
-				name : 'comMaterialCode'
+				name : 'comMaterialCode',
+				hidden : true
 			}, {
 				header : '자재이름',
 				name : 'comMaterialName'
 			}, {
 				header : '공정코드',
-				name : 'comProcessCode'
+				name : 'comProcessCode',
+				hidden : true
+			}, {
+				header : 'unitPrice',
+				name : 'matInoutUnitPrice',
+				hidden : true
+			}, {
+				header : 'inoutPrice',
+				name : 'matInoutPrice',
+				hidden : true
+			}, {
+				header : 'quaMaterialStatement',
+				name : 'quaMaterialStatement',
+				hidden : true
 			} ]
 		
 	}); //end of grid(3번)

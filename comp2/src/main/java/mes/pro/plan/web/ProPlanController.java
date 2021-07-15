@@ -71,13 +71,13 @@ public class ProPlanController {
     //proPlanView.jsp
     
     //생산계획조회 페이지로 이동 (prodPlanView.jsp)
-    @RequestMapping("proPlan/ProdPlanView.do")
+    @RequestMapping("pro/plan/ProdPlanView.do")
     public String prodPlanView( @ModelAttribute("searchVO") ProPlanVO searchVO, Model model){
         return "mes/pro/plan/prodPlanView.page";
     }
     
     //생산계획조회 페이지에서 리스트 조회
-    @RequestMapping("proPlan/ProdPlanView")
+    @RequestMapping("pro/plan/ProdPlanView")
     @ResponseBody
     public Map<String, Object> readPlan(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
     	List<?> list = new ArrayList<>();
@@ -90,14 +90,14 @@ public class ProPlanController {
     //proPlanForm.jsp
     
     //생산계획관리 페이지로 이동(prodPlanForm.jsp)
-    @RequestMapping("proPlan/prodPlanForm.do")
+    @RequestMapping("pro/plan/prodPlanForm.do")
     public String prodPlanForm( @ModelAttribute("searchVO") ProPlanVO searchVO, Model model){
         return "mes/pro/plan/prodPlanForm.page";
     }
     
     
     //생산계획관리 페이지에서 리스트 조회
-    @RequestMapping("proPlan/ProdPlanFormList")
+    @RequestMapping("pro/plan/ProdPlanFormList")
     @ResponseBody
     public Map<String, Object> readPlanForm(@ModelAttribute("searchVO") ProPlanVO searchVO) throws Exception{
     	List<?> list = new ArrayList<>();
@@ -144,7 +144,7 @@ public class ProPlanController {
     }
     
     //생산계획리스트 추가, 수정, 삭제 
-	@PutMapping("proPlan/modifyProdPlan")
+	@PutMapping("pro/plan/modifyProdPlan")
 	@ResponseBody
 	public Map<String, Object> modifyProdPlan(@RequestBody GridDataVO gd) throws Exception {
 

@@ -120,7 +120,7 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/proOrder/prodView',
+					url : '${pageContext.request.contextPath}/pro/order/prodView',
 					method : 'GET'
 				}
 			},

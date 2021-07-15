@@ -80,4 +80,6 @@ public interface ProProcessMapper {
     
     //생산 공정 상태 업데이트
     public void updateStartTime(ProProcessVO vo) throws Exception;
+
+	public String selectProdName(ProProcessVO vo);
 }

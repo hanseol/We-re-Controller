@@ -101,10 +101,10 @@ SELECT * FROM (
 	
 	<!-- 공정 리스트 조회 -->
 	<select id="selectProProcessName" resultType="mes.pro.proc.service.ProProcessVO">
-		SELECT COM_CODE_DETAIL_ID AS COM_PROCESS_CODE
+		SELECT 	  COM_CODE_DETAIL_ID AS COM_PROCESS_CODE
 				, COM_CODE_DETAIL_NAME AS COM_PROCESS_NAME
-		FROM COM_CODE_DETAIL
-		WHERE COM_CODE_ID = 'MES007'
+		FROM 	  COM_CODE_DETAIL
+		WHERE 	  COM_CODE_ID = 'MES007'
 	</select>
 	
 	<!-- 각 공정에서 작업 대기중인 지시 항목 불러오기. (오늘 지시목록 중에 해당공정에서 작업중이거나 작업완료된 지시는 필터링 되어야함.) -->
@@ -113,38 +113,42 @@ SELECT * FROM (
 	<!-- PROCG003:포장 - 오늘 해야 할 작업 중 검사를 마치고 포장 대기중인 지시 조회 -->
 	<select id="selectProOrderDetailCode" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
 		<if test="comProcessCode == 'PROCG001'">
-			SELECT PRO_ORDER_DETAIL_CODE
-			FROM PRO_ORDER_DETAIL
-			WHERE PRO_WORK_DATE = TRUNC(SYSDATE)
-			AND PRO_PROCESS_STATUS IS NULL
+			SELECT 	PRO_ORDER_DETAIL_CODE
+			FROM 	PRO_ORDER_DETAIL
+			WHERE 	PRO_PROCESS_STATUS IS NULL
 		</if>
 		<if test="comProcessCode == 'PROCG002'">
-			SELECT PRO_ORDER_DETAIL_CODE
-			FROM PRO_ORDER_DETAIL
-			WHERE PRO_WORK_DATE = TRUNC(SYSDATE)
-			AND PRO_PROCESS_STATUS = 2
+			SELECT	PRO_ORDER_DETAIL_CODE
+			FROM 	PRO_ORDER_DETAIL
+			WHERE 	PRO_PROCESS_STATUS = 2
 		</if>
 		<if test="comProcessCode == 'PROCG003'">
-			SELECT PRO_ORDER_DETAIL_CODE
-			FROM PRO_ORDER_DETAIL
-			WHERE PRO_WORK_DATE = TRUNC(SYSDATE)
-			AND PRO_PROCESS_STATUS = 4
+			SELECT 	PRO_ORDER_DETAIL_CODE
+			FROM 	PRO_ORDER_DETAIL
+			WHERE 	PRO_PROCESS_STATUS = 4
 		</if>
 	</select>
 	
 	<!-- 선택된 지시에 필요한 자재 LOT 정보를 자재 종류별로 보여준다. -->
 	<select id="selectMatrLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="mes.pro.proc.service.ProProcessVO">
-		SELECT MI.COM_MATERIAL_CODE, 
-     			PML.MAT_LOT_NO, 
-		      	PML.PRO_ORDER_DETAIL_CODE,
-		        CM.COM_MATERIAL_NAME
-				FROM PRO_MATERIAL_LOT PML, MAT_INOUT MI, COM_MATERIAL CM
-		WHERE PML.MAT_LOT_NO = MI.MAT_LOT_NO
-   		 AND MI.MAT_INOUT_GUBUN = 'INOUT003'
-		AND MI.COM_MATERIAL_CODE = CM.COM_MATERIAL_CODE
-    	AND MI.COM_PROCESS_CODE = #{comProcessCode}
-		AND PML.PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
-		ORDER BY CM.COM_MATERIAL_CODE
+		SELECT  m.com_material_code
+		      , l.mat_lot_no
+		      , c.com_material_name
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = #{comProcessCode}
+		  AND   l.pro_order_detail_code = #{proOrderDetailCode}
+		ORDER BY m.com_material_code
+	</select>
+	
+	<!-- 지시코드를 선택했을 때 제품명 가져오기 -->
+	<select id="selectProdName" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
+		SELECT 	erp_product_name
+		FROM 	pro_order_detail
+		WHERE 	pro_order_detail_code = #{proOrderDetailCode}
 	</select>
 	
 	<!-- procg001(첫번째공정에서) start 버튼 눌렀을 때 . -->
@@ -198,7 +202,7 @@ SELECT * FROM (
 				SET	PRO_PROCESS_START_TIME=#{proProcessStartTime},
 					MAC_LINE_NO=#{macLineNo},
 					ERP_EMPLOYEE_ID=#{erpEmployeeId},
-					MAC_CODE=#{macCode},
+					MAC_CODE=#{macCode}
 				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
 				AND COM_PROCESS_CODE = #{comProcessCode};
 				

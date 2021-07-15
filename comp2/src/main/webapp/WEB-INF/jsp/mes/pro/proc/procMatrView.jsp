@@ -62,7 +62,12 @@
 </div>
 <script>
 	$(document).ready(function() {
-		
+		//네비게이션 바 고정.
+		$('#proNav').addClass('active');
+		$('#subPages4').addClass('in');
+		$('#subPages4').attr('aria-expanded','true');
+		$('#subPages4').attr('style','');
+		$('.proProdPlan').addClass('active');
 		//M 조회 버튼	
 		$(document).on("click", "button[id=findRow]",
 		      function() {
@@ -100,7 +105,7 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/',
+					url : '${pageContext.request.contextPath}/pro/proc/procMatView',
 					method : 'GET'
 				}
 			},

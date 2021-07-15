@@ -88,6 +88,9 @@
                             , mat_inout_gubun
                             , mat_inout_quantity
                             , mat_lot_no
+                            , mat_inout_unit_price
+					        , mat_inout_price
+					        , qua_material_statement 
                             , com_process_code )
                 VALUES(  #{matInoutStatement}
                        , #{comMaterialCode}
@@ -95,6 +98,9 @@
                        , 'INOUT003'
                        , #{matInoutQuantity}
                        , #{matLotNo}
+                       , #{matInoutUnitPrice}
+                       , #{matInoutPrice}
+                       , #{quaMaterialStatement}
                        <choose>
 	                       <when test="comMaterialCode == 'MAT0011' and comMaterialCode == 'MAT0012' 
 	                       				and comMaterialCode == 'MAT0013' and comMaterialCode == 'MAT0014'">
@@ -159,10 +165,13 @@
 		     , i.mat_inout_quantity
 		     , i.mat_inout_gubun
 		     , i.com_process_code
+		     , i.mat_inout_unit_price
+		     , i.mat_inout_price
+		     , i.qua_material_statement
 		FROM mat_inout i
 		   , com_material m
 		WHERE 	m.com_material_code = i.com_material_code
-		  AND   i.mat_inout_gubun = 'INOUT003'
+		  AND   i.mat_inout_gubun = 'INOUT002'
 		  AND   m.com_material_code = #{comMaterialCode}
 		  AND   i.mat_lot_no NOT IN ( SELECT mat_lot_no
 		                              FROM   pro_material_lot)

@@ -185,80 +185,80 @@ public class MacController {
 	}
 	
 	
-	/***
-	 * 생산 모니터링 화면 
-	 * 
-	 */
-	@RequestMapping("/mac/monitoringView.do")
-	public String monitoringView(){
-		return "mes/mac/monitoring.page";
-	}
-	
-	@RequestMapping("/mac/openPerformance.do")
-	public String openPerformance() {
-		return "mes/mac/performance";
-	}
-	
-	
-	/**
-	 * 공정 관리 화면 
-	 * 
-	 * */
-
-	//모달창을 열 때 선택가능한 공정명 정보를 전달.
-	@RequestMapping("/pro/openProcessManage.do")
-	public String openProcessmanage(Model model) {
-
-		List<ProProcessVO> procgList = proProcService.selectProProcessName();
-		
-		model.addAttribute("procgs", procgList);
-		return "mes/mac/processManage";
-	}
-	
-	//공정명이 선택되면 해당 공정에 대기중인 작업지시 정보를 전달.
-	@RequestMapping("ajax/pro/getProOrderDetailCode")
-	@ResponseBody
-	public Map<String, Object> getProOrderDetailCode(@ModelAttribute ProProcessVO vo){
-		
-		List<String> orderCodeList = proProcService.selectProOrderDetailCode(vo);
-		
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("list", orderCodeList);
-		
-		return map;
-	}
-	
-	//작업지시가 선택되면 해당 작업에 필요한 자재 정보를 전달.
-	@RequestMapping("ajax/pro/readMaterial")
-	@ResponseBody
-	public Map<String, Object> readMaterial(@ModelAttribute ProProcessVO vo){
-		
-		List<ProProcessVO> list = proProcService.selectMatrLot(vo);
-		return comFunc.sendResult(list);
-	}
-	
-	//선택한 작업지시가 start 되었을 때.
-	@RequestMapping("ajax/pro/startProProcess")
-	@ResponseBody
-	public Map<String,Object> startProProcess(ProProcessVO vo) throws Exception{
-		if(vo.getComProcessCode().equals("PROCG001")) {
-			proProcService.insertProProcess(vo);
-		}else {
-			proProcService.updateStartTime(vo);
-		}
-		
-		return null;
-	}
-	
-	//선택한 작업지시가 end 되었을 때.
-	@RequestMapping("ajax/pro/endProProcess")
-	@ResponseBody
-	public Map<String,Object> endProProcess(@ModelAttribute ProProcessVO vo) throws Exception{
-	
-		proProcService.updateProProcess(vo);
-		
-		return null;
-	}
+//	/***
+//	 * 생산 모니터링 화면 
+//	 * 
+//	 */
+//	@RequestMapping("/mac/monitoringView.do")
+//	public String monitoringView(){
+//		return "mes/mac/monitoring.page";
+//	}
+//	
+//	@RequestMapping("/mac/openPerformance.do")
+//	public String openPerformance() {
+//		return "mes/mac/performance";
+//	}
+//	
+//	
+//	/**
+//	 * 공정 관리 화면 
+//	 * 
+//	 * */
+//
+//	//모달창을 열 때 선택가능한 공정명 정보를 전달.
+//	@RequestMapping("/pro/openProcessManage.do")
+//	public String openProcessmanage(Model model) {
+//
+//		List<ProProcessVO> procgList = proProcService.selectProProcessName();
+//		
+//		model.addAttribute("procgs", procgList);
+//		return "mes/mac/processManage";
+//	}
+//	
+//	//공정명이 선택되면 해당 공정에 대기중인 작업지시 정보를 전달.
+//	@RequestMapping("ajax/pro/getProOrderDetailCode")
+//	@ResponseBody
+//	public Map<String, Object> getProOrderDetailCode(@ModelAttribute ProProcessVO vo){
+//		
+//		List<String> orderCodeList = proProcService.selectProOrderDetailCode(vo);
+//		
+//		Map<String,Object> map = new HashMap<String, Object>();
+//		map.put("list", orderCodeList);
+//		
+//		return map;
+//	}
+//	
+//	//작업지시가 선택되면 해당 작업에 필요한 자재 정보를 전달.
+//	@RequestMapping("ajax/pro/readMaterial")
+//	@ResponseBody
+//	public Map<String, Object> readMaterial(@ModelAttribute ProProcessVO vo){
+//		
+//		List<ProProcessVO> list = proProcService.selectMatrLot(vo);
+//		return comFunc.sendResult(list);
+//	}
+//	
+//	//선택한 작업지시가 start 되었을 때.
+//	@RequestMapping("ajax/pro/startProProcess")
+//	@ResponseBody
+//	public Map<String,Object> startProProcess(ProProcessVO vo) throws Exception{
+//		if(vo.getComProcessCode().equals("PROCG001")) {
+//			proProcService.insertProProcess(vo);
+//		}else {
+//			proProcService.updateStartTime(vo);
+//		}
+//		
+//		return null;
+//	}
+//	
+//	//선택한 작업지시가 end 되었을 때.
+//	@RequestMapping("ajax/pro/endProProcess")
+//	@ResponseBody
+//	public Map<String,Object> endProProcess(@ModelAttribute ProProcessVO vo) throws Exception{
+//	
+//		proProcService.updateProProcess(vo);
+//		
+//		return null;
+//	}
 	
 	
 	/**
