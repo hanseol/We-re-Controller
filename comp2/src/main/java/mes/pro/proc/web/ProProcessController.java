@@ -1,5 +1,7 @@
 package mes.pro.proc.web;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -31,7 +33,6 @@ import mes.pro.proc.service.ProProcessVO;
  */
 
 @Controller
-@SessionAttributes(types=ProProcessVO.class)
 public class ProProcessController {
 
     @Resource(name = "proProcessService")
@@ -46,18 +47,94 @@ public class ProProcessController {
     
     
     //공정별 자재 페이지 호출
-    @RequestMapping("proProc/procMatView.do")
-    public String procMatView(Model model){
-        return "mes/pro/process/procMatrView.page";
+    @RequestMapping("pro/proc/procMatView.do")
+    public String procMatView(){
+        return "mes/pro/proc/procMatrView.page";
     }
     
     //생산지시리스트 조회
-    @RequestMapping("proProc/procMatView")
+    @RequestMapping("pro/proc/procMatView")
     @ResponseBody
     public Map<String, Object> readMatView(@ModelAttribute("searchVO") ProOrderVO searchVO ) throws Exception {
 //    	List<?> list = service.""(searchVO);
 //    	return comFunc.sendResult(list);
     	return null;
     }
+    
+     
+    //모니터링 페이지 호출(생산관리) > 선택가능한 지시정보를 가지고 옴
+    @RequestMapping("pro/proc/mntView.do")
+    public String mntView(Model model) {
+    	
+		List<ProProcessVO> procgList = service.selectProProcessName();
+		
+		model.addAttribute("procgs", procgList);
+    	
+		return "mes/pro/proc/mntView.page";
+    }
+    
+    //공정명이 선택되면 해당 공정에 대기중인 작업지시 정보를 전달.
+  	@RequestMapping("ajax/pro/getProOrderDetailCode")
+  	@ResponseBody
+  	public Map<String, Object> getProOrderDetailCode(@ModelAttribute ProProcessVO vo){
+  		
+  		List<String> orderCodeList = service.selectProOrderDetailCode(vo);
+  		
+  		Map<String,Object> map = new HashMap<String, Object>();
+  		map.put("list", orderCodeList);
+  		
+  		return map;
+  	}
+  	
+  	//작업지시가 선택되면 해당 작업에 필요한 자재 정보를 전달.
+  	@RequestMapping("ajax/pro/readMaterial")
+  	@ResponseBody
+  	public Map<String, Object> readMaterial(@ModelAttribute ProProcessVO vo){
+  		
+  		List<ProProcessVO> list = service.selectMatrLot(vo);
+  		return comFunc.sendResult(list);
+  	}
+  	
+  	
+  	//작업지시가 선택되면 해당 작업의 제품명을 조회
+  	@RequestMapping("ajax/pro/readProdName")
+  	@ResponseBody
+  	public Map<String, Object> readProdName(@ModelAttribute ProProcessVO vo) {
+  		
+  		
+  		String erpProductName = service.selectProdName(vo);
+  		System.out.println(erpProductName);
+  		Map<String, Object> map = new HashMap<String, Object>();
+  		
+  		map.put("erpProductName", erpProductName );
+  		
+  		return map;
+  	}
+  	
+  	
+  	
+  	//선택한 작업지시가 start 되었을 때.
+  	@RequestMapping("ajax/pro/startProProcess")
+  	@ResponseBody
+  	public Map<String,Object> startProProcess(ProProcessVO vo) throws Exception{
+  		if(vo.getComProcessCode().equals("PROCG001")) {
+  			service.insertProProcess(vo);
+  		}else {
+  			service.updateStartTime(vo);
+  		}
+  		
+  		return null;
+  	}
+  	
+  	//선택한 작업지시가 end 되었을 때.
+  	@RequestMapping("ajax/pro/endProProcess")
+  	@ResponseBody
+  	public Map<String,Object> endProProcess(@ModelAttribute ProProcessVO vo) throws Exception{
+  	
+  		service.updateProProcess(vo);
+  		
+  		return null;
+  	}
+    
     
 }

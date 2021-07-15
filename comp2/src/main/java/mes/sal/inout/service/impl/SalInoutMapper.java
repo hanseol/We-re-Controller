@@ -94,6 +94,10 @@ public interface SalInoutMapper {
   	//모달 : 완제품 LOT_NO 조회
 	public List<?> searchProductLotNoList(SalInoutVO searchVO) throws Exception;
 	public int searchProductLotNoListTotCnt(SalInoutVO searchVO);
+	
+	//모달 : 출고시 완제품 LOT_NO 조회
+	public List<?> searchModProductLotNoList(SalInoutVO searchVO) throws Exception;
+	public int searchModProductLotNoListTotCnt(SalInoutVO searchVO);
 
 	//모달 : 생산지시디테일코드 조회
 	public List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception;
@@ -102,6 +106,8 @@ public interface SalInoutMapper {
 	//모달 : 전표번호(반품) 조회
 	public List<?> searchInoutStatementList(SalInoutVO searchVO) throws Exception;
 	public int searchInoutStatementListTotCnt(SalInoutVO searchVO);
+	
+
 	
 
 

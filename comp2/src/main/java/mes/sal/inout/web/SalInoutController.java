@@ -73,7 +73,7 @@ public class SalInoutController {
 	}
 
 	// 주문목록조회 페이지
-	@RequestMapping("/salInout/salesOrderView.do")
+	@RequestMapping("/sal/salInout/salesOrderView.do")
 	public String selectSalesOrderList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -94,7 +94,7 @@ public class SalInoutController {
 	}
 
 	// 입출고조회 페이지
-	@RequestMapping("/salInout/salesProdView.do")
+	@RequestMapping("/sal/salInout/salesProdView.do")
 	public String selectSalesProductList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -102,7 +102,7 @@ public class SalInoutController {
 	}
 
 	// 입출고관리 페이지
-	@RequestMapping("/salInout/salesProdForm.do")
+	@RequestMapping("/sal/salInout/salesProdForm.do")
 	public String selectSalesProductFormList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -123,7 +123,7 @@ public class SalInoutController {
 	}
 			
 	// 반품 목록 조회 페이지
-	@RequestMapping("/salInout/retuProdView.do")
+	@RequestMapping("/sal/salInout/retuProdView.do")
 	public String selectSalesReturnList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -131,7 +131,7 @@ public class SalInoutController {
 	}
 		
 	// 반품 목록 관리 페이지
-	@RequestMapping("/salInout/retuProdForm.do")
+	@RequestMapping("/sal/salInout/retuProdForm.do")
 	public String selectSalesReturnFormList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -218,7 +218,7 @@ public class SalInoutController {
 //------------------------------------모달---------------------------------------
 		
 		// 모달 : 제품코드 조회
-		@GetMapping("/salInout/searchProductCode.do")
+		@GetMapping("sal/salInout/searchProductCode.do")
 		public String searchProductCode() {
 			
 			//모달창 띄워주는 페이지
@@ -237,7 +237,7 @@ public class SalInoutController {
 
 		
 		// 모달 : 고객코드 조회
-		@GetMapping("/salInout/searchCustomerCode.do")
+		@GetMapping("sal/salInout/searchCustomerCode.do")
 		public String searchCustomerCode() {
 
 			// 모달창 띄워주는 페이지
@@ -258,7 +258,7 @@ public class SalInoutController {
 		
 		
 		// 모달 : 완제품 LOT_NO 조회
-		@GetMapping("/salInout/searchProductLotNo.do")
+		@GetMapping("sal/salInout/searchProductLotNo.do")
 		public String searchProductLotNoView() {
 
 			// 모달창 띄워주는 페이지
@@ -275,11 +275,31 @@ public class SalInoutController {
 
 			return comFunc.sendResult(list);
 		}
+		
+		
+		// 모달 : 출고시 완제품 LOT_NO 조회
+		@GetMapping("sal/salInout/modSearchProductLotNo.do")
+		public String searchModProductLotNoView() {
+	
+			// 모달창 띄워주는 페이지
+			return "mes/sal/modal/modSearchProductLotNo";
+		}
+	
+		// 모달 : 출고시 완제품 LOT_NO 조회값 전달
+		@RequestMapping("/ajax/modSearchProductLotNo")
+		@ResponseBody
+		public Map<String, Object> searchModProductLotNo(@ModelAttribute("searchVO") SalInoutVO searchVO)
+				throws Exception {
+	
+			List<?> list = salInoutService.searchModProductLotNoList(searchVO);
+	
+			return comFunc.sendResult(list);
+		}
 
 		
 		
 		// 모달 : 생산지시디테일코드 조회
-		@GetMapping("/salInout/searchOrderCode.do")
+		@GetMapping("sal/salInout/searchOrderCode.do")
 		public String searchOrderCode() {
 
 			// 모달창 띄워주는 페이지
@@ -300,7 +320,7 @@ public class SalInoutController {
 		
 		
 		//모달 : 전표번호 조회(반품페이지) ...(x)
-		@GetMapping("/salInout/searchInoutStatement.do")
+		@GetMapping("sal/salInout/searchInoutStatement.do")
 		public String searchInoutStatementView() {
 
 			// 모달창 띄워주는 페이지

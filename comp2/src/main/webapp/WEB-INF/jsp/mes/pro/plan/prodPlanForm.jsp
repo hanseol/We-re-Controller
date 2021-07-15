@@ -163,8 +163,8 @@
 		//dataSource		
 		const dataSource = {
 			api : {
-				readData : { url : '${pageContext.request.contextPath}/proPlan/ProdPlanFormList', method : 'GET' },  
-				modifyData : { url: '${pageContext.request.contextPath}/proPlan/modifyProdPlan', method: 'PUT' }
+				readData : { url : '${pageContext.request.contextPath}/pro/plan/ProdPlanFormList', method : 'GET' },  
+				modifyData : { url: '${pageContext.request.contextPath}/pro/plan/modifyProdPlan', method: 'PUT' }
 			},
 			initialRequest : false,
 			contentType : "application/json"

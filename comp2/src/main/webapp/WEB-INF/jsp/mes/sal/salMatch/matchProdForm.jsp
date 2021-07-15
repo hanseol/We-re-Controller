@@ -198,17 +198,19 @@ let mgrid;
 				editor : 'text'
 			}, {
 				header : '제품코드',
-				name : 'comProductCode'
+				name : 'comProductCode',
+				editor : 'text'
 			}, {
 				header : '기존수량',
-				name : 'salInoutQuantity'
+				name : 'salPastQuantity',
+				editor : 'text'
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty',
 				editor : 'text'
 			}, {
 				header : '최종수량',
-				name : 'finalQuantity'
+				name : 'salInoutQuantity'
 			}, {
 				header : '전표번호',
 				name : 'salMatchStatement',
@@ -222,11 +224,11 @@ let mgrid;
   		mgrid.on('afterChange', ev => { 			
   			if (ev.changes[0].columnName == 'salMatchQty') {
   				var match = mgrid.getValue(ev.changes[0].rowKey, 'salMatchQty');
-  				var order = mgrid.getValue(ev.changes[0].rowKey, 'salInoutQuantity');
+  				var order = mgrid.getValue(ev.changes[0].rowKey, 'salPastQuantity');
   				if(mgrid.getValue(ev.changes[0].rowKey, 'salMatchInout') == 'INOUT004') {
-					mgrid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) + parseInt(match));
+					mgrid.setValue(ev.changes[0].rowKey, 'salInoutQuantity', parseInt(order) + parseInt(match));
   				} else {
-					mgrid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(match));
+					mgrid.setValue(ev.changes[0].rowKey, 'salInoutQuantity', parseInt(order) - parseInt(match));
   				}
   			}
 		});

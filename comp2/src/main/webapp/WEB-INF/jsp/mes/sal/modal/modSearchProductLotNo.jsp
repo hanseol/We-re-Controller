@@ -47,33 +47,20 @@ $(document).ready(function() {
 			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
 			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
 			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
-			proOrderDetailCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
-			proProcessQuantity = grid.getValue(chkRowKeys[i], 'proProcessQuantity');
+			salInoutQuantity = grid.getValue(chkRowKeys[i], 'salInoutQuantity');
 			
 			
 			console.log(proProcessLotNo);
 			console.log(erpProductCode);
 			console.log(erpCustomerCode);
-			console.log(proOrderDetailCode);
-			console.log(proProcessQuantity);
+			console.log(salInoutQuantity);
 			
+			mgrid.blur();
+			mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
+			mgrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false); //고객사코드
+			mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
+			mgrid.setValue(rowId, 'salInoutQuantity', salInoutQuantity, false); //수량									
 			
-			//view 페이지에 뿌려줄 부분 아이디값
-			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-				$("#productLotNo").val(proProcessLotNo);
-				proProcessLotNo = [];
-			} else { //아니면 mgrid(모달그리드)에 뿌려준다
-				mgrid.blur();
-				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
-				mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
-														
-				if (mgrid.getValue(chkRowKeys[i], 'salInoutGubun') == 'INOUT002') { //입고이면
-					mgrid.setValue(rowId, 'salInoutCode', proOrderDetailCode, false); //지시코드
-					mgrid.setValue(rowId, 'salInoutQuantity', proProcessQuantity, false); //수량
-				} else if(mgrid.getValue(chkRowKeys[i], 'salMatchInout') != null) { //정산입출고이면
-					mgrid.setValue(rowId, 'salPastQuantity', proProcessQuantity, false); //기존수량
-				}
-			}
 		}
 	});
 	
@@ -92,7 +79,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/ajax/searchProductLotNo',
+				url : '${pageContext.request.contextPath}/ajax/modSearchProductLotNo',
 				method : 'GET'
 			}
 		},
@@ -118,7 +105,7 @@ $(document).ready(function() {
 			name : 'erpProductName'
 		}, {
 			header : '수량',
-			name : 'proProcessQuantity'
+			name : 'salInoutQuantity'
 		}]
 	});
 });

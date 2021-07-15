@@ -2,21 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<style>
-.modal {
-		-webkit-border-radius: 0px;
-		border-radius: 0px;
-		overflow: visible;
-		text-align: center;
-		max-width: 1300px;
-		width: 1200px;
-		height: 100%;
-	}
-
-</style>	
+<!-- 타이틀 -->
 <div class="content-fluid">
-	<div class="panel panel-headline">
-		<h3>공정관리 화면구상</h3>
+	<div>
+		<h2>생산관리</h2>
 	</div>
 </div>
 
@@ -40,6 +29,7 @@
 					<td>
 						<select name="proOrderDetailCode" id="proOrderDetailCode">
 							<option value="">--------선택--------</option>
+							
 						</select>
 					</td>
 					<th>제품명</th>
@@ -79,6 +69,12 @@
 
 <script>
 	$(document).ready(function(){
+		//네비게이션 바 고정.
+		$('#proNav').addClass('active');
+		$('#subPages4').addClass('in');
+		$('#subPages4').attr('aria-expanded','true');
+		$('#subPages4').attr('style','');
+		$('.proMnt').addClass('active');
 		
 		//1. 공정을 먼저 선택한다.
 		$("#comProcessCode").on("change", function() {
@@ -96,6 +92,8 @@
 				dataType : "json",
 				data:{"comProcessCode": comProcGubunCode},
 				success: function(result){
+					
+					console.log(result);
 					
 					//기존 셀렉트박스 값 비우기
 					$("select[name='proOrderDetailCode']").empty(); 
@@ -116,15 +114,31 @@
 			
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
 			var comProcessCode = $("#comProcessCode option:selected").val();
+			var erpProductName;
+			
 			var readParams = {
 					'proOrderDetailCode' : proOrderDetailCode,
 					'comProcessCode' : comProcessCode
 			};
 			//해당 지시에 필요한 자재정보를 가지고 온다.
 			proOrderGrid.readData(1, readParams, true);
+			
+			$.ajax({
+				url: '${pageContext.request.contextPath}/ajax/pro/readProdName',
+				data: {'proOrderDetailCode' : proOrderDetailCode},
+				dataType : 'json',
+				success : function(result){
+				
+					console.log(result.erpProductName);
+					$("#comProductName").val(result.erpProductName);
+				}
+			});
+			
 			//시작버튼 활성화
 			$("#startBtn").prop("disabled",false);
+			
 		});
+		
 		
 		//3. 작업을 시작한다.
 		$("#startBtn").on("click",function(){
@@ -206,7 +220,6 @@
 		
 		const proOrderGrid = new tui.Grid({
 			el : document.getElementById('proOrderGrid'),
-			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			scrollX : true,
 			scrollY : true,

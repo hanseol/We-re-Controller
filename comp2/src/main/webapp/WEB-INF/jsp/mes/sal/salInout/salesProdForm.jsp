@@ -238,9 +238,11 @@ let mgrid; //모달그리드
 	      if(ev.columnName == 'proProcessLotNo') {
 	    	  if(grid.getValue(i, 'salInoutGubun') == null) {
 	    		  alert('입고/출고를 먼저 구분해주세요.');
-	    	  } else {
+	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') {
 	    	  	 productLotNoSearch(ev.rowKey);	    	  	 
-	    	  } 
+	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') {
+	    		  modProductLotNoSearch(ev.rowKey);
+	    	  }
 	    	}
 	   });
 	 
@@ -304,6 +306,18 @@ let mgrid; //모달그리드
 		  this.blur(); // Manually remove focus from clicked link.
 		  console.log(this.href);
 		  $.get("searchProductLotNo.do", function(html) {
+		    $(html).appendTo('body').modal();
+		  });
+	}
+	
+	//수정된 완제품 LOT_NO 값 받아오는 모달
+	function modProductLotNoSearch(c) {
+		  rowId = c;
+		  event.preventDefault();
+		  $(".modal").remove();
+		  this.blur(); // Manually remove focus from clicked link.
+		  console.log(this.href);
+		  $.get("modSearchProductLotNo.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
 	}

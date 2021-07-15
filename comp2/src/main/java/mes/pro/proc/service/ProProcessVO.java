@@ -24,37 +24,16 @@ import mes.main.service.SearchVO;
 public class ProProcessVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
-    /** COM_PROCESS_CODE */
-    private java.lang.String comProcessCode;
-    
-    /** PRO_ORDER_DETAIL_CODE */
+    private String comProcessCode;
     private java.lang.String proOrderDetailCode;
-    
-    /** COM_PRODUCT_F_CODE */
-    private java.lang.String comProductFCode;
-    
-    /** PRO_PROCESS_F_QTY */
+    private String comProductFCode;
     private java.math.BigDecimal proProcessFQty;
-    
-    /** MAC_LINE_NO */
     private String macLineNo;
-    
-    /** PRO_PROCESS_START_TIME */
-    private java.lang.String proProcessStartTime;
-    
-    /** PRO_PROCESS_END_TIME */
-    private java.lang.String proProcessEndTime;
-    
-    /** ERP_EMPLOYEE_ID */
+    private String proProcessStartTime;
+    private String proProcessEndTime;
     private String erpEmployeeId;
-    
-    /** MAC_CODE */
-    private java.lang.String macCode;
-    
-    /** PRO_PROCESS_LOT_NO */
-    private java.lang.String proProcessLotNo;
-    
-    /** PRO_PROCESS_QUANTITY */
+    private String macCode;
+    private String proProcessLotNo;
     private java.math.BigDecimal proProcessQuantity;
     
     //확장

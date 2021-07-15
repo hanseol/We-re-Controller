@@ -122,7 +122,7 @@
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/proPlan/ProdPlanView',
+					url : '${pageContext.request.contextPath}/pro/plan/ProdPlanView',
 					method : 'GET'
 				}
 			},
