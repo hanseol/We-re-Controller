@@ -75,7 +75,7 @@ public class ProdFaultyController {
 	}
 	
 	// 뷰페이지만 넘겨준다.
-	@RequestMapping(value = "prodFaulty/prodFaultyForm.do")
+	@RequestMapping(value = "com/prodFaulty/prodFaultyForm.do")
 	public String viewProdFaulty(@ModelAttribute("searchVO") ProdFaultyVO searchVO, ModelMap model) {
 
 		return "mes/com/prodFaulty/prodFaultyForm.page";
