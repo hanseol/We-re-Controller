@@ -62,5 +62,13 @@ public interface MacService {
     
     List<MacDateResultVO> selectLeftDate() throws Exception;
     
+    String selectNextMacCode() throws Exception;
+    
+    //설비 규격
+    List<String> selectMacSize();
+    //설비 용도
+    List<String> selectMacUsePurpose();
+    //설비 이름
+    List<String> selectMacModel();
     
 }

@@ -44,7 +44,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 	
 	<style>
-	
 	.my-panel {
 		text-align: right;
 		border-top: 1px solid gray;

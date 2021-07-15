@@ -33,7 +33,7 @@ public class HomeController {
 	 * 
 	 * */
 	
-	@RequestMapping("home.do")
+	@RequestMapping("/home.do")
 	public String home(HttpSession session) {
 
 		return "tiles/home.page";
@@ -43,9 +43,14 @@ public class HomeController {
      * security check.
      * 
      * */
-    @RequestMapping("loginForm.do")
+    @RequestMapping("/loginForm.do")
   	public String loginForm(Model model) {
   		return "mes/member/loginForm";
+  	}
+    
+    @RequestMapping("/accessDenied.do")
+  	public String accessDenied(Model model) {
+  		return "mes/member/denied";
   	}
 
 }

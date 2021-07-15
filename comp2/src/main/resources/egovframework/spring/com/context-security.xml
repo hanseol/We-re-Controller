@@ -27,9 +27,9 @@
 
     <egov-security:config id="securityConfig"
 		loginUrl="/loginForm.do"
-		logoutSuccessUrl="/home.do"
+		logoutSuccessUrl="/loginForm.do"
 		loginFailureUrl="/loginForm.do"
-		accessDeniedUrl="/sec/ram/accessDenied.do"
+		accessDeniedUrl="/accessDenied.do"
 
 		dataSource="egov.dataSource"
 		jdbcUsersByUsernameQuery="SELECT USER_ID, ESNTL_ID AS PASSWORD, 1 ENABLED, USER_NM, USER_ZIP,
@@ -49,7 +49,7 @@
 		concurrentExpiredUrl="/EgovContent.do"
 		errorIfMaximumExceeded="false"
 
-		defaultTargetUrl="/EgovContent.do"
+		defaultTargetUrl="/home.do"
 		alwaysUseDefaultTargetUrl="true"
 
 		sniff="true"

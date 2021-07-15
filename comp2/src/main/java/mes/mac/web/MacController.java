@@ -63,7 +63,7 @@ public class MacController {
 	 * 
 	 */
 	// 설비 정보 조회 페이지를 연다.
-	@RequestMapping("/mac/macInfoView.do")
+	@RequestMapping("/mac/miv/macInfoView.do")
 	public String macInfoView() {
 
 		return "mes/mac/macInfoView.page";
@@ -85,7 +85,7 @@ public class MacController {
 
 	// 설비 검색 버튼을 눌렀을 때 모달창 여는 동작
 	// 라인번호와 차기점검일로 검색가능.
-	@GetMapping("mac/openMacListModal.do")
+	@GetMapping("mac/miv/openMacListModal.do")
 	public String showMacModal() {
 
 		// 모달창에 띄워줄 view페이지 전달.
@@ -110,7 +110,7 @@ public class MacController {
 	 */
 
 	// 설비 정보 관리 페이지를 연다
-	@RequestMapping("/mac/macInfoForm.do")
+	@RequestMapping("/mac/mim/macInfoForm.do")
 	public String updateMacInfoForm() {
 		return "mes/mac/macInfoForm.page";
 	}
@@ -151,9 +151,38 @@ public class MacController {
 	 */
 
 	// 등록 페이지
-	@RequestMapping("mac/macRegisterForm.do")
+	@RequestMapping("mac/mim/macRegisterForm.do")
 	public String macRegisterForm(HttpSession session) {
 		return "mes/mac/macRegisterForm.page";
+	}
+	
+	//등록 페이지에 필요한 정보 가져오기.
+//	@RequestMapping("ajax/mac/getNextMacCode")
+//	@ResponseBody 
+//	public String getNextMacCode() throws Exception{
+//		
+//		String code = macService.selectNextMacCode();
+//		return code;
+//	}
+	
+	//등록 페이지에 필요한 정보 여러개 넘기기.
+	@RequestMapping("ajax/mac/getInfo")
+	@ResponseBody
+	public Map<String,Object> getInfo() throws Exception{
+		
+		String code = macService.selectNextMacCode();
+		List<String> model = macService.selectMacModel();
+		List<String> size = macService.selectMacSize();
+		List<String> usePurpose = macService.selectMacUsePurpose();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("code", code);
+		map.put("model",model);
+		map.put("size",size);
+		map.put("usePurpose",usePurpose);
+		
+		return map;
 	}
 
 	@RequestMapping(value="ajax/mac/registerMac", method=RequestMethod.POST)

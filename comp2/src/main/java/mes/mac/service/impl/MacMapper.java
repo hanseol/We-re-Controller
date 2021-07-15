@@ -68,4 +68,12 @@ public interface MacMapper {
     //점검일 D-DAY
     public List<MacDateResultVO> selectLeftDate() throws Exception;
 
+    //다음 설비코드 가져오기
+    public String selectNextMacCode() throws Exception;
+    //설비 규격
+    public List<String> selectMacSize();
+    //설비 용도
+    public List<String> selectMacUsePurpose();
+    //설비 이름
+    public List<String> selectMacModel();
 }

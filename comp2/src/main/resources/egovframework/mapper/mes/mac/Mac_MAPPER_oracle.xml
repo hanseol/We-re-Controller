@@ -194,4 +194,27 @@ SELECT * FROM (
        			, TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) AS "dday"
 		FROM MAC
 	</select>
+	
+	<select id="selectNextMacCode" resultType="String">
+		SELECT 'MAC' || TO_CHAR(MAX(SUBSTR(MAC_CODE,4))+1) FROM MAC
+	</select>
+	
+	<select id="selectMacSize" resultType="String">
+		SELECT com_code_detail_name AS macSize 
+		FROM com_code_detail
+		WHERE com_code_detail_id LIKE 'MACSIZE%'
+	</select>
+	
+	<select id="selectMacUsePurpose" resultType="String">
+		SELECT com_code_detail_name AS macUsePurpose
+		FROM com_code_detail
+		WHERE com_code_id = 'MES002'
+	</select>
+	
+	<select id="selectMacModel" resultType="String">
+		SELECT com_code_detail_desc AS macModel
+		FROM com_code_detail
+		WHERE com_code_id = 'MES002'
+	</select>
+	
 </mapper>

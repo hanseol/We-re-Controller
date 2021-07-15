@@ -77,7 +77,7 @@
 							<a href="#subPages5" data-toggle="collapse" class="collapsed" id="macNav"><i class="lnr lnr-cog"></i> <span>설비</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages5" class="collapse ">
 								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/mac/macInfoView.do" class="macInfo">설비관리</a></li>
+									<li><a href="${pageContext.request.contextPath}/mac/miv/macInfoView.do" class="macInfo">설비관리</a></li>
 								</ul>
 							</div>
 						</li>

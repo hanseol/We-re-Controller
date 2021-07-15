@@ -112,5 +112,25 @@ public class MacServiceImpl extends EgovAbstractServiceImpl implements
     	return macDAO.selectLeftDate();
     }
 
+	@Override
+	public String selectNextMacCode() throws Exception {
+		return macDAO.selectNextMacCode();
+	}
+
+	@Override
+	public List<String> selectMacSize() {
+		return macDAO.selectMacSize();
+	}
+
+	@Override
+	public List<String> selectMacUsePurpose() {
+		return macDAO.selectMacUsePurpose();
+	}
+
+	@Override
+	public List<String> selectMacModel() {
+		return macDAO.selectMacModel();
+	}
+
    
 }

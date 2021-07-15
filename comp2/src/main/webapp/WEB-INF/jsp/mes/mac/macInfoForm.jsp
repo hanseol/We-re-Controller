@@ -22,11 +22,11 @@
 	<!-- 조회, 수정/삭제, 등록 탭 이동 -->
 	<div id="tabs">
 	   <ul class="nav nav-tabs" role="tablist">
-	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/macInfoView.do"' 
+	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/miv/macInfoView.do"' 
 	    				aria-controls="tab1" role="tab" data-toggle="tab">조회</a></li>
-	     <li class="active"><a onclick='location.href="${pageContext.request.contextPath}/mac/macInfoForm.do"' 
+	     <li class="active"><a onclick='location.href="${pageContext.request.contextPath}/mac/mim/macInfoForm.do"' 
 	     				aria-controls="tab2" role="tab" data-toggle="tab">수정/삭제</a></li>
-	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/macRegisterForm.do"' 
+	     <li class=""><a onclick='location.href="${pageContext.request.contextPath}/mac/mim/macRegisterForm.do"' 
 	     				aria-controls="tab3" role="tab" data-toggle="tab">등록</a></li>
 	   </ul>
 	</div>
@@ -41,7 +41,7 @@
 			<div class="col-md-6">
 				* 설비코드   &nbsp;&nbsp;&nbsp;<input type="text" id="viewMacCode" >  &nbsp;&nbsp;&nbsp;
 				* 차기점검일  &nbsp;&nbsp;&nbsp; <input type="date" id="viewMacNextChkDate"> &nbsp;&nbsp;&nbsp;
-				<a href="openMacListModal.do" rel="modal:open">						
+				<a href="${pageContext.request.contextPath}/mac/miv/openMacListModal.do" rel="modal:open">						
                   	<i class="fa fa-search"></i>
                	</a>
 			</div>
