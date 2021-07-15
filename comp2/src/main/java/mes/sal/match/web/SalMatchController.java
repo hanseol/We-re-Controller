@@ -70,14 +70,14 @@ public class SalMatchController {
     }
     
     //정산입출고조회 페이지
-    @RequestMapping("/salMatch/matchProdView.do")
+    @RequestMapping("/sal/salMatch/matchProdView.do")
     public String selectSalesMatchList(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
     	
     	return "mes/sal/salMatch/matchProdView.page";
     }
     
     // 정산입출고관리 페이지
- 	@RequestMapping("/salMatch/matchProdForm.do")
+ 	@RequestMapping("/sal/salMatch/matchProdForm.do")
  	public String selectSalesProductFormList(@ModelAttribute("searchVO") SalMatchVO searchVO, ModelMap model)
  			throws Exception {
 
@@ -131,7 +131,7 @@ public class SalMatchController {
         
 //--------------------------- 모달 -------------------------------
     // 모달 : 완제품 LOT_NO 조회
- 	@GetMapping("/salMatch/searchProductLotNo.do")
+ 	@GetMapping("sal/salMatch/searchProductLotNo.do")
  	public String searchProductLotNoView() {
 
  		// 모달창 띄워주는 페이지
@@ -149,7 +149,7 @@ public class SalMatchController {
  	}
  	
  	// 모달 : 제품코드 조회
- 	@GetMapping("/salMatch/searchProductCode.do")
+ 	@GetMapping("sal/salMatch/searchProductCode.do")
  	public String searchProductCode() {
  		
  		//모달창 띄워주는 페이지

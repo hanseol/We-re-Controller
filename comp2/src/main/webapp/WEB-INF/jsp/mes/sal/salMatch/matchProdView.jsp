@@ -159,13 +159,13 @@ let mgrid;
 				name : 'proProcessLotNo'
 			}, {
 				header : '기존수량',
-				name : 'salInoutQuantity'
+				name : 'salPastQuantity'
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty'
 			}, {
 				header : '최종수량',
-				name : 'finalQuantity'
+				name : 'salInoutQuantity'
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate'

@@ -388,6 +388,77 @@
 		</if>
 	</select>
 	
+	<!-- 정산 후 출고용 완제품 LOT_NO 모달 -->
+	<select id="searchModProductLotNoList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (	
+							                SELECT
+							                I.SAL_INOUT_QUANTITY as SAL_INOUT_QUANTITY,
+							                I.SAL_INOUT_GUBUN, I.PRO_PROCESS_LOT_NO,
+							                P.ERP_PRODUCT_CODE, P.ERP_PRODUCT_NAME,
+							                P.ERP_CUSTOMER_CODE
+							                FROM SAL_INOUT I, SAL_INOUT O, PRO_ORDER_DETAIL P
+							                WHERE I.SAL_INOUT_GUBUN = 'INOUT002'
+							                AND O.SAL_INOUT_GUBUN NOT IN('INOUT003')
+							                AND I.PRO_PROCESS_LOT_NO = P.PRO_PROCESS_LOT_NO
+						<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
+							PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+						</if>
+						<if test="erpProductName != null and erpProductName != ''">AND
+							ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+						</if>
+						<if test="erpProductCode != null and erpProductCode != ''">AND
+							ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
+						</if>
+						ORDER BY 
+								I.PRO_PROCESS_LOT_NO
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 모달 : 정산 후 출고용 완제품 LOT_NO 모달 목록 총 갯수 -->
+	<select id="searchModProductLotNoListTotCnt" parameterType="mes.sal.inout.service.SalInoutVO" resultType="int">
+		SELECT COUNT(*)
+		FROM SAL_INOUT I, SAL_INOUT O, PRO_ORDER_DETAIL P
+		WHERE I.SAL_INOUT_GUBUN = 'INOUT002'
+			AND O.SAL_INOUT_GUBUN NOT IN('INOUT003')
+			AND I.PRO_PROCESS_LOT_NO = P.PRO_PROCESS_LOT_NO
+		<if test="(proProcessLotNo != null and proProcessLotNo != '')
+					|| (erpProductName !=null and erpProductName != '')
+					|| (erpProductCode !=null and erpProductCode != '')">
+			<if test="searchCondition == 0">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+			</if>
+			<if test="searchCondition == 1">
+				ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+			</if>
+			<if test="searchCondition == 2">
+				ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
+			</if>
+			
+			<if test="searchCondition == 3">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+				AND ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+			</if>
+			<if test="searchCondition == 4">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+				AND ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
+			</if>
+			<if test="searchCondition == 5">
+				ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+				AND ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
+			</if>
+			
+			<if test="searchCondition == 6">
+				PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+				AND ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
+				AND ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} '%'
+			</if>
+		</if>
+	</select>
+	
 	<!-- 모달 : 생산지시디테일코드 목록 -->
 	<select id="searchProductCodeList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT * FROM (
