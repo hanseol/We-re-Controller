@@ -13,6 +13,7 @@
 		                              SELECT   TO_CHAR(e.erp_material_order_date,'YYYY/MM/DD') erp_material_order_date,
 		                                       e.erp_material_order_code,
 		                                       e.erp_vendor_code,
+		                                       get_code_detail(e.erp_vendor_code) as vendor_name, 
 		                                       e.com_material_code,
 		                                       c.com_material_name,
 		                                       c.com_material_size,

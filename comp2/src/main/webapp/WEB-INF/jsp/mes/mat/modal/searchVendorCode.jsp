@@ -19,7 +19,7 @@
 				    업체명 <input type="text" id="comCodeDetailName" name="comCodeDetailName" placeholder="업체명"/>
 				    <button id="findRow">검색</button>
 				</div>
-				<div id="modalGrid"></div>
+				<div id="vendorModalGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -31,7 +31,14 @@
 </div>
 
 <script>
+
+
+
+
 $(document).ready(function() {
+	//그리드 선언을 ready밖으로 빼기
+	//(모달 취소하고 다시 모달 들어가서 체크하면 값을 찾지 못하는 현상 해결)
+	let vendorModalGrid;
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
@@ -39,21 +46,23 @@ $(document).ready(function() {
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
-		var chkRowKeys = grid.getCheckedRowKeys();
+		var chkRowKeys = vendorModalGrid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			comCodeDetailId = grid.getValue(chkRowKeys[i],'comCodeDetailId');
-			comCodeDetailName = grid.getValue(chkRowKeys[i],'comCodeDetailName');
+			comCodeDetailId = vendorModalGrid.getValue(chkRowKeys[i],'comCodeDetailId');
+			comCodeDetailName = vendorModalGrid.getValue(chkRowKeys[i],'comCodeDetailName');
+			
+			if(vendorRowId == -1){
+				$("#vendorCode").val(comCodeDetailId);
+			} else {
+				vendorGrid.blur();
+				vendorGrid.setValue(vendorRowId, 'erpVendorCode', comCodeDetailId, false);
+				vendorGrid.setValue(vendorRowId, 'comCodeDetailName', comCodeDetailName, false);
+			}
 			
 		}
 		
-		if(vendorRowId == -1){
-			$("#vendorCode").val(comCodeDetailId);
-		} else {
-			vendorGrid.blur();
-			vendorGrid.setValue(vendorRowId, 'erpVendorCode', comCodeDetailId, false);
-			vendorGrid.setValue(vendorRowId, 'comCodeDetailName', comCodeDetailName, false);
-		}
+
 	});
 
 	
@@ -68,7 +77,7 @@ $(document).ready(function() {
 				'comCodeDetailId' : comCodeDetailId,
 				'comCodeDetailName' : comCodeDetailName
 			};
-		grid.readData(1, readParams, true);
+		vendorModalGrid.readData(1, readParams, true);
 	});
 	
 	const dataSource = {
@@ -81,8 +90,8 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const grid = new tui.Grid({
-		el : document.getElementById('modalGrid'),
+	vendorModalGrid = new tui.Grid({
+		el : document.getElementById('vendorModalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
 		scrollX: true,

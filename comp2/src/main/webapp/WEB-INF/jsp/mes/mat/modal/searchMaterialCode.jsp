@@ -19,7 +19,7 @@
 				    자재명 <input type="text" id="materialName" name="materialName" placeholder="자재명"/>
 				    <button id="findRow">검색</button>
 				</div>
-				<div id="modalGrid"></div>
+				<div id="matMatrModalGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -31,31 +31,41 @@
 </div>
 
 <script>
+
+
+
+
 $(document).ready(function() {
+	
+	//그리드 선언을 ready밖으로 빼기
+	//(모달 취소하고 다시 모달 들어가서 체크하면 값을 찾지 못하는 현상 해결)
+	let matMatrModalGrid;
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
 	$(document).on("click","button[id=ok]", function(){
 
-		var chkRowKeys = grid.getCheckedRowKeys();
-		var code = [];
+		var chkRowKeys = matMatrModalGrid.getCheckedRowKeys();
+		
 		for(var i=0; i<chkRowKeys.length; i++){
-			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
-			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
-			comMaterialSize = grid.getValue(chkRowKeys[i],'comMaterialSize');
-			comMaterialUnit = grid.getValue(chkRowKeys[i],'comMaterialUnit');
+			comMaterialCode = matMatrModalGrid.getValue(chkRowKeys[i],'comMaterialCode');
+			comMaterialName = matMatrModalGrid.getValue(chkRowKeys[i],'comMaterialName');
+			comMaterialSize = matMatrModalGrid.getValue(chkRowKeys[i],'comMaterialSize');
+			comMaterialUnit = matMatrModalGrid.getValue(chkRowKeys[i],'comMaterialUnit');
+			
+			//view 페이지에 뿌려줄 부분 아이디값
+			if(materialRowId == -1){
+				$("#materialCode").val(comMaterialCode);
+			} else {
+				materialGrid.blur();
+				console.log(materialRowId);
+				materialGrid.setValue(materialRowId, 'comMaterialCode', comMaterialCode, false);
+				materialGrid.setValue(materialRowId, 'comMaterialName', comMaterialName, false);
+				materialGrid.setValue(materialRowId, 'comMaterialSize', comMaterialSize, false);
+				materialGrid.setValue(materialRowId, 'comMaterialUnit', comMaterialUnit, false);
+			}
 		}
-		//view 페이지에 뿌려줄 부분 아이디값
-		if(materialRowId == -1){
-			$("#materialCode").val(comMaterialCode);
-		} else {
-			materialGrid.blur();
-			console.log(materialRowId);
-			materialGrid.setValue(materialRowId, 'comMaterialCode', comMaterialCode, false);
-			materialGrid.setValue(materialRowId, 'comMaterialName', comMaterialName, false);
-			materialGrid.setValue(materialRowId, 'comMaterialSize', comMaterialSize, false);
-			materialGrid.setValue(materialRowId, 'comMaterialUnit', comMaterialUnit, false);
-		}
+
 		
 
 	});
@@ -70,7 +80,7 @@ $(document).ready(function() {
 				'comMaterialCode' : matCode,
 				'comMaterialName' : materialName
 			};
-		grid.readData(1, readParams, true);
+		matMatrModalGrid.readData(1, readParams, true);
 	});
 	
 	const dataSource = {
@@ -83,8 +93,8 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const grid = new tui.Grid({
-		el : document.getElementById('modalGrid'),
+	matMatrModalGrid = new tui.Grid({
+		el : document.getElementById('matMatrModalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
 			scrollX: true,

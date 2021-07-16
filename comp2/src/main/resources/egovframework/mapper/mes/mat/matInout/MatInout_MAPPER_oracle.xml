@@ -70,16 +70,18 @@
 										          m.mat_inout_unit_price,
 										          m.mat_inout_price,
 										          m.com_process_code,
-                              					  d.com_code_detail_name
+										          d.com_code_detail_name
+										          
 										FROM      mat_inout m,
 										          com_material c,
 										          com_code_detail d,
-                              					  qua_material_chk q
+										          qua_material_chk q
+										          
 										WHERE     m.com_material_code = c.com_material_code
-					                    AND       m.com_process_code = d.com_code_detail_id
-					                    AND       m.qua_material_statement = q.qua_material_statement
-					                    AND       m.mat_inout_gubun = 'INOUT003'
-										AND       d.com_code_id = 'MES007'
+								        AND       m.com_process_code = d.com_code_detail_id
+								        AND       m.qua_material_statement = q.qua_material_statement
+								        AND       m.mat_inout_gubun = 'INOUT003'
+								        AND       d.com_code_id = 'MES007'
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
 							        	m.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}

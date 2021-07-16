@@ -77,7 +77,10 @@
 					                    AND   	q.qua_material_statement = f.qua_material_statement
 					                    AND		f.erp_material_order_code = #{erpMaterialOrderCode}
 					                    AND		f.qua_material_f_qty NOT IN 0
-                   						
+                   						<if test="comMaterialFCode != null and comMaterialFCode != ''">
+		                              	AND
+							        	f.com_material_f_code LIKE '%' || #{comMaterialFCode} || '%'
+		                              	</if>
 		                              ORDER BY f.erp_material_order_code <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}

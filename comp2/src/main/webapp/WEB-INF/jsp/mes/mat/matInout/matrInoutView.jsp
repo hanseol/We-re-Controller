@@ -68,7 +68,7 @@
 				</form>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="reset" class="btn btn-danger">새자료</button>
+					<button type="reset" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>

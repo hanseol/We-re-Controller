@@ -89,6 +89,7 @@ max-height: 600px; */
 		</div>
 	</div>
 </div>
+
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
@@ -123,6 +124,58 @@ let matFltyGrid;
 //-----------------------------------------------------------
 let erpMaterialOrderCode;
 
+//체크박스---------------------------------------------------------------
+class CustomCheckboxRenderer {
+   constructor(props) {
+       const { grid, rowKey,columnInfo, value } = props;
+       const label = document.createElement('checkbox');
+/*         const { disabled } = props.columnInfo.renderer.options; */
+       label.className = 'checkbox';
+       //label.setAttribute('for', String(rowKey));
+
+       const hiddenInput = document.createElement('input');
+       hiddenInput.className = 'hidden-input';
+       hiddenInput.id = String(rowKey);
+
+       hiddenInput.setAttribute( 'data-check-val', '0' );
+       
+       label.appendChild(hiddenInput);
+
+       hiddenInput.type = 'checkbox';
+       hiddenInput.addEventListener('change', () => {
+           if (hiddenInput.checked) {
+               hiddenInput.setAttribute( 'data-check-val', '1' );
+               grid.setValue(rowKey, columnInfo.name, "1");
+           } else {
+               hiddenInput.setAttribute( 'data-check-val', '0' );
+               grid.setValue(rowKey, columnInfo.name, "0");
+           }
+           try {
+               fnCustomChkboxChange();
+           } catch(e) {
+               
+           }
+           
+       });
+
+       this.el = label;
+
+       this.render(props);
+   }
+
+   getElement() {
+       return this.el;
+   }
+
+   render(props) {
+   const hiddenInput = this.el.querySelector('.hidden-input');
+   const checked = Boolean(props.value == '1');
+   hiddenInput.checked = checked;
+  const disabled = props.columnInfo.renderer.disabled;
+   hiddenInput.disabled = disabled; 
+   }
+};
+//-------------------------------------------------------------------
 
 	$(document).ready(function () {
 		
@@ -251,6 +304,7 @@ let erpMaterialOrderCode;
 				header: '발주코드',
 				name: 'erpMaterialOrderCode',
 				editor: 'text',
+				align: 'center',
 				validation: {
 			           required:true
 			        }
@@ -261,36 +315,46 @@ let erpMaterialOrderCode;
 				align: 'center'
 			}, {
 				header: '업체코드',
-				name: 'erpVendorCode'
+				name: 'erpVendorCode',
+				align: 'center'
 			}, {
 				header: '업체명',
-				name: 'comCodeDetailName'
+				name: 'comCodeDetailName',
+				align: 'center'
 			}, {
 				header: '자재코드',
-				name: 'comMaterialCode'
+				name: 'comMaterialCode',
+				align: 'center'
 			}, {
 				header: '자재명',
-				name: 'comMaterialName'
+				name: 'comMaterialName',
+				align: 'center'
 			}, {
 				header: '규격',
-				name: 'comMaterialSize'
+				name: 'comMaterialSize',
+				align: 'center'
 			}, {
 				header: '관리단위',
-				name: 'comMaterialUnit'
+				name: 'comMaterialUnit',
+				align: 'center'
 			}, {
 				header: '발주량',
-				name: 'erpMaterialOrderQty'
+				name: 'erpMaterialOrderQty',
+				align : 'right'
 			}, {
 				header: '합격량',
 				name: 'quaMaterialPQty',
-				editor : 'text'
+				editor : 'text',
+				align : 'right'
 			}, {
 				header: '불량량',
 				name: 'quaMaterialFQty',
-				editor : 'text'
+				editor : 'text',
+				align : 'right'
 			}, {
 				header: '불량코드',
 				name: 'comMaterialFCode',
+				align: 'center',
 				editor : {
 					type: 'select',
 					options : {
@@ -304,23 +368,20 @@ let erpMaterialOrderCode;
 			}, {
 				header: '단가',
 				name: 'erpMaterialUnitPrice',
-				editor: 'text'
+				editor: 'text',
+				align : 'right'
 			}, {
 				header: '금액',
 				name: 'erpMaterialPrice',
-				editor: 'text'
+				editor: 'text',
+				align : 'right'
 			}, {
 				header: '검사유무',
 				name: 'quaMaterialChk',
-				editor : {
-					type: 'select',
-					options : {
-					listItems: [
-						{text : '검사중', value : '0'},
-						{text : '검사완료', value : '1'}
-						]
-					}
-				}
+				editor : 'text',
+				renderer: { type: CustomCheckboxRenderer},
+				align : 'center'
+				
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',
@@ -369,7 +430,8 @@ let erpMaterialOrderCode;
 
 			columns: [{
 				header: '발주코드',
-				name: 'erpMaterialOrderCode'
+				name: 'erpMaterialOrderCode',
+				align: 'center'
 			}, {
 				header: '입고일자',
 				name: 'quaMaterialDate',
@@ -377,40 +439,52 @@ let erpMaterialOrderCode;
 				align: 'center'
 			}, {
 				header: '업체코드',
-				name: 'erpVendorCode'
+				name: 'erpVendorCode',
+				align: 'center'
 			}, {
 				header: '업체명',
-				name: 'comCodeDetailName'
+				name: 'comCodeDetailName',
+				align: 'center'
 			}, {
 				header: '자재코드',
-				name: 'comMaterialCode'
+				name: 'comMaterialCode',
+				align: 'center'
 			}, {
 				header: '자재명',
-				name: 'comMaterialName'
+				name: 'comMaterialName',
+				align: 'center'
 			}, {
 				header: '규격',
-				name: 'comMaterialSize'
+				name: 'comMaterialSize',
+				align: 'center'
 			}, {
 				header: '관리단위',
-				name: 'comMaterialUnit'
+				name: 'comMaterialUnit',
+				align: 'center'
 			}, {
 				header: '발주량',
-				name: 'erpMaterialOrderQty'
+				name: 'erpMaterialOrderQty',
+				align : 'right'
 			}, {
 				header: '합격량',
-				name: 'quaMaterialPQty'
+				name: 'quaMaterialPQty',
+				align : 'right'
 			}, {
 				header: '불량량',
-				name: 'quaMaterialFQty'
+				name: 'quaMaterialFQty',
+				align : 'right'
 			}, {
 				header: '단가',
-				name: 'erpMaterialUnitPrice'
+				name: 'erpMaterialUnitPrice',
+				align : 'right'
 			}, {
 				header: '금액',
-				name: 'erpMaterialPrice'
+				name: 'erpMaterialPrice',
+				align : 'right'
 			}, {
 				header: '검사유무',
-				name: 'quaMaterialChk'
+				name: 'quaMaterialChk',
+				align: 'center'
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',

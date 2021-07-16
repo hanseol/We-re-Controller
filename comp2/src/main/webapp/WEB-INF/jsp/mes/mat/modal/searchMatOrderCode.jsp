@@ -18,7 +18,7 @@
 					발주코드 <input type="text" id="orderCode" name="orderCode" placeholder="발주코드"/>
 				    <button id="findRow">검색</button>
 				</div>
-				<div id="modalGrid"></div>
+				<div id="matOrderModalGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -30,43 +30,54 @@
 </div>
 
 <script>
+
+
+
+
 $(document).ready(function() {
+	
+	//그리드 선언을 ready밖으로 빼기
+	//(모달 취소하고 다시 모달 들어가서 체크하면 값을 찾지 못하는 현상 해결)
+	let matOrderModalGrid;
+	
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
 	$(document).on("click","button[id=ok]", function(){
 
-		var chkRowKeys = grid.getCheckedRowKeys();
+		var chkRowKeys = matOrderModalGrid.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
-			erpMaterialOrderCode = grid.getValue(chkRowKeys[i],'erpMaterialOrderCode');
-			erpMaterialRequestDate = grid.getValue(chkRowKeys[i],'erpMaterialRequestDate');
-			erpMaterialOrderQty = grid.getValue(chkRowKeys[i],'erpMaterialOrderQty');
-			erpMaterialUnitPrice = grid.getValue(chkRowKeys[i],'erpMaterialUnitPrice');
-			erpVendorCode = grid.getValue(chkRowKeys[i],'erpVendorCode');
-			comCodeDetailName = grid.getValue(chkRowKeys[i],'comCodeDetailName');
-			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
-			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
-			comMaterialSize = grid.getValue(chkRowKeys[i],'comMaterialSize');
-			comMaterialUnit = grid.getValue(chkRowKeys[i],'comMaterialUnit');
+			erpMaterialOrderCode = matOrderModalGrid.getValue(chkRowKeys[i],'erpMaterialOrderCode');
+			erpMaterialRequestDate = matOrderModalGrid.getValue(chkRowKeys[i],'erpMaterialRequestDate');
+			erpMaterialOrderQty = matOrderModalGrid.getValue(chkRowKeys[i],'erpMaterialOrderQty');
+			erpMaterialUnitPrice = matOrderModalGrid.getValue(chkRowKeys[i],'erpMaterialUnitPrice');
+			erpVendorCode = matOrderModalGrid.getValue(chkRowKeys[i],'erpVendorCode');
+			comCodeDetailName = matOrderModalGrid.getValue(chkRowKeys[i],'comCodeDetailName');
+			comMaterialCode = matOrderModalGrid.getValue(chkRowKeys[i],'comMaterialCode');
+			comMaterialName = matOrderModalGrid.getValue(chkRowKeys[i],'comMaterialName');
+			comMaterialSize = matOrderModalGrid.getValue(chkRowKeys[i],'comMaterialSize');
+			comMaterialUnit = matOrderModalGrid.getValue(chkRowKeys[i],'comMaterialUnit');
+			
+			//로우아이디
+			if(matOrderRowId == -1){
+				$("#matOrderCode").val(erpMaterialOrderCode);
+			} else {
+				orderGrid.blur();
+				console.log(matOrderRowId);
+				orderGrid.setValue(matOrderRowId, 'erpMaterialOrderCode', erpMaterialOrderCode, false);
+				orderGrid.setValue(matOrderRowId, 'quaMaterialDate', erpMaterialRequestDate, false);
+				orderGrid.setValue(matOrderRowId, 'erpMaterialOrderQty', erpMaterialOrderQty, false);
+				orderGrid.setValue(matOrderRowId, 'erpMaterialUnitPrice', erpMaterialUnitPrice, false);
+				orderGrid.setValue(matOrderRowId, 'erpVendorCode', erpVendorCode, false);
+				orderGrid.setValue(matOrderRowId, 'comCodeDetailName', comCodeDetailName, false);
+				orderGrid.setValue(matOrderRowId, 'comMaterialCode', comMaterialCode, false);
+				orderGrid.setValue(matOrderRowId, 'comMaterialName', comMaterialName, false);
+				orderGrid.setValue(matOrderRowId, 'comMaterialSize', comMaterialSize, false);
+				orderGrid.setValue(matOrderRowId, 'comMaterialUnit', comMaterialUnit, false);
+				orderGrid.setValue(matOrderRowId, 'quaMaterialChk', 0, false);
+			}
 		}
-		//로우아이디
-		if(matOrderRowId == -1){
-			$("#matOrderCode").val(erpMaterialOrderCode);
-		} else {
-			orderGrid.blur();
-			console.log(matOrderRowId);
-			orderGrid.setValue(matOrderRowId, 'erpMaterialOrderCode', erpMaterialOrderCode, false);
-			orderGrid.setValue(matOrderRowId, 'quaMaterialDate', erpMaterialRequestDate, false);
-			orderGrid.setValue(matOrderRowId, 'erpMaterialOrderQty', erpMaterialOrderQty, false);
-			orderGrid.setValue(matOrderRowId, 'erpMaterialUnitPrice', erpMaterialUnitPrice, false);
-			orderGrid.setValue(matOrderRowId, 'erpVendorCode', erpVendorCode, false);
-			orderGrid.setValue(matOrderRowId, 'comCodeDetailName', comCodeDetailName, false);
-			orderGrid.setValue(matOrderRowId, 'comMaterialCode', comMaterialCode, false);
-			orderGrid.setValue(matOrderRowId, 'comMaterialName', comMaterialName, false);
-			orderGrid.setValue(matOrderRowId, 'comMaterialSize', comMaterialSize, false);
-			orderGrid.setValue(matOrderRowId, 'comMaterialUnit', comMaterialUnit, false);
-			orderGrid.setValue(matOrderRowId, 'quaMaterialChk', 0, false);
-		}
+
 		
 
 	});
@@ -84,7 +95,7 @@ $(document).ready(function() {
 				'comMaterialCode' : materialCode,
 				'comMaterialName' : materialName
 			};
-		grid.readData(1, readParams, true);
+		matOrderModalGrid.readData(1, readParams, true);
 	});
 	
 	const dataSource = {
@@ -97,8 +108,8 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const grid = new tui.Grid({
-		el : document.getElementById('modalGrid'),
+	matOrderModalGrid = new tui.Grid({
+		el : document.getElementById('matOrderModalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
 			scrollX: true,

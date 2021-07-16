@@ -129,7 +129,7 @@ let matLotGrid;
 			function () {
 				var rowData = [{
 					//여기 수정 해야함.
-					matMatchInout: "",
+					matMatchDate: "",
 					matMatchInout: "",
 					matLotNo: "",
 					comMaterialCode: "",

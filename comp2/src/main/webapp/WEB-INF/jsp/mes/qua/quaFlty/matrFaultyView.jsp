@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="orderGrid"></div>
+				<div id="oGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -107,10 +107,12 @@ $('#subPages6').attr('aria-expanded','true');
 $('#subPages6').attr('style','');
 $('.matrFaulty').addClass('active');
 		
-var oGrid;
+
 //그리드모달창을 위한 그리드 선언-------------------------------------
-let orderGrid;
-let vendorGrid;
+let orderModalGrid;
+let vendorModalGrid;
+let matFltyModalGrid;
+
 //-----------------------------------------------------------
 
 
@@ -134,17 +136,15 @@ let vendorGrid;
 					var quaMaterialChkDate = $("#quaMaterialChkDate").val();
 					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
 					var quaMaterialChkEndDate = $("#quaMaterialChkEndDate").val();
-					var matFltyCode = $("#matFltyCode").val();
 					
 
 					var readParams = {
 						'comMaterialCode': comMaterialCode,
 						'quaMaterialChkDate': quaMaterialChkDate,
 						'erpMaterialOrderCode': erpMaterialOrderCode,
-						'quaMaterialChkEndDate' : quaMaterialChkEndDate,
-						'comMaterialFCode' : matFltyCode
+						'quaMaterialChkEndDate' : quaMaterialChkEndDate
 					};
-					orderGrid.readData(1, readParams, true);
+					oGrid.readData(1, readParams, true);
 				});
 		
 		//검색데이터 전송
@@ -153,10 +153,11 @@ let vendorGrid;
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 					var matFltyCode = $("#matFltyCode").val();
-					
+					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
 
 					var readParams = {
-						'comMaterialFCode' : matFltyCode
+						'comMaterialFCode' : matFltyCode,
+						'erpMaterialOrderCode' : erpMaterialOrderCode
 					};
 					fltyGrid.readData(1, readParams, true);
 				});
@@ -173,8 +174,8 @@ let vendorGrid;
 		};
 		
 		//불량이 있는 발주 그리드
-		oGrid = new tui.Grid({
-			el : document.getElementById('orderGrid'),
+		const oGrid = new tui.Grid({
+			el : document.getElementById('oGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			scrollX: true,
@@ -183,7 +184,10 @@ let vendorGrid;
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주코드',
-				name : 'erpMaterialOrderCode'
+				name : 'erpMaterialOrderCode',
+				validation: {
+			           required:true
+			        }
 			}, {
 				header : '검사일자',
 				name : 'quaMaterialChkDate'
@@ -215,9 +219,6 @@ let vendorGrid;
 		//-------------------------------------------------
 
 		
-		//그리드모달창을 위한 그리드 선언-------------------------------------
-				let matFltyGrid;
-		//-----------------------------------------------------------
 		
 		
 		const fltyDataSource = {
@@ -270,25 +271,26 @@ let vendorGrid;
 		});
 
 		//모달 그리드 초기화 ----------------------------------
-		matFltyGrid = fltyGrid;
+		matFltyModalGrid = fltyGrid;
 		//--------------------------------------------------
 		
-		
+//2번 그리드에 클릭한 발주코드에 해당하는 불량데이터 뿌려주기---------------------------------------------------		
 		orderGrid.on('click', ev => {
 			if(ev.columnName == 'erpMaterialOrderCode'){
 
 				//데이터 넘겨주기.
 				var materialOrderCode = orderGrid.getFocusedCell().value;
-
+				var matFltyCode = $("#matFltyCode").val();
 				var readParams = {
-						'erpMaterialOrderCode' : materialOrderCode
+						'erpMaterialOrderCode' : materialOrderCode,
+						'comMaterialFCode' : matFltyCode
 				} 
 				fltyGrid.readData(1, readParams, true);
-
+				console.log(readData);
 				
 			}
 		});
-		
+//--------------------------------------------------------------------------------------------		
 
 		//날짜 범위 검색 옵션
 		var start = $("#quaMaterialChkDate");

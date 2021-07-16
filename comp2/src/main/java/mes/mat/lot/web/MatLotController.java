@@ -1,5 +1,6 @@
 package mes.mat.lot.web;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +53,7 @@ public class MatLotController {
 
         return "mes/mat/matLot/matrLotView.page";
     }
-    //자재입출고조회 리스트
+    //자재정산조회 리스트
     @RequestMapping("/ajax/readMatLot")
     @ResponseBody
     public Map<String, Object> matLot(Model model, 
@@ -69,7 +69,7 @@ public class MatLotController {
 
 //--------------------------------------관리 페이지--------------------------------------    
     
-  	//자재입출고 [관리] 페이지
+  	//자재정산 [관리] 페이지
     @RequestMapping("/mat/lot/matrLotForm.do")
     public String selectMatLotForm(@ModelAttribute("searchVO") MatLotVO searchVO, 
     		ModelMap model) {
@@ -80,8 +80,8 @@ public class MatLotController {
   	//자재 정산 [관리] 등록 수정 삭제 
     @PutMapping("/ajax/modifyMatLot")
 	@ResponseBody
-	public void modifyMatLot(@RequestBody GridDataVO gd) throws Exception {
-    	
+	public Map<String, Object> modifyMatLot(@RequestBody GridDataVO gd) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -114,6 +114,9 @@ public class MatLotController {
 				service.deleteMatLot((LinkedHashMap) deletedList.get(i));
 			}
 		}
+		map.put("result", true);
+		
+		return map;
 	}
     
     

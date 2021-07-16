@@ -20,7 +20,7 @@
 				 	자재명 <input type="text" id="comMaterialName" name="comMaterialName" placeholder="자재명"/>
 				    <button id="findRow">검색</button>
 				</div>
-				<div id="modalGrid"></div>
+				<div id="matLotModalGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -32,30 +32,43 @@
 </div>
 
 <script>
+
+
+
+
 $(document).ready(function() {
+	
+	//그리드 선언을 ready밖으로 빼기
+	//(모달 취소하고 다시 모달 들어가서 체크하면 값을 찾지 못하는 현상 해결)
+	let matLotModalGrid;
+	
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
 	$(document).on("click","button[id=ok]", function(){
 
-		var chkRowKeys = grid.getCheckedRowKeys();
+		var chkRowKeys = matLotModalGrid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			matLotNo = grid.getValue(chkRowKeys[i], 'matLotNo');
-			comMaterialCode = grid.getValue(chkRowKeys[i],'comMaterialCode');
-			comMaterialName = grid.getValue(chkRowKeys[i],'comMaterialName');
-			matInoutQuantity = grid.getValue(chkRowKeys[i],'matInoutQuantity');
+			matLotNo = matLotModalGrid.getValue(chkRowKeys[i], 'matLotNo');
+			comMaterialCode = matLotModalGrid.getValue(chkRowKeys[i],'comMaterialCode');
+			comMaterialName = matLotModalGrid.getValue(chkRowKeys[i],'comMaterialName');
+			matInoutQuantity = matLotModalGrid.getValue(chkRowKeys[i],'matInoutQuantity');
+			
+			//view 페이지에 뿌려줄 부분 아이디값
+			if(matrLotRowId == -1){
+				$("#matLot").val(matLotNo);
+			} else {
+				materialGrid.blur();
+				materialGrid.setValue(matrLotRowId, 'matLotNo', matLotNo, false);
+				materialGrid.setValue(matrLotRowId, 'comMaterialCode', comMaterialCode, false);
+				materialGrid.setValue(matrLotRowId, 'comMaterialName', comMaterialName, false);
+				materialGrid.setValue(matrLotRowId, 'matInoutQuantity', matInoutQuantity, false);
+			}
+			
+			
 		}
-		//view 페이지에 뿌려줄 부분 아이디값
-		if(matrLotRowId == -1){
-			$("#matLot").val(matLotNo);
-		} else {
-			materialGrid.blur();
-			materialGrid.setValue(matrLotRowId, 'matLotNo', matLotNo, false);
-			materialGrid.setValue(matrLotRowId, 'comMaterialCode', comMaterialCode, false);
-			materialGrid.setValue(matrLotRowId, 'comMaterialName', comMaterialName, false);
-			materialGrid.setValue(matrLotRowId, 'matInoutQuantity', matInoutQuantity, false);
-		}
+
 		
 
 	});
@@ -73,7 +86,7 @@ $(document).ready(function() {
 				'comMaterialCode' : comMaterialCode,
 				'comMaterialName' : comMaterialName
 			};
-		grid.readData(1, readParams, true);
+		matLotModalGrid.readData(1, readParams, true);
 	});
 	
 	const dataSource = {
@@ -86,8 +99,8 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const grid = new tui.Grid({
-		el : document.getElementById('modalGrid'),
+	matLotModalGrid = new tui.Grid({
+		el : document.getElementById('matLotModalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
 			scrollX: true,

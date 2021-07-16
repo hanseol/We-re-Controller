@@ -149,7 +149,7 @@ let materialGrid;
 				name : 'erpMaterialOrderCode'
 			}, {
 				header: '거래처명',
-				name: 'erpVendorCode'
+				name: 'vendorName'
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode'

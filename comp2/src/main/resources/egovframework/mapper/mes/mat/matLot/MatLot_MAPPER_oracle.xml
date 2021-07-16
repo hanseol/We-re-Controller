@@ -55,7 +55,7 @@
 			, #{matMatchQty}
 			, #{comMaterialCode}
 			, #{matLotNo}
-			, TO_CHAR(SYSDATE,'YY/MM/DD))
+			, TO_CHAR(SYSDATE,'YY/MM/DD'))
 	</insert>
 	
 	<update id="updateMatInout">

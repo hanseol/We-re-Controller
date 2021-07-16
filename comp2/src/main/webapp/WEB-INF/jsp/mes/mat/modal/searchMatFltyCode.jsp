@@ -19,7 +19,7 @@
 				    불량명 <input type="text" id="fltyName" name="fltyName" placeholder="불량명"/>
 				    <button id="findRow">검색</button>
 				</div>
-				<div id="modalGrid"></div>
+				<div id="matFltyModalGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -31,29 +31,40 @@
 </div>
 
 <script>
+
+
+
+
 $(document).ready(function() {
+	
+	//그리드 선언을 ready밖으로 빼기
+	//(모달 취소하고 다시 모달 들어가서 체크하면 값을 찾지 못하는 현상 해결)
+	let matFltyModalGrid;
+	
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
 	$(document).on("click","button[id=ok]", function(){
 
-		var chkRowKeys = grid.getCheckedRowKeys();
+		var chkRowKeys = matFltyModalGrid.getCheckedRowKeys();
 		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
-			comMaterialFCode = grid.getValue(chkRowKeys[i],'comMaterialFCode');
-			comMaterialFName = grid.getValue(chkRowKeys[i],'comMaterialFName');
-		}
-		//view 페이지에 뿌려줄 부분 아이디값
-		if(matFltyRowId == -1){
-			$("#matFltyCode").val(comMaterialFCode);
-		} else {
-			matFltyGrid.blur();
-			console.log(matFltyRowId);
-			matFltyGrid.setValue(matFltyRowId, 'comMaterialFCode', comMaterialFCode, false);
-			matFltyGrid.setValue(matFltyRowId, 'comMaterialFName', comMaterialFName, false);
+			comMaterialFCode = matFltyModalGrid.getValue(chkRowKeys[i],'comMaterialFCode');
+			comMaterialFName = matFltyModalGrid.getValue(chkRowKeys[i],'comMaterialFName');
+			
+			//view 페이지에 뿌려줄 부분 아이디값
+			if(matFltyRowId == -1){
+				$("#matFltyCode").val(comMaterialFCode);
+			} else {
+				fltyGrid.blur();
+				fltyGrid.setValue(matFltyRowId, 'comMaterialFCode', comMaterialFCode, false);
+				fltyGrid.setValue(matFltyRowId, 'comMaterialFName', comMaterialFName, false);
 
+				
+			}
 			
 		}
+
 		
 
 	});
@@ -69,7 +80,7 @@ $(document).ready(function() {
 				'comMaterialFCode' : matFltyCode,
 				'comMaterialFName' : fltyName
 			};
-		matFltyGrid.readData(1, readParams, true);
+		matFltyModalGrid.readData(1, readParams, true);
 	});
 	
 	const dataSource = {
@@ -82,8 +93,8 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const grid = new tui.Grid({
-		el : document.getElementById('modalGrid'),
+	matFltyModalGrid = new tui.Grid({
+		el : document.getElementById('matFltyModalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
 			scrollX: true,
