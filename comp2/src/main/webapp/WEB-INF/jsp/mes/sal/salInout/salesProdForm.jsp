@@ -75,6 +75,24 @@
 		</div>
 	</div>
 </div>
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-7">
+					<p class="panel-subtitle">출고 세부 사항</p>
+				</div>
+				<div class="col-md-5" align="right">
+					<button type="button" id="appendRow2">추가</button>
+					<button type="button" id="deleteRow2">삭제</button>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="ugrid"></div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- 추가 모달 -->
 <a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
@@ -89,6 +107,8 @@ $('#subPages2').attr('style','');
 $('.salesProdForm').addClass('active');
 
 let mgrid; //모달그리드
+let ugrid;
+
 
 	$(document).ready(function() {
 		//Read
@@ -173,7 +193,7 @@ let mgrid; //모달그리드
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :300, 
+	        bodyHeight :150, 
 	        rowHeight: 30,
 			columns : [ {
 				header : '입/출고일자',
@@ -203,7 +223,8 @@ let mgrid; //모달그리드
 				editor : 'text'
 			}, {
 				header : '지시/거래처코드',
-				name : 'salInoutCode'
+				name : 'salInoutCode',
+				editor : 'text'
 			}, {
 				header : '제품코드',
 				name : 'comProductCode'
@@ -219,14 +240,38 @@ let mgrid; //모달그리드
 		
 	 mgrid = grid;
 	 
-	 //모달 클릭 이벤트
-	 //모달 : 제품코드
-	  /*  grid.on('dblclick', ev => {
-	      if(ev.columnName == 'comProductCode'){  
-	    	  productCodeSearch(ev.rowKey);
-	    	  //더블클릭 이벤트 -> productCodeSearch 함수 실행
-	      }
-	   }); */
+	//------------------------------------------------------△1그리드 / 2그리드▽ --------------------------------------------------------------------------
+		
+		const udataSource = {
+				api : {
+					readData : {
+						url : '${pageContext.request.contextPath}/ajax/insertSalOutList',
+						method : 'GET'
+					}
+				},
+				initialRequest: false, 
+				contentType : "application/json"
+			};
+		
+		const ugrid = new tui.Grid({
+				el : document.getElementById('ugrid'),
+				rowHeaders : [ 'checkbox' ],
+				data : udataSource,
+				scrollX: true,
+		        scrollY: true,
+		        bodyHeight :150, 
+		        rowHeight: 30,
+				columns : [{
+					header : '완제품 LOT_NO',
+					name : 'proProcessLotNo'
+				}, {
+					header : '제품코드',
+					name : 'comProductCode'
+				}, {
+					header : '수량',
+					name : 'salInoutQuantity'
+				}]
+			}); 
 	 
 	 $('#searchProductCode').click(function(event) {
 			productCodeSearch(-1); //매개변수 -1로 함수 실행
@@ -241,7 +286,7 @@ let mgrid; //모달그리드
 	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') {
 	    	  	 productLotNoSearch(ev.rowKey);	    	  	 
 	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') {
-	    		  modProductLotNoSearch(ev.rowKey);
+	    		 modProductLotNoSearch(ev.rowKey);
 	    	  }
 	    	}
 	   });
@@ -270,6 +315,8 @@ let mgrid; //모달그리드
 		  } 
 		}
 	}); */
+	
+	
 		
 	// option form reset  
 	 $(document).ready(function() {  
@@ -310,7 +357,7 @@ let mgrid; //모달그리드
 		  });
 	}
 	
-	//수정된 완제품 LOT_NO 값 받아오는 모달
+	//입고된 완제품 LOT_NO 값 받아오는 모달
 	function modProductLotNoSearch(c) {
 		  rowId = c;
 		  event.preventDefault();

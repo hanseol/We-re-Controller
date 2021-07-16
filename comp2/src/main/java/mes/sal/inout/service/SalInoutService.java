@@ -32,6 +32,9 @@ public interface SalInoutService {
     void updateSalInout(LinkedHashMap vo) throws Exception;
     void deleteSalInout(LinkedHashMap vo) throws Exception;
     
+    //입고 LOT_NO 목록 조회 페이지
+    List selectSaloutList(SalInoutVO searchVO) throws Exception;
+    
     //반품 조회 페이지
     List selectSalReturnList(SalInoutVO vo) throws Exception;
     

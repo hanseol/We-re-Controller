@@ -74,6 +74,9 @@ public interface SalInoutMapper {
     public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
     public int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
     
+	//입고 완제품 목록 조회
+	public List selectSalProductOutList(SalInoutVO searchVO) throws Exception;
+    
     //반품목록 조회
     public List selectSalReturnList(SalInoutVO vo) throws Exception;
     
@@ -106,6 +109,8 @@ public interface SalInoutMapper {
 	//모달 : 전표번호(반품) 조회
 	public List<?> searchInoutStatementList(SalInoutVO searchVO) throws Exception;
 	public int searchInoutStatementListTotCnt(SalInoutVO searchVO);
+
+
 	
 
 	

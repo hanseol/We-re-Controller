@@ -63,6 +63,12 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
 	}
     
+    //입고 LOT_NO 조회
+    @Override
+	public List selectSaloutList(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.selectSalProductOutList(searchVO);
+	}
+    
     //입출고목록 CRUD
     public String insertSalInout(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
@@ -181,6 +187,9 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public int searchInoutStatementListTotCnt(SalInoutVO searchVO) {
 		return salInoutDAO.searchInoutStatementListTotCnt(searchVO);
 	}
+
+
+	
 
 
 	

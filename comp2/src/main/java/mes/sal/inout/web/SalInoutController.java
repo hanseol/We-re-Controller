@@ -110,6 +110,18 @@ public class SalInoutController {
 	}
 	
 	
+	// 입고 후 출고할 LOT_NO 목록 조회 grid
+	@RequestMapping("/ajax/insertSalOutList")
+	@ResponseBody
+	public Map<String, Object> insertSalOutList(@ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+				
+		List<?> list = salInoutService.selectSaloutList(searchVO);
+
+		return comFunc.sendResult(list);
+	}
+
+	
 	
 	// 반품 목록 조회 grid
 	@RequestMapping("/ajax/sal/readReturnProduct")
@@ -179,6 +191,7 @@ public class SalInoutController {
 			}
 		}		
 	}
+
 
 	
 	// 반품목록 수정
