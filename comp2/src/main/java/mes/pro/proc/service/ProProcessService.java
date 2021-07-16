@@ -1,6 +1,8 @@
 package mes.pro.proc.service;
 
 import java.util.List;
+
+import mes.pro.order.service.ProOrderVO;
 import mes.pro.proc.service.ProProcessVO;
 
 /**
@@ -43,11 +45,11 @@ public interface ProProcessService {
     
     /**
 	 * PRO_PROCESS을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 ProProcessVO
+	 * @param searchVO - 조회할 정보가 담긴 ProProcessVO
 	 * @return 조회한 PRO_PROCESS
 	 * @exception Exception
 	 */
-    ProProcessVO selectProProcess(ProProcessVO vo) throws Exception;
+    ProProcessVO selectProProcess(ProProcessVO searchVO) throws Exception;
     
     /**
 	 * PRO_PROCESS 목록을 조회한다.
@@ -78,5 +80,7 @@ public interface ProProcessService {
     void updateStartTime(ProProcessVO vo) throws Exception;
 
     String selectProdName(ProProcessVO vo);
+
+	List<?> selectProcLot(ProProcessVO searchVO);
     
 }

@@ -95,6 +95,22 @@ SELECT * FROM (
 				</if>
 			</if>
 	</select>
+	
+	
+	
+	<!-- 공정별 소요자재 조회 -->
+	<select id="selectProcLot">
+		
+		
+	</select>
+
+
+
+
+
+
+
+
 
 
 	<!-- 김한설 공정흐름관리 -->

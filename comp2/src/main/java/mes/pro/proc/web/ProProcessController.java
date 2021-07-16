@@ -55,10 +55,9 @@ public class ProProcessController {
     //생산지시리스트 조회
     @RequestMapping("pro/proc/procMatView")
     @ResponseBody
-    public Map<String, Object> readMatView(@ModelAttribute("searchVO") ProOrderVO searchVO ) throws Exception {
-//    	List<?> list = service.""(searchVO);
-//    	return comFunc.sendResult(list);
-    	return null;
+    public Map<String, Object> readMatView(@ModelAttribute("searchVO") ProProcessVO searchVO ) throws Exception {
+    	List<?> list = service.selectProcLot(searchVO);
+    	return comFunc.sendResult(list);
     }
     
      

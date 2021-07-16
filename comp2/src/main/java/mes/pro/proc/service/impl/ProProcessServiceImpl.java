@@ -146,5 +146,10 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 		return proProcessDAO.selectProdName(vo);
 	}
 
+	@Override
+	public List<?> selectProcLot(ProProcessVO searchVO) {
+		return proProcessDAO.selectProcLot(searchVO);
+	}
+
     
 }

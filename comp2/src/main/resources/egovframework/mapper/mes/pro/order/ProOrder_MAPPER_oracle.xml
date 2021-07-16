@@ -212,6 +212,7 @@
 		FROM  pro_order m 
 			, pro_order_detail d
 		WHERE m.pro_order_code = d.pro_order_code
+		  AND d.pro_process_status IS NULL
 			<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
 				pro_order_date BETWEEN #{startDate} AND #{endDate} 
 			</if>	

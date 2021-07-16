@@ -3,6 +3,7 @@ package mes.pro.proc.service.impl;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import mes.pro.order.service.ProOrderVO;
 import mes.pro.proc.service.ProProcessVO;
 
 /**
@@ -82,4 +83,6 @@ public interface ProProcessMapper {
     public void updateStartTime(ProProcessVO vo) throws Exception;
 
 	public String selectProdName(ProProcessVO vo);
+
+	public List<?> selectProcLot(ProProcessVO searchVO);
 }
