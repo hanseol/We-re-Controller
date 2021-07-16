@@ -59,21 +59,27 @@
 			  	UPDATE    pro_plan_detail
 				  SET     pro_order_detail_code = #{proOrderDetailCode}
 				  WHERE   pro_plan_detail_code = #{proPlanDetailCode} ;
-			END;
+		END;
 		
 	</insert>
 	
-	<!-- 1번 그리드 저장버튼 > UPDATE: ?? -->	
+	<!-- 1번 그리드 저장버튼 > UPDATE: pro_order + pro_order_detail -->	
 	<update id="updateProOrder">
-		<![CDATA[
-			UPDATE PRO_ORDER
-			SET PRO_ORDER_CODE=#{proOrderCode}
-				, PRO_ORDER_GUBUN=#{proOrderGubun}
-				, PRO_ORDER_QTY=#{proOrderQty}
-				, PRO_ORDER_RANK=#{proOrderRank}
-				, PRO_ORDER_DATE=#{proOrderDate}
-						WHERE PRO_ORDER_CODE=#{proOrderCode}
-				]]>
+		DECLARE
+			BEGIN
+				UPDATE  PRO_ORDER
+				    SET PRO_ORDER_GUBUN = #{proOrderGubun}
+				      , PRO_ORDER_QTY = #{proOrderQty}
+				      , PRO_ORDER_RANK = #{proOrderSeq}
+				WHERE   PRO_ORDER_CODE = #{proOrderCode};
+				
+				UPDATE  PRO_ORDER_DETAIL
+				    SET PRO_ORDER_QTY = #{proOrderQty}
+				      , PRO_ORDER_EXPECT_QTY = #{proOrderExpectQty}
+				      , PRO_WORK_DATE = TO_DATE(#{proWorkDate}, 'yyyy-MM-dd')
+				      , PRO_ORDER_SEQ = #{proOrderSeq}
+				WHERE   PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+		END;
 	</update>
 	
 	
@@ -285,43 +291,40 @@
 	<select id="selectProOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
-								     , d.pro_order_code 
-								     , d.erp_customer_code
-								     , d.erp_product_code
-								     , d.erp_product_name
-								     , p.erp_order_code
-								     , TO_CHAR(d.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
-								     , p.erp_order_qty
-								     , d.pro_order_qty
-								     , m.pro_order_gubun
-								     , l.mat_lot_no 
-								     , d.pro_order_seq
-								     , d.pro_process_lot_no
-								     , TO_CHAR(m.pro_order_date, 'yyyy/MM/dd') as pro_order_date
-								FROM pro_order_detail d
-								   , pro_order m
-								   , pro_plan_detail p
-								   , pro_material_lot l
-								WHERE d.pro_order_code = m.pro_order_code
-								  AND d.pro_plan_detail_code = p.pro_plan_detail_code
-								  AND d.pro_order_detail_code = l.pro_order_detail_code								  
+						SELECT TO_CHAR(od.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+								     , od.pro_order_code
+								     , od.erp_customer_code
+								     , od.erp_product_code
+								     , od.erp_product_name
+								     , pd.erp_order_code
+								     , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+								     , pd.erp_order_qty
+								     , od.pro_order_qty
+								     , om.pro_order_gubun
+								     , od.pro_process_lot_no
+								     , od.pro_order_seq
+								     , TO_CHAR(om.pro_order_date, 'yyyy/MM/dd') as pro_order_date
+								FROM pro_order_detail od
+								   , pro_order om
+								   , pro_plan_detail pd
+								WHERE od.pro_order_code = om.pro_order_code
+								  AND od.pro_plan_detail_code = pd.pro_plan_detail_code							  
 								<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
 									<if test="searchCondition == 1"> AND
-										d.pro_work_date BETWEEN #{startDate} AND #{endDate} 
+										od.pro_work_date BETWEEN #{startDate} AND #{endDate} 
 									</if>
 									<if test="searchCondition == 2"> AND
-										d.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
+										od.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
 									</if>
 								</if>
 								<if test="erpProductCode != null and erpProductCode != ''"> AND
-									d.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+									od.erp_product_code LIKE '%' || #{erpProductCode} || '%'
 								</if>
 								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
-									d.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
+									od.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
 								</if>
 							ORDER BY 
-								m.PRO_ORDER_CODE DESC
+								om.PRO_ORDER_CODE DESC
 				
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}

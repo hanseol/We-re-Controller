@@ -80,5 +80,4 @@ public class ProOrderVO extends SearchVO{
     
     private String quaMaterialStatement;
     
-
 }

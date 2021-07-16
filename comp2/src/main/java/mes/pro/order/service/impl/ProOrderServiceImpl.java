@@ -119,6 +119,7 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 
 	@Override
 	public void updateProOrder(LinkedHashMap linkedHashMap) throws Exception {
+		proOrderDAO.updateProOrder(linkedHashMap);
 	}
 
 	@Override

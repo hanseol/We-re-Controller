@@ -229,7 +229,8 @@
 				hidden : true
 			}, {
 				header : '생산계획코드',
-				name : 'proPlanCode'
+				name : 'proPlanCode',
+				hidden : true
 			} ],
 			summary : {
 	            height : 40,

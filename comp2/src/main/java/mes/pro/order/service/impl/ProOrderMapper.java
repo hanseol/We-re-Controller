@@ -89,5 +89,7 @@ public interface ProOrderMapper {
 
 	public void insertMat(ProOrderVO linkedHashMap);
 
+	public void updateProOrder(LinkedHashMap linkedHashMap);
+
 
 }

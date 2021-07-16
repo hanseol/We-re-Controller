@@ -144,7 +144,7 @@ var proOrderRowKey;
 				proOrderExpectQty : "" ,
 				proWorkDate : "",
 				proOrderSeq : "",
-				proPlanDetailCode : ""
+				proOrderDetailCode : ""
 			} ];
 			proOrdergrid.appendRow(rowData, { at : proOrdergrid.getRowCount(), focus : true });
 			proOrdergrid.enable();
@@ -152,14 +152,42 @@ var proOrderRowKey;
 		
 		// D 저장 버튼
 		$("#modifyRow").on("click", function() {
+			
+			var chkRows = proOrdergrid.getCheckedRowKeys();
+			
 			var proOrderDate = $("#proOrderDate").val();
+			var proOrderCode = $("proOrderCode").val();
+			var proOrderGubun = proOrdergrid.getValue(chkRows[0], 'proOrderGubun');
+			var proOrderQty = proOrdergrid.getValue(chkRows[0], 'proOrderQty');
+			var proOrderExpectQty = proOrdergrid.getValue(chkRows[0], 'proOrderExpectQty');
+			var proWorkDate = proOrdergrid.getValue(chkRows[0], 'proWorkDate');
+			var proOrderSeq = proOrdergrid.getValue(chkRows[0], 'proOrderSeq');
+			var proOrderDetailCode = proOrdergrid.getValue(chkRows[0], 'proOrderDetailCode');
+			
 			console.log(proOrderDate);
+			console.log(proOrderCode);
+			console.log(proOrderGubun);
+			console.log(proOrderQty);
+			console.log(proOrderExpectQty);
+			console.log(proWorkDate);
+			console.log(proOrderSeq);
+			console.log(proOrderDetailCode);
+			
 			var params = {
-					'proOrderDate' : proOrderDate					
+					'proOrderDate' : proOrderDate,
+					'proOrderGubun' : proOrderGubun,
+					'proOrderQty' : proOrderQty,
+					'proOrderCode' : proOrderCode,
+					'proOrderExpectQty' : proOrderExpectQty,
+					'proWorkDate' : proWorkDate,
+					'proOrderSeq' : proOrderSeq,
+					'proOrderDetailCode' : proOrderDetailCode
 			}
+			
 			proOrdergrid.setRequestParams(params);
 			proOrdergrid.finishEditing('rowKey', 'columnName');
 			proOrdergrid.request('modifyData');
+			
 		});
 		
 		// M 리셋버튼  
@@ -306,7 +334,8 @@ var proOrderRowKey;
 				hidden : true
 			}, {
 				header : '생산지시디테일코드',
-				name : 'proOrderDetailCode'
+				name : 'proOrderDetailCode',
+				hidden : true
 			}, {
 				header : '고객코드',
 				name : 'erpCustomerCode',

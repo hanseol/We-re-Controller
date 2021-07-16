@@ -164,7 +164,7 @@ public class ProOrderController {
 		//수정
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
-				service.updatePlan((LinkedHashMap) updatedList.get(i));
+				service.updateProOrder((LinkedHashMap) updatedList.get(i));
 			}
 		}
 		
@@ -176,7 +176,7 @@ public class ProOrderController {
 //		}		
 
 		//생성
-		//시퀀스 포멧팅  **수정하기
+		//시퀀스 포멧팅 
 		if(createdList.size() != 0) { 
 			String poId = null;
 			
