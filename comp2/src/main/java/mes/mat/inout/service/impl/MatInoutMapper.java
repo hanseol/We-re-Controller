@@ -23,13 +23,13 @@ import mes.mat.inout.service.MatInoutVO;
 public interface MatInoutMapper {
 
 	//등록
-    public void insertMatInout(LinkedHashMap vo) throws Exception;
+    public String insertMatInout(LinkedHashMap vo) throws Exception;
     
     //수정
-    public void updateMatInout(LinkedHashMap vo) throws Exception;
+    public int updateMatInout(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public void deleteMatInout(LinkedHashMap vo) throws Exception;
+    public int deleteMatInout(LinkedHashMap vo) throws Exception;
     
     //입고 리스트
     public List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;

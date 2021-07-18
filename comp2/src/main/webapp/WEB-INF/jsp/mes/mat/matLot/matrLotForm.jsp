@@ -47,7 +47,7 @@ max-height: 600px; */
 			<div class="row">
 				<form id="option">
 					<div class="col-md-12">
-						일자<input type="date" id="matchDate" name="matchDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
+						일자<input type="date" id="matchDate" name="matchDate">~<input type="date" id="matchEndDate" name="matchEndDate">
 					</div>
 					<div class="col-md-3">
 						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
@@ -55,12 +55,12 @@ max-height: 600px; */
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						자재LOT_NO<input type="text" id="matLot" name="matLot">
-						<a id="searchMatLotNo" href="searchMatLotNo.do">
+						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
@@ -108,12 +108,8 @@ let matLotGrid;
 	$(document).ready(function () {
 		
 		// 옵션 폼 리셋버튼  
-		$("#reset").click(function() {  
-			$("form").each(function() {  
-		    	if(this.id == "option") this.reset();
-		    	grid.clear();
-		    	outGrid.clear();
-		    	});
+		$("#reset").click(function() { 
+			location.reload(true);
 			}); 
 		
 		//정산입출고구분 체크박스 하나만 체크되거나 해제가능.
@@ -151,6 +147,7 @@ let matLotGrid;
 				grid.finishEditing('rowKey', 'columnName');
 				
 				grid.request('modifyData');
+				location.reload(true);
 			});
 		//삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=deleteRow]",
@@ -164,10 +161,11 @@ let matLotGrid;
 					//입출고구분 테스트
 					var inGubun = $('input:checkbox[id="inGubun"]').is(":checked")
 					var outGubun = $('input:checkbox[id="outGubun"]').is(":checked")
-					if(inGubun == true && outGubun == false){
-						var matMatchInout = 'INOUT004';
-					}else if(inGubun == false && outGubun == true){
-						var matMatchInout = 'INOUT005';
+					var matMatchInout;
+					if(inGubun == true && outGubun == false) {
+						matMatchInout = 'INOUT004';
+					} else if(inGubun == false && outGubun == true) {
+						matMatchInout = 'INOUT005';
 					}
 
 					//데이터를 변수에 담아서 parameter로 만들기.
@@ -175,13 +173,14 @@ let matLotGrid;
 					var matchDate = $("#matchDate").val();
 					var matLot = $("#matLot").val();
 					var materialCode = $("#materialCode").val();
-					var matMatchInout = $("#matMatchInout").val();
-
+					var matchEndDate = $("#matchEndDate").val();
+					
 					var readParams = {
 						'matMatchDate': matchDate,
 						'matLotNo': matLot,
 						'comMaterialCode': materialCode,
-						'matMatchInout': matMatchInout
+						'matMatchInout': matMatchInout,
+						'matchEndDate' : matchEndDate
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -199,7 +198,7 @@ let matLotGrid;
 
 			},
 			// 리스트에 값이 바로 나오지않도록 함.
-			initialRequest : false,
+			//initialRequest : false,
 			contentType: "application/json"
 		};
 
@@ -207,7 +206,10 @@ let matLotGrid;
 			el: document.getElementById('grid'),
 			rowHeaders: ['checkbox'],
 			data: dataSource,
-			
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :300,
+	        rowHeight: 30,
 			columns: [{
 				header : '입/출고일자',
 				name : 'matMatchDate',
@@ -241,14 +243,18 @@ let matLotGrid;
 				name: 'comMaterialName'
 			}, {
 				header: '기존수량',
-				name: 'matInoutQuantity'
+				name: 'matPastQuantity'
 			}, {
-				header: '정산량',
+				header: '정산수량',
 				name: 'matMatchQty',
 				editor: 'text'
 			}, {
 				header: '최종수량',
-				name: 'finalQuantity'
+				name: 'matInoutQuantity'
+			}, {
+				header : '전표번호',
+				name : 'matMatchStatement',
+				hidden : true
 			}]
 		});
 		
@@ -262,11 +268,11 @@ let matLotGrid;
   		grid.on('afterChange', ev => {
   			if (ev.changes[0].columnName == 'matMatchQty') {
   				var match = grid.getValue(ev.changes[0].rowKey, 'matMatchQty');
-  				var order = grid.getValue(ev.changes[0].rowKey, 'matInoutQuantity');
+  				var order = grid.getValue(ev.changes[0].rowKey, 'matPastQuantity');
   				if(grid.getValue(ev.changes[0].rowKey, 'matMatchInout') == 'INOUT004') {
-  					grid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) + parseInt(match));
+  					grid.setValue(ev.changes[0].rowKey, 'matInoutQuantity', parseInt(order) + parseInt(match));
   				} else {
-  					grid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(match));
+  					grid.setValue(ev.changes[0].rowKey, 'matInoutQuantity', parseInt(order) - parseInt(match));
   				}
   			}
 /*   			var iQty = grid.getValue(rowKey, 'matInoutQuantity');

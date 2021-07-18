@@ -43,18 +43,18 @@
 					<div class="col-md-3">
 						발주코드
 						<input type="text" id="orderCode" name="orderCode">	
-						<a id="searchMatOrderCodePure" href="searchMatOrderCodePure.do">
+						<a id="searchMatOrderCodePure" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						입고업체<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="searchVendorCode.do">
+						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
 				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="searchOne">조회</button>
-					<button type="reset" class="btn btn-danger">새자료</button>
+					<button type="button" class="btn btn-success" id="search">조회</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
@@ -70,26 +70,17 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="oGrid"></div>
+				<div id="grid"></div>
 			</div>
 		</div>
 	</div>
 </div>
-
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<div class="panel-body">
+		<div class="panel-heading">
 			<div class="row">
-				<div>
+				<div class="col-md-7">
 					<p class="panel-subtitle">자재 불량 목록</p>
-					<div class="col-md-6">
-						자재불량코드<input type="text" id="matFltyCode" name="matFltyCode">
-						<a id="searchMatFltyCode" href="searchMatFltyCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-6" align="right">
-						<button type="button" class="btn btn-success" id="searchTwo">조회</button>
-					</div>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -109,57 +100,37 @@ $('.matrFaulty').addClass('active');
 		
 
 //그리드모달창을 위한 그리드 선언-------------------------------------
-let orderModalGrid;
-let vendorModalGrid;
-let matFltyModalGrid;
-
+let orderGrid;
+let vendorGrid;
 //-----------------------------------------------------------
 
 
 	$(document).ready(function() {
 		
 		// 옵션 폼 리셋버튼  
-		$("#reset").click(function() {  
-			$("form").each(function() {  
-		    	if(this.id == "option") this.reset();
-		    	grid.clear();
-		    	});
+		$("#reset").click(function() { 
+			location.reload(true);
 			}); 
 
 		
 		//검색데이터 전송
-		$(document).on("click",	"button[id=searchOne]",
+		$(document).on("click",	"button[id=search]",
 				function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
-					var comMaterialCode = $("#comMaterialCode").val();
+					var vendorCode = $("#vendorCode").val();
 					var quaMaterialChkDate = $("#quaMaterialChkDate").val();
-					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
+					var orderCode = $("#orderCode").val();
 					var quaMaterialChkEndDate = $("#quaMaterialChkEndDate").val();
 					
 
 					var readParams = {
-						'comMaterialCode': comMaterialCode,
+						'erpVendorCode': vendorCode,
 						'quaMaterialChkDate': quaMaterialChkDate,
-						'erpMaterialOrderCode': erpMaterialOrderCode,
+						'erpMaterialOrderCode': orderCode,
 						'quaMaterialChkEndDate' : quaMaterialChkEndDate
 					};
-					oGrid.readData(1, readParams, true);
-				});
-		
-		//검색데이터 전송
-		$(document).on("click",	"button[id=searchTwo]",
-				function () {
-
-					//데이터를 변수에 담아서 parameter로 만들기.
-					var matFltyCode = $("#matFltyCode").val();
-					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
-
-					var readParams = {
-						'comMaterialFCode' : matFltyCode,
-						'erpMaterialOrderCode' : erpMaterialOrderCode
-					};
-					fltyGrid.readData(1, readParams, true);
+					grid.readData(1, readParams, true);
 				});
 		
 		
@@ -174,8 +145,8 @@ let matFltyModalGrid;
 		};
 		
 		//불량이 있는 발주 그리드
-		const oGrid = new tui.Grid({
-			el : document.getElementById('oGrid'),
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			scrollX: true,
@@ -214,8 +185,8 @@ let matFltyModalGrid;
 		
 		
 		//모달 그리드 초기화 ----------------------------------
-				orderGrid = oGrid;
-				vendorGrid = oGrid;
+				orderGrid = grid;
+				vendorGrid = grid;
 		//-------------------------------------------------
 
 		
@@ -269,17 +240,13 @@ let matFltyModalGrid;
 				name: 'erpMatFltyPrice'
 			}]
 		});
-
-		//모달 그리드 초기화 ----------------------------------
-		matFltyModalGrid = fltyGrid;
-		//--------------------------------------------------
 		
 //2번 그리드에 클릭한 발주코드에 해당하는 불량데이터 뿌려주기---------------------------------------------------		
-		orderGrid.on('click', ev => {
+		grid.on('click', ev => {
 			if(ev.columnName == 'erpMaterialOrderCode'){
 
 				//데이터 넘겨주기.
-				var materialOrderCode = orderGrid.getFocusedCell().value;
+				var materialOrderCode = grid.getFocusedCell().value;
 				var matFltyCode = $("#matFltyCode").val();
 				var readParams = {
 						'erpMaterialOrderCode' : materialOrderCode,
@@ -371,7 +338,7 @@ function vendorCodeSearch(c) {
 	  });
 }
 //불량
-var matFltyRowId;
+/* var matFltyRowId;
 function matFltyCodeSearch(c) {
 	matFltyRowId = c;
 	  console.log(matFltyRowId);
@@ -382,7 +349,7 @@ function matFltyCodeSearch(c) {
 	  $.get("${pageContext.request.contextPath}/qua/flty/searchMatFltyCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
-}
+} */
 //---------------------------------------------------------------
 
 

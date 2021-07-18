@@ -46,18 +46,18 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	
     	matInoutMapper.insertMatInout(vo);
 
-    	//TODO 해당 테이블 정보에 맞게 수정    	
+    	//TODO 해당 테이블 정보에 맞게 수정
         return null;
     }
 
     //수정
-    public void updateMatInout(LinkedHashMap vo) throws Exception {
-    	matInoutMapper.updateMatInout(vo);
+    public int updateMatInout(LinkedHashMap vo) throws Exception {
+    	return matInoutMapper.updateMatInout(vo);
     }
 
     //삭제
-    public void deleteMatInout(LinkedHashMap vo) throws Exception {
-    	matInoutMapper.deleteMatInout(vo);
+    public int deleteMatInout(LinkedHashMap vo) throws Exception {
+    	return matInoutMapper.deleteMatInout(vo);
     }
     
     //입고리스트 조회

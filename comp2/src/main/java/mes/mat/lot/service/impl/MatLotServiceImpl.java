@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import mes.mat.inout.service.MatInoutVO;
 import mes.mat.lot.service.MatLotService;
 import mes.mat.lot.service.MatLotVO;
 /**
@@ -51,16 +50,16 @@ public class MatLotServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     //수정
-    public void updateMatLot(LinkedHashMap vo) throws Exception {
-    	matLotMapper.updateMatLot(vo);
+    public int updateMatLot(LinkedHashMap vo) throws Exception {
+    	return matLotMapper.updateMatLot(vo);
     }
     //입출고 수정 추가
-    public void updateMatInout(LinkedHashMap vo) throws Exception {
-    	matLotMapper.updateMatInout(vo);
+    public int updateMatInout(LinkedHashMap vo) throws Exception {
+    	return matLotMapper.updateMatInout(vo);
     }
     //삭제
-    public void deleteMatLot(LinkedHashMap vo) throws Exception {
-    	matLotMapper.deleteMatLot(vo);
+    public int deleteMatLot(LinkedHashMap vo) throws Exception {
+    	return matLotMapper.deleteMatLot(vo);
     }
 
     //전체 리스트 출력

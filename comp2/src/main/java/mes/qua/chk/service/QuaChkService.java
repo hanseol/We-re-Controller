@@ -26,10 +26,10 @@ public interface QuaChkService {
     String insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
-    void updateQuaChk(LinkedHashMap vo) throws Exception;
+    int updateQuaChk(LinkedHashMap vo) throws Exception;
     
     //삭제
-    void deleteQuaChk(LinkedHashMap vo) throws Exception;
+    int deleteQuaChk(LinkedHashMap vo) throws Exception;
     
     //전체 리스트 출력
     List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;

@@ -28,7 +28,7 @@
 		                              WHERE    e.com_material_code = c.com_material_code
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	e.com_material_code = #{comMaterialCode}
+							        	e.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
 		                              <if test="erpMaterialOrderDate != null and erpMaterialOrderDate != ''">
 		                              	AND
@@ -36,9 +36,9 @@
 		                              </if>
 		                              <if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
 		                              	AND
-							        	e.erp_material_order_code = #{erpMaterialOrderCode}
+							        	e.erp_material_order_code LIKE '%' || #{erpMaterialOrderCode} || '%'
 		                              </if>
-		                              ORDER BY erp_material_order_date <![CDATA[ ) a
+		                              ORDER BY e.erp_material_order_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -81,6 +81,8 @@
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>
 	
+	
+	<!-- 순수 발주코드 모달 -->
 	<select id="searchMatOrderCodePureList" parameterType="mes.mat.order.service.MatOrderVO" resultType="egovMap">
 		SELECT *
 		FROM   (

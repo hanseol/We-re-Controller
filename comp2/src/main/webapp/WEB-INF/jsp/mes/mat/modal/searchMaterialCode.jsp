@@ -17,7 +17,7 @@
 				<div>
 					자재코드 <input type="text" id="matCode" name="matCode" placeholder="자재코드"/>
 				    자재명 <input type="text" id="materialName" name="materialName" placeholder="자재명"/>
-				    <button id="findRow">검색</button>
+				    <button id="modalSearch">검색</button>
 				</div>
 				<div id="matMatrModalGrid"></div>
 			</div>
@@ -71,7 +71,7 @@ $(document).ready(function() {
 	});
 
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$(document).on("click", "button[id=modalSearch]", function() {
 		var matCode = $("#matCode").val();
 		
 		var materialName = $("#materialName").val();

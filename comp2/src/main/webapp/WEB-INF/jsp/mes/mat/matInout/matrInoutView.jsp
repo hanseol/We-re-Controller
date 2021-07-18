@@ -49,31 +49,34 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
+					<div class="col-md-12">
 						일자<input type="date" id="inoutDate" name="inoutDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
-						
-						<input type="hidden" id="matLot" name="matLot">
-						<a id="searchMatLotNo" href="searchMatLotNo.do"></a>
 					</div>
 					<div class="col-md-3">
 						입고업체<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="searchVendorCode.do">
+						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-3">
+						자재LOT_NO<input type="text" id="matLot" name="matLot">
+						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 
 <div class="content-fluid">
@@ -106,6 +109,9 @@
 	</div>
 </div>
 
+
+
+
 <script>
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let materialGrid;
@@ -122,14 +128,10 @@ $('.matrInout').addClass('active');
 
 $(document).ready(function () {
 	
-	// 옵션 폼 리셋버튼
-	$("#reset").click(function() {
-		$("form").each(function() {
-	    	if(this.id == "option") this.reset();
-	    	grid.clear();
-	    	outGrid.clear();
-	    	});
-		});
+	// 옵션 폼 리셋버튼  
+	$("#reset").click(function() { 
+		location.reload(true);
+		}); 
 
 	//검색데이터 전송
 	$(document).on("click",	"button[id=search]",
@@ -140,13 +142,16 @@ $(document).ready(function () {
 				var inoutDate = $("#inoutDate").val();
 				var erpVendorCode = $("#vendorCode").val();
 				var inoutEndDate = $("#inoutEndDate").val();
+				var matLot = $("#matLot").val();
 				var readParams = {
 					'comMaterialCode': comMaterialCode,
 					'matInoutDate': inoutDate,
 					'erpVendorCode': erpVendorCode,
-					'matInoutEndDate' : inoutEndDate
+					'matInoutEndDate' : inoutEndDate,
+					'matLotNo' : matLot
 				};
 				grid.readData(1, readParams, true);
+				outGrid.readData(1, readParams, true);
 			});
 	//입고목록 데이터
 	const dataSource = {
@@ -321,6 +326,7 @@ $(document).ready(function () {
 //모달 그리드 초기화 ----------------------------------
 		materialGrid = grid;
 		vendorGrid = grid;
+		matLotGrid = grid;
 //--------------------------------------------------
 /* 	//자동 계산 (수량 *단가)
 	grid.on('afterChange',ev => {
@@ -384,6 +390,10 @@ $(document).ready(function () {
 	$('#searchVendorCode').click(function(event) {
 		vendorCodeSearch(-1);
 	});
+	//LOT
+	$('#searchMatLotNo').click(function(event) {
+		matLotNoSearch(-1);
+	});
 	//-----------------------------------------------------
 });
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------
@@ -410,6 +420,19 @@ function vendorCodeSearch(c) {
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
 	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//자재LOT_NO
+var matrLotRowId;
+function matLotNoSearch(c) {
+	matrLotRowId = c;
+	  console.log(matrLotRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

@@ -132,12 +132,8 @@ $('.matrInout').addClass('active');
 	$(document).ready(function () {
 		
 		// 옵션 폼 리셋버튼  
-		$("#reset").click(function() {  
-			$("form").each(function() {  
-		    	if(this.id == "option") this.reset();
-		    	grid.clear();
-		    	outGrid.clear();
-		    	});
+		$("#reset").click(function() { 
+			location.reload(true);
 			}); 
 		
 		//날짜 범위로 지정하는 방법 생각.
@@ -176,6 +172,7 @@ $('.matrInout').addClass('active');
 				grid.finishEditing('rowKey', 'columnName');
 				
 				grid.request('modifyData');
+				location.reload(true);
 			});
 		//삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=deleteRow]",

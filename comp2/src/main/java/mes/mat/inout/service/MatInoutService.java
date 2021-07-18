@@ -21,10 +21,10 @@ public interface MatInoutService {
 	String insertMatInout(LinkedHashMap vo) throws Exception;
     
 	//수정
-    void updateMatInout(LinkedHashMap vo) throws Exception;
+    int updateMatInout(LinkedHashMap vo) throws Exception;
     
     //삭제
-    void deleteMatInout(LinkedHashMap vo) throws Exception;
+    int deleteMatInout(LinkedHashMap vo) throws Exception;
     
     //입고  리스트 출력
     List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;

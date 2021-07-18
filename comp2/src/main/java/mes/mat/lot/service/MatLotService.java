@@ -3,8 +3,6 @@ package mes.mat.lot.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import mes.mat.inout.service.MatInoutVO;
-
 
 public interface MatLotService {
 	
@@ -13,10 +11,10 @@ public interface MatLotService {
 	String insertMatLot(LinkedHashMap vo) throws Exception;
     
     //수정
-    void updateMatLot(LinkedHashMap vo) throws Exception;
-    void updateMatInout(LinkedHashMap vo) throws Exception;
+    int updateMatLot(LinkedHashMap vo) throws Exception;
+    int updateMatInout(LinkedHashMap vo) throws Exception;
     //삭제
-    void deleteMatLot(LinkedHashMap vo) throws Exception;
+    int deleteMatLot(LinkedHashMap vo) throws Exception;
 	
     //전체 리스트 출력
 	List<?> selectMatLotList(MatLotVO searchVO) throws Exception;

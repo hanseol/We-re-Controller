@@ -49,13 +49,13 @@ public class MaterialServiceImpl extends EgovAbstractServiceImpl implements
         return null;
     }
     //수정
-    public void updateMaterial(LinkedHashMap vo) throws Exception {
-    	materialMapper.updateMaterial(vo);
+    public int updateMaterial(LinkedHashMap vo) throws Exception {
+    	return materialMapper.updateMaterial(vo);
     }
 
     //삭제
-    public void deleteMaterial(LinkedHashMap vo) throws Exception {
-    	materialMapper.deleteMaterial(vo);
+    public int deleteMaterial(LinkedHashMap vo) throws Exception {
+    	return materialMapper.deleteMaterial(vo);
     }
 
     //전체 리스트 출력

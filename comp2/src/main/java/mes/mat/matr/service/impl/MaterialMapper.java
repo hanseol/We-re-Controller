@@ -23,13 +23,13 @@ import mes.mat.matr.service.MaterialVO;
 public interface MaterialMapper {
 
 	//등록
-    public void insertMaterial(LinkedHashMap vo) throws Exception;
+    public String insertMaterial(LinkedHashMap vo) throws Exception;
 
     //수정
-    public void updateMaterial(LinkedHashMap vo) throws Exception;
+    public int updateMaterial(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public void deleteMaterial(LinkedHashMap vo) throws Exception;
+    public int deleteMaterial(LinkedHashMap vo) throws Exception;
 
     //전체 리스트 출력
 	public List<?> selectMaterialList(MaterialVO searchVO) throws Exception;		

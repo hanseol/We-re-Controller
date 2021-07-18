@@ -51,7 +51,7 @@
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 						
 						<input type="hidden" id="matLot" name="matLot">
@@ -59,7 +59,7 @@
 					</div>
 					<div class="col-md-3">
 						입고업체<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="searchVendorCode.do">
+						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>

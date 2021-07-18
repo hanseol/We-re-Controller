@@ -22,10 +22,10 @@ public interface MatOrderService {
 	String insertMatOrder(LinkedHashMap vo) throws Exception;
     
 	//수정
-    void updateMatOrder(LinkedHashMap vo) throws Exception;
+    int updateMatOrder(LinkedHashMap vo) throws Exception;
     
     //삭제
-    void deleteMatOrder(LinkedHashMap vo) throws Exception;
+    int deleteMatOrder(LinkedHashMap vo) throws Exception;
     
     //전체  리스트 출력
     List<?> selectMatOrderList(MatOrderVO searchVO) throws Exception;

@@ -20,7 +20,9 @@
 										          THEN (i.mat_inout_quantity + m.mat_match_qty)
 										          ELSE (i.mat_inout_quantity - m.mat_match_qty)
 										          END AS final_qty,
-										          m.mat_match_qty
+										          m.mat_match_qty,
+										          m.mat_past_quantity,
+										          TO_CHAR(m.mat_write_date, 'YY/MM/DD') as mat_write_date
 										FROM      com_material c,
 										          mat_inout i,
 										          mat_match m
@@ -39,8 +41,11 @@
 									  	AND
 									  	m.mat_match_inout = #{matMatchInout}
 									  </if>
-									  
-		                              ORDER BY mat_match_date  <![CDATA[ ) a
+									  <if test="matLotNo != null and matLotNo != ''">
+									  	AND
+									  	m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+									  </if>									  
+		                              ORDER BY m.mat_match_date  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -48,27 +53,42 @@
 	
 	<!-- 정산입출고 삽입 -->
 	<insert id="insertMatLot">
-			INSERT INTO mat_match
+			INSERT INTO mat_match (	mat_match_statement,
+									mat_match_inout,
+									mat_match_date,
+									mat_match_qty,
+									com_material_code,
+									mat_lot_no,
+									mat_write_date,
+									mat_past_quantity)
 			VALUES (#{matMatchStatement}
 			, #{matMatchInout}
 			, #{matMatchDate}
 			, #{matMatchQty}
 			, #{comMaterialCode}
 			, #{matLotNo}
-			, TO_CHAR(SYSDATE,'YY/MM/DD'))
+			, TO_CHAR(SYSDATE,'YY/MM/DD')
+			, #{matPastQuantity})
 	</insert>
-	
+	<!-- 자재입출고 테이블 업데이트 -->
 	<update id="updateMatInout">
 			UPDATE mat_inout
-			SET MAT_INOUT_QUANTITY = #{finalQuantity}
+			SET MAT_INOUT_QUANTITY = #{matInoutQuantity}
 			WHERE MAT_LOT_NO = #{matLotNo}
 			AND MAT_INOUT_GUBUN = 'INOUT002'
 	</update>
 	
+	<!-- 정산입출고 테이블 업데이트 -->
 	<update id="updateMatLot">
-			UPDATE mat_match
-			SET mat_match_qty = #{finalQuantity}
-			WHERE MAT_LOT_NO = #{matLotNo}
+			UPDATE MAT_MATCH SET
+		MAT_MATCH_DATE = #{matMatchDate}
+		, MAT_MATCH_INOUT = #{matMatchInout}
+		, MAT_MATCH_QTY = #{matMatchQty}
+		, COM_MATERIAL_CODE = #{comMaterialCode}
+		, MAT_LOT_NO = #{matLotNo}
+		, MAT_WRITE_DATE = #{matWriteDate}
+		, MAT_PAST_QUANTITY = #{matPastQuantity}
+		WHERE MAT_MATCH_STATEMENT = #{matMatchStatement}
 	</update>
 	
 	<!-- 정산입출고목록 삭제 -->

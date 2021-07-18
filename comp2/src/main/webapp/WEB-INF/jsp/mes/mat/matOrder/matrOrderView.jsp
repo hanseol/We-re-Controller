@@ -42,21 +42,21 @@
 					</div>
 					<div class="col-md-3">			
 						발주코드
-						<input type="text" id="erpMaterialOrderCode" name="erpMaterialOrderCode">	
-						<a id="searchMatOrderCodePure" href="searchMatOrderCodePure.do">
+						<input type="text" id="orderCode" name="orderCode">	
+						<a id="searchMatOrderCodePure" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						자재코드
-						<input type="text" id="comMaterialCode" name="comMaterialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">					
+						<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">					
 						
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="reset" class="btn btn-danger">새자료</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
@@ -96,11 +96,8 @@ let materialGrid;
 	$(document).ready(function() {
 		
 		// 옵션 폼 리셋버튼  
-		$("#reset").click(function() {  
-			$("form").each(function() {  
-		    	if(this.id == "option") this.reset();
-		    	grid.clear();
-		    	});
+		$("#reset").click(function() { 
+			location.reload(true);
 			}); 
 
 		
@@ -109,16 +106,16 @@ let materialGrid;
 				function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
-					var comMaterialCode = $("#comMaterialCode").val();
+					var materialCode = $("#materialCode").val();
 					var erpMaterialOrderDate = $("#erpMaterialOrderDate").val();
-					var erpMaterialOrderCode = $("#erpMaterialOrderCode").val();
+					var orderCode = $("#orderCode").val();
 					var erpMaterialOrderEndDate = $("#erpMaterialOrderEndDate").val();
 
 					var readParams = {
 						'erpMaterialOrderEndDate' : erpMaterialOrderEndDate,
-						'comMaterialCode': comMaterialCode,
+						'comMaterialCode': materialCode,
 						'erpMaterialOrderDate': erpMaterialOrderDate,
-						'erpMaterialOrderCode': erpMaterialOrderCode
+						'erpMaterialOrderCode': orderCode
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -143,34 +140,44 @@ let materialGrid;
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주일자',
-				name : 'erpMaterialOrderDate'
+				name : 'erpMaterialOrderDate',
+				align : 'center'
 			}, {
 				header : '발주코드',
-				name : 'erpMaterialOrderCode'
+				name : 'erpMaterialOrderCode',
+				align : 'center'
 			}, {
 				header: '거래처명',
-				name: 'vendorName'
+				name: 'vendorName',
+				align : 'center'
 			}, {
 				header: '자재코드',
-				name: 'comMaterialCode'
+				name: 'comMaterialCode',
+				align : 'center'
 			}, {
 				header: '자재명',
-				name: 'comMaterialName'
+				name: 'comMaterialName',
+				align : 'center'
 			}, {
 				header: '규격',
-				name: 'comMaterialSize'
+				name: 'comMaterialSize',
+				align : 'center'
 			}, {
 				header: '관리단위',
-				name: 'comMaterialUnit'
+				name: 'comMaterialUnit',
+				align : 'center'
 			}, {
 				header : '발주량',
-				name : 'erpMaterialOrderQty'
+				name : 'erpMaterialOrderQty',
+				align : 'right'
 			}, {
 				header: '단가',
-				name: 'erpMaterialUnitPrice'
+				name: 'erpMaterialUnitPrice',
+				align : 'right'
 			}, {
 				header: '금액',
-				name: 'erpMaterialPrice'
+				name: 'erpMaterialPrice',
+				align : 'right'
 			}]
 		});
 		

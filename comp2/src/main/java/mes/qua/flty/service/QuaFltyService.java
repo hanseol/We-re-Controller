@@ -26,10 +26,10 @@ public interface QuaFltyService {
     String insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
-    void updateQuaFlty(LinkedHashMap vo) throws Exception;
+    int updateQuaFlty(LinkedHashMap vo) throws Exception;
     
     //삭제
-    void deleteQuaFlty(LinkedHashMap vo) throws Exception;
+    int deleteQuaFlty(LinkedHashMap vo) throws Exception;
     
     //검사완료 목록 중 불량이 있는 리스트 출력
     List<?> selectQuaFltyList(QuaFltyVO searchVO) throws Exception;

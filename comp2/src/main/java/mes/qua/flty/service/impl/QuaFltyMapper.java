@@ -23,16 +23,16 @@ import mes.qua.flty.service.QuaFltyVO;
 public interface QuaFltyMapper {
 
 	//등록
-    public void insertQuaFlty(LinkedHashMap vo) throws Exception;
+    public String insertQuaFlty(LinkedHashMap vo) throws Exception;
     
     //자재입출고로 등록
-    public void insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
+    public String insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
-    public void updateQuaFlty(LinkedHashMap vo) throws Exception;
+    public int updateQuaFlty(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public void deleteQuaFlty(LinkedHashMap vo) throws Exception;
+    public int deleteQuaFlty(LinkedHashMap vo) throws Exception;
 
 
     //검사완료 목록 중 불량이 있는 리스트 조회

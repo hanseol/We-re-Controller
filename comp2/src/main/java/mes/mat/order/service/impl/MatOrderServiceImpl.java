@@ -51,13 +51,13 @@ public class MatOrderServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     //수정
-    public void updateMatOrder(LinkedHashMap vo) throws Exception {
-    	matOrderMapper.updateMatOrder(vo);
+    public int updateMatOrder(LinkedHashMap vo) throws Exception {
+    	return matOrderMapper.updateMatOrder(vo);
     }
 
     //삭제
-    public void deleteMatOrder(LinkedHashMap vo) throws Exception {
-    	matOrderMapper.deleteMatOrder(vo);
+    public int deleteMatOrder(LinkedHashMap vo) throws Exception {
+    	return matOrderMapper.deleteMatOrder(vo);
     }
     
     //리스트 전체조회

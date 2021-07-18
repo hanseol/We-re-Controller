@@ -11,16 +11,16 @@ public interface MatLotMapper {
 	
 	
 	//등록
-    public void insertMatLot(LinkedHashMap vo) throws Exception;
+    public String insertMatLot(LinkedHashMap vo) throws Exception;
 
     //수정
-    public void updateMatLot(LinkedHashMap vo) throws Exception;
+    public int updateMatLot(LinkedHashMap vo) throws Exception;
     
     //입출고 추가
-    public void updateMatInout(LinkedHashMap vo) throws Exception;
+    public int updateMatInout(LinkedHashMap vo) throws Exception;
     
     //삭제
-    public void deleteMatLot(LinkedHashMap vo) throws Exception;
+    public int deleteMatLot(LinkedHashMap vo) throws Exception;
 
     //전체 리스트 출력
 	public List<?> selectMatLotList(MatLotVO searchVO) throws Exception;		

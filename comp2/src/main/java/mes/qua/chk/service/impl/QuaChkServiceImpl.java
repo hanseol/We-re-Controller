@@ -126,13 +126,13 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     //수정
-    public void updateQuaChk(LinkedHashMap vo) throws Exception {
-    	quaChkMapper.updateQuaChk(vo);
+    public int updateQuaChk(LinkedHashMap vo) throws Exception {
+    	return quaChkMapper.updateQuaChk(vo);
     }
 
     //삭제
-    public void deleteQuaChk(LinkedHashMap vo) throws Exception {
-    	quaChkMapper.deleteQuaChk(vo);
+    public int deleteQuaChk(LinkedHashMap vo) throws Exception {
+    	return quaChkMapper.deleteQuaChk(vo);
     }
     
 

@@ -21,10 +21,10 @@ public interface MaterialService {
 	String insertMaterial(LinkedHashMap vo) throws Exception;
     
     //수정
-    void updateMaterial(LinkedHashMap vo) throws Exception;
+    int updateMaterial(LinkedHashMap vo) throws Exception;
     
     //삭제
-    void deleteMaterial(LinkedHashMap vo) throws Exception;
+    int deleteMaterial(LinkedHashMap vo) throws Exception;
 	
     //전체 리스트 출력
 	List<?> selectMaterialList(MaterialVO searchVO) throws Exception;

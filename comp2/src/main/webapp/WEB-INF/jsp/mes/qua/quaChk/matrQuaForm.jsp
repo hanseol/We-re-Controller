@@ -50,12 +50,12 @@ max-height: 600px; */
 					</div>
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
 						업체코드<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="searchVendorCode.do">
+						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
@@ -180,12 +180,8 @@ class CustomCheckboxRenderer {
 	$(document).ready(function () {
 		
 		// 옵션 폼 리셋버튼  
-		$("#reset").click(function() {  
-			$("form").each(function() {  
-		    	if(this.id == "option") this.reset();
-		    	grid.clear();
-		    	passGrid.clear();
-		    	});
+		$("#reset").click(function() { 
+			location.reload(true);
 			}); 
 		
 		//날짜 범위로 지정하는 방법 생각.
@@ -225,8 +221,11 @@ class CustomCheckboxRenderer {
 		$(document).on("click", "button[id=modifyRow]",
 			function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
+				
 				grid.finishEditing('rowKey', 'columnName');
 				grid.request('modifyData');
+				location.reload(true);
+
 			});
 		
 		
@@ -242,6 +241,8 @@ class CustomCheckboxRenderer {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				passGrid.finishEditing('rowKey', 'columnName');
 				passGrid.request('modifyData');
+				location.reload(true);
+
 			});
 		
 		
@@ -296,14 +297,13 @@ class CustomCheckboxRenderer {
 			data: dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 150, 
+	        bodyHeight: 300, 
 	        rowHeight: 30,
 	        
 
 			columns: [{
 				header: '발주코드',
 				name: 'erpMaterialOrderCode',
-				editor: 'text',
 				align: 'center',
 				validation: {
 			           required:true
@@ -354,17 +354,8 @@ class CustomCheckboxRenderer {
 			}, {
 				header: '불량코드',
 				name: 'comMaterialFCode',
-				align: 'center',
-				editor : {
-					type: 'select',
-					options : {
-					listItems: [
-						{text : '찢김', value : 'MATBAD001'},
-						{text : '오염', value : 'MATBAD002'},
-						{text : '끊김', value : 'MATBAD003'}
-						]
-					}
-				}
+				align: 'center'
+				
 			}, {
 				header: '단가',
 				name: 'erpMaterialUnitPrice',
@@ -424,7 +415,7 @@ class CustomCheckboxRenderer {
 			data: passDataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 150, 
+	        bodyHeight: 300, 
 	        rowHeight: 30,
 	        
 
@@ -481,10 +472,6 @@ class CustomCheckboxRenderer {
 				header: '금액',
 				name: 'erpMaterialPrice',
 				align : 'right'
-			}, {
-				header: '검사유무',
-				name: 'quaMaterialChk',
-				align: 'center'
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',
@@ -569,11 +556,11 @@ class CustomCheckboxRenderer {
 			}
 		});*/
 		//불량
-/* 		grid.on('dblclick', ev =>{
-			if(ev.columnName == 'quaMaterialFQty'){
+		grid.on('dblclick', ev =>{
+			if(ev.columnName == 'comMaterialFCode'){
 				matFltyCodeSearch(ev.rowKey);
 			}
-		}); */
+		});
 		
 //-----------------------------------------------------------------
 		   
@@ -637,10 +624,10 @@ class CustomCheckboxRenderer {
 		$('#searchVendorCode').click(function(event) {
 			vendorCodeSearch(-1);
 		});
-/* 		//불량
+ 		//불량
 		$('#searchMatFltyCode').click(function(event) {
 			matFltyCodeSearch(-1);
-		}); */
+		});
 		
 });//end of document ready
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------
@@ -683,7 +670,7 @@ function vendorCodeSearch(c) {
 	    $(html).appendTo('body').modal();
 	  });
 }
-/* //불량
+//불량
 var matFltyRowId;
 function matFltyCodeSearch(c) {
 	matFltyRowId = c;
@@ -692,9 +679,9 @@ function matFltyCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/quaFlty/searchMatFltyCode.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/qua/flty/searchMatFltyCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
-} */
+}
 //---------------------------------------------------------------
 </script>

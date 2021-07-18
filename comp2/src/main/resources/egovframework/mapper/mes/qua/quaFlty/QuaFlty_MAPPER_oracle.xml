@@ -33,7 +33,7 @@
 												
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	q.erp_vendor_code = #{erpVendorCode}
+							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
 		                              	</if>
 		                              	<if test="quaMaterialChkDate != null and quaMaterialChkDate != ''">
 		                              	AND
@@ -41,7 +41,11 @@
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	e.com_material_code = #{comMaterialCode}
+							        	e.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+		                              	</if>
+		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
+		                              	AND
+							        	q.erp_material_order_code LIKE '%' || #{erpMaterialOrderCode} || '%'
 		                              	</if>
 		                              ORDER BY qua_material_chk_date <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )

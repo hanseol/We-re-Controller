@@ -43,11 +43,11 @@
 					                    AND		q.qua_material_chk = '0'
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	q.erp_vendor_code = #{erpVendorCode}
+							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	q.com_material_code = #{comMaterialCode}
+							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
@@ -99,11 +99,11 @@
 					                    AND		q.qua_material_chk = '1'
 					                   	<if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	q.erp_vendor_code = #{erpVendorCode}
+							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	q.com_material_code = #{comMaterialCode}
+							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
@@ -159,7 +159,7 @@
 					                     com_material_f_name LIKE '%' || #{comMaterialFName} || '%'
 					                  </if> -->
 					                  <if test="erpMaterialOrderCode != null and erpMaterialOrderCode !=''">AND
-					                     erp_material_order_code = #{erpMaterialOrderCode}
+					                     q.erp_material_order_code LIKE '%' || #{erpMaterialOrderCode} || '%'
 					                  </if>
 									  ORDER BY qua_material_statement <![CDATA[ ) A
          			WHERE ROWNUM <= #{lastIndex})

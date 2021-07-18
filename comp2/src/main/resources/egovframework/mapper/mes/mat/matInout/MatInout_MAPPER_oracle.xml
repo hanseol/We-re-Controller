@@ -45,8 +45,12 @@
 		                              	AND
 							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
+		                              <if test="matLotNo != null and matLotNo != ''">
+		                              	AND
+							        	m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+		                              </if>
 									  
-		                              ORDER BY mat_inout_date  <![CDATA[ ) a
+		                              ORDER BY m.mat_inout_date  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -90,8 +94,11 @@
 		                              	AND
 							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
-									  
-		                              ORDER BY mat_inout_date  <![CDATA[ ) a
+									  <if test="matLotNo != null and matLotNo != ''">
+		                              	AND
+							        	m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+		                              </if>
+		                              ORDER BY m.mat_inout_date  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -202,13 +209,14 @@
 		                              FROM     mat_inout m,
 		                              		   com_material c
 		                              WHERE	   c.com_material_code = m.com_material_code
+		                              AND	   m.mat_inout_gubun = 'INOUT002'
 					                  <if test="matLotNo != null and matLotNo !=''"> AND
-					                     mat_lot_no LIKE '%' || #{matLotNo} || '%'
+					                     m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
 					                  </if>
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
-					                     com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                     c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 					                  </if>
-									  ORDER BY mat_lot_no <![CDATA[ ) A
+									  ORDER BY m.mat_lot_no <![CDATA[ ) A
          			WHERE ROWNUM <= #{lastIndex})
 		WHERE RNUM >= #{firstIndex}]]>
 	</select>

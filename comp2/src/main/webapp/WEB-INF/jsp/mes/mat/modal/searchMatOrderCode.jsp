@@ -16,7 +16,7 @@
 			<div class="panel-body">
 				<div>
 					발주코드 <input type="text" id="orderCode" name="orderCode" placeholder="발주코드"/>
-				    <button id="findRow">검색</button>
+				    <button id="modalSearch">검색</button>
 				</div>
 				<div id="matOrderModalGrid"></div>
 			</div>
@@ -83,7 +83,7 @@ $(document).ready(function() {
 	});
 
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$(document).on("click", "button[id=modalSearch]", function() {
 		var orderCode = $("#orderCode").val();
 		
 		var materialCode = $("#materialCode").val();

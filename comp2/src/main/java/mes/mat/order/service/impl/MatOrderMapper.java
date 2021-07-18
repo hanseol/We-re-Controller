@@ -23,13 +23,13 @@ import mes.mat.order.service.MatOrderVO;
 public interface MatOrderMapper {
 
 	//등록
-    public void insertMatOrder(LinkedHashMap vo) throws Exception;
+    public String insertMatOrder(LinkedHashMap vo) throws Exception;
     
     //수정
-    public void updateMatOrder(LinkedHashMap vo) throws Exception;
+    public int updateMatOrder(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public void deleteMatOrder(LinkedHashMap vo) throws Exception;
+    public int deleteMatOrder(LinkedHashMap vo) throws Exception;
     
     //전체 입출고 리스트
     public List<?> selectMatOrderList(MatOrderVO searchVO) throws Exception;

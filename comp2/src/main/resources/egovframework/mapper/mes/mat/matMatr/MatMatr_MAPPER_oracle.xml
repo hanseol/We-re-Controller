@@ -26,7 +26,7 @@
 
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	m.com_material_code = #{comMaterialCode}
+							        	m.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
  										group by  
 										          m.com_material_code,
@@ -34,7 +34,7 @@
 										          c.com_material_size,
 										          c.com_material_unit,
 												  c.com_material_safety_stock 
-		                              ORDER BY com_material_code
+		                              ORDER BY m.com_material_code
 		                              <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}

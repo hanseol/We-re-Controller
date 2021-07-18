@@ -97,13 +97,13 @@ public class QuaFltyServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     //수정
-    public void updateQuaFlty(LinkedHashMap vo) throws Exception {
-    	quaFltyMapper.updateQuaFlty(vo);
+    public int updateQuaFlty(LinkedHashMap vo) throws Exception {
+    	return quaFltyMapper.updateQuaFlty(vo);
     }
 
     //삭제
-    public void deleteQuaFlty(LinkedHashMap vo) throws Exception {
-    	quaFltyMapper.deleteQuaFlty(vo);
+    public int deleteQuaFlty(LinkedHashMap vo) throws Exception {
+    	return quaFltyMapper.deleteQuaFlty(vo);
     }
 
 

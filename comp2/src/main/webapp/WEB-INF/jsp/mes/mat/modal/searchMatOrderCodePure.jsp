@@ -15,8 +15,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					발주코드 <input type="text" id="orderCode" name="orderCode" placeholder="발주코드"/>
-				    <button id="findRow">검색</button>
+					발주코드 <input type="text" id="modalOrderCode" name="modalOrderCode" placeholder="발주코드"/>
+				    <button id="modalSearch">검색</button>
 				</div>
 				<div id="matOrderPureModalGrid"></div>
 			</div>
@@ -59,7 +59,7 @@ $(document).ready(function() {
 			
 			//로우아이디
 			if(matOrderRowId == -1){
-				$("#matOrderCode").val(erpMaterialOrderCode);
+				$("#orderCode").val(erpMaterialOrderCode);
 			} else {
 				orderGrid.blur();
 				console.log(matOrderRowId);
@@ -82,15 +82,15 @@ $(document).ready(function() {
 	});
 
 	
-	$(document).on("click", "button[id=findRow]", function() {
-		var orderCode = $("#orderCode").val();
+	$(document).on("click", "button[id=modalSearch]", function() {
+		var modalOrderCode = $("#modalOrderCode").val();
 		
 		var materialCode = $("#materialCode").val();
 		
 		var materialName = $("#materialName").val();
 	
 		var readParams = {
-				'erpMaterialOrderCode' : orderCode,
+				'erpMaterialOrderCode' : modalOrderCode,
 				'comMaterialCode' : materialCode,
 				'comMaterialName' : materialName
 			};

@@ -42,17 +42,12 @@
 					</div> -->
 					<div class="col-md-3">
 						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3">
-						입고업체<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="searchVendorCode.do">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3" align="right">
 						<button type="button" class="btn btn-success" id="search">조회</button>
-						<button type="reset" class="btn btn-danger">새자료</button>
+						<button type="button" class="btn btn-danger" id="reset">새자료</button>
 					</div>
 				</div>
 			</div>
@@ -78,7 +73,6 @@
 <script>
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let materialGrid;
-let vendorGrid;
 //-----------------------------------------------------------
 //네비게이션 바 고정.
 $('#matNav').addClass('active');
@@ -88,6 +82,11 @@ $('#subPages3').attr('style','');
 $('.matrView').addClass('active');
 
 $(document).ready(function () {
+	
+	// 옵션 폼 리셋버튼  
+	$("#reset").click(function() { 
+		location.reload(true);
+		}); 
 		
 	//조회버튼
 	$(document).on("click", "button[id=search]",
@@ -165,19 +164,6 @@ $(document).ready(function () {
 		});
 		
 		
-		//날짜 범위 검색 옵션
-/*		var start = $("#matInoutDate");
-		var end = $("#matInoutEndDate");
-		start.change(function(){
-			if(end.val() == ""){
-				end.val(start.val());
-			}
-		});
-		end.change(function(){
-			if(start.val() == ""){
-				start.val(end.val());
-			}
-		});*/
 		
 		
 		
@@ -207,10 +193,6 @@ $(document).ready(function () {
 		$('#searchMaterialCode').click(function(event) {
 			materialCodeSearch(-1);
 		});
-		//업체
-		$('#searchVendorCode').click(function(event) {
-			vendorCodeSearch(-1);
-		});
 
 	});
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------
@@ -227,17 +209,5 @@ function materialCodeSearch(c) {
 	    $(html).appendTo('body').modal();
 	  });
 }
-//업체
-var vendorRowId;
-function vendorCodeSearch(c) {
-	vendorRowId = c;
-	  console.log(vendorRowId);
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
+
 </script>
