@@ -108,8 +108,8 @@
                        , #{matInoutPrice}
                        , #{quaMaterialStatement}
                        <choose>
-	                       <when test="comMaterialCode == 'MAT0011' and comMaterialCode == 'MAT0012' 
-	                       				and comMaterialCode == 'MAT0013' and comMaterialCode == 'MAT0014'">
+	                       <when test="comMaterialCode == 'MAT011' and comMaterialCode == 'MAT012' 
+	                       				and comMaterialCode == 'MAT013' and comMaterialCode == 'MAT014'">
 	                       		, 'PROCG003'
 	                       </when>
 	                       <otherwise>
@@ -241,7 +241,7 @@
 			<if test="erpProductName != null and erpProductName != ''"> AND
 				pd.erp_product_name LIKE '%' || #{erpProductName} || '%'
 			</if>
-		ORDER BY  pd.pro_plan_detail_code
+		ORDER BY  pd.erp_product_deadline
 	</select>
 	
 	<!-- proForm 전체조회 -->

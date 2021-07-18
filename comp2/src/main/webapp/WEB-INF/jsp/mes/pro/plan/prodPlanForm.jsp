@@ -28,11 +28,11 @@
 						<input type="hidden" id="proPlanCode" name="proPlanCode">
 						* 계획일자   &nbsp;&nbsp;&nbsp;<input type="date" id="date" name="date" > <br/><br/>
 						* 생산계획이름  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">
-						<a href="${pageContext.request.contextPath}/proPlanName.do" rel="modal:open">						
+						<a href="${pageContext.request.contextPath}/pro/plan/proPlanName.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
                  		</a>
 						<!-- 모달창 -->
-						<a id="showModal" href="${pageContext.request.contextPath}/erpProductSearch.do" rel="modal:open"></a>
+						<a id="showModal" href="${pageContext.request.contextPath}/pro/plan/erpProductSearch.do" rel="modal:open"></a>
 					</div>
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>

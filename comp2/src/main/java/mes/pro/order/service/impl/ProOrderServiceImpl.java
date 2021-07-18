@@ -164,13 +164,15 @@ public class ProOrderServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public void updatePlan(LinkedHashMap linkedHashMap) {
+	public int updatePlan(LinkedHashMap linkedHashMap) {
 		proOrderDAO.updatePlan(linkedHashMap);
+		return 0;
 	}
 
 	@Override
-	public void insertMat(ProOrderVO linkedHashMap) {
+	public int insertMat(ProOrderVO linkedHashMap) {
 		proOrderDAO.insertMat(linkedHashMap);
+		return 0;
 	}
     
 }

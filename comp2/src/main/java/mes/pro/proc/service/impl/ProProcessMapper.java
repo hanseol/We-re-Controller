@@ -80,7 +80,7 @@ public interface ProProcessMapper {
     public List<ProProcessVO> selectMatrLot(ProProcessVO vo);
     
     //생산 공정 상태 업데이트
-    public void updateStartTime(ProProcessVO vo) throws Exception;
+    public int updateStartTime(ProProcessVO vo) throws Exception;
 
 	public String selectProdName(ProProcessVO vo);
 

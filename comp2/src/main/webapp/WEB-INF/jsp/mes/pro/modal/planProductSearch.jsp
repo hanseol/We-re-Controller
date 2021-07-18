@@ -129,8 +129,8 @@ $(document).ready(function() {
 			hidden : true
 		}, {
 			header : '납기일자',
-			name : 'erpProductDeadline',
-			hidden : true
+			name : 'erpProductDeadline'/* ,
+			hidden : true */
 		}, {
 			header : '주문량',
 			name : 'erpOrderQty',

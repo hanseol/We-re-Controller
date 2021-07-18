@@ -115,10 +115,10 @@ public interface ProPlanMapper {
     
 	public int selectProPlanFormListTotCnt(ProPlanVO vo);
 
-	public void insertProPlanM(LinkedHashMap vo);
+	public int insertProPlanM(LinkedHashMap vo);
 
-	public void updateProPlanD(LinkedHashMap vo);
+	public int updateProPlanD(LinkedHashMap vo);
 
-	public void deleteProPlanD(LinkedHashMap vo);
+	public int deleteProPlanD(LinkedHashMap vo);
     
 }

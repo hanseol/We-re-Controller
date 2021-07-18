@@ -96,11 +96,11 @@ public interface ProPlanService {
     List<?> selectProPlanFormList(ProPlanVO searchVO);
     int selectPlanFormListCnt(ProPlanVO vo);
 
-	void insertProPlanM(LinkedHashMap linkedHashMap);
+	int insertProPlanM(LinkedHashMap linkedHashMap);
 
-	void updateProPlanD(LinkedHashMap linkedHashMap);
+	int updateProPlanD(LinkedHashMap linkedHashMap);
 
-	void deleteProPlanD(LinkedHashMap linkedHashMap);
+	int deleteProPlanD(LinkedHashMap linkedHashMap);
     
     
 }

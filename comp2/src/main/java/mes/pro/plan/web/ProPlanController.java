@@ -106,7 +106,7 @@ public class ProPlanController {
     }
     
     //생산계획관리_모달(생산계획명 검색 페이지 호출)
-    @GetMapping("proPlanName.do")
+    @GetMapping("pro/plan/proPlanName.do")
     public String proPlanName() {
     	return "mes/pro/modal/proPlanName";
     }
@@ -121,7 +121,7 @@ public class ProPlanController {
     }
     
     //생산계획관리_모달(erp제품모달 페이지 호출)
-    @GetMapping("erpProductSearch.do")
+    @GetMapping("pro/plan/erpProductSearch.do")
     public String erpProductSearch() {
     	return "mes/pro/modal/erpProductSearch";
     }

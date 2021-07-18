@@ -251,7 +251,7 @@ SELECT * FROM (
 				UPDATE PRO_PROCESS
 				SET	PRO_PROCESS_END_TIME=#{proProcessEndTime},
 					PRO_PROCESS_QUANTITY=#{proProcessQuantity},
-					ERP_PRODUCT_NAME = #{comProductName}
+					ERP_PRODUCT_NAME = #{erpProductName}
 				<if test="comProcessCode=='PROCG003'">,
 					PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 				</if>

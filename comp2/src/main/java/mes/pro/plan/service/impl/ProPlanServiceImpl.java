@@ -187,19 +187,18 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public void insertProPlanM(LinkedHashMap vo) {
-		proPlanDAO.insertProPlanM(vo);
-		
+	public int insertProPlanM(LinkedHashMap vo) {
+		return proPlanDAO.insertProPlanM(vo);
 	}
 
 	@Override
-	public void updateProPlanD(LinkedHashMap vo) {
-		proPlanDAO.updateProPlanD(vo);
+	public int updateProPlanD(LinkedHashMap vo) {
+		return proPlanDAO.updateProPlanD(vo);
 	}
 
 	@Override
-	public void deleteProPlanD(LinkedHashMap vo) {
-		proPlanDAO.deleteProPlanD(vo);
+	public int deleteProPlanD(LinkedHashMap vo) {
+		return proPlanDAO.deleteProPlanD(vo);
 		
 	}
 

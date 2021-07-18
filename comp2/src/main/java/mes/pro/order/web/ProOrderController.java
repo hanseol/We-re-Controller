@@ -101,7 +101,7 @@ public class ProOrderController {
     }
     
     //모달 호출1(생산지시코드로 검색)
-    @GetMapping("proOrderSearch.do")
+    @GetMapping("pro/order/proOrderSearch.do")
     public String proOrderSearch() {
     	return "mes/pro/modal/proOrderSearch";
     }
@@ -115,7 +115,7 @@ public class ProOrderController {
     }
 
     //모달 호출2(생산계획에서 작성된 제품리스트)
-    @GetMapping("planProductSearch.do")
+    @GetMapping("pro/order/planProductSearch.do")
     public String planProductSearch() {
     	return "mes/pro/modal/planProductSearch";
     }

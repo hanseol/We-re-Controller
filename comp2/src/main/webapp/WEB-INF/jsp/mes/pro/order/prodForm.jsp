@@ -28,12 +28,12 @@
 						* 지시일자 <input type="date" id="proOrderDate" name="proOrderDate"> <br/><br/>
 						* 작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode" readonly>
 						<!-- 지시검색모달 -->
-						<a href="${pageContext.request.contextPath}/proOrderSearch.do" rel="modal:open">						
+						<a href="${pageContext.request.contextPath}/pro/order/proOrderSearch.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
                  		</a>
 						
 						<!-- 모달창 -->
-						<a id="showModal" href="${pageContext.request.contextPath}/planProductSearch.do" rel="modal:open"></a>
+						<a id="showModal" href="${pageContext.request.contextPath}/pro/order/planProductSearch.do" rel="modal:open"></a>
 					
 					</div>
 					<div class="col-md-6" align="right">	
@@ -521,8 +521,8 @@ var proOrderRowKey;
 					background: "#d5dae1"
 				}
 			}
-	}); 
-	 */
+	});  */
+
 	
 }); //end of document ready
 </script>

@@ -85,11 +85,11 @@ public interface ProOrderMapper {
 
 	public List<?> selectmatLotList(ProOrderVO searchVO);
 
-	public void updatePlan(LinkedHashMap linkedHashMap);
+	public int updatePlan(LinkedHashMap linkedHashMap);
 
-	public void insertMat(ProOrderVO linkedHashMap);
+	public int insertMat(ProOrderVO linkedHashMap);
 
-	public void updateProOrder(LinkedHashMap linkedHashMap);
+	public int updateProOrder(LinkedHashMap linkedHashMap);
 
 
 }

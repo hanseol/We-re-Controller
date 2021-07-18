@@ -48,5 +48,7 @@ public class ProProcessVO extends SearchVO{
     //제품명
     private String erpProductName;
     
+    private String comProductName;
+    
     
 }
