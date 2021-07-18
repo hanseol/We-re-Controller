@@ -113,6 +113,14 @@
 		]]>
 	</select>
 	
+	<!-- 선택한 출고 목록 뿌려주기 -->
+	<select id="selectSalProductOutList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
+		SELECT PRO_PROCESS_LOT_NO, COM_PRODUCT_CODE, SAL_INOUT_QUANTITY
+		FROM SAL_INOUT
+		WHERE PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+		AND SAL_INOUT_GUBUN = 'INOUT003'
+	</select>
+	
 	<!-- 입출고목록 삽입 -->
 	<insert id="insertSalInout">
 		INSERT INTO SAL_INOUT
@@ -392,7 +400,7 @@
 	<select id="searchModProductLotNoList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (	
-							                SELECT
+							                SELECT DISTINCT
 							                I.SAL_INOUT_QUANTITY as SAL_INOUT_QUANTITY,
 							                I.SAL_INOUT_GUBUN, I.PRO_PROCESS_LOT_NO,
 							                P.ERP_PRODUCT_CODE, P.ERP_PRODUCT_NAME,

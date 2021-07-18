@@ -82,10 +82,6 @@
 				<div class="col-md-7">
 					<p class="panel-subtitle">출고 세부 사항</p>
 				</div>
-				<div class="col-md-5" align="right">
-					<button type="button" id="appendRow2">추가</button>
-					<button type="button" id="deleteRow2">삭제</button>
-				</div>
 			</div>
 			<div class="panel-body">
 				<div id="ugrid"></div>
@@ -168,6 +164,8 @@ let ugrid;
 		$(document).on("click", "button[id=modifyRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('modifyData');
+			ugrid.finishEditing('rowKey', 'columnName');
+			ugrid.request('modifyData');
 		});
 		
 		
@@ -270,8 +268,20 @@ let ugrid;
 				}, {
 					header : '수량',
 					name : 'salInoutQuantity'
-				}]
+				}],
+				summary : {
+		            height : 40,
+		            position : 'bottom',
+		            columnContent : {
+		            	salInoutQuantity : {
+		                  template(val) {
+		                     return 'TOTAL : ' + val.sum;
+		                  }
+		               }
+		            }
+		         }
 			}); 
+		
 	 
 	 $('#searchProductCode').click(function(event) {
 			productCodeSearch(-1); //매개변수 -1로 함수 실행
@@ -287,9 +297,28 @@ let ugrid;
 	    	  	 productLotNoSearch(ev.rowKey);	    	  	 
 	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') {
 	    		 modProductLotNoSearch(ev.rowKey);
-	    	  }
+	    	  } 
 	    	}
 	   });
+	 
+	 grid.on('dblclick', ev => {
+		var j = ev.rowKey;
+		if(ev.columnName == 'salInoutQuantity') {
+			if(grid.getValue(j, 'salInoutGubun') == 'INOUT003' && grid.getValue(j, 'salInoutQuantity') != null) {
+	  		  var proProcessLotNo = grid.getValue(j, 'proProcessLotNo');
+	  		  var comProductCode = grid.getValue(j, 'comProductCode');
+	  		  var salInoutQuantity = grid.getValue(j, 'salInoutQuantity');
+	  		 	  		  
+	  		  var readParams = {
+	  				  'proProcessLotNo' : proProcessLotNo,
+	  				  'comProductCode' : comProductCode,
+	  				  'salInoutQuantity' : salInoutQuantity
+	  		  }
+	  		  
+	  		  ugrid.readData(1, readParams, true);
+  	  		}
+		}
+	 });
 	 
 		$('#searchProductLotNo').click(function(event) {
 		 	productLotNoSearch(-1);

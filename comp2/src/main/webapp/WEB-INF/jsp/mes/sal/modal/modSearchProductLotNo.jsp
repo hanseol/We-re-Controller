@@ -55,11 +55,11 @@ $(document).ready(function() {
 			console.log(erpCustomerCode);
 			console.log(salInoutQuantity);
 			
-			ugrid.blur();
-			ugrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
-			ugrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false); //고객사코드
-			ugrid.setValue(rowId, 'comProductCode', erpProductCode, false);
-			ugrid.setValue(rowId, 'salInoutQuantity', salInoutQuantity, false); //수량									
+			mgrid.blur();
+			mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
+			mgrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false); //고객사코드
+			mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
+			mgrid.setValue(rowId, 'salInoutQuantity', salInoutQuantity, false); //수량									
 			
 		}
 	});

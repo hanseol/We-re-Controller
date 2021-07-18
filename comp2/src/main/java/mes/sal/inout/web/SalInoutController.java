@@ -171,6 +171,8 @@ public class SalInoutController {
 					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
 					} else if(gubun.equals("INOUT003")) {
 					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());
+					((LinkedHashMap)createdList.get(i)).put("comProductCode", gd.getComProductCode());
+					
 					}			
 				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
 			}
