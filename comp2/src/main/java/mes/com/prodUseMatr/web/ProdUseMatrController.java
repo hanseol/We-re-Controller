@@ -74,7 +74,7 @@ public class ProdUseMatrController {
 	
 	//모달 제품코드
 	//모달 창을 여는 버튼을 눌렀을 때 동작
-	@GetMapping("/prodUseMatr/ProdUseMatrModal.do")
+	@GetMapping("com/prodUseMatr/ProdUseMatrModal.do")
 	public String ProdUseMatrModal() {
 		
 		//모달창에 띄워줄 view페이지 전달.
@@ -94,7 +94,7 @@ public class ProdUseMatrController {
 	
 	//모달 공정코드
 	//모달 창을 여는 버튼을 눌렀을 때 동작
-	@GetMapping("/prodUseMatr/ProCodeSearchModal.do")
+	@GetMapping("com/prodUseMatr/ProCodeSearchModal.do")
 	public String ProcessModal() {
 		
 		//모달창에 띄워줄 view페이지 전달.
