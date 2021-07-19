@@ -74,6 +74,7 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
+    //20210717 김한설
     @IncludedInfo(name="권한그룹관리", listUrl="/sec/rgm/EgovAuthorGroupList.do", order = 70,gid = 20)
     @RequestMapping(value="/sec/rgm/EgovAuthorGroupList.do")
 	public String selectAuthorGroupList(@ModelAttribute("authorGroupVO") AuthorGroupVO authorGroupVO,
@@ -102,7 +103,7 @@ public class EgovAuthorGroupController {
 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
         
-        return "egovframework/com/sec/rgm/EgovAuthorGroupManage";
+        return "egovframework/com/sec/rgm/EgovAuthorGroupManage.page";
 	}
 
 	/**
