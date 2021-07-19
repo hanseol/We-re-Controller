@@ -13,7 +13,7 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<form action="">
+				<form id="procMatrFrm" name="procMatrFrm" method="POST" action="${pageContext.request.contextPath}/procMatrExcel">
 					<div class="col-md-6">
 					<!-- * 작업일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
 						~ <input type="date" id="endDate" name="endDate"> <br/><br/> -->
@@ -33,6 +33,7 @@
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
 						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+						<button type="submit" class="btn btn-primary" id="excelBtn">Excel</button>
 					</div>
 				</form>
 			</div>
@@ -48,6 +49,7 @@
 				<div class="col-md-7">
 					<p class="panel-subtitle">생산지시조회</p>
 				</div>
+				
 			</div>
 			<div class="panel-body">
 				<div id="grid"></div>
@@ -100,7 +102,6 @@
 		    	});
 			}); 
 
-// ================================== 1번 그리드 ==================================		
 		//dataSource	
 		const dataSource = {
 			api : {
@@ -164,37 +165,6 @@
 		});
 
 
-// ================================== 2번 그리드 ==================================	
-	
-/* //dataSource	
-		const matDataSource = {
-			api : {
-				readData : { url : '${pageContext.request.contextPath}/matBomList', method : 'GET' }
-			},
-			initialRequest : false,
-			contentType : "application/json"
-		};	
-			ㄴ
-		// 디테일-디테일 그리드 (2번 그리드: 자재정보 그리드)
-		const matInfogrid = new tui.Grid({
-			el : document.getElementById('matInfogrid'),
-			rowHeaders : [ 'checkbox' ],
-			data : matDataSource,
-			scrollX : false,
-			scrollY : true,
-			columns : [  {
-				header : '자재코드',
-				name : 'comMaterialCode'
-			}, {
-				header : '자재이름',
-				name : 'comMaterialName'
-			}, {
-				header : '공정코드',
-				name : 'comProcessCode'
-			} ]
-		}); //end of grid(2번)
-	 */
-		
 		
 		
 	// 그리드 테마

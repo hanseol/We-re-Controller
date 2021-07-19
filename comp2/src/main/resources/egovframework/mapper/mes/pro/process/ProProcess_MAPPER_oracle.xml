@@ -132,6 +132,42 @@ SELECT * FROM (
 		</if>
 		ORDER BY m.com_material_code
 	</select>
+	
+	
+	<!-- 엑셀작업 -->
+	<select id="procMatrExcel" parameterType="mes.pro.proc.service.ProProcessVO" resultType="HashMap">
+		SELECT  cd.com_code_detail_name
+		      , l.pro_order_detail_code
+		      , od.erp_product_code
+		      , od.erp_product_name
+		      , l.mat_lot_no
+		      , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+		      , m.com_material_code
+		      , c.com_material_name
+		      , pd.pro_plan_qty
+		      , od.pro_order_qty
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		      , com_code_detail cd
+		      , pro_order_detail od
+		      , pro_plan_detail pd
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = cd.com_code_detail_id
+		  AND   l.pro_order_detail_code = od.pro_order_detail_code
+		  AND   od.pro_plan_detail_code = pd.pro_plan_detail_code
+		<if test="searchCondition == 1"> AND
+			m.com_process_code = 'PROCG001'
+		</if>
+		<if test="searchCondition == 2"> AND
+			m.com_process_code = 'PROCG003'
+	    </if>
+		<if test="proOrderDetailCode != null and proOrderDetailCode != ''"> AND
+			l.pro_order_detail_code = #{proOrderDetailCode}
+		</if>
+		ORDER BY m.com_material_code
+	</select>
 
 
 	<!-- 생산이 완료된 지시코드 조회하기: 모달용 -->

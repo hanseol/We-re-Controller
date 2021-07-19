@@ -1,6 +1,7 @@
 package mes.pro.proc.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.pro.order.service.ProOrderVO;
@@ -87,4 +88,6 @@ public interface ProProcessMapper {
 	public List<?> selectProcLot(ProProcessVO searchVO);
 
 	public List<?> selectfinishOrder(ProProcessVO searchVO);
+
+	public List<Map<String, Object>> procMatrExcel(ProProcessVO vo);
 }

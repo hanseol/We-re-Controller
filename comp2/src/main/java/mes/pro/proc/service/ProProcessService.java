@@ -1,6 +1,7 @@
 package mes.pro.proc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import mes.pro.order.service.ProOrderVO;
 import mes.pro.proc.service.ProProcessVO;
@@ -84,5 +85,7 @@ public interface ProProcessService {
 	List<?> selectProcLot(ProProcessVO searchVO);
 
 	List<?> selectfinishOrder(ProProcessVO searchVO);
+	
+	List<Map<String, Object>> procMatrExcel(ProProcessVO vo);
     
 }

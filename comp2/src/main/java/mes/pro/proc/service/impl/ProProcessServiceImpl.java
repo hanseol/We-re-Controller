@@ -1,6 +1,7 @@
 package mes.pro.proc.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -155,6 +156,11 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public List<?> selectfinishOrder(ProProcessVO searchVO) {
 		return proProcessDAO.selectfinishOrder(searchVO);
+	}
+
+	@Override
+	public List<Map<String, Object>> procMatrExcel(ProProcessVO vo) {
+		return proProcessDAO.procMatrExcel(vo);
 	}
 
     
