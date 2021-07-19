@@ -55,13 +55,25 @@ $(document).ready(function() {
 			console.log(erpCustomerCode);
 			console.log(salInoutQuantity);
 			
-			mgrid.blur();
-			mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
-			mgrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false); //고객사코드
-			mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
-			mgrid.setValue(rowId, 'salInoutQuantity', salInoutQuantity, false); //수량									
+			muGrid.blur();
 			
-		}
+			var rowData =[{
+				proProcessLotNo : "",
+				comProductCode : "",
+				salInoutQuantity : ""
+			}];
+			muGrid.appendRow(rowData, {
+				at : 0,
+				focus : true
+			});
+			
+			muGrid.enable();
+						
+			muGrid.setValue(chkRowKeys[i], 'proProcessLotNo', proProcessLotNo, false);
+			//muGrid.setValue(chkRowKeys[i], 'salInoutCode', erpCustomerCode, false); //고객사코드
+			muGrid.setValue(chkRowKeys[i], 'comProductCode', erpProductCode, false);
+			muGrid.setValue(chkRowKeys[i], 'salInoutQuantity', salInoutQuantity, false); //수량									
+			}
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {

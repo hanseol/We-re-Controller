@@ -103,7 +103,7 @@ $('#subPages2').attr('style','');
 $('.salesProdForm').addClass('active');
 
 let mgrid; //모달그리드
-let ugrid;
+let muGrid;
 
 
 	$(document).ready(function() {
@@ -230,6 +230,9 @@ let ugrid;
 				header : '수량',
 				name : 'salInoutQuantity'
 			}, {
+				header : '현재고',
+				name : 'salNowQuantity'
+			}, {
 				header : '전표번호',
 				name : 'salInoutStatement',
 				hidden : true
@@ -281,7 +284,7 @@ let ugrid;
 		            }
 		         }
 			}); 
-		
+		muGrid = ugrid;
 	 
 	 $('#searchProductCode').click(function(event) {
 			productCodeSearch(-1); //매개변수 -1로 함수 실행
@@ -361,6 +364,7 @@ let ugrid;
 
 	//모달 실행 함수
 	var rowId;
+	var urowId;
 	
 	//제품코드 모달
 	function productCodeSearch(c) {
@@ -388,7 +392,7 @@ let ugrid;
 	
 	//입고된 완제품 LOT_NO 값 받아오는 모달
 	function modProductLotNoSearch(c) {
-		  rowId = c;
+		urowId = c;
 		  event.preventDefault();
 		  $(".modal").remove();
 		  this.blur(); // Manually remove focus from clicked link.

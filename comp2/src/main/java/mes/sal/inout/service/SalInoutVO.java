@@ -92,6 +92,7 @@ public class SalInoutVO extends SearchVO {
     
     private String finalQuantity;
     
+    private String salNowQuantity;
 
 
     

@@ -540,7 +540,7 @@ class CustomCheckboxRenderer {
 				matOrderCodeSearch(ev.rowKey);
 			}
 
-		});		
+		});
 		
 /* 		//업체
 		grid.on('dblclick', ev => {

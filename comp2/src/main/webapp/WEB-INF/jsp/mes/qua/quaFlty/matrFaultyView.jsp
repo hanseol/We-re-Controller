@@ -151,7 +151,7 @@ let vendorGrid;
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 150,
+	        bodyHeight: 300,
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주코드',

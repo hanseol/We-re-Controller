@@ -226,7 +226,7 @@ $('.matrInout').addClass('active');
 			data: dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 150, 
+	        bodyHeight: 300, 
 	        rowHeight: 30,
 			columns: [{
 				header: '입고일자',
@@ -325,7 +325,7 @@ $('.matrInout').addClass('active');
 				data: outDataSource,
 				scrollX: true,
 		        scrollY: true,
-		        bodyHeight: 150,
+		        bodyHeight: 300,
 		        rowHeight: 30,
 				columns: [{
 					header: '출고일자',

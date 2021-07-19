@@ -49,6 +49,7 @@ $(document).ready(function() {
 			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
 			proOrderDetailCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
 			proProcessQuantity = grid.getValue(chkRowKeys[i], 'proProcessQuantity');
+			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');
 			
 			
 			console.log(proProcessLotNo);
@@ -56,6 +57,7 @@ $(document).ready(function() {
 			console.log(erpCustomerCode);
 			console.log(proOrderDetailCode);
 			console.log(proProcessQuantity);
+			console.log(salNowQuantity);
 			
 			
 			//view 페이지에 뿌려줄 부분 아이디값
@@ -70,6 +72,7 @@ $(document).ready(function() {
 				if (mgrid.getValue(chkRowKeys[i], 'salInoutGubun') == 'INOUT002') { //입고이면
 					mgrid.setValue(rowId, 'salInoutCode', proOrderDetailCode, false); //지시코드
 					mgrid.setValue(rowId, 'salInoutQuantity', proProcessQuantity, false); //수량
+					mgrid.setValue(rowId, 'salNowQuantity', salNowQuantity, false); //현재고
 				} else if(mgrid.getValue(chkRowKeys[i], 'salMatchInout') != null) { //정산입출고이면
 					mgrid.setValue(rowId, 'salPastQuantity', proProcessQuantity, false); //기존수량
 				}
@@ -117,8 +120,11 @@ $(document).ready(function() {
 			header : '제품명',
 			name : 'erpProductName'
 		}, {
-			header : '수량',
+			header : '입고수량',
 			name : 'proProcessQuantity'
+		}, {
+			header : '현재고',
+			name : 'salNowQuantity'
 		}]
 	});
 });
