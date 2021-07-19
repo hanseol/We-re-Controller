@@ -75,6 +75,7 @@ public class EgovUserManageController {
 	 * @return cmm/uss/umt/EgovUserManage
 	 * @throws Exception
 	 */
+	//20210717 김한설
 	@IncludedInfo(name = "업무사용자관리", order = 460, gid = 50)
 	@RequestMapping(value = "/uss/umt/EgovUserManage.do")
 	public String selectUserList(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO, ModelMap model) throws Exception {
@@ -112,7 +113,7 @@ public class EgovUserManageController {
 		List<?> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("emplyrSttusCode_result", emplyrSttusCode_result);//사용자상태코드목록
 
-		return "egovframework/com/uss/umt/EgovUserManage";
+		return "egovframework/com/uss/umt/EgovUserManage.page";
 	}
 
 	/**
@@ -123,6 +124,7 @@ public class EgovUserManageController {
 	 * @return cmm/uss/umt/EgovUserInsert
 	 * @throws Exception
 	 */
+	//20210717 김한설
 	@RequestMapping("/uss/umt/EgovUserInsertView.do")
 	public String insertUserView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO, @ModelAttribute("userManageVO") UserManageVO userManageVO, Model model)
 			throws Exception {
@@ -161,7 +163,7 @@ public class EgovUserManageController {
 		model.addAttribute("orgnztId_result", orgnztId_result); //조직정보 목록
 		model.addAttribute("groupId_result", groupId_result); //그룹정보 목록
 
-		return "egovframework/com/uss/umt/EgovUserInsert";
+		return "egovframework/com/uss/umt/EgovUserInsert.page";
 	}
 
 	/**
