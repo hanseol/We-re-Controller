@@ -39,13 +39,10 @@ function actionLogin() {
     } else if (document.loginForm.password.value =="") {
         alert("<spring:message code="comUatUia.validate.passCheck" />"); <%-- 비밀번호를 입력하세요 --%>
     } else {
-    	document.loginForm.userSe.value = "GNR";
         document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
         document.loginForm.submit();
     }
 }
-
-
 </script>
 </head>
 
@@ -57,33 +54,39 @@ function actionLogin() {
 				<div class="auth-box ">
 					<div class="left">
 						<div class="content">
-							<div class="header">
-								<div class="logo text-center"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="Klorofil Logo"></div>
-								<p class="lead">Login to your account</p>
+							<!-- 로그인폼 -->
+							<form class="form-auth-small" name="loginForm" id="loginForm" method="post">
+							<!-- 메시지-->
+							<input type="hidden" id="message" name="message" value="<c:out value='${message}'/>">
+							<div>
+								<p>${loginMessage }</p>
 							</div>
-							<form class="form-auth-small" name="loginForm" id="loginForm" action="<c:url value='/uat/uia/actionLogin.do'/>" method="post">
-								<div class="form-group">
-									<label for="id" class="control-label sr-only">ID</label>
-									<input type="text" class="form-control" id="id" name="id" placeholder="ID" required>
+							<fieldset>
+								<div class="header">
+									<div class="logo text-center"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="Klorofil Logo"></div>
+									<p class="lead">Login to your account</p>
 								</div>
-								<div class="form-group">
-									<label for="password" class="control-label sr-only">Password</label>
-									<input type="password" class="form-control" id="password" name="password" placeholder="PASSWORD" required>
+								
+								<div class="login_input">
+									<!-- 아이디 -->
+									<div class="form-group">
+										<c:set var="title"><spring:message code="comUatUia.loginForm.id"/></c:set>
+										<label for="id" class="control-label sr-only">${title}</label>
+										<input type="text" class="form-control" name="id" id="id" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+									</div>
+									<!-- 비밀번호 -->
+									<div class="form-group">
+										<c:set var="title"><spring:message code="comUatUia.loginForm.pw"/></c:set>
+										<label for="password" class="control-label sr-only">${title}</label>
+										<input type="password" class="form-control" id="password" name="password" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+									</div>
+									<!-- 로그인 -->
+									<div>
+										<input type="button" class="btn_login btn btn-primary btn-lg btn-block" value="<spring:message code="comUatUia.loginForm.login"/>" onclick="actionLogin()"> 
+									</div>
 								</div>
-								<div>
-									<p>${loginMessage }</p>
-								</div>
-								<div class="form-group clearfix">
-									<label class="fancy-checkbox element-left">
-										<input type="checkbox" name="checkId" class="check2" onclick="javascript:saveid(document.loginForm);" id="checkId">
-										<span>Remember me</span>
-									</label>
-								</div>
-								<button type="button" class="btn btn-primary btn-lg btn-block" onclick="actionLogin()">LOGIN</button>
-								<div class="bottom">
-									<span class="helper-text"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
-								</div>
-								<input name="userSe" type="hidden" value="GNR"/>
+							</fieldset>
+								<input name="userSe" type="hidden" value="USR"/> <!-- USR: 업무사용자 -->
 								<input name="j_username" type="hidden"/>
 							</form>
 						</div>
@@ -103,7 +106,3 @@ function actionLogin() {
 	<!-- END WRAPPER -->
 </body>
 </html>
-
-	
-
-
