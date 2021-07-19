@@ -15,15 +15,20 @@
 			<div class="row">
 				<form action="">
 					<div class="col-md-6">
-					* 작업일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
-						~ <input type="date" id="endDate" name="endDate"> <br/><br/>
-					* 공정이름 <br/>
-						<input type="radio" id="gubun1" name="gubun" value="1" checked> 마스크면결합공정  &nbsp;&nbsp;&nbsp;
-						<input type="radio" id="gubun2" name="gubun" value="2" > 끈결합공정   &nbsp;&nbsp;&nbsp;
-						<input type="radio" id="gubun3" name="gubun" value="3" > 철사결합공정   &nbsp;&nbsp;&nbsp;
-						<input type="radio" id="gubun4" name="gubun" value="4" > 포장공정 
+					<!-- * 작업일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
+						~ <input type="date" id="endDate" name="endDate"> <br/><br/> -->
+					* 공정이름   &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="gubun1" name="gubun" value="1" checked> 제작공정  &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="gubun2" name="gubun" value="2" > 포장공정
+					
 						<br/><br/>
-					* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
+					* 지시 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="proOrderDetailCode" name="proOrderDetailCode">
+						<!-- 지시검색모달 -->
+						<a href="${pageContext.request.contextPath}/pro/proc/finishOrderSearch.do" rel="modal:open">						
+                    		<i class="fa fa-search"></i>
+                 		</a>
+                 	
+					
 					</div>
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
@@ -34,7 +39,6 @@
 		</div>
 	</div>
 </div>
-
 
 <!-- 디테일 테이블 -->
 <div class="content-fluid">
@@ -53,43 +57,6 @@
 </div>
 
 
-<!-- 디테일-디테일테이블 -->
-<!-- <div class="content-fluid">
-	<div class="panel panel-headline">
-		<div class="panel-heading">
-			<div class="row">
-				<div class="col-md-6">
-					<p class="panel-subtitle">자재정보</p>
-					<div>
-						제품코드 <input type="text" id="comProductCode" name="comProductCode" readonly>
-						제품명   <input type="text" id="comProductName" name="comProductName" readonly>
-					</div>
-					<div class="panel-body">
-						<div id="matInfogrid"></div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<p class="panel-subtitle">로트정보</p>	
-					<div>
-						자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" readonly>
-						자재명   <input type="text" id="comMaterialName" name="comMaterialName" readonly>
-						
-						<button type="button" id="modifyLot">저장</button>
-					</div>
-					<div class="panel-body">
-						<div id="matLotgrid"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div> -->
-
-
-
-
-
-
 <script>
 	$(document).ready(function() {
 		//네비게이션 바 고정.
@@ -98,24 +65,28 @@
 		$('#subPages4').attr('aria-expanded','true');
 		$('#subPages4').attr('style','');
 		$('.proMat').addClass('active');
+		
 		//M 조회 버튼	
-		$(document).on("click", "button[id=findRow]",
-		      function() {
+		$("#findRow").click(function() {
 		 	   var gubun = $("input[name=gubun]:checked").val();
 		 	   console.log(gubun);
 		         var startDate = $("#startDate").val();
 		         var endDate = $("#endDate").val();
 		         var erpProductCode = $("#erpProductCode").val();
 		         var erpCustomerCode = $("#erpCustomerCode").val();
+		         var proOrderDetailCode = $("#proOrderDetailCode").val();
+		         
 		         var readParams = {
 		      	  'searchCondition' : gubun,
 		            'startDate' : startDate,
 		            'endDate' : endDate,
 		            'erpProductCode' : erpProductCode,
-		            'erpCustomerCode' : erpCustomerCode
+		            'erpCustomerCode' : erpCustomerCode,
+		            'proOrderDetailCode' : proOrderDetailCode
 		         };
 		         grid.readData(1, readParams, true);
 		      });
+		
 		
 		// M 리셋버튼  
 		$("#reset").click(function() {  
@@ -125,8 +96,7 @@
 
 		    	$('#startDate').val("");
 		    	$('#endDate').val("");
-		    	$('#erpProductCode').val("");
-		    	$('#erpCustomerCode').val("");
+		    	$('#proOrderDetailCode').val("")
 		    	});
 			}); 
 
@@ -150,35 +120,47 @@
 			data : dataSource,
 			columns : [ {
 				header : '공정명',
-				name : 'proWorkDate'
+				name : 'comCodeDetailName',
+				align: 'center'
 			}, {
 				header : '지시번호',
-				name : 'proOrderCode'
+				name : 'proOrderDetailCode',
+				align: 'center'
 			}, {
 				header : '제품코드',
-				name : 'erpCustomerCode'
+				name : 'erpProductCode',
+				align: 'center'
 			}, {
 				header : '제품명',
-				name : 'erpProductName'
+				name : 'erpProductName',
+				align: 'center'
+			}, {
+				header : '자재로트번호',
+				name : 'matLotNo',
+				align: 'center'
 			}, {
 				header : '작업일자',
-				name : 'erpOrderCode'
+				name : 'proWorkDate',
+				align: 'center'
 			}, {
 				header : '자재코드',
-				name : 'erpProductDeadline'
+				name : 'comMaterialCode',
+				align: 'center'
 			}, {
 				header : '자재명',
-				name : 'erpOrderQty'
-			},{
-				header : '규격',
-				name : 'proOrderQty'
-			},{
+				name : 'comMaterialName',
+				align: 'center'
+			}, {
 				header : '계획량',
-				name : 'proOrderGubun'
-			},{
-				header : '현재고',
-				name : 'proMaterialLot'
-			} ]
+				name : 'proPlanQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+			}, {
+				header : '지시량',
+				name : 'proOrderQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+			}]
 		});
 
 

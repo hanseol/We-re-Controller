@@ -152,5 +152,10 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 		return proProcessDAO.selectProcLot(searchVO);
 	}
 
+	@Override
+	public List<?> selectfinishOrder(ProProcessVO searchVO) {
+		return proProcessDAO.selectfinishOrder(searchVO);
+	}
+
     
 }

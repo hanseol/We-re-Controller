@@ -9,7 +9,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>제품 검색</h3>
+		<h3>계획된 제품 검색</h3>
 	</div>
 </div>
 

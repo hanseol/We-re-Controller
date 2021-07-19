@@ -56,5 +56,10 @@ public class ProPlanVO extends SearchVO{
     
     //추가 
     private String date;
+    
+    private String comCodeDetailId;
+    private String comCodeDetailName;
+    
+  
 
 }

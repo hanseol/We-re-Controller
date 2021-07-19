@@ -101,6 +101,10 @@ public interface ProPlanService {
 	int updateProPlanD(LinkedHashMap linkedHashMap);
 
 	int deleteProPlanD(LinkedHashMap linkedHashMap);
+
+	List<?> selectProdCode(ProPlanVO searchVO);
+
+	List<?> selectCustomerCode(ProPlanVO searchVO);
     
     
 }

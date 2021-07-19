@@ -268,15 +268,18 @@ var proOrderRowKey;
 			columns : [ {
 				header : '제품코드',
 				name : 'erpProductCode',
+				align: 'center',
 				validation: {
 		               required:true
 		            }
 			}, {
 				header : '제품명',
-				name : 'erpProductName'
+				name : 'erpProductName',
+				align: 'center'
 			}, {
 				header : '구분',
 				name : 'proOrderGubun',
+				align: 'center',
 				editor: {
 		            type: 'select',
 		            options: {
@@ -289,27 +292,38 @@ var proOrderRowKey;
 			
 			}, {
 				header : '주문번호',
-				name : 'erpOrderCode'
+				name : 'erpOrderCode',
+				align: 'center'
 			}, {
 				header : '납기일자',
-				name : 'erpProductDeadline'
+				name : 'erpProductDeadline',
+				align: 'center'
 			}, {
 				header : '계획량',
-				name : 'proPlanQty'
+				name : 'proPlanQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			},{
 				header : '주문량',
 				name : 'erpOrderQty',
-				/* formatter: (ev)=> {return ev.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} */
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '지시량',
 				name : 'proOrderQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
 				editor : 'text'
 			}, {
 				header : 'UPH',
-				name : 'macHourQty'
+				name : 'macHourQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '일생산량',
-				name : 'proOrderDayQty'
+				name : 'proOrderDayQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '예상작업일수',
 				name : 'proOrderExpectQty',
@@ -388,13 +402,16 @@ var proOrderRowKey;
 			scrollY : true,
 			columns : [  {
 				header : '자재코드',
-				name : 'comMaterialCode'
+				name : 'comMaterialCode',
+				align: 'center'
 			}, {
 				header : '자재이름',
-				name : 'comMaterialName'
+				name : 'comMaterialName',
+				align: 'center'
 			}, {
 				header : '공정코드',
-				name : 'comProcessCode'
+				name : 'comProcessCode',
+				align: 'center'
 			} ]
 		}); //end of grid(2번)
 	
@@ -418,13 +435,16 @@ var proOrderRowKey;
 			scrollY : true,
 			columns : [  {
 				header : '로트번호',
-				name : 'matLotNo'
+				name : 'matLotNo',
+				align: 'center'
 			}, {
 				header : '입고일자',
-				name : 'matInoutDate'
+				name : 'matInoutDate',
+				align: 'center'
 			}, {
 				header : '수량',
-				name : 'matInoutQuantity' 
+				name : 'matInoutQuantity' ,
+				align: 'right'
 			}, {
 				header : '구분',
 				name : 'matInoutGubun',
@@ -435,7 +455,9 @@ var proOrderRowKey;
 				hidden : true
 			}, {
 				header : '자재이름',
-				name : 'comMaterialName'
+				name : 'comMaterialName',
+				align: 'center',
+				hidden : true
 			}, {
 				header : '공정코드',
 				name : 'comProcessCode',

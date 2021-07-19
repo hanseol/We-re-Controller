@@ -82,5 +82,7 @@ public interface ProProcessService {
     String selectProdName(ProProcessVO vo);
 
 	List<?> selectProcLot(ProProcessVO searchVO);
+
+	List<?> selectfinishOrder(ProProcessVO searchVO);
     
 }

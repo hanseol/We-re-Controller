@@ -1,9 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-      
+
+
+
+<!-- 생산지시용 모달 -->
+
+
+   
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>생산지시 검색</h3>
+		<h3>작성한 생산지시 검색</h3>
 	</div>
 </div>
 

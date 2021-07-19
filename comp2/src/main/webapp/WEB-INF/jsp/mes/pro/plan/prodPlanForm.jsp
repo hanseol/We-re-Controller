@@ -179,28 +179,37 @@
 			columns : [ {
 				header : '제품코드',
 				name : 'erpProductCode',
+				align: 'center',
 				validation: {
 		               required:true
 		            }
 			}, {
 				header : '제품명',
-				name : 'erpProductName'
+				name : 'erpProductName',
+				align: 'center'
 			}, {
 				header : '주문코드',
-				name : 'erpOrderCode'
+				name : 'erpOrderCode',
+				align: 'center'
 			}, {
 				header : '납기일자',
-				name : 'erpProductDeadline'
+				name : 'erpProductDeadline',
+				align: 'center'
 			}, {
 				header : '주문량',
-				name : 'erpOrderQty'
+				name : 'erpOrderQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '작업계획량',
 				name : 'proPlanQty',
+				align: 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
 				editor : 'text'
 			}, {
 				header : '작업착수일',
 				name : 'proWorkDate',
+				align: 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -211,10 +220,13 @@
 			}, {
 				header : '작업순서',
 				name : 'proPlanSeq',
+				align: 'center',
 				editor : 'text'
 			}, {
 				header : '고객사코드',
-				name : 'erpCustomerCode'
+				name : 'erpCustomerCode',
+				align: 'center',
+				hidden : true
 			}, {
 				header : '예상소요량',
 				name : 'proPlanExpectQty',

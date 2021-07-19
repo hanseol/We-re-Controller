@@ -120,5 +120,9 @@ public interface ProPlanMapper {
 	public int updateProPlanD(LinkedHashMap vo);
 
 	public int deleteProPlanD(LinkedHashMap vo);
+
+	public List<?> selectProdCode(ProPlanVO searchVO);
+
+	public List<?> selectCustomerCode(ProPlanVO searchVO);
     
 }

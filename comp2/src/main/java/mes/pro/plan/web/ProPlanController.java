@@ -198,6 +198,37 @@ public class ProPlanController {
 		map.put("result", true);
 		
 		return map;
-		
+	} // end of modify
+	
+	
+	
+	
+	// 공통으로 사용
+	// 모달 호출: 제품조회
+	@GetMapping("pro/plan/ProdCode.do")
+	public String ProdCode() {
+		return "mes/pro/modal/prodCodeSearch";
+	}
+	// 값 뿌리기
+	@RequestMapping("ProdCode")
+	@ResponseBody
+	public Map<String, Object> ProdCode(@ModelAttribute("searchVO") ProPlanVO searchVO) {
+		List<?> list = service.selectProdCode(searchVO);
+		comFunc = new ComFunc();
+		return comFunc.sendResult(list);
+	}
+	
+	// 모달 호출: 고객조회
+	@GetMapping("pro/plan/CustomerCode.do")
+	public String CustomerCode() {
+		return "mes/pro/modal/customerCodeSearch";
+	}
+	//값 뿌리기
+	@RequestMapping("CustomerCode")
+	@ResponseBody
+	public Map<String, Object> CustomerCode(@ModelAttribute("searchVO") ProPlanVO searchVO) {
+		List<?> list = service.selectCustomerCode(searchVO);
+		comFunc = new ComFunc();
+		return comFunc.sendResult(list);
 	}
 }

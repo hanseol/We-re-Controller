@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,7 +46,7 @@ public class ProProcessController {
     ComFunc comFunc = new ComFunc();
 	
     
-    
+    // 공정별 자재소요 페이지
     //공정별 자재 페이지 호출
     @RequestMapping("pro/proc/procMatView.do")
     public String procMatView(){
@@ -60,7 +61,28 @@ public class ProProcessController {
     	return comFunc.sendResult(list);
     }
     
-     
+    //모달호출: 공정에서 작업이 끝난 지시리스트 불러오기
+    @GetMapping("pro/proc/finishOrderSearch.do")
+    public String finishOrderSearch() {
+    	return "mes/pro/modal/finishOrderSearch";
+    }
+    
+    //모달 내용 조회
+    @RequestMapping("finishOrderSearch")
+    @ResponseBody
+    public Map<String, Object> finishOrderSearch(@ModelAttribute("SearchVO") ProProcessVO searchVO) {
+    	List<?> list = service.selectfinishOrder(searchVO);
+    	comFunc = new ComFunc();
+    	return comFunc.sendResult(list);
+    }
+    
+    
+    
+    
+    
+    
+    
+    // 생산관리 페이지
     //모니터링 페이지 호출(생산관리) > 선택가능한 지시정보를 가지고 옴
     @RequestMapping("pro/proc/mntView.do")
     public String mntView(Model model) {

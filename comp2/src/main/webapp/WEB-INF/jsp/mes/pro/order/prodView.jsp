@@ -43,8 +43,14 @@
 						<input type="radio" id="gubun1" name="gubun" value="1" checked> 작업일자
 						<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
 						<br/><br/>
-					* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode"> <br/><br/>
-					* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode">
+					* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode" readonly> <br/><br/>
+					* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode" readonly>
+					
+						<!-- 제품 모달창 -->
+						<a id="showModal1" href="${pageContext.request.contextPath}/pro/plan/ProdCode.do" rel="modal:open"></a>
+						<!-- 고객 모달창 -->
+						<a id="showModal2" href="${pageContext.request.contextPath}/pro/plan/CustomerCode.do" rel="modal:open"></a>
+						
 					</div>
 					<div class="col-md-6" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
@@ -134,43 +140,62 @@
 			data : dataSource,
 			columns : [ {
 				header : '작업일자',
-				name : 'proWorkDate'
+				name : 'proWorkDate',
+				align: 'center'
 			}, {
 				header : '생산지시코드',
-				name : 'proOrderCode'
+				name : 'proOrderDetailCode',
+				align: 'center'
 			}, {
-				header : '고객사코드',
-				name : 'erpCustomerCode'
-			},{
+				header : '고객사명',
+				name : 'comCodeDetailName',
+				align: 'center'
+			}, {
 				header : '제품코드',
-				name : 'erpProductCode'
+				name : 'erpProductCode',
+				align: 'center'
 			}, {
 				header : '제품명',
-				name : 'erpProductName'
+				name : 'erpProductName',
+				align: 'center'
 			}, {
 				header : '주문번호',
-				name : 'erpOrderCode'
+				name : 'erpOrderCode',
+				align: 'center'
 			}, {
 				header : '납기일자',
-				name : 'erpProductDeadline'
+				name : 'erpProductDeadline',
+				align: 'center'
 			}, {
 				header : '주문량',
-				name : 'erpOrderQty'
-			},{
+				name : 'erpOrderQty',
+				align: 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+			},  {
 				header : '지시량',
-				name : 'proOrderQty'
-			},{
+				name : 'proOrderQty',
+				align: 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+			}, {
 				header : '작업구분',
-				name : 'proOrderGubun'
-			},{
+				name : 'proOrderGubun',
+				align: 'center'
+			}, {
 				header : '제품LOT_NO',
-				name : 'proProcessLotNo'
-			},{
+				name : 'proProcessLotNo',
+				align: 'center'
+			}, {
 				header : '작업순서',
-				name : 'proOrderSeq'
-			},{
+				name : 'proOrderSeq',
+				align: 'center'
+			}, {
 				header : '지시일자',
-				name : 'proOrderDate'
+				name : 'proOrderDate',
+				align: 'center'
+			}, {
+				header : '생산진행여부',
+				name : 'proProcessStatus',
+				align: 'center'
 			} ]
 		});
 	
@@ -205,6 +230,20 @@
 				}
 			}
 	});
+	
+	
+	// M 제품 인풋 한 번 클릭 시 이벤트
+	$("#erpProductCode").on("click", ev => {
+			$("#showModal1").click();
+	});
+	
+	// M 고객 인풋 한 번 클릭 시 이벤트
+	$("#erpCustomerCode").on("click", ev => {			
+			$("#showModal2").click();
+	});
+	
+	
+	
 	
 }); //end of document ready
 </script>

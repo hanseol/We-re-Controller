@@ -85,4 +85,6 @@ public interface ProProcessMapper {
 	public String selectProdName(ProProcessVO vo);
 
 	public List<?> selectProcLot(ProProcessVO searchVO);
+
+	public List<?> selectfinishOrder(ProProcessVO searchVO);
 }

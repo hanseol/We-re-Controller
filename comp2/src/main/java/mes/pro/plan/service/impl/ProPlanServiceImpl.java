@@ -1,6 +1,5 @@
 		package mes.pro.plan.service.impl;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.ibm.icu.text.SimpleDateFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,6 +198,16 @@ public class ProPlanServiceImpl extends EgovAbstractServiceImpl implements
 	public int deleteProPlanD(LinkedHashMap vo) {
 		return proPlanDAO.deleteProPlanD(vo);
 		
+	}
+
+	@Override
+	public List<?> selectProdCode(ProPlanVO searchVO) {
+		return proPlanDAO.selectProdCode(searchVO);
+	}
+
+	@Override
+	public List<?> selectCustomerCode(ProPlanVO searchVO) {
+		return proPlanDAO.selectCustomerCode(searchVO);
 	}
 
 }
