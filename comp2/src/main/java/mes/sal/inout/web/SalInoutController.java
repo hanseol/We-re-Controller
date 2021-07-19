@@ -1,5 +1,6 @@
 package mes.sal.inout.web;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -156,7 +156,9 @@ public class SalInoutController {
 	// 입출고목록 CRUD
 	@PutMapping("/ajax/modifySalInoutList")
 	@ResponseBody
-	public void modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
 		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
@@ -189,12 +191,18 @@ public class SalInoutController {
 			for (int i = 0; i < deletedList.size(); i++) {
 				salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
 			}
-		}		
+		}
+		
+		map.put("result", true);
+		return map;
+		
 	}
 	
 	@PutMapping("/ajax/modifySalOutList")
 	@ResponseBody
-	public void modifySalOutList(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifySalOutList(@RequestBody GridDataVO gd) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
 		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
@@ -213,6 +221,10 @@ public class SalInoutController {
 				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
 			}
 		}
+		
+		map.put("result", true);
+		return map;
+		
 	}
 
 
@@ -220,7 +232,9 @@ public class SalInoutController {
 	// 반품목록 수정
 	@PutMapping("/ajax/modifySalReturnList")
 	@ResponseBody
-	public void modifySalReturnList(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifySalReturnList(@RequestBody GridDataVO gd) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
 		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
@@ -247,7 +261,10 @@ public class SalInoutController {
 			for (int i = 0; i < deletedList.size(); i++) {
 				salInoutService.deleteSalReturn((LinkedHashMap) deletedList.get(i));
 			}
-		}	
+		}
+		
+		map.put("result", true);
+		return map;
 	}
 	
 

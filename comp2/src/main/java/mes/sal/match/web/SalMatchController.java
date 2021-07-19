@@ -1,5 +1,6 @@
 package mes.sal.match.web;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
-import mes.sal.inout.service.SalInoutVO;
 import mes.sal.match.service.SalMatchService;
 import mes.sal.match.service.SalMatchVO;
 
@@ -89,8 +87,10 @@ public class SalMatchController {
  	// 정산입출고관리 페이지
  	@PutMapping("/ajax/sal/modifySalMatchList")
 	@ResponseBody
-	public void modifySalMatchList(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifySalMatchList(@RequestBody GridDataVO gd) throws Exception {
 		
+ 		Map<String, Object> map = new HashMap<>();
+ 		
 		List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
@@ -126,6 +126,8 @@ public class SalMatchController {
 			}
 		}
 		
+		map.put("result", true);
+		return map;
 	}
     
         
