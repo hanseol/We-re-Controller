@@ -76,6 +76,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
+    //20210717 김한설
     @IncludedInfo(name="권한관리", listUrl="/sec/ram/EgovAuthorList.do", order = 60,gid = 20)
     @RequestMapping(value="/sec/ram/EgovAuthorList.do")
     public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, 
@@ -104,7 +105,7 @@ public class EgovAuthorManageController {
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-        return "egovframework/com/sec/ram/EgovAuthorManage";
+        return "egovframework/com/sec/ram/EgovAuthorManage.page";
     } 
     
     /**
@@ -131,10 +132,11 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */     
+    //20210717 김한설
     @RequestMapping("/sec/ram/EgovAuthorInsertView.do")
     public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage)
             throws Exception {
-        return "egovframework/com/sec/ram/EgovAuthorInsert";
+        return "egovframework/com/sec/ram/EgovAuthorInsert.page";
     }
     
     /**
