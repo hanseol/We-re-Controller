@@ -86,5 +86,8 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public List<?> searchMaterialLotList(MatInoutVO searchVO) throws Exception {
 		return matInoutMapper.searchMaterialLotList(searchVO);
 	}
-
+	//모달 자재LOT_NO 리스트 출력
+	public List<?> searchMaterialLotSecondList(MatInoutVO searchVO) throws Exception {
+		return matInoutMapper.searchMaterialLotSecondList(searchVO);
+	}
 }

@@ -292,7 +292,7 @@ let matLotGrid;
 		//자재LOT_NO
 		grid.on('dblclick', ev =>{
 			if(ev.columnName == 'matLotNo'){
-				matLotNoSearch(ev.rowKey);
+				matLotNoSearchSecond(ev.rowKey);
 			}
 		});
 		
@@ -360,11 +360,9 @@ let matLotGrid;
 	var materialRowId;
 	function materialCodeSearch(c) {
 		materialRowId = c;
-		  console.log(materialRowId);
 		  event.preventDefault();
 		  $(".modal").remove();
 		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
 		  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
@@ -373,12 +371,21 @@ let matLotGrid;
 	var matrLotRowId;
 	function matLotNoSearch(c) {
 		matrLotRowId = c;
-		  console.log(matrLotRowId);
 		  event.preventDefault();
 		  $(".modal").remove();
 		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
 		  $.get("${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do", function(html) {
+		    $(html).appendTo('body').modal();
+		  });
+	}
+	// 정산테이블에 있는 데이터는 제외한 자재LOT_NO
+	var matrLotRowIdSecond;
+	function matLotNoSearchSecond(c) {
+		matrLotRowIdSecond = c;
+		  event.preventDefault();
+		  $(".modal").remove();
+		  this.blur(); // Manually remove focus from clicked link.
+		  $.get("${pageContext.request.contextPath}/mat/lot/searchMatLotNoSecond.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
 	}

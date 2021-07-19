@@ -61,7 +61,7 @@ max-height: 600px; */
 				</form>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
+					
 					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
@@ -81,6 +81,7 @@ max-height: 600px; */
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-info" id="appendRow">추가</button>
 					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
+					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -99,6 +100,7 @@ max-height: 600px; */
 				</div>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-warning" id="passDeleteRow">선택삭제</button>
+					<button type="button" class="btn btn-info" id="modifyPass">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -122,18 +124,26 @@ let erpMaterialOrderCode;
 		
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() { 
-			location.reload(true);
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+		    	passGrid.clear();
+		    	
+		    	$('#materialCode').val("");
+		    	$('#vendorCode').val("");
+		    	
+		    	});
 			}); 
 		
 		//날짜 범위로 지정하는 방법 생각.
 		
+//=======================================그리드1 버튼설정===========================================	
 
-
-		//추가버튼 (행 추가)
+		//그리드1 추가버튼
 		$(document).on("click", "button[id=appendRow]",
 			function () {
 				var rowData = {
-					//여기 수정 해야함.
+					
 					erpMaterialOrderCode: "",
 					quaMaterialDate: "",
 					erpVendorCode: "",
@@ -159,61 +169,54 @@ let erpMaterialOrderCode;
 				grid.enable();
 			});
 		//그리드1 저장버튼 (등록, 수정, 삭제)
-		$(document).on("click", "button[id=modifyRow]",
-			function () {
-			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
-				
-				grid.finishEditing('rowKey', 'columnName');
-				grid.request('modifyData');
-				passGrid.request('modifyData');
-				location.reload(true);
-
+		$("#modifyRow").on("click", function() {
+			grid.finishEditing('rowKey', 'columnName');
+			grid.request('modifyData');
+			
 			});
 		
 		
-		//그리드2 삭제 버튼(체크된 행 삭제)
-		$(document).on("click", "button[id=deleteRow]",
-			function () {
-				grid.removeCheckedRows(false);
+		//그리드1 삭제 버튼(체크된 행 삭제)
+		$("#deleteRow").on("click", function () {
+			grid.removeCheckedRows(false);
 				
 			});
-		//그리드2 저장버튼 (등록, 수정, 삭제)
-/* 		$(document).on("click", "button[id=modifyRow]",
-			function () {
-			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
-				passGrid.finishEditing('rowKey', 'columnName');
-				
-				location.reload(true);
-			}); */
 		
-		
+//=======================================그리드2 버튼설정===========================================		
 		//그리드2 삭제 버튼(체크된 행 삭제)
-		$(document).on("click", "button[id=passDeleteRow]",
-			function () {
+		$("#passDeleteRow").on("click",	function () {
 				passGrid.removeCheckedRows(false);
 				
 			});
+		
+		//그리드2 저장버튼 ( only 삭제를 위한 저장? )
+		$("#modifyPass").on("click", function () {
+			passGrid.finishEditing('rowKey', 'columnName');
+			passGrid.request('modifyData');
+		});
+		
+		
 
-		//검색데이터 전송
-		$(document).on("click",	"button[id=search]",
-				function () {
 
-					//데이터를 변수에 담아서 parameter로 만들기.
-					var materialDate = $("#materialDate").val();
-					var materialCode = $("#materialCode").val();
-					var vendorCode = $("#vendorCode").val();
-					var materialEndDate = $("#materialEndDate").val();
+		//전체검색 데이터 전송
+		$("#search").on("click", function () {
 
-					var readParams = {
-						'quaMaterialDate' : materialDate,
-						'comMaterialCode': materialCode,
-						'erpVendorCode': vendorCode,
-						'quaMaterialEndDate' : materialEndDate
-					};
-					grid.readData(1, readParams, true);
-					passGrid.readData(1, readParams, true);
-					
-				});
+			//데이터를 변수에 담아서 parameter로 만들기.
+			var materialDate = $("#materialDate").val();
+			var materialCode = $("#materialCode").val();
+			var vendorCode = $("#vendorCode").val();
+			var materialEndDate = $("#materialEndDate").val();
+
+			var readParams = {
+				'quaMaterialDate' : materialDate,
+				'comMaterialCode': materialCode,
+				'erpVendorCode': vendorCode,
+				'quaMaterialEndDate' : materialEndDate
+			};
+			grid.readData(1, readParams, true);
+			passGrid.readData(1, readParams, true);
+			
+		});
 
 		const dataSource = {
 			api: {
@@ -240,8 +243,6 @@ let erpMaterialOrderCode;
 	        scrollY: true,
 	        bodyHeight: 300,
 	        rowHeight: 30,
-	        
-
 			columns: [{
 				header: '발주코드',
 				name: 'erpMaterialOrderCode',
@@ -351,7 +352,7 @@ let erpMaterialOrderCode;
 						method: 'GET'
 					},
 					modifyData: {
-						url: '${pageContext.request.contextPath}/ajax/modifyQuaChk',
+						url: '${pageContext.request.contextPath}/ajax/modifyQuaChkPass',
 						method: 'PUT'
 					}
 
@@ -369,8 +370,6 @@ let erpMaterialOrderCode;
 	        scrollY: true,
 	        bodyHeight: 300, 
 	        rowHeight: 30,
-	        
-
 			columns: [{
 				header: '발주코드',
 				name: 'erpMaterialOrderCode',

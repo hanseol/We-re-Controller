@@ -22,6 +22,7 @@ public interface QuaChkService {
 	
     //등록
     String insertQuaChk(GridDataVO vo) throws Exception;
+    String insertQuaChkPass(GridDataVO vo) throws Exception;
     
     //자재입출고로 등록
     void insertQuaChkMatIn(LinkedHashMap vo) throws Exception;

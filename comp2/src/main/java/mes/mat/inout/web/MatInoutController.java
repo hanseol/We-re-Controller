@@ -202,6 +202,28 @@ public class MatInoutController {
       	ComFunc comFunc = new ComFunc();
       	return comFunc.sendResult(list);
   	}
+  	
+  	
+    //정산테이블전용 자재LOT_NO  오픈
+    @GetMapping("/mat/lot/searchMatLotNoSecond.do")
+  	public String searchMaterialLotNoSecond() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/mat/modal/searchMaterialLotNoSecond";
+  	}
+  	
+  	//정산테이블전용 자재LOT_NO 결과 값 전달
+  	@RequestMapping("/ajax/searchMaterialLotNoSecond")
+  	@ResponseBody
+  	public Map<String, Object> searchMaterialLotSecond(Model model, 
+     		@ModelAttribute("searchVO") MatInoutVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchMaterialLotSecondList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
 
 
     

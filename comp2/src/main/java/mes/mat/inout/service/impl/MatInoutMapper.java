@@ -47,6 +47,7 @@ public interface MatInoutMapper {
     
     //모달 자재LOT_NO 리스트 
     public List<?> searchMaterialLotList(MatInoutVO searchVO) throws Exception;
-
     
+    //모달 자재LOT_NO 리스트 
+    public List<?> searchMaterialLotSecondList(MatInoutVO searchVO) throws Exception;
 }

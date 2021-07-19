@@ -96,12 +96,23 @@ public class QuaChkController {
         return "mes/qua/quaChk/matrQuaForm.page";
     }
   	
-  	//자재입고검사 [관리] 등록 수정 삭제
+  	//자재입고검사 [관리] 모디1
     @PutMapping("/ajax/modifyQuaChk")
 	@ResponseBody
 	public Map<String, Object> modifyQuaChk(@RequestBody GridDataVO gd) throws Exception {
     	Map<String, Object> map = new HashMap<String, Object>();
 		service.insertQuaChk(gd);
+		
+		map.put("result", true);
+		
+		return map;
+	}
+    //자재입고검사 [관리] 모디2
+    @PutMapping("/ajax/modifyQuaChkPass")
+	@ResponseBody
+	public Map<String, Object> modifyQuaChkPass(@RequestBody GridDataVO gd) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
+		service.insertQuaChkPass(gd);
 		
 		map.put("result", true);
 		

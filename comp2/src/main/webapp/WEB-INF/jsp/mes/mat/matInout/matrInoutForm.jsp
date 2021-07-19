@@ -17,7 +17,7 @@
 		max-width: 900px;
 		width: 900px;
 		/* height: 600px;
-max-height: 600px; */
+		max-height: 600px; */
 	}
 
 	.blocker {
@@ -105,7 +105,7 @@ max-height: 600px; */
 					<p class="panel-subtitle">출고</p>
 				</div>
 				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
+					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button><!-- 구분해야해!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 				</div>
 			</div>
 			<div class="panel-body">
@@ -140,8 +140,7 @@ $('.matrInout').addClass('active');
 		
 
 		//추가버튼 (행 추가)
-		$(document).on("click", "button[id=appendRow]",
-			function () {
+		$("#appendRow").on("click", function () {
 				var rowData = [{
 					//여기 수정 해야함.
 					matInoutDate: "",
@@ -166,50 +165,39 @@ $('.matrInout').addClass('active');
 				grid.enable();
 			});
 		//저장버튼 (등록, 수정, 삭제)
-		$(document).on("click", "button[id=modifyRow]",
-			function () {
+		$("#modifyRow").on("click", function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				grid.finishEditing('rowKey', 'columnName');
 				
 				grid.request('modifyData');
 			});
-		//저장버튼 (등록, 수정, 삭제)
-		$(document).on("click", "button[id=modifyRow]",
-			function () {
-			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
-				passGrid.finishEditing('rowKey', 'columnName');
-				
-				passGrid.request('modifyData');
-			});
 		
 		//삭제 버튼(체크된 행 삭제)
-		$(document).on("click", "button[id=deleteRow]",
-			function () {
+		$("#deleteRow").on("click", function () {
 				grid.removeCheckedRows(false);
 				outGrid.removeCheckedRows(false);
 			});
 
 		//검색데이터 전송
-		$(document).on("click",	"button[id=search]",
-				function () {
+		$("#search").on("click", function () {
 
-					//데이터를 변수에 담아서 parameter로 만들기.
-					var comMaterialCode = $("#materialCode").val();
-					var inoutDate = $("#inoutDate").val();
-					var erpVendorCode = $("#vendorCode").val();
-					var inoutEndDate = $("#inoutEndDate").val();
-					var matLot = $("#matLot").val();
+			//데이터를 변수에 담아서 parameter로 만들기.
+			var comMaterialCode = $("#materialCode").val();
+			var inoutDate = $("#inoutDate").val();
+			var erpVendorCode = $("#vendorCode").val();
+			var inoutEndDate = $("#inoutEndDate").val();
+			var matLot = $("#matLot").val();
 
-					var readParams = {
-						'comMaterialCode': comMaterialCode,
-						'matInoutDate': inoutDate,
-						'erpVendorCode': erpVendorCode,
-						'matInoutEndDate' : inoutEndDate,
-						'matLot' : matLot
-					};
-					grid.readData(1, readParams, true);
-					outGrid.readData(1, readParams, true);
-				});
+			var readParams = {
+				'comMaterialCode': comMaterialCode,
+				'matInoutDate': inoutDate,
+				'erpVendorCode': erpVendorCode,
+				'matInoutEndDate' : inoutEndDate,
+				'matLot' : matLot
+			};
+			grid.readData(1, readParams, true);
+			outGrid.readData(1, readParams, true);
+		});
 		//입고 목록 데이터
 		const dataSource = {
 			api: {
@@ -328,75 +316,75 @@ $('.matrInout').addClass('active');
 				contentType: "application/json"
 			};
 		
-			//출고 그리드
-			const outGrid = new tui.Grid({
-				el: document.getElementById('outGrid'),
-				rowHeaders: ['checkbox'],
-				data: outDataSource,
-				scrollX: true,
-		        scrollY: true,
-		        bodyHeight: 300,
-		        rowHeight: 30,
-				columns: [{
-					header: '출고일자',
-					name: 'matInoutDate',
-					width: '80',
-					align: 'center'
-				}, {
-					header: '공정코드',
-					name: 'comProcessCode',
-					width: '100',
-					align: 'center'
-				}, {
-					header: '출고공정명',
-					name: 'comCodeDetailName',
-					width: '100',
-					align: 'center'
-				}, {
-					header: '자재코드',
-					name: 'comMaterialCode',
-					width: '80',
-					align: 'center'
-				}, {
-					header: '자재명',
-					name: 'comMaterialName',
-					width: '100',
-					align: 'center'
-				}, {
-					header: '규격',
-					name: 'comMaterialSize',
-					width: '150',
-					align: 'center'
-				}, {
-					header: '관리단위',
-					name: 'comMaterialUnit',
-					width: '70',
-					align: 'center'
-				}, {
-					header: '자재LOT_NO',
-					width: '200',
-					name: 'matLotNo',
-					align: 'center'
-				}, {
-					header: '수량',
-					name: 'matInoutQuantity',
-					width: 'auto',
-					minWidth: 100,
-					align: 'right'
-				}, {
-					header: '단가(원)',
-					name: 'matInoutUnitPrice',
-					width: 'auto',
-					minWidth: 100,
-					align: 'right'
-				}, {
-					header: '금액(원)',
-					name: 'matInoutPrice',
-					width: 'auto',
-					minWidth: 100,
-					align: 'right'
-				}]
-			});
+		//출고 그리드
+		const outGrid = new tui.Grid({
+			el: document.getElementById('outGrid'),
+			rowHeaders: ['checkbox'],
+			data: outDataSource,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight: 300,
+	        rowHeight: 30,
+			columns: [{
+				header: '출고일자',
+				name: 'matInoutDate',
+				width: '80',
+				align: 'center'
+			}, {
+				header: '공정코드',
+				name: 'comProcessCode',
+				width: '100',
+				align: 'center'
+			}, {
+				header: '출고공정명',
+				name: 'comCodeDetailName',
+				width: '100',
+				align: 'center'
+			}, {
+				header: '자재코드',
+				name: 'comMaterialCode',
+				width: '80',
+				align: 'center'
+			}, {
+				header: '자재명',
+				name: 'comMaterialName',
+				width: '100',
+				align: 'center'
+			}, {
+				header: '규격',
+				name: 'comMaterialSize',
+				width: '150',
+				align: 'center'
+			}, {
+				header: '관리단위',
+				name: 'comMaterialUnit',
+				width: '70',
+				align: 'center'
+			}, {
+				header: '자재LOT_NO',
+				width: '200',
+				name: 'matLotNo',
+				align: 'center'
+			}, {
+				header: '수량',
+				name: 'matInoutQuantity',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
+			}, {
+				header: '단가(원)',
+				name: 'matInoutUnitPrice',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
+			}, {
+				header: '금액(원)',
+				name: 'matInoutPrice',
+				width: 'auto',
+				minWidth: 100,
+				align: 'right'
+			}]
+		});
 //모달 그리드 초기화 ----------------------------------
 		materialGrid = grid;
 		vendorGrid = grid;

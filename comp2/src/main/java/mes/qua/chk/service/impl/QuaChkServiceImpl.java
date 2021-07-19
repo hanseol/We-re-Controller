@@ -50,8 +50,8 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
     /** ID Generation */
     //@Resource(name="{egovQuaMaterialChkIdGnrService}")    
     //private EgovIdGnrService egovIdGnrService;
-
-	//등록
+    
+	//모디1 등록
     public String insertQuaChk(GridDataVO gd) throws Exception {
     	
 		List<?> updatedList = gd.getUpdatedRows();
@@ -118,6 +118,38 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 		}
 		return null;
     }
+    
+  //모디2 등록
+    public String insertQuaChkPass(GridDataVO gd) throws Exception {
+    	
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+    	
+    	if (updatedList != null) {
+			for (int i = 0; i < updatedList.size(); i++) {
+				LinkedHashMap updatedMap =(LinkedHashMap) updatedList.get(i);
+				quaChkMapper.updateQuaChk(updatedMap);
+				
+			}
+		}
+		
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				LinkedHashMap createdMap =(LinkedHashMap) createdList.get(i);
+				quaChkMapper.insertQuaChk(createdMap);
+			}
+		}
+
+		if (deletedList.size() != 0) {
+			for (int i = 0; i < deletedList.size(); i++) {
+				LinkedHashMap deletedMap =(LinkedHashMap) deletedList.get(i);
+				quaChkMapper.deleteQuaChk(deletedMap);
+			}
+		}
+		return null;
+    }
+    
     
     //자재입출고로 등록
     public void insertQuaChkMatIn(LinkedHashMap vo) throws Exception {
