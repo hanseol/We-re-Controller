@@ -158,28 +158,38 @@ let vendorGrid;
 				name : 'erpMaterialOrderCode',
 				validation: {
 			           required:true
-			        }
+			        },
+		        align : 'center'
 			}, {
 				header : '검사일자',
-				name : 'quaMaterialChkDate'
+				name : 'quaMaterialChkDate',
+		        align : 'center'
 			}, {
 				header: '업체코드',
-				name: 'erpVendorCode'
+				name: 'erpVendorCode',
+		        align : 'center'
 			}, {
 				header: '발주업체명',
-				name: 'comCodeDetailName'
+				name: 'comCodeDetailName',
+		        align : 'center'
 			}, {
 				header : '발주량',
-				name : 'erpMaterialOrderQty'
+				name : 'erpMaterialOrderQty',
+		        align : 'center'
 			}, {
-				header: '단가',
-				name: 'erpMaterialUnitPrice'
+				header: '단가(원)',
+				name: 'erpMaterialUnitPrice',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+		        align : 'center'
 			}, {
-				header: '금액',
-				name: 'erpMaterialPrice'
+				header: '금액(원)',
+				name: 'erpMaterialPrice',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+		        align : 'center'
 			}, {
 				header: '불량량',
-				name: 'quaMaterialFQty'
+				name: 'quaMaterialFQty',
+		        align : 'center'
 			}]
 		});
 		

@@ -43,7 +43,7 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function(){
 
 		var chkRowKeys = matOrderModalGrid.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
@@ -63,7 +63,7 @@ $(document).ready(function() {
 				$("#matOrderCode").val(erpMaterialOrderCode);
 			} else {
 				orderGrid.blur();
-				console.log(matOrderRowId);
+				//console.log(matOrderRowId);
 				orderGrid.setValue(matOrderRowId, 'erpMaterialOrderCode', erpMaterialOrderCode, false);
 				orderGrid.setValue(matOrderRowId, 'quaMaterialDate', erpMaterialRequestDate, false);
 				orderGrid.setValue(matOrderRowId, 'erpMaterialOrderQty', erpMaterialOrderQty, false);

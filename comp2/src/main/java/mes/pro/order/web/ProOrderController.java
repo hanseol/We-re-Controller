@@ -232,7 +232,6 @@ public class ProOrderController {
 	@ResponseBody
 	public Map<String, Object> insertMat(@ModelAttribute("searchVO") ProOrderVO searchVO) throws FdlException {
 		
-		
 		searchVO.setMatInoutStatement(mesMatOutStatementIdGnrService.getNextStringId());
 		searchVO.setProProcessLotNo(productLotCodeService.getNextStringId());
 		searchVO.setProMaterialNumber(ProMaterialNoService.getNextStringId());
@@ -241,7 +240,7 @@ public class ProOrderController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", true);
-		map.put("test", "test");
+		map.put("proOrderDetailCode", searchVO.getProOrderDetailCode());
 		return map;
 	}
 	

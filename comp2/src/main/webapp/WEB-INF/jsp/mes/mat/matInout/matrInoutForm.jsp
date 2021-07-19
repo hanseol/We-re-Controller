@@ -172,8 +172,16 @@ $('.matrInout').addClass('active');
 				grid.finishEditing('rowKey', 'columnName');
 				
 				grid.request('modifyData');
-				location.reload(true);
 			});
+		//저장버튼 (등록, 수정, 삭제)
+		$(document).on("click", "button[id=modifyRow]",
+			function () {
+			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
+				passGrid.finishEditing('rowKey', 'columnName');
+				
+				passGrid.request('modifyData');
+			});
+		
 		//삭제 버튼(체크된 행 삭제)
 		$(document).on("click", "button[id=deleteRow]",
 			function () {
@@ -286,17 +294,19 @@ $('.matrInout').addClass('active');
 				align: 'right',
 				editor: 'text'
 			}, {
-				header: '단가',
+				header: '단가(원)',
 				name: 'matInoutUnitPrice',
 				width: 'auto',
 				minWidth: 100,
-				align: 'right'
+				align: 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header: '금액',
+				header: '금액(원)',
 				name: 'matInoutPrice',
 				width: 'auto',
 				minWidth: 100,
-				align: 'right'
+				align: 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}]
 		});
 		
@@ -374,13 +384,13 @@ $('.matrInout').addClass('active');
 					minWidth: 100,
 					align: 'right'
 				}, {
-					header: '단가',
+					header: '단가(원)',
 					name: 'matInoutUnitPrice',
 					width: 'auto',
 					minWidth: 100,
 					align: 'right'
 				}, {
-					header: '금액',
+					header: '금액(원)',
 					name: 'matInoutPrice',
 					width: 'auto',
 					minWidth: 100,

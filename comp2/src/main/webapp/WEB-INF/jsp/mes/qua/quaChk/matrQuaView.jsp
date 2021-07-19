@@ -201,11 +201,13 @@ $(document).ready(function () {
 			header: '불량량',
 			name: 'quaMaterialFQty'
 		}, {
-			header: '단가',
-			name: 'erpMaterialUnitPrice'
+			header: '단가(원)',
+			name: 'erpMaterialUnitPrice',
+            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}, {
-			header: '금액',
-			name: 'matInoutPrice'
+			header: '금액(원)',
+			name: 'matInoutPrice',
+            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}, {
 			header: '검사유무',
 			name: 'quaMaterialChk'
@@ -283,11 +285,13 @@ $(document).ready(function () {
 			header: '불량량',
 			name: 'quaMaterialFQty'
 		}, {
-			header: '단가',
-			name: 'erpMaterialUnitPrice'
+			header: '단가(원)',
+			name: 'erpMaterialUnitPrice',
+            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}, {
-			header: '금액',
-			name: 'matInoutPrice'
+			header: '금액(원)',
+			name: 'matInoutPrice',
+            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}, {
 			header: '검사유무',
 			name: 'quaMaterialChk'

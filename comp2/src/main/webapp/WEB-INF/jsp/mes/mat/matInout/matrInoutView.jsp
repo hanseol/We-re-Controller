@@ -223,17 +223,19 @@ $(document).ready(function () {
 			minWidth: 100,
 			align: 'right'
 		}, {
-			header: '단가',
+			header: '단가(원)',
 			name: 'matInoutUnitPrice',
 			width: 'auto',
 			minWidth: 100,
-			align: 'right'
+			align: 'right',
+            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}, {
-			header: '금액',
+			header: '금액(원)',
 			name: 'matInoutPrice',
 			width: 'auto',
 			minWidth: 100,
-			align: 'right'
+			align: 'right',
+            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}]
 	});
 	//출고 목록 데이터
@@ -310,13 +312,13 @@ $(document).ready(function () {
 				minWidth: 100,
 				align: 'right'
 			}, {
-				header: '단가',
+				header: '단가(원)',
 				name: 'matInoutUnitPrice',
 				width: 'auto',
 				minWidth: 100,
 				align: 'right'
 			}, {
-				header: '금액',
+				header: '금액(원)',
 				name: 'matInoutPrice',
 				width: 'auto',
 				minWidth: 100,

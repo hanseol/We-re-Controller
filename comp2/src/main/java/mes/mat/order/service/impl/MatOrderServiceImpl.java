@@ -1,7 +1,9 @@
 package mes.mat.order.service.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -35,7 +37,8 @@ public class MatOrderServiceImpl extends EgovAbstractServiceImpl implements
     private MatOrderMapper matOrderMapper;
     
 	//등록
-    public String insertMatOrder(LinkedHashMap vo) throws Exception {
+    public Map<String, Object> insertMatOrder(LinkedHashMap vo) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -47,17 +50,17 @@ public class MatOrderServiceImpl extends EgovAbstractServiceImpl implements
     	matOrderMapper.insertMatOrder(vo);
 
     	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
+        return map;
     }
 
     //수정
-    public int updateMatOrder(LinkedHashMap vo) throws Exception {
-    	return matOrderMapper.updateMatOrder(vo);
+    public void updateMatOrder(LinkedHashMap vo) throws Exception {
+    	matOrderMapper.updateMatOrder(vo);
     }
 
     //삭제
-    public int deleteMatOrder(LinkedHashMap vo) throws Exception {
-    	return matOrderMapper.deleteMatOrder(vo);
+    public void deleteMatOrder(LinkedHashMap vo) throws Exception {
+    	matOrderMapper.deleteMatOrder(vo);
     }
     
     //리스트 전체조회

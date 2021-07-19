@@ -109,12 +109,6 @@ max-height: 600px; */
 </div>
 
 <script>
-//네비게이션 고정
-$('#quaNav').addClass('active');
-$('#subPages6').addClass('in');
-$('#subPages6').attr('aria-expanded','true');
-$('#subPages6').attr('style','');
-$('.matrQua').addClass('active');
 
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let orderGrid;
@@ -123,59 +117,6 @@ let vendorGrid;
 let matFltyGrid;
 //-----------------------------------------------------------
 let erpMaterialOrderCode;
-
-//체크박스---------------------------------------------------------------
-class CustomCheckboxRenderer {
-   constructor(props) {
-       const { grid, rowKey,columnInfo, value } = props;
-       const label = document.createElement('checkbox');
-/*         const { disabled } = props.columnInfo.renderer.options; */
-       label.className = 'checkbox';
-       //label.setAttribute('for', String(rowKey));
-
-       const hiddenInput = document.createElement('input');
-       hiddenInput.className = 'hidden-input';
-       hiddenInput.id = String(rowKey);
-
-       hiddenInput.setAttribute( 'data-check-val', '0' );
-       
-       label.appendChild(hiddenInput);
-
-       hiddenInput.type = 'checkbox';
-       hiddenInput.addEventListener('change', () => {
-           if (hiddenInput.checked) {
-               hiddenInput.setAttribute( 'data-check-val', '1' );
-               grid.setValue(rowKey, columnInfo.name, "1");
-           } else {
-               hiddenInput.setAttribute( 'data-check-val', '0' );
-               grid.setValue(rowKey, columnInfo.name, "0");
-           }
-           try {
-               fnCustomChkboxChange();
-           } catch(e) {
-               
-           }
-           
-       });
-
-       this.el = label;
-
-       this.render(props);
-   }
-
-   getElement() {
-       return this.el;
-   }
-
-   render(props) {
-   const hiddenInput = this.el.querySelector('.hidden-input');
-   const checked = Boolean(props.value == '1');
-   hiddenInput.checked = checked;
-  const disabled = props.columnInfo.renderer.disabled;
-   hiddenInput.disabled = disabled; 
-   }
-};
-//-------------------------------------------------------------------
 
 	$(document).ready(function () {
 		
@@ -224,6 +165,7 @@ class CustomCheckboxRenderer {
 				
 				grid.finishEditing('rowKey', 'columnName');
 				grid.request('modifyData');
+				passGrid.request('modifyData');
 				location.reload(true);
 
 			});
@@ -236,14 +178,13 @@ class CustomCheckboxRenderer {
 				
 			});
 		//그리드2 저장버튼 (등록, 수정, 삭제)
-		$(document).on("click", "button[id=modifyRow]",
+/* 		$(document).on("click", "button[id=modifyRow]",
 			function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				passGrid.finishEditing('rowKey', 'columnName');
-				passGrid.request('modifyData');
+				
 				location.reload(true);
-
-			});
+			}); */
 		
 		
 		//그리드2 삭제 버튼(체크된 행 삭제)
@@ -297,7 +238,7 @@ class CustomCheckboxRenderer {
 			data: dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 300, 
+	        bodyHeight: 300,
 	        rowHeight: 30,
 	        
 
@@ -344,7 +285,7 @@ class CustomCheckboxRenderer {
 			}, {
 				header: '합격량',
 				name: 'quaMaterialPQty',
-				editor : 'text',
+				editor: 'text',
 				align : 'right'
 			}, {
 				header: '불량량',
@@ -357,20 +298,31 @@ class CustomCheckboxRenderer {
 				align: 'center'
 				
 			}, {
-				header: '단가',
+				header: '단가(원)',
 				name: 'erpMaterialUnitPrice',
 				editor: 'text',
-				align : 'right'
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header: '금액',
+				header: '금액(원)',
 				name: 'erpMaterialPrice',
 				editor: 'text',
-				align : 'right'
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header: '검사유무',
 				name: 'quaMaterialChk',
-				editor : 'text',
-				renderer: { type: CustomCheckboxRenderer},
+				formatter: 'listItemText',
+				editor: {
+			        type: 'radio',
+			        options: {
+			          listItems: [
+			            { text: '완료', value: '1' },
+			            { text: '미완료', value: '0' }
+			          ]
+			        }
+			      },
+				
 				align : 'center'
 				
 			}, {
@@ -424,6 +376,11 @@ class CustomCheckboxRenderer {
 				name: 'erpMaterialOrderCode',
 				align: 'center'
 			}, {
+				header: '검사일자',
+				name: 'quaMaterialChkDate',
+				width: '80',
+				align: 'center',
+			}, {
 				header: '입고일자',
 				name: 'quaMaterialDate',
 				width: '80',
@@ -465,18 +422,15 @@ class CustomCheckboxRenderer {
 				name: 'quaMaterialFQty',
 				align : 'right'
 			}, {
-				header: '단가',
+				header: '단가(원)',
 				name: 'erpMaterialUnitPrice',
-				align : 'right'
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header: '금액',
+				header: '금액(원)',
 				name: 'erpMaterialPrice',
-				align : 'right'
-			}, {
-				header: '검사일자',
-				name: 'quaMaterialChkDate',
-				width: '80',
-				align: 'center',
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}
 			//합계
 			/* summary : {
@@ -493,6 +447,21 @@ class CustomCheckboxRenderer {
 	         ]
 		});
 		
+		//불량량,합격량에 값이 있을 때만 검사 유무 설정 가능하게
+		
+/* 		grid.on('click', ev=>{
+			var i = ev.rowKey;
+			var passQty = grid.getValue(i, 'quaMaterialPQty');
+			var fltyQty = grid.getValue(i, 'quaMaterialFQty');
+			var fltyCode = grid.getValue(i, 'comMaterialFCode');
+			if(ev.columnName =='quaMaterialChk'){
+				if(((passQty==null)||(passQty==""))||((fltyQty==null)||(fltyQty==""))){
+					alert('합격량/불량량을 지정해주세요.');
+				} else if ((fltyCode==null)||(fltyCode=="")){
+					alert('불량코드를 지정해주세요.');
+				} 
+			}
+		}); */
 		
 		
 		
@@ -515,7 +484,7 @@ class CustomCheckboxRenderer {
 			//금액(발주량*단가)
 			grid.setValue( ev.changes[0].rowKey, 'erpMaterialPrice', oQty*uQty);
 			
-			//불량량에 값이 존재할 경우 불량코드 활성화
+			//불량량에 값이 없을 경우 불량코드값 초기화
 			if((fQty == null)||(fQty == '0')) {
 				grid.setValue( ev.changes[0].rowKey, 'comMaterialFCode', '');
 			}
@@ -561,6 +530,7 @@ class CustomCheckboxRenderer {
 				matFltyCodeSearch(ev.rowKey);
 			}
 		});
+
 		
 //-----------------------------------------------------------------
 		   
@@ -572,8 +542,8 @@ class CustomCheckboxRenderer {
 			const { response } = ev.xhr;
 			const responseObj = JSON.parse(response);
 
-			console.log('result : ', responseObj.result);
-			console.log('data : ', responseObj.data);
+			//console.log('result : ', responseObj.result);
+			//console.log('data : ', responseObj.data);
 		});
 		
 		
@@ -635,11 +605,11 @@ class CustomCheckboxRenderer {
 var matOrderRowId;
 function matOrderCodeSearch(c) {
 	matOrderRowId = c;
-	  console.log(matOrderRowId);
+	  //console.log(matOrderRowId);
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
+	  //console.log(this.href);
 	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
@@ -648,11 +618,11 @@ function matOrderCodeSearch(c) {
 var materialRowId;
 function materialCodeSearch(c) {
 	materialRowId = c;
-	  console.log(materialRowId);
+	  //console.log(materialRowId);
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
+	  //console.log(this.href);
 	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
@@ -661,7 +631,7 @@ function materialCodeSearch(c) {
 var vendorRowId;
 function vendorCodeSearch(c) {
 	vendorRowId = c;
-	  console.log(vendorRowId);
+	  //console.log(vendorRowId);
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
@@ -674,7 +644,7 @@ function vendorCodeSearch(c) {
 var matFltyRowId;
 function matFltyCodeSearch(c) {
 	matFltyRowId = c;
-	  console.log(matFltyRowId);
+	  //console.log(matFltyRowId);
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.

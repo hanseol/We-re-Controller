@@ -108,8 +108,8 @@
                        , #{matInoutPrice}
                        , #{quaMaterialStatement}
                        <choose>
-	                       <when test="comMaterialCode == 'MAT011' and comMaterialCode == 'MAT012' 
-	                       				and comMaterialCode == 'MAT013' and comMaterialCode == 'MAT014'">
+	                       <when test="comMaterialCode == 'MAT011' or comMaterialCode == 'MAT012' 
+	                       				or comMaterialCode == 'MAT013' or comMaterialCode == 'MAT014'">
 	                       		, 'PROCG003'
 	                       </when>
 	                       <otherwise>

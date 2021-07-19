@@ -1,7 +1,9 @@
 package mes.qua.flty.service.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -52,8 +54,9 @@ public class QuaFltyServiceImpl extends EgovAbstractServiceImpl implements
     //private EgovIdGnrService egovIdGnrService;
 
 	//등록
-    public String insertQuaFlty(GridDataVO gd) throws Exception {
-		List<?> updatedList = gd.getUpdatedRows();
+    public Map<String, Object> insertQuaFlty(GridDataVO gd) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	List<?> updatedList = gd.getUpdatedRows();
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
     	
@@ -86,24 +89,23 @@ public class QuaFltyServiceImpl extends EgovAbstractServiceImpl implements
 				quaFltyMapper.deleteQuaFlty(deletedMap);
 			}
 		}
-		return null;
+		return map;
     }
     
     //자재입출고로 등록
-    public String insertQuaFltyMatIn(LinkedHashMap vo) throws Exception {
+    public void insertQuaFltyMatIn(LinkedHashMap vo) throws Exception {
     	
     	quaFltyMapper.insertQuaFltyMatIn(vo);
-    	return null;
     }
 
     //수정
-    public int updateQuaFlty(LinkedHashMap vo) throws Exception {
-    	return quaFltyMapper.updateQuaFlty(vo);
+    public void updateQuaFlty(LinkedHashMap vo) throws Exception {
+    	quaFltyMapper.updateQuaFlty(vo);
     }
 
     //삭제
-    public int deleteQuaFlty(LinkedHashMap vo) throws Exception {
-    	return quaFltyMapper.deleteQuaFlty(vo);
+    public void deleteQuaFlty(LinkedHashMap vo) throws Exception {
+    	quaFltyMapper.deleteQuaFlty(vo);
     }
 
 

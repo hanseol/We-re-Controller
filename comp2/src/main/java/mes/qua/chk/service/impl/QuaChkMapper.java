@@ -2,6 +2,7 @@ package mes.qua.chk.service.impl;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.qua.chk.service.QuaChkVO;
@@ -23,19 +24,19 @@ import mes.qua.chk.service.QuaChkVO;
 public interface QuaChkMapper {
 
 	//등록
-    public String insertQuaChk(LinkedHashMap vo) throws Exception;
+    public void insertQuaChk(LinkedHashMap vo) throws Exception;
     
     //자재입출고로 등록
-    public String insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
+    public void insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
     
     //자재불량으로 등록
-    public String insertMatFlty(LinkedHashMap vo) throws Exception;
+    public void insertMatFlty(LinkedHashMap vo) throws Exception;
     
     //수정
-    public int updateQuaChk(LinkedHashMap vo) throws Exception;
+    public void updateQuaChk(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public int deleteQuaChk(LinkedHashMap vo) throws Exception;
+    public void deleteQuaChk(LinkedHashMap vo) throws Exception;
 
     //전체리스트 조회
     public List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;

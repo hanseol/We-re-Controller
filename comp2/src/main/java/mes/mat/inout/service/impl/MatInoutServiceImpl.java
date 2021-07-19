@@ -1,7 +1,9 @@
 package mes.mat.inout.service.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -35,7 +37,8 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     private MatInoutMapper matInoutMapper;
     
 	//등록
-    public String insertMatInout(LinkedHashMap vo) throws Exception {
+    public Map<String, Object> insertMatInout(LinkedHashMap vo) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -47,17 +50,17 @@ public class MatInoutServiceImpl extends EgovAbstractServiceImpl implements
     	matInoutMapper.insertMatInout(vo);
 
     	//TODO 해당 테이블 정보에 맞게 수정
-        return null;
+        return map;
     }
 
     //수정
-    public int updateMatInout(LinkedHashMap vo) throws Exception {
-    	return matInoutMapper.updateMatInout(vo);
+    public void updateMatInout(LinkedHashMap vo) throws Exception {
+    	matInoutMapper.updateMatInout(vo);
     }
 
     //삭제
-    public int deleteMatInout(LinkedHashMap vo) throws Exception {
-    	return matInoutMapper.deleteMatInout(vo);
+    public void deleteMatInout(LinkedHashMap vo) throws Exception {
+    	matInoutMapper.deleteMatInout(vo);
     }
     
     //입고리스트 조회

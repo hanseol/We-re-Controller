@@ -2,6 +2,7 @@ package mes.qua.flty.service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import mes.main.service.GridDataVO;
 
@@ -20,16 +21,16 @@ import mes.main.service.GridDataVO;
 public interface QuaFltyService {
 	
     //등록
-    String insertQuaFlty(GridDataVO vo) throws Exception;
+    Map<String, Object> insertQuaFlty(GridDataVO vo) throws Exception;
     
     //자재입출고로 등록
-    String insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
+    void insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
-    int updateQuaFlty(LinkedHashMap vo) throws Exception;
+    void updateQuaFlty(LinkedHashMap vo) throws Exception;
     
     //삭제
-    int deleteQuaFlty(LinkedHashMap vo) throws Exception;
+    void deleteQuaFlty(LinkedHashMap vo) throws Exception;
     
     //검사완료 목록 중 불량이 있는 리스트 출력
     List<?> selectQuaFltyList(QuaFltyVO searchVO) throws Exception;

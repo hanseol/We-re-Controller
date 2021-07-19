@@ -1,7 +1,9 @@
 package mes.mat.matr.service.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -35,7 +37,8 @@ public class MaterialServiceImpl extends EgovAbstractServiceImpl implements
     private MaterialMapper materialMapper;
     
 	//등록
-    public String insertMaterial(LinkedHashMap vo) throws Exception {
+    public Map<String, Object> insertMaterial(LinkedHashMap vo) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -46,16 +49,16 @@ public class MaterialServiceImpl extends EgovAbstractServiceImpl implements
     	
     	materialMapper.insertMaterial(vo);
     	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
+        return map;
     }
     //수정
-    public int updateMaterial(LinkedHashMap vo) throws Exception {
-    	return materialMapper.updateMaterial(vo);
+    public void updateMaterial(LinkedHashMap vo) throws Exception {
+    	materialMapper.updateMaterial(vo);
     }
 
     //삭제
-    public int deleteMaterial(LinkedHashMap vo) throws Exception {
-    	return materialMapper.deleteMaterial(vo);
+    public void deleteMaterial(LinkedHashMap vo) throws Exception {
+    	materialMapper.deleteMaterial(vo);
     }
 
     //전체 리스트 출력

@@ -171,13 +171,15 @@ let materialGrid;
 				name : 'erpMaterialOrderQty',
 				align : 'right'
 			}, {
-				header: '단가',
+				header: '단가(원)',
 				name: 'erpMaterialUnitPrice',
-				align : 'right'
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header: '금액',
+				header: '금액(원)',
 				name: 'erpMaterialPrice',
-				align : 'right'
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}]
 		});
 		

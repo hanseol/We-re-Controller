@@ -2,19 +2,21 @@ package mes.mat.lot.service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public interface MatLotService {
 	
 	
 	//등록
-	String insertMatLot(LinkedHashMap vo) throws Exception;
+	Map<String, Object> insertMatLot(LinkedHashMap vo) throws Exception;
     
     //수정
-    int updateMatLot(LinkedHashMap vo) throws Exception;
-    int updateMatInout(LinkedHashMap vo) throws Exception;
+    void updateMatLot(LinkedHashMap vo) throws Exception;
+    //입출고 수정
+    void updateMatInout(LinkedHashMap vo) throws Exception;
     //삭제
-    int deleteMatLot(LinkedHashMap vo) throws Exception;
+    void deleteMatLot(LinkedHashMap vo) throws Exception;
 	
     //전체 리스트 출력
 	List<?> selectMatLotList(MatLotVO searchVO) throws Exception;

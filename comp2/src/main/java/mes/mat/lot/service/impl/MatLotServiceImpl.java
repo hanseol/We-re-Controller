@@ -1,7 +1,9 @@
 package mes.mat.lot.service.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -35,7 +37,8 @@ public class MatLotServiceImpl extends EgovAbstractServiceImpl implements
     private MatLotMapper matLotMapper;
     
 	//등록
-    public String insertMatLot(LinkedHashMap vo) throws Exception {
+    public Map<String, Object> insertMatLot(LinkedHashMap vo) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
     	LOGGER.debug(vo.toString());
     	
     	/** ID Generation Service */
@@ -46,20 +49,20 @@ public class MatLotServiceImpl extends EgovAbstractServiceImpl implements
     	
     	matLotMapper.insertMatLot(vo);
     	//TODO 해당 테이블 정보에 맞게 수정    	
-        return null;
+        return map;
     }
 
     //수정
-    public int updateMatLot(LinkedHashMap vo) throws Exception {
-    	return matLotMapper.updateMatLot(vo);
+    public void updateMatLot(LinkedHashMap vo) throws Exception {
+    	matLotMapper.updateMatLot(vo);
     }
     //입출고 수정 추가
-    public int updateMatInout(LinkedHashMap vo) throws Exception {
-    	return matLotMapper.updateMatInout(vo);
+    public void updateMatInout(LinkedHashMap vo) throws Exception {
+    	matLotMapper.updateMatInout(vo);
     }
     //삭제
-    public int deleteMatLot(LinkedHashMap vo) throws Exception {
-    	return matLotMapper.deleteMatLot(vo);
+    public void deleteMatLot(LinkedHashMap vo) throws Exception {
+    	matLotMapper.deleteMatLot(vo);
     }
 
     //전체 리스트 출력

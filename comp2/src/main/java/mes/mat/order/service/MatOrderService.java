@@ -2,6 +2,7 @@ package mes.mat.order.service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -19,13 +20,13 @@ import java.util.List;
 public interface MatOrderService {
 	
 	//등록
-	String insertMatOrder(LinkedHashMap vo) throws Exception;
+	Map<String, Object> insertMatOrder(LinkedHashMap vo) throws Exception;
     
 	//수정
-    int updateMatOrder(LinkedHashMap vo) throws Exception;
+    void updateMatOrder(LinkedHashMap vo) throws Exception;
     
     //삭제
-    int deleteMatOrder(LinkedHashMap vo) throws Exception;
+    void deleteMatOrder(LinkedHashMap vo) throws Exception;
     
     //전체  리스트 출력
     List<?> selectMatOrderList(MatOrderVO searchVO) throws Exception;

@@ -50,6 +50,7 @@ $(document).ready(function() {
 			proOrderDetailCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
 			proProcessQuantity = grid.getValue(chkRowKeys[i], 'proProcessQuantity');
 			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');
+			salInoutCode = grid.getValue(chkRowKeys[i], 'salInoutCode');
 			
 			
 			console.log(proProcessLotNo);

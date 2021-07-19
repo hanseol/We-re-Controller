@@ -2,6 +2,7 @@ package mes.qua.chk.service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import mes.main.service.GridDataVO;
 
@@ -23,13 +24,13 @@ public interface QuaChkService {
     String insertQuaChk(GridDataVO vo) throws Exception;
     
     //자재입출고로 등록
-    String insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
+    void insertQuaChkMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
-    int updateQuaChk(LinkedHashMap vo) throws Exception;
+    void updateQuaChk(LinkedHashMap vo) throws Exception;
     
     //삭제
-    int deleteQuaChk(LinkedHashMap vo) throws Exception;
+    void deleteQuaChk(LinkedHashMap vo) throws Exception;
     
     //전체 리스트 출력
     List<?> selectQuaChkList(QuaChkVO searchVO) throws Exception;

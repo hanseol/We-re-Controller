@@ -103,7 +103,7 @@
 </div>
 
 <script>
-let test;
+let proOrderDetailCode;
 var cnt = 0;
 var proOrdergrid;
 var proOrderRowKey;
@@ -217,11 +217,12 @@ var proOrderRowKey;
 				comMaterialCode = matLotgrid.getValue(chkRows[i], 'comMaterialCode');
 				comProcessCode = matLotgrid.getValue(chkRows[i], 'comProcessCode');
 				proOrderDate = $("#proOrderDate").val();
-				proOrderDetailCode = test;
+				proOrderDetailCode = proOrderDetailCode;
 				matInoutUnitPrice = matLotgrid.getValue(chkRows[i], 'matInoutUnitPrice');
 				matInoutPrice = matLotgrid.getValue(chkRows[i], 'matInoutPrice');
 				quaMaterialStatement = matLotgrid.getValue(chkRows[i], 'quaMaterialStatement');
 				
+				console.log(proOrderDetailCode);
 				
 				$.ajax({
 					url : '${pageContext.request.contextPath}/ajax/proOrder/insertMat',

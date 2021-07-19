@@ -2,6 +2,7 @@ package mes.mat.lot.service.impl;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import mes.mat.lot.service.MatLotVO;
@@ -11,16 +12,16 @@ public interface MatLotMapper {
 	
 	
 	//등록
-    public String insertMatLot(LinkedHashMap vo) throws Exception;
+    public Map<String, Object> insertMatLot(LinkedHashMap vo) throws Exception;
 
     //수정
-    public int updateMatLot(LinkedHashMap vo) throws Exception;
+    public void updateMatLot(LinkedHashMap vo) throws Exception;
     
     //입출고 추가
-    public int updateMatInout(LinkedHashMap vo) throws Exception;
+    public void updateMatInout(LinkedHashMap vo) throws Exception;
     
     //삭제
-    public int deleteMatLot(LinkedHashMap vo) throws Exception;
+    public void deleteMatLot(LinkedHashMap vo) throws Exception;
 
     //전체 리스트 출력
 	public List<?> selectMatLotList(MatLotVO searchVO) throws Exception;		

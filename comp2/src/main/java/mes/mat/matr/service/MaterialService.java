@@ -2,6 +2,7 @@ package mes.mat.matr.service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Class Name : ComMaterialService.java
@@ -18,13 +19,13 @@ import java.util.List;
 public interface MaterialService {
 	
 	//등록
-	String insertMaterial(LinkedHashMap vo) throws Exception;
+	Map<String, Object> insertMaterial(LinkedHashMap vo) throws Exception;
     
     //수정
-    int updateMaterial(LinkedHashMap vo) throws Exception;
+    void updateMaterial(LinkedHashMap vo) throws Exception;
     
     //삭제
-    int deleteMaterial(LinkedHashMap vo) throws Exception;
+    void deleteMaterial(LinkedHashMap vo) throws Exception;
 	
     //전체 리스트 출력
 	List<?> selectMaterialList(MaterialVO searchVO) throws Exception;

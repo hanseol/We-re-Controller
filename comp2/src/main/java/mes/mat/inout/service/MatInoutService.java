@@ -2,6 +2,7 @@ package mes.mat.inout.service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Class Name : MatInoutService.java
@@ -18,13 +19,13 @@ import java.util.List;
 public interface MatInoutService {
 	
 	//등록
-	String insertMatInout(LinkedHashMap vo) throws Exception;
+	Map<String, Object> insertMatInout(LinkedHashMap vo) throws Exception;
     
 	//수정
-    int updateMatInout(LinkedHashMap vo) throws Exception;
+    void updateMatInout(LinkedHashMap vo) throws Exception;
     
     //삭제
-    int deleteMatInout(LinkedHashMap vo) throws Exception;
+    void deleteMatInout(LinkedHashMap vo) throws Exception;
     
     //입고  리스트 출력
     List<?> selectMatInoutList(MatInoutVO searchVO) throws Exception;

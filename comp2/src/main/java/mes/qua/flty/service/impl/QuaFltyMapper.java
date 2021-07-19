@@ -26,13 +26,13 @@ public interface QuaFltyMapper {
     public String insertQuaFlty(LinkedHashMap vo) throws Exception;
     
     //자재입출고로 등록
-    public String insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
+    public void insertQuaFltyMatIn(LinkedHashMap vo) throws Exception;
     
     //수정
-    public int updateQuaFlty(LinkedHashMap vo) throws Exception;
+    public void updateQuaFlty(LinkedHashMap vo) throws Exception;
 
     //삭제
-    public int deleteQuaFlty(LinkedHashMap vo) throws Exception;
+    public void deleteQuaFlty(LinkedHashMap vo) throws Exception;
 
 
     //검사완료 목록 중 불량이 있는 리스트 조회
