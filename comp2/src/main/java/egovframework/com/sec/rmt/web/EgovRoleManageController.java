@@ -93,6 +93,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
+    //20210717 김한설
     @IncludedInfo(name="롤관리", listUrl="/sec/rmt/EgovRoleList.do", order = 90,gid = 20)
     @RequestMapping(value="/sec/rmt/EgovRoleList.do")
 	public String selectRoleList(@ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
@@ -116,7 +117,7 @@ public class EgovRoleManageController {
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-        return "egovframework/com/sec/rmt/EgovRoleManage";
+        return "egovframework/com/sec/rmt/EgovRoleManage.page";
 	}
 
 	/**
@@ -150,6 +151,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
+    //20210701 김한설
     @RequestMapping("/sec/rmt/EgovRoleInsertView.do")
     public String insertRoleView(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     								@ModelAttribute("roleManage") RoleManage roleManage,
@@ -159,7 +161,7 @@ public class EgovRoleManageController {
         model.addAttribute("authorManageList", authorManageVO.getAuthorManageList());
         model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
 
-        return "egovframework/com/sec/rmt/EgovRoleInsert";
+        return "egovframework/com/sec/rmt/EgovRoleInsert.page";
     }
 
     /**
