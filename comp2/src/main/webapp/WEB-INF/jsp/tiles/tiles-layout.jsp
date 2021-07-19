@@ -85,7 +85,7 @@
 	
 </style>
 </head>
-<body id="test"> 
+<body> 
 	<!-- WRAPPER -->
 	<div id="wrapper">
 		<tiles:insertAttribute name="header" />

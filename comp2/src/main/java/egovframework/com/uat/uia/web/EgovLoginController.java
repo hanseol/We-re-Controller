@@ -30,6 +30,8 @@ import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
+import mes.mac.service.MacService;
+import mes.member.service.MacDateResultVO;
 
 /*
 import com.gpki.gpkiapi.cert.X509Certificate;
@@ -81,6 +83,11 @@ public class EgovLoginController {
 	@Resource(name = "egovLoginConfig")
 	EgovLoginConfig egovLoginConfig;
 
+	
+	//설비 점검일 조회
+	@Resource(name = "macService")
+	private MacService macService;
+	
 	/** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLoginController.class);
 
@@ -165,6 +172,9 @@ public class EgovLoginController {
 		// 3. 일반 로그인 처리
 		if (resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
 
+			List<MacDateResultVO> list = macService.selectLeftDate();
+			resultVO.setMacDateResultList(list);
+			
 			// 3-1. 로그인 정보를 세션에 저장
 			request.getSession().setAttribute("loginVO", resultVO);
 			// 2019.10.01 로그인 인증세션 추가

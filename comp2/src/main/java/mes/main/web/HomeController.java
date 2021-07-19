@@ -23,6 +23,8 @@ import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import mes.mac.service.MacService;
+import mes.member.service.MacDateResultVO;
 import mes.pro.plan.service.ProPlanService;
 
 /*
@@ -46,6 +48,9 @@ public class HomeController {
 	@Resource(name = "meunManageService")
     private EgovMenuManageService menuManageService;
 	
+	//설비 점검일 조회
+		@Resource(name = "macService")
+		private MacService macService;
 	/**
 	 * 홈 
 	 * 
@@ -77,7 +82,11 @@ public class HomeController {
 	
 	@RequestMapping("/home.do")
 	public String setContent(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-
+		
+		
+		List<MacDateResultVO> list = macService.selectLeftDate();
+		request.setAttribute("macLeftDate", list);
+		
 		return "tiles/home.page";
 	}
 	

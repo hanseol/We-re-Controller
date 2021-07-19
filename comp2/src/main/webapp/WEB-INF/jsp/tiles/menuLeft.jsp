@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendor/linearicons/style.css">
 <style>
-	
 	#wrapper #sidebar-nav, #wrapper .main {
     	padding-top: 100px;
 	}
@@ -28,10 +27,6 @@
 		width: 230px;
 	}
 </style>
-<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/scripts/klorofil-common.js"></script>
-<script src="${pageContext.request.contextPath}/resources/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 </head>
 <body>
 <!-- LEFT SIDEBAR -->
@@ -40,20 +35,6 @@
 				<nav>
 					<ul class="nav" id="leftMenu">
 
-						<%-- <li>
-							<a href="#subPages1" data-toggle="collapse" class="collapsed" id="comNav"><i class="lnr lnr-magic-wand"></i> <span>공통</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-							<div id="subPages1" class="collapse ">
-								<ul class="nav">
-									<li><a href="${pageContext.request.contextPath}/com/comCode/ComCodeList.do" class="comCodeList">공통코드관리</a></li>
-									<li><a href="${pageContext.request.contextPath}/com/matrDta/MatrDtaList.do" class="matrDtaList">자재정보/안전재고관리</a></li>
-									<li><a href="${pageContext.request.contextPath}/com/prodUseMatr/ProdUseMatrForm.do" class="prodUseMatrForm">제품BOM관리</a></li>
-									<li><a href="${pageContext.request.contextPath}/com/prodProc/prodProcFlowForm.do" class="prodProcFlowForm">제품공정흐름관리</a></li>
-									<li><a href="${pageContext.request.contextPath}/com/prodFaulty/prodFaultyForm.do" class="prodFaultyForm">제품불량내역(코드)관리</a></li>
-									<li><a href="${pageContext.request.contextPath}/com/matrFaulty/matrFaultyForm.do" class="matrFaultyForm">자재불량내역(코드)관리</a></li>
-								</ul>
-							</div>
-						</li>
-						--%>
 					</ul>
 				</nav>
 			</div>
@@ -76,7 +57,7 @@
     										+ '<ul class="nav" id="u' + item.menuNo + '"></ul></div></li>');
     				
     				}else{
-    					$("#u"+item.upperMenuNo).append('<li><a href="${pageContext.request.contextPath}' + item.chkURL + '">' + item.menuNm +'</a></li>');
+    					$("#u"+item.upperMenuNo).append('<li id="test"><a href="${pageContext.request.contextPath}' + item.chkURL + '" class="' + item.menuNo +  '">'+ item.menuNm +'</a></li>');
     				}
     			});
     			
@@ -84,7 +65,6 @@
     		
     	}); 
 	});
-	
 </script>
 </body>
 

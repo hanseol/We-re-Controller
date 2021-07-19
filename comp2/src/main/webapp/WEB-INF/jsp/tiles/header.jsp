@@ -6,16 +6,17 @@
  .navbar-nav > li > logout {
     padding: 28px 20px;
 }
-/* .navbar-default .brand {
+ .navbar-default .brand {
     padding: 30px 10px;
     height : 50px;
-}   */
-/* 
+}   
+
 .navbar-nav > li > a img {
     width: 30px;
     margin-right: 2px;
-} */
+} 
 </style>
+
 <!-- NAVBAR -->
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="brand">
@@ -31,10 +32,10 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
 								<i class="lnr lnr-alarm"></i>
-								<span class="badge bg-danger">${fn:length(loginVO.macDateResultList)}</span>
+								<span class="badge bg-danger">${fn:length(macLeftDate)}</span>
 							</a>
 							<ul class="dropdown-menu notifications">
-								<c:forEach var="item" items="${loginVO.macDateResultList }">
+								<c:forEach var="item" items="${macLeftDate }">
 									<c:choose>
 										<c:when test="${item.dday < 0}">
 											<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>${item.result }</a></li>
@@ -66,3 +67,26 @@
 		</nav>
 		
 <!-- END NAVBAR -->
+<script>
+	$(document).ready(function(){
+		$('.btn-toggle-fullwidth').on('click', function() {
+			if(!$('body').hasClass('layout-fullwidth')) {
+				$('body').addClass('layout-fullwidth');
+
+			} else {
+				$('body').removeClass('layout-fullwidth');
+				$('body').removeClass('layout-default'); // also remove default behaviour if set
+			}
+
+			$(this).find('.lnr').toggleClass('lnr-arrow-left-circle lnr-arrow-right-circle');
+
+			if($(window).innerWidth() < 1025) {
+				if(!$('body').hasClass('offcanvas-active')) {
+					$('body').addClass('offcanvas-active');
+				} else {
+					$('body').removeClass('offcanvas-active');
+				}
+			}
+		});
+	});
+</script>

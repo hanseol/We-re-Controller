@@ -71,7 +71,7 @@ public class ProPlanController {
     //proPlanView.jsp
     
     //생산계획조회 페이지로 이동 (prodPlanView.jsp)
-    @RequestMapping("pro/plan/ProdPlanView.do")
+    @RequestMapping("/pro/plan/ProdPlanView.do")
     public String prodPlanView( @ModelAttribute("searchVO") ProPlanVO searchVO, Model model){
         return "mes/pro/plan/prodPlanView.page";
     }
@@ -90,7 +90,7 @@ public class ProPlanController {
     //proPlanForm.jsp
     
     //생산계획관리 페이지로 이동(prodPlanForm.jsp)
-    @RequestMapping("pro/plan/prodPlanForm.do")
+    @RequestMapping("/pro/plan/prodPlanForm.do")
     public String prodPlanForm( @ModelAttribute("searchVO") ProPlanVO searchVO, Model model){
         return "mes/pro/plan/prodPlanForm.page";
     }
@@ -106,7 +106,7 @@ public class ProPlanController {
     }
     
     //생산계획관리_모달(생산계획명 검색 페이지 호출)
-    @GetMapping("pro/plan/proPlanName.do")
+    @GetMapping("/pro/plan/proPlanName.do")
     public String proPlanName() {
     	return "mes/pro/modal/proPlanName";
     }
@@ -121,7 +121,7 @@ public class ProPlanController {
     }
     
     //생산계획관리_모달(erp제품모달 페이지 호출)
-    @GetMapping("pro/plan/erpProductSearch.do")
+    @GetMapping("/pro/plan/erpProductSearch.do")
     public String erpProductSearch() {
     	return "mes/pro/modal/erpProductSearch";
     }
@@ -205,7 +205,7 @@ public class ProPlanController {
 	
 	// 공통으로 사용
 	// 모달 호출: 제품조회
-	@GetMapping("pro/plan/ProdCode.do")
+	@GetMapping("/pro/plan/ProdCode.do")
 	public String ProdCode() {
 		return "mes/pro/modal/prodCodeSearch";
 	}
@@ -219,7 +219,7 @@ public class ProPlanController {
 	}
 	
 	// 모달 호출: 고객조회
-	@GetMapping("pro/plan/CustomerCode.do")
+	@GetMapping("/pro/plan/CustomerCode.do")
 	public String CustomerCode() {
 		return "mes/pro/modal/customerCodeSearch";
 	}

@@ -153,14 +153,14 @@ th {
 </div>
 
 <script>
-//네비게이션 고정
-$('#macNav').addClass('active');
-$('#subPages5').addClass('in');
-$('#subPages5').attr('aria-expanded','true');
-$('#subPages5').attr('style','');
-$('.macInfo').addClass('active');
-
 	$(document).ready(function(){
+		
+		//네비게이션 고정
+		$('#n8000000').addClass('active');
+		$('#subPages8000000').addClass('in');
+		$('#subPages8000000').attr('aria-expanded','true');
+		$('#subPages8000000').attr('style','');
+		$('.8010000').addClass('active');
 		
 		$("#showMachine").on("click",function(){
 			var macCode = $("#mac").val();

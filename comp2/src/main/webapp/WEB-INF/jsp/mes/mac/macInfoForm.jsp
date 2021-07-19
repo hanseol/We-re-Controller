@@ -78,17 +78,17 @@
 
 <script>
 
-//네비게이션 고정
-$('#macNav').addClass('active');
-$('#subPages5').addClass('in');
-$('#subPages5').attr('aria-expanded','true');
-$('#subPages5').attr('style','');
-$('.macInfo').addClass('active');
-
 var macInfoGrid;
 var macInfoRowKey;
 
 $(document).ready(function() {
+	
+	//네비게이션 고정
+	$('#n8000000').addClass('active');
+	$('#subPages8000000').addClass('in');
+	$('#subPages8000000').attr('aria-expanded','true');
+	$('#subPages8000000').attr('style','');
+	$('.8020000').addClass('active');
 	
 	//M 조회 버튼
 	$("#findRowForm").on("click", function() {

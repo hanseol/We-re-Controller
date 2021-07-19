@@ -186,13 +186,16 @@ SELECT * FROM (
 
 	
 	<select id="selectLeftDate" resultType="mes.member.service.MacDateResultVO">
-		SELECT  (TO_DATE(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') - TO_DATE(sysdate, 'YYYY-MM-DD'))-1 || 
+	  <![CDATA[
+		SELECT  TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) || 
 	        		'일 : (' ||
 	        		MAC_CODE || ', ' ||
 	       			MAC_LINE_NO || ', ' ||
-	       			MAC_GUBUN || ') ' AS "result"
-       			, TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) AS "dday"
+	       			MAC_GUBUN || ') ' AS "result",
+              TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) AS "dday"
 		FROM MAC
+		WHERE TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) <= 10
+		]]>
 	</select>
 	
 	<select id="selectNextMacCode" resultType="String">

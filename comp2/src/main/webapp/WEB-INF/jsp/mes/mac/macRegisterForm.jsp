@@ -80,31 +80,31 @@ th {
 				<tbody>
 					<tr>
 						<th>설비코드</th>
-						<td><input class="form-control" id="macCode" name="macCode" disabled></td>
+						<td><input class="form-control" id="macCode" name="macCode"></td>
 						<th>설비규격</th>
 						<td><select class="form-control" name="macSize" id="macSize"></select></td>
 						<th>모델명</th>
-						<td><select class="form-control" name="macModel" id="macModel"></select></td>
+						<td><select class="form-control" name="macModel" id="macModel" required></select></td>
 					</tr>
 					<tr>
 						<th>설비구분</th>
-						<td><select class="form-control" name="macGubun" id="macGubun"></select></td>
+						<td><select class="form-control" name="macGubun" id="macGubun" required></select></td>
 						<th>사용여부</th>
 						<td><input class="form-control" id="macUnused" name="macUnused" value="1"></td>
 						<th>구매일자</th>
-						<td><input class="form-control" type="date" id="macLineNo" name="macLineNo"></td>
+						<td><input class="form-control" type="date" id="macMachineDate" name="macMachineDate" required></td>
 					</tr>
 					<tr>
 						<th>라인번호</th>
-						<td><input class="form-control" id="macLineNo" name="macLineNo"></td>
+						<td><input class="form-control" id="macLineNo" name="macLineNo" required></td>
 						<th>공정코드</th>
-						<td><input class="form-control" id="macProcessCode" name="macProcessCode"></td>
+						<td><input class="form-control" id="macProcessCode" name="macProcessCode" required></td>
 						<th>점검일</th>
-						<td><input class="form-control" type="date" id="macChkdate" name="macChkdate"></td>
+						<td><input class="form-control" type="date" id="macChkDate" name="macChkDate" required></td>
 					</tr>
 					<tr>
-						<th>온도</th>
-						<td><input class="form-control" id="macTemp" name="macTemp"></td>
+						<th>용도</th>
+						<td><input class="form-control" id="macUsePurpose" name="macUsePurpose"></td>
 						<th>점검주기</th>
 						<td><input class="form-control" id="macChkCycle" name="macChkCycle"></td>
 						<th>차기점검일</th>
@@ -121,16 +121,14 @@ th {
 					<tr>
 						<th>제작업체</th>
 						<td><input class="form-control" id="macMachineConstructor" name="macMachineConstructor"></td>
-						<th>연락처</th>
+						<th>비상연락망</th>
 						<td><input class="form-control" id="macConstructorPhone" name="macConstructorPhone"></td>
 						<th>구매가격</th>
 						<td><input class="form-control" id="macMachineCost" name="macMachineCost"></td>
 					</tr>
 					<tr>
 						<th>이미지</th>
-						<td colspan="3"><input class="form-control" type="file" id="uploadFile" name="uploadFile"/></td>
-						<th>비고</th>
-						<td><input class="form-control" id="macUsePurpose" name="macUsePurpose"></td>
+						<td colspan="5"><input class="form-control" type="file" id="uploadFile" name="uploadFile"/></td>
 					</tr>
 				</tbody>
 			</table>
@@ -149,32 +147,31 @@ th {
 			<img id="img" />
 		</div>
 	</div>
-	
+	<input type="hidden" id="erpEmployeeId" value="${loginVo.id }">
 </div>
 
 <script>
-//네비게이션 고정
-$('#macNav').addClass('active');
-$('#subPages5').addClass('in');
-$('#subPages5').attr('aria-expanded','true');
-$('#subPages5').attr('style','');
-$('.macInfo').addClass('active');
 
 	$(document).ready(function(){
-		var erpEmployeeId = "${loginVO.id }";
+		var erpEmployeeId = $("#erpEmployeeId").val();
+		//네비게이션 고정
+		$('#n8000000').addClass('active');
+		$('#subPages8000000').addClass('in');
+		$('#subPages8000000').attr('aria-expanded','true');
+		$('#subPages8000000').attr('style','');
+		$('.8030000').addClass('active');
+		
 		$("#registerMac").on("click",function(){
 
 			$("#frm").ajaxForm({
 				url: '${pageContext.request.contextPath}/ajax/mac/registerMac',
 				type: 'POST',
-				contentType: "application/json",
+				contentType: "application/json;",
 				dataType : "json",
 				data:{"erpEmployoeeId": erpEmployeeId},
 				enctype: "multipart/form-data",
 				success: function(response){
-					
-					alert("등록처리");
-					
+					alert("등록 완료");
 				}
 			}).submit();
 		});
