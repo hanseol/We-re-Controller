@@ -2,12 +2,11 @@
 	pageEncoding="UTF-8"%>
 
 <div class="modal">
-<!-- 210701 김현경 LOT_NO 검색 모달창 -->
-<!-- 210707 뿌려주는 곳 수정 -->
+<!-- 210719 김현경 주문 목록 검색 모달창 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>완제품 LOT_NO 검색</h3>
+		<h3>제품주문서 목록</h3>
 	</div>
 </div>
 
@@ -16,9 +15,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" /> <br> <br>
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
+					고객사코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
+					제품코드 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" />
 					<button id="findRow">검색</button><br>
 					<br>
 				<div id="modalGrid"></div>
@@ -44,32 +42,31 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 
 		for(var i=0; i<chkRowKeys.length; i++){
-			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
-			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
+			erpOrderCode = grid.getValue(chkRowKeys[i], 'erpOrderCode');
 			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
-			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');
+			erpProductCode = grid.getValue(chkRowKeys[i],'erpProductCode');
+			erpOrderQty = grid.getValue(chkRowKeys[i], 'erpOrderQty');
 			
-			
-			console.log(proProcessLotNo);
+					
 			console.log(erpProductCode);
 			console.log(erpCustomerCode);
-			console.log(salNowQuantity);
+			console.log(erpOrderQty);
+			console.log(erpOrderCode);
 			
-			muGrid.blur();	
-			muGrid.setValue(chkRowKeys[i], 'proProcessLotNo', proProcessLotNo, false);
-			muGrid.setValue(chkRowKeys[i], 'comProductCode', erpProductCode, false);
-			muGrid.setValue(chkRowKeys[i], 'salNowQuantity', salNowQuantity, false); //수량									
+			mgrid.blur();
+			mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
+			mgrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false);
+			mgrid.setValue(rowId, 'salInoutQuantity', erpOrderQty, false);
+			mgrid.setValue(rowId, 'proProcessLotNo', erpOrderCode, false);
 		}
 	});
 	
 	$(document).on("click", "button[id=findRow]", function() {
-		var no = $("#proProcessLotNo").val();
+		var no = $("#erpCustomerCode").val();
 		var code = $("#erpProductCode").val();
-		var name = $("#erpProductName").val();
 		var readParams = {
-				'proProcessLotNo' : no,
-				'erpProductCode' : code,
-				'erpProductName' : name
+				'erpCustomerCode' : no,
+				'erpProductCode' : code
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -77,7 +74,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/ajax/modSearchProductLotNo',
+				url : '${pageContext.request.contextPath}/ajax/searchOrderList',
 				method : 'GET'
 			}
 		},
@@ -93,17 +90,17 @@ $(document).ready(function() {
 	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
-			header : '완제품 LOT_NO',
-			name : 'proProcessLotNo'
+			header : '주문코드',
+			name : 'erpOrderCode'
+		}, {
+			header : '고객사코드',
+			name : 'erpCustomerCode'
 		}, {
 			header : '제품코드',
 			name : 'erpProductCode'
 		}, {
-			header : '제품명',
-			name : 'erpProductName'
-		}, {
-			header : '현재고',
-			name : 'salNowQuantity'
+			header : '주문량',
+			name : 'erpOrderQty'
 		}]
 	});
 });

@@ -60,6 +60,8 @@ public interface SalInoutService {
 	List<?> searchModProductLotNoList(SalInoutVO searchVO) throws Exception;
 	int searchModProductLotNoListTotCnt(SalInoutVO searchVO);
 
+	//모달 : 제품주문서 목록 조회
+	List<?> searchOrderList(SalInoutVO searchVO) throws Exception;
 
 	//모달 : 생산 지시 디테일 코드 조회
 	List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception;
@@ -68,6 +70,8 @@ public interface SalInoutService {
 	//모달 : 전표번호 조회(반품페이지)
 	List<?> searchInoutStatement(SalInoutVO searchVO) throws Exception;
 	int searchInoutStatementListTotCnt(SalInoutVO searchVO);
+
+	
 
     
     

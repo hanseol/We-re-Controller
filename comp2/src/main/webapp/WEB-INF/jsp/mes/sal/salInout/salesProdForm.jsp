@@ -82,6 +82,10 @@
 				<div class="col-md-7">
 					<p class="panel-subtitle">출고 세부 사항</p>
 				</div>
+				<div class="col-md-5" align="right">
+					<button type="button" id="uappendRow">추가</button>
+					<button type="button" id="udeleteRow">삭제</button>
+				</div>
 			</div>
 			<div class="panel-body">
 				<div id="ugrid"></div>
@@ -93,6 +97,7 @@
 <!-- 추가 모달 -->
 <a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
 <a id="searchCustomerCode" href="searchCustomerCode.do"></a>
+<a id="searchOrderList" href="searchOrderList.do"></a>
 
 <script>
 //내비바 고정
@@ -164,8 +169,6 @@ let muGrid;
 		$(document).on("click", "button[id=modifyRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('modifyData');
-			ugrid.finishEditing('rowKey', 'columnName');
-			ugrid.request('modifyData');
 		});
 		
 		
@@ -194,7 +197,7 @@ let muGrid;
 	        bodyHeight :150, 
 	        rowHeight: 30,
 			columns : [ {
-				header : '입/출고일자',
+				header : '입고일자',
 				name : 'salInoutDate',
 				editor : {
 					type : 'datePicker',
@@ -216,22 +219,18 @@ let muGrid;
 					}
 				}
 			}, {
-				header : '완제품 LOT_NO',
+				header : '완제품 LOT_NO/주문코드',
 				name : 'proProcessLotNo',
 				editor : 'text'
 			}, {
-				header : '지시/거래처코드',
-				name : 'salInoutCode',
-				editor : 'text'
+				header : '지시코드',
+				name : 'salInoutCode'
 			}, {
 				header : '제품코드',
 				name : 'comProductCode'
 			}, {
-				header : '수량',
+				header : '주문수량',
 				name : 'salInoutQuantity'
-			}, {
-				header : '현재고',
-				name : 'salNowQuantity'
 			}, {
 				header : '전표번호',
 				name : 'salInoutStatement',
@@ -241,8 +240,30 @@ let muGrid;
 		
 	 mgrid = grid;
 	 
-	//------------------------------------------------------△1그리드 / 2그리드▽ --------------------------------------------------------------------------
+	//------------------------------------------------------△입고그리드 / 출고그리드▽ --------------------------------------------------------------------------
 		
+		//Insert
+		$(document).on("click", "button[id=uappendRow]", function() {
+			var rowData =[{
+					proProcessLotNo : "",
+					comProductCode : "",
+					salNowQuantity : ""
+			}];
+			muGrid.appendRow(rowData, {
+				at : 0,
+				focus : true
+			});
+			
+			muGrid.enable();
+		});
+		
+		//Delete
+		$(document).on("click", "button[id=udeleteRow]", function() {
+			muGrid.removeCheckedRows(false);
+		});
+		
+		
+	
 		const udataSource = {
 				api : {
 					readData : {
@@ -263,20 +284,32 @@ let muGrid;
 		        bodyHeight :150, 
 		        rowHeight: 30,
 				columns : [{
+					header : '주문코드',
+					name : 'erpOrderCode'
+				}, {
 					header : '완제품 LOT_NO',
-					name : 'proProcessLotNo'
+					name : 'proProcessLotNo',
+					editor : 'text'
 				}, {
 					header : '제품코드',
 					name : 'comProductCode'
 				}, {
-					header : '수량',
-					name : 'salInoutQuantity'
+					header : '현재고',
+					name : 'salNowQuantity'
+				}, {
+					header : '출고수량',
+					name : 'salOutQuantity',
+					editor : 'text'
+				}, {
+					header : '전표번호',
+					name : 'salInoutStatement',
+					hidden : true
 				}],
 				summary : {
 		            height : 40,
 		            position : 'bottom',
 		            columnContent : {
-		            	salInoutQuantity : {
+		            	salOutQuantity : {
 		                  template(val) {
 		                     return 'TOTAL : ' + val.sum;
 		                  }
@@ -285,6 +318,7 @@ let muGrid;
 		         }
 			}); 
 		muGrid = ugrid;
+	
 	 
 	 $('#searchProductCode').click(function(event) {
 			productCodeSearch(-1); //매개변수 -1로 함수 실행
@@ -292,17 +326,26 @@ let muGrid;
 		
 	 //모달 : 완제품 LOT_NO
 	   grid.on('dblclick', ev => {
-		   var i = ev.rowKey;
+		  var i = ev.rowKey;
 	      if(ev.columnName == 'proProcessLotNo') {
 	    	  if(grid.getValue(i, 'salInoutGubun') == null) {
 	    		  alert('입고/출고를 먼저 구분해주세요.');
 	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') {
 	    	  	 productLotNoSearch(ev.rowKey);	    	  	 
 	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') {
-	    		 modProductLotNoSearch(ev.rowKey);
+	    		  orderListSearch(ev.rowKey); 
 	    	  } 
 	    	}
 	   });
+	 
+	 muGrid.on('dblclick', ev => {
+		if(ev.columnName == 'proProcessLotNo') {
+			modProductLotNoSearch(ev.rowKey);
+		} else if(ev.columnName == 'erpOrderCode') {
+			orderListSearch(ev.rowKey); 
+		}
+	 });
+	 
 	 
 	 grid.on('dblclick', ev => {
 		var j = ev.rowKey;
@@ -326,27 +369,6 @@ let muGrid;
 		$('#searchProductLotNo').click(function(event) {
 		 	productLotNoSearch(-1);
 		});
-	 
-	 
-
-	 //모달 : 지시/거래처코드 구분
-	/*  grid.on('dblclick', ev => {		 
-	 	var i = ev.rowKey;
-		if(ev.columnName == 'salInoutCode') {
-	      if(grid.getValue(i, 'salInoutGubun') == null) {
-	    	  alert('입고/출고를 먼저 구분해주세요.');
-	      } else {
-	         	if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') { //입고 -> 지시 모달 오픈
-	         		$('#searchOrderCode').click();
-	         		return;
-	         	} else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') { //출고 -> 거래처 모달 오픈
-	         		$('#searchCustomerCode').click();
-	         		customerCodeSearch(0);
-	         		return;
-	      	 	}
-		  } 
-		}
-	}); */
 	
 	
 		
@@ -378,7 +400,7 @@ let muGrid;
 		  });
 	}
 	
-	//완제품 LOT_NO 모달
+	//입고 : 완제품 LOT_NO 모달
 	function productLotNoSearch(c) {
 		  rowId = c;
 		  event.preventDefault();
@@ -390,16 +412,28 @@ let muGrid;
 		  });
 	}
 	
-	//입고된 완제품 LOT_NO 값 받아오는 모달
+	//출고 : 완제품 LOT_NO 값 받아오는 모달
 	function modProductLotNoSearch(c) {
 		urowId = c;
-		  event.preventDefault();
-		  $(".modal").remove();
-		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
-		  $.get("modSearchProductLotNo.do", function(html) {
+		event.preventDefault();
+		$(".modal").remove();
+		this.blur(); // Manually remove focus from clicked link.
+		console.log(this.href);
+		$.get("modSearchProductLotNo.do", function(html) {
 		    $(html).appendTo('body').modal();
-		  });
+		});
+	}
+	
+	//출고 : ERP에서 주문 목록 받아오는 모달
+	function orderListSearch(c) {
+		rowId = c;
+		event.preventDefault();
+		$(".modal").remove();
+		this.blur(); // Manually remove focus from clicked link.
+		console.log(this.href);
+		$.get("searchOrderList.do", function(html) {
+			$(html).appendTo('body').modal();
+		});
 	}
 	
 	//업체코드 모달

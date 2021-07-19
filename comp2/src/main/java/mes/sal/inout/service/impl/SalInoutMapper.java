@@ -109,6 +109,9 @@ public interface SalInoutMapper {
 	//모달 : 전표번호(반품) 조회
 	public List<?> searchInoutStatementList(SalInoutVO searchVO) throws Exception;
 	public int searchInoutStatementListTotCnt(SalInoutVO searchVO);
+	
+	//모달 : 제품주문서 목록 조회
+	public List<?> searchOrderList(SalInoutVO searchVO) throws Exception;
 
 
 	

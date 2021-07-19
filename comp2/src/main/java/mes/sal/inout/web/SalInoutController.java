@@ -170,9 +170,7 @@ public class SalInoutController {
 				if(gubun.equals("INOUT002")) {
 					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
 					} else if(gubun.equals("INOUT003")) {
-					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());
-					((LinkedHashMap)createdList.get(i)).put("comProductCode", gd.getComProductCode());
-					
+					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
 					}			
 				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
 			}
@@ -192,6 +190,29 @@ public class SalInoutController {
 				salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
 			}
 		}		
+	}
+	
+	@PutMapping("/ajax/modifySalOutList")
+	@ResponseBody
+	public void modifySalOutList(@RequestBody GridDataVO gd) throws Exception {
+		
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+						
+		//C
+		if (createdList.size() != 0) {
+			for (int i = 0; i < createdList.size(); i++) {
+				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
+				
+				if(gubun.equals("INOUT002")) {
+					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
+					} else if(gubun.equals("INOUT003")) {
+					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
+					}			
+				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
+			}
+		}
 	}
 
 
@@ -309,6 +330,24 @@ public class SalInoutController {
 			List<?> list = salInoutService.searchModProductLotNoList(searchVO);
 	
 			return comFunc.sendResult(list);
+		}
+		
+		//모달 : 제품주문서 목록 조회
+		@GetMapping("sal/salInout/searchOrderList.do")
+		public String searchOrderListView() {
+			
+			return "mes/sal/modal/searchOrderList";
+		}
+		
+		//모달 : 제품주문서 목록 조회값 전달
+		@RequestMapping("/ajax/searchOrderList")
+		@ResponseBody
+		public Map<String, Object> searchOrderList(@ModelAttribute("searchVO") SalInoutVO searchVO)
+				throws Exception {
+			
+			List<?> list = salInoutService.searchOrderList(searchVO);
+			
+			return comFunc.sendResult(list);			
 		}
 
 		
