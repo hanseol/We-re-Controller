@@ -22,13 +22,13 @@
 	<security:http pattern="/html/**" security="none"/>
     <security:http pattern="/images/**" security="none"/>
  	<security:http pattern="/js/**" security="none"/>
- 	<security:http pattern="/resource/**" security="none"/>
+ 	<security:http pattern="/resources/**" security="none"/>
  	<security:http pattern="\A/WEB-INF/jsp/.*\Z" request-matcher="regex" security="none"/>
 
     <egov-security:config id="securityConfig"
-		loginUrl="/loginForm.do"
-		logoutSuccessUrl="/loginForm.do"
-		loginFailureUrl="/loginForm.do"
+		loginUrl="/"
+		logoutSuccessUrl="/"
+		loginFailureUrl="/"
 		accessDeniedUrl="/accessDenied.do"
 
 		dataSource="egov.dataSource"
@@ -49,7 +49,7 @@
 		concurrentExpiredUrl="/EgovContent.do"
 		errorIfMaximumExceeded="false"
 
-		defaultTargetUrl="/home.do"
+		defaultTargetUrl="/EgovContent.do"
 		alwaysUseDefaultTargetUrl="true"
 
 		sniff="true"
