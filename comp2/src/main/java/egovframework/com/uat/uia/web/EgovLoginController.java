@@ -1,6 +1,5 @@
 package egovframework.com.uat.uia.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +29,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
-import mes.mac.service.MacService;
-import mes.member.service.MacDateResultVO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 /*
 import com.gpki.gpkiapi.cert.X509Certificate;
@@ -82,10 +80,6 @@ public class EgovLoginController {
 
 	@Resource(name = "egovLoginConfig")
 	EgovLoginConfig egovLoginConfig;
-	
-	//설비점검일 조회
-	@Resource(name = "macService")
-	private MacService macService;
 
 	/** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLoginController.class);
@@ -106,7 +100,8 @@ public class EgovLoginController {
 		//권한체크시 에러 페이지 이동
 		String auth_error =  request.getParameter("auth_error") == null ? "" : (String)request.getParameter("auth_error");
 		if(auth_error != null && auth_error.equals("1")){
-			return "egovframework/com/cmm/error/accessDenied";
+			//return "egovframework/com/cmm/error/accessDenied";
+			return "mes/member/denied.page"; //2021-07-17 khs
 		}
 
 		/*
@@ -128,7 +123,8 @@ public class EgovLoginController {
 		String message = (String)request.getParameter("loginMessage");
 		if (message!=null) model.addAttribute("loginMessage", message);
 		
-		return "egovframework/com/uat/uia/EgovLoginUsr";
+		//return "egovframework/com/uat/uia/EgovLoginUsr";
+		return "mes/member/loginForm"; //2021-07-17 khs
 	}
 
 	/**
@@ -141,26 +137,27 @@ public class EgovLoginController {
 	@RequestMapping(value = "/uat/uia/actionLogin.do")
 	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, ModelMap model) throws Exception {
 
-		
-//		// 1. 로그인인증제한 활성화시 
-//		if( egovLoginConfig.isLock()){
-//		    Map<?,?> mapLockUserInfo = (EgovMap)loginService.selectLoginIncorrect(loginVO);
-//		    if(mapLockUserInfo != null){			
-//				//2.1 로그인인증제한 처리
-//				String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
-//				if(!sLoginIncorrectCode.equals("E")){
-//					if(sLoginIncorrectCode.equals("L")){
-//						model.addAttribute("loginMessage", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
-//					}else if(sLoginIncorrectCode.equals("C")){
-//						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-//					}
-//					return "egovframework/com/uat/uia/EgovLoginUsr";
-//				}
-//		    }else{
-//		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-//		    	return "egovframework/com/uat/uia/EgovLoginUsr";
-//		    }
-//		}
+		// 1. 로그인인증제한 활성화시 
+		if( egovLoginConfig.isLock()){
+		    Map<?,?> mapLockUserInfo = (EgovMap)loginService.selectLoginIncorrect(loginVO);
+		    if(mapLockUserInfo != null){			
+				//2.1 로그인인증제한 처리
+				String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
+				if(!sLoginIncorrectCode.equals("E")){
+					if(sLoginIncorrectCode.equals("L")){
+						model.addAttribute("loginMessage", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
+					}else if(sLoginIncorrectCode.equals("C")){
+						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+					}
+					//return "egovframework/com/uat/uia/EgovLoginUsr";
+					return "mes/member/loginForm"; //2021-07-17 khs
+				}
+		    }else{
+		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+		    	//return "egovframework/com/uat/uia/EgovLoginUsr";
+		    	return "mes/member/loginForm"; //2021-07-17 khs
+		    }
+		}
 		
 		// 2. 로그인 처리
 		LoginVO resultVO = loginService.actionLogin(loginVO);
@@ -168,25 +165,17 @@ public class EgovLoginController {
 		// 3. 일반 로그인 처리
 		if (resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
 
-			List<MacDateResultVO> list = macService.selectLeftDate();
-    		List<MacDateResultVO> fList = new ArrayList<>();
-    		for(int i=0; i<list.size(); i++) {
-    			if(list.get(i).getDday() <= 10) {
-    				fList.add(list.get(i));
-    			}
-    		}
-    		resultVO.setMacDateResultList(fList); 
-    		
 			// 3-1. 로그인 정보를 세션에 저장
 			request.getSession().setAttribute("loginVO", resultVO);
 			// 2019.10.01 로그인 인증세션 추가
 			request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
 
-			return "redirect:/home.do";
+			return "redirect:/uat/uia/actionMain.do";
 
 		} else {
-			model.addAttribute("loginMessage", "아이디 또는 비밀번호 불일치");
-			return "mes/member/loginForm";
+			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+			//return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "mes/member/loginForm"; //2021-07-17 khs
 		}
 	}
 
@@ -282,7 +271,8 @@ public class EgovLoginController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
-			return "mes/member/denied.page";
+			//return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "mes/member/denied.page"; //2021-07-17 khs
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		
@@ -306,7 +296,6 @@ public class EgovLoginController {
 
 		LOGGER.debug("Globals.MAIN_PAGE > " + Globals.MAIN_PAGE);
 		LOGGER.debug("main_page > {}", main_page);
-
 		if (main_page.startsWith("/")) {
 			return "forward:" + main_page;
 		} else {
@@ -349,8 +338,9 @@ public class EgovLoginController {
 		// List<String> authList = (List<String>)EgovUserDetailsHelper.getAuthorities();
 		request.getSession().setAttribute("accessUser", null);
 
+		System.out.println("security logout.....");
 		//return "redirect:/egovDevIndex.jsp";
-		return "redirect:/loginForm.do";
+		return "redirect:/EgovContent.do";
 	}
 
 	/**
