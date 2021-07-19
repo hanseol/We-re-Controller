@@ -25,22 +25,34 @@
 		 
 	</select>
 
+	<!-- 2021-07-18 김한설 수정. -->
 	<select id="selectMainMenuLeft" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="egovMap">
-		 
-			SELECT
-			       B.MENU_NO           AS "menuNo"
-				 , B.MENU_ORDR         AS "menuOrdr"
-				 , B.MENU_NM           AS "menuNm"
-				 , B.UPPER_MENU_NO     AS "upperMenuId"
-				 , B.RELATE_IMAGE_PATH AS "relateImagePath"
-				 , B.RELATE_IMAGE_NM   AS "relateImageNm"
-				 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS "chkURL"	
-			FROM   COMTNMENUCREATDTLS A, COMTNMENUINFO B
-			WHERE  A.MENU_NO  = B.MENU_NO 
-			AND    A.AUTHOR_CODE = (SELECT AUTHOR_CODE from COMTNEMPLYRSCRTYESTBS
-	                                WHERE  SCRTY_DTRMN_TRGET_ID = #{tmpUniqId})
-			ORDER BY B.MENU_ORDR
-		 
+		select * 
+				from (            
+		    SELECT a.AUTHOR_CODE,
+			   B.MENU_NO          -- AS "menuNo"
+			 , B.MENU_ORDR        -- AS "menuOrdr"
+			 , B.MENU_NM          -- AS "menuNm"
+			 , B.UPPER_MENU_NO    -- AS "upperMenuId"
+			 , B.RELATE_IMAGE_PATH-- AS "relateImagePath"
+			 , B.RELATE_IMAGE_NM  -- AS "relateImageNm"
+			 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS "chkURL"	
+		      FROM COMTNMENUCREATDTLS A, COMTNMENUINFO B
+		     WHERE A.MENU_NO  = B.MENU_NO 
+		       AND A.AUTHOR_CODE = (SELECT AUTHOR_CODE from COMTNEMPLYRSCRTYESTBS
+		                             WHERE SCRTY_DTRMN_TRGET_ID = #{tmpUniqId})
+	           union all
+	           SELECT '',
+	                 B.MENU_NO             AS "menuNo"
+			 , B.MENU_ORDR         AS "menuOrdr"
+			 , B.MENU_NM           AS "menuNm"
+			 , null                AS "upperMenuId"
+			 , B.RELATE_IMAGE_PATH AS "relateImagePath"
+			 , B.RELATE_IMAGE_NM   AS "relateImageNm"
+	                 , ''
+	            FROM COMTNMENUINFO b where menu_no = 0)
+		start with menu_no = 0
+		connect by UPPER_MENU_NO = prior menu_no
 	</select>
 
 	<select id="selectLastMenuURL" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="String">
