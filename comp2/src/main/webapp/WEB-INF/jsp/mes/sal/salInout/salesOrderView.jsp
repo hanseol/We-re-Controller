@@ -27,14 +27,14 @@
 						<input type="date" id="orderDate" name="erpProdcutOrderDate">					
 				</div>
 				<div class="col-md-4">			
-						제품코드
+						제품명
 						<input type="text" id="productCode" name="productCode">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
                   </a>											
 				</div>
 				<div class="col-md-4">
-						업체코드
+						고객사명
 						<input type="text" id="customerCode" name="customerCode">
 						<a id="searchCustomerCode" href="${pageContext.request.contextPath}/searchCustomerCode.do">					
 						<i class="fa fa-search"></i></a>
@@ -71,15 +71,14 @@ $('.salesOrderView').addClass('active');
 let mgrid; //모달 그리드
 
 	$(document).ready(function() {
-		$(document).on("click", "button[id=search]",
-				function() {
+		$("#search").on("click", function() {
 					var orderDate = $("#orderDate").val();
-					var productCode = $("#productCode").val();
-					var customerCode = $("#customerCode").val();
+					var product = $("#productCode").val();
+					var customer = $("#customerCode").val();
 					var readParams = {
 						'erpProductOrderDate' : orderDate,
-						'erpProductCode' : productCode,
-						'erpCustomerCode' : customerCode
+						'erpProductName' : product,
+						'erpCustomerName' : customer
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -106,6 +105,7 @@ let mgrid; //모달 그리드
 			columns : [{
 				header : '주문일자',
 				name : 'erpProductOrderDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -116,24 +116,29 @@ let mgrid; //모달 그리드
 			}, {
 				header : '주문코드',
 				name : 'erpOrderCode',
+				align : 'center'
 			}, {
-				header : '업체코드',
-				name : 'erpCustomerCode',
-			}, {
-				header : '제품코드',
-				name : 'erpProductCode',
+				header : '고객사명',
+				name : 'erpCustomerName',
+				align : 'center'
 			}, {
 				header : '제품명',
 				name : 'erpProductName',
+				align : 'center'
 			}, {
 				header : '주문량',
 				name : 'erpOrderQty',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header : '개당단가',
+				header : '개당단가(원)',
 				name : 'erpProductUnitPrice',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '납기일자',
 				name : 'erpProductDeadline',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -141,6 +146,10 @@ let mgrid; //모달 그리드
 						language: 'ko'
 					} 
 				}
+			}, {
+				header : '출고여부',
+				name : 'outStatement',
+				align : 'center'
 			}]
 		}); 
 	
@@ -155,15 +164,12 @@ let mgrid; //모달 그리드
 		});
 	
 	// option form reset  
-	 $(document).ready(function() {  
-	    $("#reset").click(function() {  
+	$("#reset").on("click", function() {
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
 	             });  
 	    });  
-	 });  
-	
-}); //end of document ready
+	 }); //end of document ready
 
 var rowId;
 

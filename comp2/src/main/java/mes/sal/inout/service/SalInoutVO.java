@@ -84,6 +84,8 @@ public class SalInoutVO extends SearchVO {
     
     private java.lang.String erpProductName;
     
+    private java.lang.String erpCustomerName;
+    
     //생산지시디테일코드
     private java.lang.String proOrderDetailCode;
     

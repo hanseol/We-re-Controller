@@ -36,21 +36,20 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일단 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function() {
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
 		var chkRowKeys = grid.getCheckedRowKeys();
-		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++){
 			code = grid.getValue(chkRowKeys[i],'comProductCode');
+			name = grid.getValue(chkRowKeys[i], 'comProductName');
 			
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
 		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-			$("#productCode").val(code);
-			code = [];		
+			$("#productCode").val(name);	
 		} else { //아니면 mgrid에 뿌려준다
 			mgrid.blur();
 			mgrid.setValue(rowId, 'comProductCode', code, false);
@@ -59,11 +58,10 @@ $(document).ready(function() {
 		
 	});
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$("#findRow").on("click", function() {
 		var code = $("#comProductCode").val();
-		console.log(code);
 		var name = $("#comProductName").val();
-		console.log(name);
+
 		var readParams = {
 				'comProductCode' : code,
 				'comProductName' : name

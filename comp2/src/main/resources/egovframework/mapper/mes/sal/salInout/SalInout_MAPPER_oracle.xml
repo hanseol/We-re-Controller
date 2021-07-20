@@ -23,6 +23,7 @@
 		<result property="erpProductDeadline" column="ERP_PRODUCT_DEADLINE" />
 		<result property="erpProductOrderDate" column="ERP_PRODUCT_ORDER_DATE" />
 		<result property="erpProductName" column="ERP_PRODUCT_NAME" />
+		<result property="erpCustomerName" column="ERP_CUSTOMER_NAME" />
 		
 		<result property="comCodeDetailId" column="COM_CODE_DETAIL_ID" />
 		<result property="comCodeDetailName" column="COM_CODE_DETAIL_NAME" />
@@ -52,23 +53,24 @@
 		FROM (
 				SELECT A.*,
 				ROWNUM RNUM FROM (
-									SELECT ERP_ORDER_CODE, ERP_PRODUCT_CODE,
-									ERP_ORDER_QTY, ERP_CUSTOMER_CODE, ERP_PRODUCT_UNIT_PRICE,
+									SELECT
+									ERP_ORDER_CODE, ERP_PRODUCT_CODE, ERP_PRODUCT_NAME,
+									ERP_ORDER_QTY, ERP_PRODUCT_UNIT_PRICE,
+					                GET_CODE_DETAIL(ERP_CUSTOMER_CODE) AS ERP_CUSTOMER_NAME,
 									TO_CHAR(ERP_PRODUCT_DEADLINE, 'YYYY/MM/dd') AS ERP_PRODUCT_DEADLINE,
-									TO_CHAR(ERP_PRODUCT_ORDER_DATE, 'YYYY/MM/dd') AS ERP_PRODUCT_ORDER_DATE,
-									ERP_PRODUCT_NAME
+									TO_CHAR(ERP_PRODUCT_ORDER_DATE, 'YYYY/MM/dd') AS ERP_PRODUCT_ORDER_DATE	
 									FROM ERP_PRODUCT_ORDER
 				WHERE 1=1
 			<if test="erpProductOrderDate != null and erpProductOrderDate != ''">AND
 				ERP_PRODUCT_ORDER_DATE = #{erpProductOrderDate}
 			</if>
-			<if test="erpProductCode != null and erpProductCode != ''">AND
-				ERP_PRODUCT_CODE LIKE '%' || #{erpProductCode} || '%'
+			<if test="erpProductName != null and erpProductName != ''">AND
+				ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
 			</if>
-			<if test="erpCustomerCode != null and erpCustomerCode != ''">AND
-				ERP_CUSTOMER_CODE LIKE '%' || #{erpCustomerCode} || '%'
+			<if test="erpCustomerName != null and erpCustomerName != ''">AND
+				GET_CODE_DETAIL(ERP_CUSTOMER_CODE) LIKE '%' || #{erpCustomerName} || '%'
 			</if>
-		ORDER BY ERP_PRODUCT_ORDER_DATE	DESC
+			ORDER BY ERP_PRODUCT_ORDER_DATE	DESC
 			<![CDATA[						
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
@@ -290,7 +292,7 @@
 							COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
 						</if>
 						ORDER BY 
-								COM_PRODUCT_NAME
+								COM_PRODUCT_NAME DESC
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}
@@ -321,8 +323,7 @@
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
 						SELECT COM_CODE_DETAIL_ID,
-								COM_CODE_DETAIL_NAME,
-								COM_CODE_DETAIL_DESC
+								COM_CODE_DETAIL_NAME
 						FROM COM_CODE_DETAIL
 						WHERE 1=1
 						AND COM_CODE_DETAIL_ID LIKE '%CUSTOMER%'

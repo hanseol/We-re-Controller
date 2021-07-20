@@ -35,18 +35,17 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일단 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function() {
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
 		var chkRowKeys = grid.getCheckedRowKeys();
-		var code = [];
 		for(var i=0; i<chkRowKeys.length; i++) {
 			code = grid.getValue(chkRowKeys[i],'comCodeDetailId');
-			console.log(code);
-		
+			name = grid.getValue(chkRowKeys[i], 'comCodeDetailName');
+			
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-				$("#customerCode").val(code);
+				$("#customerCode").val(name);
 				code = [];
 			} else { //아니면 mgrid(모달그리드)에 뿌려준다
 				mgrid.blur();
@@ -60,17 +59,12 @@ $(document).ready(function() {
 	
 		
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$("#findRow").on("click", function() {
 		var code = $("#comCustomerCode").val();
-		console.log(code);
 		var name = $("#comCustomerName").val();
-		console.log(name);
-		var desc = $("#comCodeDetailDesc").val();
-		console.log(desc);
 		var readParams = { //실제컬럼명 : ~
 				'comCodeDetailId' : code,
-				'comCodeDetailName' : name,
-				'comCodeDetailDesc' : desc
+				'comCodeDetailName' : name
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -99,9 +93,6 @@ $(document).ready(function() {
 		}, {
 			header : '고객사명',
 			name : 'comCodeDetailName'
-		}, {
-			header : '설명',
-			name : 'comCodeDetailDesc'
 		}]
 	});
 });

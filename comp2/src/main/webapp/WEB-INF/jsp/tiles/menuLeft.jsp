@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
 
 <style>
 	#wrapper #sidebar-nav, #wrapper .main {
@@ -24,8 +20,8 @@
 		width: 230px;
 	}
 </style>
-</head>
-<body>
+
+
 <!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
 			<div class="sidebar-scroll">
@@ -63,6 +59,3 @@
     	}); 
 	});
 </script>
-</body>
-
-</html>

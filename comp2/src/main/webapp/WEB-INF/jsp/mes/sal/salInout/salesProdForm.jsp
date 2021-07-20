@@ -1,6 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<script>
+	$(document).ready(function(){
+		function tabgubun(evt, inout) {
+			  var i, tabcontent, tablinks;
+			  tabcontent = document.getElementsByClassName("tabcontent");
+			  for (i = 0; i < tabcontent.length; i++) {
+			    tabcontent[i].style.display = "none";
+			  }
+			  tablinks = document.getElementsByClassName("tablinks");
+			  for (i = 0; i < tablinks.length; i++) {
+			    tablinks[i].className = tablinks[i].className.replace(" active", "");
+			  }
+			  document.getElementById(inout).style.display = "block";
+			  evt.currentTarget.className += " active";
+		}
+	});
+//탭키전환함수
 
+</script>
 <div class="content-fluid">
 	<div>
 		<h2>입/출고목록관리</h2>
@@ -8,13 +26,15 @@
 </div>
 
 <!-- 관리, 지시 탭 이동 -->
-<div id="tabs">
+<div class="tabs">
    <ul class="nav nav-tabs" role="tablist">
-     <li class="active"><a onclick='location.href="salesProdForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
-     <li class=""><a onclick='location.href="salesProdView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
+     <li class="tablinks active"><a href="javascript:void(0);" onclick="tabgubun(event, 'ingrid');" aria-controls="tab1" role="tab" data-toggle="tab">입고</a></li>
+     <li class="tablinks"><a href="javascript:void(0);" onclick="tabgubun(event, 'outgrid');" aria-controls="tab2" role="tab" data-toggle="tab">출고</a></li>
    </ul>
 </div>
 
+<!------------------------------- 입고 -------------------------------------->
+<div id="ingrid" class="tabcontent">
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
@@ -24,7 +44,6 @@
 		</div>
 	</div>
 </div>
-
 
 <form id="option">
 <div class="content-fluid">
@@ -62,7 +81,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">완제품 입/출고 목록</p>
+					<p class="panel-subtitle">완제품 입고 목록</p>
 				</div>
 				<div class="col-md-5" align="right">
 					<button type="button" id="appendRow">추가</button>
@@ -71,6 +90,70 @@
 			</div>
 			<div class="panel-body">
 				<div id="grid"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!------------------------------- //입고 -------------------------------------->
+
+<!------------------------------- 출고 -------------------------------------->
+<div id="outgrid">
+<div class="content-fluid">
+	<div>
+		<div class="my-panel">
+			<button type="button" class="btn btn-success" id="search">조회</button>
+			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
+		</div>
+	</div>
+</div>
+
+<form id="option">
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-3">
+						일자
+						<input type="date" id="dateGubun" name="dateGubun">
+				</div>
+				<div class="col-md-3">
+						구분 &nbsp;
+						<input type="checkbox" id="inGubun" name="gubun" value="1" checked>입고
+						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
+				</div>
+				<div class="col-md-3">
+						제품코드
+						<input type="text" id="productCode" name="productCode">	
+						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
+                     	<i class="fa fa-search"></i></a>
+				</div>
+				<div class="col-md-3">
+						완제품 LOT_NO
+						<input type="text" id="productLotNo" name="productLotNo">	
+						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
+                     	<i class="fa fa-search"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-7">
+					<p class="panel-subtitle">완제품 출고 목록</p>
+				</div>
+				<div class="col-md-5" align="right">
+					<button type="button" id="appendRow">추가</button>
+					<button type="button" id="deleteRow">삭제</button>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="outListGrid"></div>
 			</div>
 		</div>
 	</div>
@@ -93,6 +176,8 @@
 		</div>
 	</div>
 </div>
+</div>
+<!------------------------------- //출고 -------------------------------------->
 
 <!-- 추가 모달 -->
 <a id="searchOrderCode" href="searchOrderCode.do" rel="modal:open"></a>
@@ -101,15 +186,15 @@
 
 <script>
 //내비바 고정
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.salesProdForm').addClass('active');
+$('#n9000000').addClass('active');
+$('#subPages9000000').addClass('in');
+$('#subPages9000000').attr('aria-expanded','true');
+$('#subPages9000000').attr('style','');
+$('.9030000').addClass('active');
+
 
 let mgrid; //모달그리드
 let muGrid;
-
 
 	$(document).ready(function() {
 		//Read
@@ -229,8 +314,9 @@ let muGrid;
 				header : '제품코드',
 				name : 'comProductCode'
 			}, {
-				header : '주문수량',
-				name : 'salInoutQuantity'
+				header : '입고수량',
+				name : 'salInoutQuantity',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '전표번호',
 				name : 'salInoutStatement',
@@ -241,29 +327,125 @@ let muGrid;
 	 mgrid = grid;
 	 
 	//------------------------------------------------------△입고그리드 / 출고그리드▽ --------------------------------------------------------------------------
+		$(document).ready(function() {
+		//Read
+		$(document).on("click", "button[id=search]",
+				function() {
+					var date = $("#dateGubun").val();
+					var inGubun = $("#inGubun").val();
+					var outGubun = $("#outGubun").val();
+					var gubun;
+					var productCode = $("#productCode").val();
+					var productLotNo = $("#productLotNo").val();
+					
+					//체크박스 옵션
+					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
+						gubun = null;
+					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
+						gubun = 'INOUT002';
+					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
+						gubun = 'INOUT003';
+					} else {
+						gubun = null;
+					}
+										
+					var readParams = {
+						'salInoutDate' : date,
+						'salInoutGubun' : gubun,
+						'comProductCode' : productCode,
+						'proProcessLotNo' : productLotNo
+					};
+					grid.readData(1, readParams, true);
+				});
 		
 		//Insert
-		$(document).on("click", "button[id=uappendRow]", function() {
+		$(document).on("click", "button[id=appendRow]", function() {
 			var rowData =[{
-					proProcessLotNo : "",
+					salInoutDate : "",
+					salInoutGubun : "",
+					salInoutCode : "",
 					comProductCode : "",
-					salNowQuantity : ""
+					salInoutQuantity : "",
+					proProcessLotNo : "",
+					salWriteDate : ""
 			}];
-			muGrid.appendRow(rowData, {
+			grid.appendRow(rowData, {
 				at : 0,
 				focus : true
 			});
-			
-			muGrid.enable();
+			grid.enable();
 		});
 		
 		//Delete
-		$(document).on("click", "button[id=udeleteRow]", function() {
-			muGrid.removeCheckedRows(false);
+		$(document).on("click", "button[id=deleteRow]", function() {
+			grid.removeCheckedRows(false);
+		});
+		
+		//Modify
+		$(document).on("click", "button[id=modifyRow]", function() {
+			grid.finishEditing('rowKey','columnName');
+			grid.request('modifyData');
 		});
 		
 		
+		const outdataSource = {
+			api : {
+				readData : {
+					url : '${pageContext.request.contextPath}/ajax/sal/readSalesProduct',
+					method : 'GET'
+				},
+				modifyData : {
+					url : '${pageContext.request.contextPath}/ajax/modifySalInoutList',
+					method : 'PUT'
+				}
+			},
+			initialRequest: false, 
+			contentType : "application/json"
+		};
+		
+
+		const outListGrid = new tui.Grid({
+			el : document.getElementById('outListGrid'),
+			rowHeaders : [ 'checkbox' ],
+			data : outdataSource,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :150, 
+	        rowHeight: 30,
+			columns : [ {
+				header : '출고일자',
+				name : 'salInoutDate',
+				editor : {
+					type : 'datePicker',
+					options : {
+						format : 'YYYY/MM/dd',
+						language: 'ko'
+					} 
+				}
+			}, {
+				header : '주문코드',
+				name : 'proProcessLotNo',
+				editor : 'text'
+			}, {
+				header : '거래처코드',
+				name : 'salInoutCode'
+			}, {
+				header : '제품코드',
+				name : 'comProductCode'
+			}, {
+				header : '출고수량',
+				name : 'salInoutQuantity',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+			}, {
+				header : '전표번호',
+				name : 'salInoutStatement',
+				hidden : true
+			}]
+		}); 	
 	
+		
+		
+		//출고세부그리드
 		const udataSource = {
 				api : {
 					readData : {
@@ -285,21 +467,22 @@ let muGrid;
 		        rowHeight: 30,
 				columns : [{
 					header : '주문코드',
-					name : 'erpOrderCode'
+					name : 'erpOrderCode',
+					align : 'center',
+					hidden : true
 				}, {
 					header : '완제품 LOT_NO',
 					name : 'proProcessLotNo',
 					editor : 'text'
 				}, {
-					header : '제품코드',
-					name : 'comProductCode'
-				}, {
 					header : '현재고',
-					name : 'salNowQuantity'
+					name : 'salNowQuantity',
+					formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 				}, {
 					header : '출고수량',
 					name : 'salOutQuantity',
-					editor : 'text'
+					editor : 'text',
+					formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 				}, {
 					header : '전표번호',
 					name : 'salInoutStatement',
@@ -373,17 +556,15 @@ let muGrid;
 	
 		
 	// option form reset  
-	 $(document).ready(function() {  
-	    $("#reset").click(function() {  
+	 $("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
 	             });  
-	    });  
-	 });  
-	
+	 });
 	
 }); //end of document ready
-
+	
+	
 	//모달 실행 함수
 	var rowId;
 	var urowId;
@@ -447,5 +628,7 @@ let muGrid;
 		    $(html).appendTo('body').modal();
 		  });
 	}
+});
+
 
 </script>
