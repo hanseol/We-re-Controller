@@ -53,7 +53,7 @@
 		                              	AND
 							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
-		                              ORDER BY q.qua_material_date DESC<![CDATA[ ) a
+		                              ORDER BY q.erp_material_order_code DESC<![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
@@ -109,7 +109,7 @@
 		                              	AND
 							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
-		                              ORDER BY q.qua_material_chk_date DESC <![CDATA[ ) a
+		                              ORDER BY q.erp_material_order_code DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	

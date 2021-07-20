@@ -56,6 +56,8 @@ $(document).ready(function() {
 			//view 페이지에 뿌려줄 부분 아이디값
 			if(materialRowId == -1){
 				$("#materialCode").val(comMaterialCode);
+			} else if(materialRowId == -2){
+				$("#materialCodeTwo").val(comMaterialCode);
 			} else {
 				materialGrid.blur();
 				console.log(materialRowId);

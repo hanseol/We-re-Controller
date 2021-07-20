@@ -32,34 +32,33 @@
 	</div>
 </div>
 
-<form id="option">
-	<div class="content-fluid">
-		<div class="panel panel-headline">
-			<div class="panel-body">
-				<div class="row">
-<!-- 				<div class="col-md-3">
-						일자<input type="date" id="matInoutDate" name="matInoutDate"> ~ <input type="date" id="matInoutEndDate" name="matInoutEndDate">
-					</div> -->
-					<div class="col-md-3">
-						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3" align="right">
-						<button type="button" class="btn btn-success" id="search">조회</button>
-						<button type="button" class="btn btn-danger" id="reset">새자료</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-9">
+				<form id="option">
+					<div class="col-md-3">
+						자재검색<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+				</form>
+				<div class="col-md-9" align="right">
+					<button type="button" class="btn btn-success" id="search">조회</button>
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12">
 					<p class="panel-subtitle">자재재고현황</p>
 				</div>
 			</div>
@@ -85,7 +84,12 @@ $(document).ready(function () {
 	
 	// 옵션 폼 리셋버튼  
 	$("#reset").click(function() { 
-		location.reload(true);
+		$("form").each(function() {  
+	    	if(this.id == "option") this.reset();
+	    	
+	    	$('#materialCode').val("");
+	    	
+	    	});
 		}); 
 		
 	//조회버튼
@@ -94,13 +98,10 @@ $(document).ready(function () {
 			//데이터를 변수에 담아서 parameter로 만들기.
 			var comMaterialCode = $("#materialCode").val();
 			var erpVendorCode = $("#vendorCode").val();
-			//var matInoutDate = $("#matInoutDate").val();
-			//var matInoutEndDate = $("#matInoutEndDate").val();
 			var readParams = {
 				'comMaterialCode': comMaterialCode,
 				'erpVendorCode': erpVendorCode,
-				//'matInoutDate': matInoutDate,
-				//'matInoutEndDate': matInoutEndDate 
+
 
 			};
 			grid.readData(1, readParams, true);
@@ -123,7 +124,6 @@ $(document).ready(function () {
 
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
-			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
@@ -155,13 +155,13 @@ $(document).ready(function () {
 //--------------------------------------------------
 		
 		
-		grid.on('response', ev => {
+/* 		grid.on('response', ev => {
 			const {response} = ev.xhr;
 			const responseObj = JSON.parse(response);
 
 			console.log('result : ', responseObj.result);
 			console.log('data : ', responseObj.data);
-		});
+		}); */
 		
 		
 		
@@ -188,7 +188,7 @@ $(document).ready(function () {
 		});
 		
 		//발주코드 모달 로우아이디 값--------------------------------------
-
+		
 		//자재
 		$('#searchMaterialCode').click(function(event) {
 			materialCodeSearch(-1);

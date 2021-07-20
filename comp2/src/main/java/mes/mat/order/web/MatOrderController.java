@@ -110,4 +110,26 @@ public class MatOrderController {
       	ComFunc comFunc = new ComFunc();
       	return comFunc.sendResult(list);
   	}
+  	
+  	
+    //불량이 있는 발주코드 오픈
+    @GetMapping("/mat/order/searchMatOrderCodeFlty.do")
+  	public String searchMaterialCodeFlty() {
+  		
+  		//모달창에 띄워줄 view페이지 전달.
+  		return "mes/mat/modal/searchMatOrderCodeFlty";
+  	}
+  	
+  	//불량이 있는 발주코드 결과 값 전달
+  	@RequestMapping("/ajax/searchMatOrderFlty")
+  	@ResponseBody
+  	public Map<String, Object> searchOrderFlty(Model model, 
+     		@ModelAttribute("searchVO") MatOrderVO searchVO) throws Exception {
+  		
+
+      	List<?> list = service.searchMatOrderCodeFltyList(searchVO);
+      	
+      	ComFunc comFunc = new ComFunc();
+      	return comFunc.sendResult(list);
+  	}
 }

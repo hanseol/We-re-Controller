@@ -101,9 +101,6 @@ $(document).ready(function() {
 		}, {
 			header : '불량명',
 			name : 'comMaterialFName'
-		}, {
-			header : '불량내역',
-			name : 'comMaterialFDesc'
 		}]
 		
 	}); 

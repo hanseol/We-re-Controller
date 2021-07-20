@@ -41,7 +41,7 @@ public class MatLotVO extends SearchVO{
     private BigDecimal matMatchQty;
     
     /** MAT_MATCH_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yy/MM/dd")
     private String matMatchDate;
     
     //자재명

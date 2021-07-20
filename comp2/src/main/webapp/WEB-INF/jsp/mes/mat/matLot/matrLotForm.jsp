@@ -54,12 +54,12 @@ max-height: 600px; */
 						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
 					</div>
 					<div class="col-md-3">
-						자재코드<input type="text" id="materialCode" name="materialCode">
+						자재검색<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						자재LOT_NO<input type="text" id="matLot" name="matLot">
+						자재LOT검색<input type="text" id="matLot" name="matLot">
 						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>

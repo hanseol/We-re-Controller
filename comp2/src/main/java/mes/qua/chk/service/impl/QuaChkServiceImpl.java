@@ -71,21 +71,31 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 						//검사완료 업데이트
 						quaChkMapper.updateQuaChk(updatedMap);
 
-						//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트
-						updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
-						updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
-						quaChkMapper.insertQuaChkMatIn(updatedMap);					
+						//합격량만큼 반복 인서트
+						for(int j = 0; j < passQty;j++) {
+							//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트
+							updatedMap.put("quaMaterialPQty", 1);//수량을 1로 치환하고 인서트
+							updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
+							updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
+							quaChkMapper.insertQuaChkMatIn(updatedMap);
+
+						}
+											
 					}else if ((fltyQty != 0)&&(passQty != 0)) {//불량이 있는데 합격량도 있는 것.
 						//검사완료 업데이트
 						quaChkMapper.updateQuaChk(updatedMap);
 						//자재 불량으로 인서트
 						updatedMap.put("quaMaterialFQty",fltyQty); //불량량을 담고 인서트 
 						quaChkMapper.insertMatFlty(updatedMap);
-						//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트
-						updatedMap.put("matInoutQuantity",passQty);//합격량을 전체발주량에서 치환하고 인서트
-						updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
-						updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
-						quaChkMapper.insertQuaChkMatIn(updatedMap);
+						//합격량만큼 반복 인서트
+						for(int j = 0; j < passQty;j++) {
+							//자재 입고 전표번호와 자재LOT_NO 담아서 자재입출고 테이블로 인서트
+							updatedMap.put("quaMaterialPQty", 1);//수량을 1로 치환하고 인서트
+							updatedMap.put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
+							updatedMap.put("matLotNo", mesMatLotStatementIdGnrService.getNextStringId());
+							quaChkMapper.insertQuaChkMatIn(updatedMap);
+						}
+
 						
 						///////////////////불량내역과 입고내역을 분리 할 수 있는 방법(계산) 알아내기.///////////////////
 						

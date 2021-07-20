@@ -39,29 +39,11 @@ max-height: 600px; */
 	</ul>
 </div>
 
-
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<form id="option">
-					<div class="col-md-3">
-						일자<input type="date" id="materialDate" name="materialDate"> ~ <input type="date" id="materialEndDate" name="materialEndDate">
-					</div>
-					<div class="col-md-3">
-						자재코드<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3">
-						업체코드<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="search">조회</button>
-					
+				<div class="col-md-12" align="right">
 					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
 			</div>
@@ -69,19 +51,33 @@ max-height: 600px; */
 	</div>
 </div>
 
-
-
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-md-12">
 					<p class="panel-subtitle">자재 발주 목록</p>
 				</div>
+				<form id="option">
+					<div class="col-md-3">
+						입고일자<input type="date" id="materialDate" name="materialDate"> ~ <input type="date" id="materialEndDate" name="materialEndDate">
+					</div>
+					<div class="col-md-3">
+						자재검색<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-3">
+						업체검색<input type="text" id="vendorCode" name="vendorCode">
+						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+				</form>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-info" id="appendRow">추가</button>
 					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
 					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
+					<button type="button" class="btn btn-success" id="search">조회</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -95,12 +91,28 @@ max-height: 600px; */
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-md-12">
 					<p class="panel-subtitle">검사 완료 목록</p>
 				</div>
+				<form id="option">
+					<div class="col-md-3">
+						검사일자<input type="date" id="quaChkDate" name="quaChkDate"> ~ <input type="date" id="quaChkEndDate" name="quaChkEndDate">
+					</div>
+					<div class="col-md-3">
+						자재검색<input type="text" id="materialCodeTwo" name="materialCodeTwo">
+						<a id="searchMaterialCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-3">
+						업체검색<input type="text" id="vendorCodeTwo" name="vendorCodeTwo">
+						<a id="searchVendorCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+				</form>
 				<div class="col-md-3" align="right">
 					<button type="button" class="btn btn-warning" id="passDeleteRow">선택삭제</button>
 					<button type="button" class="btn btn-info" id="modifyPass">저장</button>
+					<button type="button" class="btn btn-success" id="searchPass">조회</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -117,6 +129,8 @@ let orderGrid;
 let materialGrid;
 let vendorGrid;
 let matFltyGrid;
+let materialTwoGrid;
+let vendorTwoGrid;
 //-----------------------------------------------------------
 let erpMaterialOrderCode;
 
@@ -138,10 +152,28 @@ let erpMaterialOrderCode;
 		//날짜 범위로 지정하는 방법 생각.
 		
 //=======================================그리드1 버튼설정===========================================	
+		
+		//그리드1 [조회]버튼
+		$("#search").on("click", function () {
 
-		//그리드1 추가버튼
-		$(document).on("click", "button[id=appendRow]",
-			function () {
+			//데이터를 변수에 담아서 parameter로 만들기.
+			var materialDate = $("#materialDate").val();
+			var materialCode = $("#materialCode").val();
+			var vendorCode = $("#vendorCode").val();
+			var materialEndDate = $("#materialEndDate").val();
+
+			var readParams = {
+				'quaMaterialDate' : materialDate,
+				'comMaterialCode': materialCode,
+				'erpVendorCode': vendorCode,
+				'quaMaterialEndDate' : materialEndDate
+			};
+			grid.readData(1, readParams, true);
+			
+		});
+		
+		//그리드1 [추가]버튼
+		$("#appendRow").on("click", function () {
 				var rowData = {
 					
 					erpMaterialOrderCode: "",
@@ -168,7 +200,8 @@ let erpMaterialOrderCode;
 				});
 				grid.enable();
 			});
-		//그리드1 저장버튼 (등록, 수정, 삭제)
+		
+		//그리드1 [저장]버튼 (등록, 수정, 삭제)
 		$("#modifyRow").on("click", function() {
 			grid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
@@ -176,20 +209,39 @@ let erpMaterialOrderCode;
 			});
 		
 		
-		//그리드1 삭제 버튼(체크된 행 삭제)
+		//그리드1 [삭제] 버튼(체크된 행 삭제)
 		$("#deleteRow").on("click", function () {
 			grid.removeCheckedRows(false);
 				
 			});
 		
 //=======================================그리드2 버튼설정===========================================		
-		//그리드2 삭제 버튼(체크된 행 삭제)
+		//그리드2 [조회]버튼
+		$("#searchPass").on("click", function () {
+
+			//데이터를 변수에 담아서 parameter로 만들기.
+			var quaChkDate = $("#quaChkDate").val();
+			var materialCodeTwo = $("#materialCodeTwo").val();
+			var vendorCodeTwo = $("#vendorCodeTwo").val();
+			var quaChkEndDate = $("#quaChkEndDate").val();
+
+			var readParams = {
+				'quaMaterialDate' : quaChkDate,
+				'comMaterialCode': materialCodeTwo,
+				'erpVendorCode': vendorCodeTwo,
+				'quaMaterialEndDate' : quaChkEndDate
+			};
+			passGrid.readData(1, readParams, true);
+			
+		});
+	
+		//그리드2 [선택삭제]버튼(체크된 행 삭제)
 		$("#passDeleteRow").on("click",	function () {
 				passGrid.removeCheckedRows(false);
 				
 			});
 		
-		//그리드2 저장버튼 ( only 삭제를 위한 저장? )
+		//그리드2 [저장]버튼 ( only 삭제를 위한 저장? )
 		$("#modifyPass").on("click", function () {
 			passGrid.finishEditing('rowKey', 'columnName');
 			passGrid.request('modifyData');
@@ -198,26 +250,9 @@ let erpMaterialOrderCode;
 		
 
 
-		//전체검색 데이터 전송
-		$("#search").on("click", function () {
 
-			//데이터를 변수에 담아서 parameter로 만들기.
-			var materialDate = $("#materialDate").val();
-			var materialCode = $("#materialCode").val();
-			var vendorCode = $("#vendorCode").val();
-			var materialEndDate = $("#materialEndDate").val();
 
-			var readParams = {
-				'quaMaterialDate' : materialDate,
-				'comMaterialCode': materialCode,
-				'erpVendorCode': vendorCode,
-				'quaMaterialEndDate' : materialEndDate
-			};
-			grid.readData(1, readParams, true);
-			passGrid.readData(1, readParams, true);
-			
-		});
-
+//=======================================그리드1 설정(grid)=======================================
 		const dataSource = {
 			api: {
 				readData: {
@@ -258,7 +293,8 @@ let erpMaterialOrderCode;
 			}, {
 				header: '업체코드',
 				name: 'erpVendorCode',
-				align: 'center'
+				align: 'center',
+				hidden: true
 			}, {
 				header: '업체명',
 				name: 'comCodeDetailName',
@@ -266,7 +302,8 @@ let erpMaterialOrderCode;
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
-				align: 'center'
+				align: 'center',
+				hidden: true
 			}, {
 				header: '자재명',
 				name: 'comMaterialName',
@@ -343,7 +380,8 @@ let erpMaterialOrderCode;
 		matFltyGrid = grid;
 //--------------------------------------------------
 
-		
+//=======================================그리드2 설정(passGrid)=======================================
+	
 		//합격해서 입고된 자재만 등록하는 그리드 데이터
 		const passDataSource = {
 				api: {
@@ -387,7 +425,8 @@ let erpMaterialOrderCode;
 			}, {
 				header: '업체코드',
 				name: 'erpVendorCode',
-				align: 'center'
+				align: 'center',
+				hidden: true
 			}, {
 				header: '업체명',
 				name: 'comCodeDetailName',
@@ -395,7 +434,8 @@ let erpMaterialOrderCode;
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
-				align: 'center'
+				align: 'center',
+				hidden: true
 			}, {
 				header: '자재명',
 				name: 'comMaterialName',
@@ -430,22 +470,11 @@ let erpMaterialOrderCode;
 				name: 'erpMaterialPrice',
 				align : 'right',
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
-			}
-			//합계
-			/* summary : {
-	            height : 40,
-	            position : 'bottom',
-	            columnContent : {
-	               repairCost : {
-	                  template(val) {
-	                     return '합계 : ' + val.sum;
-	                  }
-	               }
-	            }
-	         } */
-	         ]
+			}]
 		});
-		
+		//그리드2 모달그리드 선언 초기화-----------------------------------------------------
+		materialTwoGrid = passGrid;
+		vendorTwoGrid = passGrid;
 		//불량량,합격량에 값이 있을 때만 검사 유무 설정 가능하게
 		
 /* 		grid.on('click', ev=>{
@@ -581,6 +610,7 @@ let erpMaterialOrderCode;
 		});
 		
 		//발주코드 모달 로우아이디 값--------------------------------------
+		//---------------------------그리드1
 		//발주
 		$('#searchMatOrderCode').click(function(event) {
 			matOrderCodeSearch(-1);
@@ -589,14 +619,20 @@ let erpMaterialOrderCode;
 		$('#searchMaterialCode').click(function(event) {
 			materialCodeSearch(-1);
 		});
-		//업체
-		$('#searchVendorCode').click(function(event) {
-			vendorCodeSearch(-1);
-		});
  		//불량
 		$('#searchMatFltyCode').click(function(event) {
 			matFltyCodeSearch(-1);
 		});
+ 		//---------------------------그리드2
+		//그리드2 자재
+		$('#searchMaterialCodeTwo').click(function(event) {
+			materialCodeSearch(-2);
+		});
+		//그리드2 업체
+		$('#searchVendorCodeTwo').click(function(event) {
+			vendorCodeSearch(-2);
+		});
+ 		
 		
 });//end of document ready
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------

@@ -50,7 +50,7 @@
 						일자<input type="date" id="materialDate" name="materialDate">~<input type="date" id="materialEndDate" name="materialEndDate">
 					</div>
 					<div class="col-md-3">
-						자재코드<input type="text" id="materialCode" name="materialCode">
+						자재검색<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 						

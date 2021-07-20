@@ -53,17 +53,17 @@
 						일자<input type="date" id="inoutDate" name="inoutDate">~<input type="date" id="inoutEndDate" name="inoutEndDate">
 					</div>
 					<div class="col-md-3">
-						자재코드<input type="text" id="materialCode" name="materialCode">
+						자재검색<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						입고업체<input type="text" id="vendorCode" name="vendorCode">
+						업체검색<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						자재LOT_NO<input type="text" id="matLot" name="matLot">
+						자재LOT검색<input type="text" id="matLot" name="matLot">
 						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>

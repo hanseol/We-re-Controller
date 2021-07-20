@@ -12,9 +12,11 @@
 		                     ROWNUM rnum
 		              FROM   (
 										SELECT  DISTINCT q.qua_material_statement,
+												q.com_material_code,
 										        q.erp_material_order_code,
 										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD') as qua_material_chk_date,
 										        q.erp_vendor_code,
+										        get_code_detail(q.com_material_code) as material_name,
 										        d.com_code_detail_name,
 										        e.erp_material_order_qty,
 										        e.erp_material_unit_price,
@@ -41,13 +43,13 @@
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	e.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              	</if>
 		                              	<if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
 		                              	AND
 							        	q.erp_material_order_code LIKE '%' || #{erpMaterialOrderCode} || '%'
 		                              	</if>
-		                              ORDER BY qua_material_chk_date <![CDATA[ ) a
+		                              ORDER BY q.erp_material_order_code DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	

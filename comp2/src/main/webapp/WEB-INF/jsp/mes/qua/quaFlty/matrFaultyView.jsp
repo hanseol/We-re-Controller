@@ -41,18 +41,23 @@
 						검사일자<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" value="">~<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" value="">	
 					</div>
 					<div class="col-md-3">
-						발주코드
+						발주검색
 						<input type="text" id="orderCode" name="orderCode">	
-						<a id="searchMatOrderCodePure" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do">
+						<a id="searchMatOrderCodeFlty" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodeFlty.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						입고업체<input type="text" id="vendorCode" name="vendorCode">
+						자재검색<input type="text" id="materialCode" name="materialCode">
+						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>
+					</div>
+					<div class="col-md-3">
+						업체검색<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
+				<div class="col-md-12" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
 					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
@@ -66,7 +71,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">자재 발주 목록</p>
+					<p class="panel-subtitle">자재 불량 목록</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -80,7 +85,7 @@
 		<div class="panel-heading">
 			<div class="row">
 				<div class="col-md-7">
-					<p class="panel-subtitle">자재 불량 목록</p>
+					<p class="panel-subtitle">불량 상세내역</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -100,6 +105,7 @@ $('.matrFaulty').addClass('active');
 		
 
 //그리드모달창을 위한 그리드 선언-------------------------------------
+let materialGrid;
 let orderGrid;
 let vendorGrid;
 //-----------------------------------------------------------
@@ -118,6 +124,8 @@ let vendorGrid;
 				function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
+					
+					var materialCode = $("#materialCode").val();
 					var vendorCode = $("#vendorCode").val();
 					var quaMaterialChkDate = $("#quaMaterialChkDate").val();
 					var orderCode = $("#orderCode").val();
@@ -125,6 +133,7 @@ let vendorGrid;
 					
 
 					var readParams = {
+						'comMaterialCode' : materialCode,
 						'erpVendorCode': vendorCode,
 						'quaMaterialChkDate': quaMaterialChkDate,
 						'erpMaterialOrderCode': orderCode,
@@ -165,31 +174,32 @@ let vendorGrid;
 				name : 'quaMaterialChkDate',
 		        align : 'center'
 			}, {
-				header: '업체코드',
-				name: 'erpVendorCode',
-		        align : 'center'
-			}, {
-				header: '발주업체명',
+				header: '업체명',
 				name: 'comCodeDetailName',
 		        align : 'center'
 			}, {
+				header: '자재명',
+				name: 'materialName'
+			}, {
 				header : '발주량',
 				name : 'erpMaterialOrderQty',
-		        align : 'center'
+		        align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header: '단가(원)',
 				name: 'erpMaterialUnitPrice',
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
-		        align : 'center'
+		        align : 'right'
 			}, {
 				header: '금액(원)',
 				name: 'erpMaterialPrice',
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
-		        align : 'center'
+		        align : 'right'
 			}, {
 				header: '불량량',
 				name: 'quaMaterialFQty',
-		        align : 'center'
+		        align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}]
 		});
 		
@@ -222,7 +232,7 @@ let vendorGrid;
 			data : fltyDataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 150,
+	        bodyHeight: 100,
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주코드',
@@ -305,7 +315,7 @@ let vendorGrid;
 		
 		//발주코드 모달 로우아이디 값--------------------------------------
 		//발주
-		$('#searchMatOrderCodePure').click(function(event) {
+		$('#searchMatOrderCodeFlty').click(function(event) {
 			matOrderCodeSearch(-1);
 		});
 		
@@ -317,7 +327,10 @@ let vendorGrid;
 		$('#searchMatFltyCode').click(function(event) {
 			matFltyCodeSearch(-1);
 		});
-		
+		//자재
+		$('#searchMaterialCode').click(function(event) {
+			materialCodeSearch(-1);
+		});
 }); //end of document ready
 
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------
@@ -330,7 +343,20 @@ function matOrderCodeSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do", function(html) {
+	  $.get("${pageContext.request.contextPath}/mat/order/searchMatOrderCodeFlty.do", function(html) {
+	    $(html).appendTo('body').modal();
+	  });
+}
+//자재
+var materialRowId;
+function materialCodeSearch(c) {
+	materialRowId = c;
+	  console.log(materialRowId);
+	  event.preventDefault();
+	  $(".modal").remove();
+	  this.blur(); // Manually remove focus from clicked link.
+	  console.log(this.href);
+	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

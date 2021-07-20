@@ -40,14 +40,14 @@
 					<div class="col-md-3">
 						발주일자<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">~<input type="date" id="erpMaterialOrderEndDate" name="erpMaterialOrderEndDate">	
 					</div>
-					<div class="col-md-3">			
-						발주코드
+					<div class="col-md-3">
+						발주검색
 						<input type="text" id="orderCode" name="orderCode">	
 						<a id="searchMatOrderCodePure" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						자재코드
+						자재검색
 						<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">					
 						
@@ -127,6 +127,7 @@ let materialGrid;
 					method : 'GET'
 				}
 			},
+			initialRequest : false,
 			contentType : "application/json"
 		};
 
@@ -189,13 +190,13 @@ let materialGrid;
 		//--------------------------------------------------
 		
 	//데이터 제이슨타입으로 보내기
- 	grid.on('response', ev => {
+/*  	grid.on('response', ev => {
 		  const {response} = ev.xhr;
 		  const responseObj = JSON.parse(response);
 
 		  console.log('result : ', responseObj.result);
 		  console.log('data : ', responseObj.data);
-		});
+		}); */
 	
 	//날짜 범위 검색 옵션
 	var start = $("#erpMaterialOrderDate");
