@@ -54,14 +54,24 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 //-----------------------입/출고목록-------------------------    
     
     //입출고목록 조회
-	public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception {
-		return salInoutDAO.selectSalProductInoutList(searchVO);
-	}
+    public List<?> selectSalProductInOutList(SalInoutVO searchVO) throws Exception {
+    	return salInoutDAO.selectSalProductInOutList(searchVO);
+    }
     
     
-    public int selectSalProductInoutListTotCnt(SalInoutVO searchVO) {
-		return salInoutDAO.selectSalInoutListTotCnt(searchVO);
+    //입고목록 조회
+	public List<?> selectSalProductInList(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.selectSalProductInList(searchVO);
 	}
+     
+    public int selectSalProductInListTotCnt(SalInoutVO searchVO) {
+		return salInoutDAO.selectSalProductInListTotCnt(searchVO);
+	}
+    
+    //출고목록 조회
+    public List<?> selectSalProductOutList(SalInoutVO searchVO) throws Exception {
+    	return salInoutDAO.selectSalProductOutList(searchVO);
+    }
     
     //입고 LOT_NO 조회
     @Override

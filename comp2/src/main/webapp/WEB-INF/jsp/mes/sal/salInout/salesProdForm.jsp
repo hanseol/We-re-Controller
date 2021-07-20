@@ -1,24 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script>
-	$(document).ready(function(){
-		function tabgubun(evt, inout) {
-			  var i, tabcontent, tablinks;
-			  tabcontent = document.getElementsByClassName("tabcontent");
-			  for (i = 0; i < tabcontent.length; i++) {
-			    tabcontent[i].style.display = "none";
-			  }
-			  tablinks = document.getElementsByClassName("tablinks");
-			  for (i = 0; i < tablinks.length; i++) {
-			    tablinks[i].className = tablinks[i].className.replace(" active", "");
-			  }
-			  document.getElementById(inout).style.display = "block";
-			  evt.currentTarget.className += " active";
-		}
-	});
-//탭키전환함수
-
-</script>
 <div class="content-fluid">
 	<div>
 		<h2>입/출고목록관리</h2>
@@ -28,19 +9,19 @@
 <!-- 관리, 지시 탭 이동 -->
 <div class="tabs">
    <ul class="nav nav-tabs" role="tablist">
-     <li class="tablinks active"><a href="javascript:void(0);" onclick="tabgubun(event, 'ingrid');" aria-controls="tab1" role="tab" data-toggle="tab">입고</a></li>
-     <li class="tablinks"><a href="javascript:void(0);" onclick="tabgubun(event, 'outgrid');" aria-controls="tab2" role="tab" data-toggle="tab">출고</a></li>
+     <li class="tablinks active"><a href="#" onclick="tabgubun('ingrid');" aria-controls="tab1" role="tab" data-toggle="tab">입고</a></li>
+     <li class="tablinks"><a href="#" onclick="tabgubun('outgrid');" aria-controls="tab2" role="tab" data-toggle="tab">출고</a></li>
    </ul>
 </div>
 
 <!------------------------------- 입고 -------------------------------------->
-<div id="ingrid" class="tabcontent">
+<div id="ingrid" class="tabcontent" style="display: block;">
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
+			<button type="button" class="btn btn-success" id="inSearch">조회</button>
+			<button type="button" class="btn btn-danger" id="inReset">새자료</button>
+			<button type="button" class="btn btn-warning" id="inModifyRow">저장</button>
 		</div>
 	</div>
 </div>
@@ -50,22 +31,17 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-4">
 						일자
 						<input type="date" id="dateGubun" name="dateGubun">
 				</div>
-				<div class="col-md-3">
-						구분 &nbsp;
-						<input type="checkbox" id="inGubun" name="gubun" value="1" checked>입고
-						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
-				</div>
-				<div class="col-md-3">
-						제품코드
+				<div class="col-md-4">
+						제품명
 						<input type="text" id="productCode" name="productCode">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 						완제품 LOT_NO
 						<input type="text" id="productLotNo" name="productLotNo">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
@@ -84,8 +60,8 @@
 					<p class="panel-subtitle">완제품 입고 목록</p>
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
+					<button type="button" id="inAppendRow">추가</button>
+					<button type="button" id="inDeleteRow">삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -98,13 +74,13 @@
 <!------------------------------- //입고 -------------------------------------->
 
 <!------------------------------- 출고 -------------------------------------->
-<div id="outgrid">
+<div id="outgrid" class="tabcontent" style="display: none;">
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
+			<button type="button" class="btn btn-success" id="outSearch">조회</button>
+			<button type="button" class="btn btn-danger" id="outReset">새자료</button>
+			<button type="button" class="btn btn-warning" id="outModifyRow">저장</button>
 		</div>
 	</div>
 </div>
@@ -114,25 +90,20 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-4">
 						일자
-						<input type="date" id="dateGubun" name="dateGubun">
+						<input type="date" id="outDateGubun" name="outDateGubun">
 				</div>
-				<div class="col-md-3">
-						구분 &nbsp;
-						<input type="checkbox" id="inGubun" name="gubun" value="1" checked>입고
-						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
-				</div>
-				<div class="col-md-3">
-						제품코드
+				<div class="col-md-4">
+						제품명
 						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
+						<a id="outSearchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 						완제품 LOT_NO
 						<input type="text" id="productLotNo" name="productLotNo">	
-						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
+						<a id="outSearchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -148,8 +119,8 @@
 					<p class="panel-subtitle">완제품 출고 목록</p>
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
+					<button type="button" id="outAppendRow">추가</button>
+					<button type="button" id="outDeleteRow">삭제</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -196,31 +167,16 @@ $('.9030000').addClass('active');
 let mgrid; //모달그리드
 let muGrid;
 
+//----------------------------------------------------------------입고그리드-----------------------------------------------------------------
 	$(document).ready(function() {
 		//Read
-		$(document).on("click", "button[id=search]",
-				function() {
+		$("#inSearch").on("click", function() {
 					var date = $("#dateGubun").val();
-					var inGubun = $("#inGubun").val();
-					var outGubun = $("#outGubun").val();
-					var gubun;
 					var productCode = $("#productCode").val();
 					var productLotNo = $("#productLotNo").val();
-					
-					//체크박스 옵션
-					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = null;
-					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'INOUT002';
-					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = 'INOUT003';
-					} else {
-						gubun = null;
-					}
-										
+								
 					var readParams = {
 						'salInoutDate' : date,
-						'salInoutGubun' : gubun,
 						'comProductCode' : productCode,
 						'proProcessLotNo' : productLotNo
 					};
@@ -228,7 +184,7 @@ let muGrid;
 				});
 		
 		//Insert
-		$(document).on("click", "button[id=appendRow]", function() {
+		$("#inAppendRow").on("click", function() {
 			var rowData =[{
 					salInoutDate : "",
 					salInoutGubun : "",
@@ -251,7 +207,7 @@ let muGrid;
 		});
 		
 		//Modify
-		$(document).on("click", "button[id=modifyRow]", function() {
+		$("#inModifyrow").on("click", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('modifyData');
 		});
@@ -260,11 +216,11 @@ let muGrid;
 		const dataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/ajax/sal/readSalesProduct',
+					url : '${pageContext.request.contextPath}/ajax/sal/readSalInList',
 					method : 'GET'
 				},
 				modifyData : {
-					url : '${pageContext.request.contextPath}/ajax/modifySalInoutList',
+					url : '${pageContext.request.contextPath}/ajax/modifySalInList',
 					method : 'PUT'
 				}
 			},
@@ -292,27 +248,15 @@ let muGrid;
 					} 
 				}
 			}, {
-				header : '입/출고구분',
-				name : 'salInoutGubun',
-				editor : {
-					type: 'select',
-					options : {
-					listItems: [
-						{text : '입고', value : 'INOUT002'},
-						{text : '출고', value : 'INOUT003'}
-						]
-					}
-				}
-			}, {
-				header : '완제품 LOT_NO/주문코드',
+				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
 				editor : 'text'
 			}, {
 				header : '지시코드',
 				name : 'salInoutCode'
 			}, {
-				header : '제품코드',
-				name : 'comProductCode'
+				header : '제품명',
+				name : 'comProductName'
 			}, {
 				header : '입고수량',
 				name : 'salInoutQuantity',
@@ -326,65 +270,50 @@ let muGrid;
 		
 	 mgrid = grid;
 	 
-	//------------------------------------------------------△입고그리드 / 출고그리드▽ --------------------------------------------------------------------------
-		$(document).ready(function() {
+//end ----------------------------------------------------------------입고그리드-----------------------------------------------------------------
+
+//----------------------------------------------------------------출고그리드-----------------------------------------------------------------
+		//---------------출고내역조회 그리드-----------------
 		//Read
-		$(document).on("click", "button[id=search]",
-				function() {
+		$("#outSearch").on("click", function() {
 					var date = $("#dateGubun").val();
-					var inGubun = $("#inGubun").val();
-					var outGubun = $("#outGubun").val();
-					var gubun;
 					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
-					
-					//체크박스 옵션
-					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = null;
-					} else if ($('input:checkbox[id="inGubun"]').is(":checked") == true) {
-						gubun = 'INOUT002';
-					} else if ($('input:checkbox[id="outGubun"]').is(":checked") == true) {
-						gubun = 'INOUT003';
-					} else {
-						gubun = null;
-					}
+					var productLotNo = $("#productLotNo").val();				
 										
 					var readParams = {
 						'salInoutDate' : date,
-						'salInoutGubun' : gubun,
 						'comProductCode' : productCode,
 						'proProcessLotNo' : productLotNo
 					};
-					grid.readData(1, readParams, true);
-				});
+					outGrid.readData(1, readParams, true);
+		});
 		
 		//Insert
-		$(document).on("click", "button[id=appendRow]", function() {
+		$("#outAppendRow").on("click", function() {
 			var rowData =[{
 					salInoutDate : "",
-					salInoutGubun : "",
-					salInoutCode : "",
+					erpOrderCode : "",
+					comCustomerCode : "",
 					comProductCode : "",
 					salInoutQuantity : "",
-					proProcessLotNo : "",
 					salWriteDate : ""
 			}];
-			grid.appendRow(rowData, {
+			outGrid.appendRow(rowData, {
 				at : 0,
 				focus : true
 			});
-			grid.enable();
+			outGrid.enable();
 		});
 		
 		//Delete
-		$(document).on("click", "button[id=deleteRow]", function() {
-			grid.removeCheckedRows(false);
+		$("#outDeleteRow").on("click", function() {
+			outGrid.removeCheckedRows(false);
 		});
 		
 		//Modify
-		$(document).on("click", "button[id=modifyRow]", function() {
-			grid.finishEditing('rowKey','columnName');
-			grid.request('modifyData');
+		$("#outModifyrow").on("click", function() {
+			outGrid.finishEditing('rowKey','columnName');
+			outGrid.request('modifyData');
 		});
 		
 		
@@ -404,7 +333,7 @@ let muGrid;
 		};
 		
 
-		const outListGrid = new tui.Grid({
+		const outGrid = new tui.Grid({
 			el : document.getElementById('outListGrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : outdataSource,
@@ -445,7 +374,7 @@ let muGrid;
 	
 		
 		
-		//출고세부그리드
+		//---------------출고세부내역 그리드-----------------
 		const udataSource = {
 				api : {
 					readData : {
@@ -501,33 +430,47 @@ let muGrid;
 		         }
 			}); 
 		muGrid = ugrid;
-	
-	 
-	 $('#searchProductCode').click(function(event) {
+
+//end ----------------------------------------------------------------출고그리드-----------------------------------------------------------------
+
+//--------------------------------------------------------------------기타 실행 함수-----------------------------------------------------------------------------
+		
+		//input 태그 실행 이벤트
+		//제품명
+		$('#searchProductCode').click(function(event) {
+			productCodeSearch(-1); //매개변수 -1로 함수 실행
+		});
+		$('#outSearchProductCode').click(function(event) {
 			productCodeSearch(-1); //매개변수 -1로 함수 실행
 		});
 		
-	 //모달 : 완제품 LOT_NO
-	   grid.on('dblclick', ev => {
-		  var i = ev.rowKey;
-	      if(ev.columnName == 'proProcessLotNo') {
-	    	  if(grid.getValue(i, 'salInoutGubun') == null) {
-	    		  alert('입고/출고를 먼저 구분해주세요.');
-	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT002') {
-	    	  	 productLotNoSearch(ev.rowKey);	    	  	 
-	    	  } else if(grid.getValue(i, 'salInoutGubun') == 'INOUT003') {
-	    		  orderListSearch(ev.rowKey); 
-	    	  } 
-	    	}
-	   });
+		
+		//LOT_NO
+		$('#searchProductLotNo').click(function(event) {
+		 	productLotNoSearch(-1);
+		});
+		$('#outSearchProductLotNo').click(function(event) {
+		 	productLotNoSearch(-1);
+		});
+		
+		
+		//입고 : lot_no 클릭 이벤트
+		grid.on('dblclick', ev => {
+		var i = ev.rowKey;
+		   if(ev.columnName == 'proProcessLotNo') {
+		 	  	 productLotNoSearch(ev.rowKey);	    	  	 
+		 	  }
+		 });
 	 
-	 muGrid.on('dblclick', ev => {
-		if(ev.columnName == 'proProcessLotNo') {
-			modProductLotNoSearch(ev.rowKey);
-		} else if(ev.columnName == 'erpOrderCode') {
-			orderListSearch(ev.rowKey); 
-		}
-	 });
+		
+		//출고 : 
+		muGrid.on('dblclick', ev => {
+			if(ev.columnName == 'proProcessLotNo') {
+				modProductLotNoSearch(ev.rowKey);
+			} else if(ev.columnName == 'erpOrderCode') {
+				orderListSearch(ev.rowKey); 
+			}
+		});
 	 
 	 
 	 grid.on('dblclick', ev => {
@@ -548,28 +491,29 @@ let muGrid;
   	  		}
 		}
 	 });
-	 
-		$('#searchProductLotNo').click(function(event) {
-		 	productLotNoSearch(-1);
-		});
 	
-	
-		
 	// option form reset  
-	 $("#reset").click(function() {  
-	         $("form").each(function() {  
-	                if(this.id == "option") this.reset();  
-	             });  
-	 });
+	$("#inReset").on("click", function() {
+	     $("form").each(function() {  
+	      	if(this.id == "option") this.reset();  
+	     });  
+	});
 	
-}); //end of document ready
-	
+	$("#outReset").on("click", function() {
+	     $("form").each(function() {  
+	      	if(this.id == "option") this.reset();  
+	     });  
+	});
+
+});//end of document ready
+
+//-------------------------------------------------모달 실행 함수----------------------------------------------------
 	
 	//모달 실행 함수
 	var rowId;
 	var urowId;
 	
-	//제품코드 모달
+	//입/출고 : 제품명 모달
 	function productCodeSearch(c) {
 		  rowId = c;
 		  event.preventDefault();
@@ -593,7 +537,7 @@ let muGrid;
 		  });
 	}
 	
-	//출고 : 완제품 LOT_NO 값 받아오는 모달
+	//출고 : 입고된 완제품 LOT_NO 모달
 	function modProductLotNoSearch(c) {
 		urowId = c;
 		event.preventDefault();
@@ -617,18 +561,19 @@ let muGrid;
 		});
 	}
 	
-	//업체코드 모달
-	function customerCodeSearch(c) {
-		  rowId = c;
-		  event.preventDefault();
-		  $(".modal").remove();
-		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
-		  $.get("searchCustomerCode.do", function(html) {
-		    $(html).appendTo('body').modal();
-		  });
+	//탭 이동
+	function tabgubun(inout) {
+		 var evt = window.event;
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+		    tabcontent[i].style.display = "none";
+		  }
+		  tablinks = document.getElementsByClassName("tablinks");
+		  for (i = 0; i < tablinks.length; i++) {
+		    tablinks[i].className = tablinks[i].className.replace(" active", "");
+		  }
+		  document.getElementById(inout).style.display = "block";
+		  evt.currentTarget.className += " active";
 	}
-});
-
-
 </script>

@@ -80,19 +80,39 @@ public class SalInoutController {
 		return "mes/sal/salInout/salesOrderView.page";
 	}
 	
-	
-	
 	// 입출고목록조회 salesProduct grid
-	@RequestMapping("/ajax/sal/readSalesProduct")
+		@RequestMapping("/ajax/sal/readSalesProduct")
+		@ResponseBody
+		public Map<String, Object> readSalesProduct(@ModelAttribute("searchVO") SalInoutVO searchVO)
+				throws Exception {
+					
+			List<?> list = salInoutService.selectSalProductInOutList(searchVO);
+
+			return comFunc.sendResult(list);
+		}
+		
+	// 입고목록조회 salesProduct grid
+	@RequestMapping("/ajax/sal/readSalInList")
 	@ResponseBody
-	public Map<String, Object> readSalesProduct(@ModelAttribute("searchVO") SalInoutVO searchVO)
+	public Map<String, Object> readSalInList(@ModelAttribute("searchVO") SalInoutVO searchVO)
 			throws Exception {
 				
-		List<?> list = salInoutService.selectSalProductInoutList(searchVO);
-
+		List<?> list = salInoutService.selectSalProductInList(searchVO);
+	
 		return comFunc.sendResult(list);
 	}
-
+	
+	// 출고목록조회 salesProduct grid
+	@RequestMapping("/ajax/sal/readSalOutList")
+	@ResponseBody
+	public Map<String, Object> readSalOutList(@ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+		
+		List<?> list = salInoutService.selectSalProductOutList(searchVO);
+		
+		return comFunc.sendResult(list);
+	}
+	
 	// 입출고조회 페이지
 	@RequestMapping("/sal/salInout/salesProdView.do")
 	public String selectSalesProductList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
@@ -153,10 +173,10 @@ public class SalInoutController {
 	
 // ------------------------------관리--------------------------------
 	
-	// 입출고목록 CRUD
-	@PutMapping("/ajax/modifySalInoutList")
+	// 입고목록 CRUD
+	@PutMapping("/ajax/modifySalInList")
 	@ResponseBody
-	public Map<String, Object> modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {
+	public Map<String, Object> modifySalInList(@RequestBody GridDataVO gd) throws Exception {
 		
 		Map<String, Object> map = new HashMap<>();
 		
@@ -197,6 +217,51 @@ public class SalInoutController {
 		return map;
 		
 	}
+	
+	// 출고목록 CRUD
+		@PutMapping("/ajax/modifySalInoutList")
+		@ResponseBody
+		public Map<String, Object> modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {
+			
+			Map<String, Object> map = new HashMap<>();
+			
+			List<?> updatedList = gd.getUpdatedRows();
+			List<?> createdList = gd.getCreatedRows();
+			List<?> deletedList = gd.getDeletedRows();
+							
+			//C
+			if (createdList.size() != 0) {
+				for (int i = 0; i < createdList.size(); i++) {
+					String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
+					
+					if(gubun.equals("INOUT002")) {
+						((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
+						} else if(gubun.equals("INOUT003")) {
+						((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
+						}			
+					salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
+				}
+			}
+					
+			//U
+			if (updatedList.size() != 0) {
+				for (int i=0; i<updatedList.size(); i++) {
+					salInoutService.updateSalInout((LinkedHashMap) updatedList.get(i));
+				}
+			}
+			
+			//D
+			if (deletedList.size() != 0)
+			{
+				for (int i = 0; i < deletedList.size(); i++) {
+					salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
+				}
+			}
+			
+			map.put("result", true);
+			return map;
+			
+		}
 	
 	@PutMapping("/ajax/modifySalOutList")
 	@ResponseBody

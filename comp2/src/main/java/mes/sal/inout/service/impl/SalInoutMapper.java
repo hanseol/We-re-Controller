@@ -71,11 +71,17 @@ public interface SalInoutMapper {
     public int selectSalInoutListTotCnt(SalInoutVO searchVO);
 
     //완제품입출고목록 조회
-    public List<?> selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
-    public int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
+    public List<?> selectSalProductInOutList(SalInoutVO searchVO) throws Exception;
+    
+    //완제품입고목록 조회
+    public List<?> selectSalProductInList(SalInoutVO searchVO) throws Exception;
+    public int selectSalProductInListTotCnt(SalInoutVO searchVO);
+    
+    //완제품출고목록 조회
+    public List selectSalProductOutList(SalInoutVO searchVO) throws Exception;
     
 	//입고 완제품 목록 조회
-	public List selectSalProductOutList(SalInoutVO searchVO) throws Exception;
+	
     
     //반품목록 조회
     public List selectSalReturnList(SalInoutVO vo) throws Exception;
@@ -112,11 +118,5 @@ public interface SalInoutMapper {
 	
 	//모달 : 제품주문서 목록 조회
 	public List<?> searchOrderList(SalInoutVO searchVO) throws Exception;
-
-
-	
-
-	
-
 
 }

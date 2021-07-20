@@ -22,10 +22,15 @@ public interface SalInoutService {
     //주문 목록 조회 페이지    
     List selectSalInoutList(SalInoutVO searchVO) throws Exception;
     
-
     //입출고 조회 페이지
-    List selectSalProductInoutList(SalInoutVO searchVO) throws Exception;
-    int selectSalProductInoutListTotCnt(SalInoutVO searchVO);
+    List selectSalProductInOutList(SalInoutVO searchVO) throws Exception;
+
+    //입고 조회 페이지
+    List selectSalProductInList(SalInoutVO searchVO) throws Exception;
+    int selectSalProductInListTotCnt(SalInoutVO searchVO);
+    
+    //출고 조회 페이지
+	List selectSalProductOutList(SalInoutVO searchVO) throws Exception;
     
     //입출고 관리 페이지
     String insertSalInout(LinkedHashMap vo) throws Exception;    
@@ -70,6 +75,7 @@ public interface SalInoutService {
 	//모달 : 전표번호 조회(반품페이지)
 	List<?> searchInoutStatement(SalInoutVO searchVO) throws Exception;
 	int searchInoutStatementListTotCnt(SalInoutVO searchVO);
+
 
 	
 

@@ -42,17 +42,18 @@ $(document).ready(function() {
 
 		var chkRowKeys = grid.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
-			code = grid.getValue(chkRowKeys[i],'comProductCode');
 			name = grid.getValue(chkRowKeys[i], 'comProductName');
 			
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
 		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-			$("#productCode").val(name);	
+			$("#productCode").val(name);
 		} else { //아니면 mgrid에 뿌려준다
 			mgrid.blur();
-			mgrid.setValue(rowId, 'comProductCode', code, false);
+			ugrid.blur();
+			mgrid.setValue(rowId, 'comProductCode', name, false);
+			ugrid.setValue(urowId, 'comProductCode', name, false);
 		}
 		 
 		
