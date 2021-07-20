@@ -40,10 +40,10 @@ var gridModal;
 $(document).ready(function() {
 	
 	//확인버튼
-	$(document).on("click","button[id=ok]", function(){
-		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
-		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
-
+	$("#ok").on("click", function(){
+		/* var chkRowKeys = gridModal.getCheckedRows();
+		proPlanGrid.appendRows(chkRowKeys); */
+		 
 		var chkRowKeys = gridModal.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
 			erpOrderCode = gridModal.getValue(chkRowKeys[i],'erpOrderCode');
@@ -67,12 +67,14 @@ $(document).ready(function() {
 			proPlanGrid.setValue(proPlanRowKey, 'erpProductDeadline', erpProductDeadline, false);
 			proPlanGrid.setValue(proPlanRowKey, 'erpCustomerCode', erpCustomerCode, false);
 		}
+		
+		
 	});
 	
 	
 	
 	//검색버튼
-	$(document).on("click", "a[id=findRow]", function() {
+	$("#findRow").on("click", function() {
 				var erpProductCode = $("#erpProductCode").val();
 				var erpProductName = $("#erpProductName").val();
 				
@@ -117,8 +119,7 @@ $(document).ready(function() {
 			name : 'erpOrderQty'
 		}, {
 			header : '납기일자',
-			name : 'erpProductDeadline',
-			hidden : true
+			name : 'erpProductDeadline'
 		}, {
 			header : '고객사코드',
 			name : 'erpCustomerCode',

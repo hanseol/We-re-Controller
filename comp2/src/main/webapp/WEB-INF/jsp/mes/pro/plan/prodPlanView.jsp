@@ -37,13 +37,18 @@
 			<div class="row">
 				<form action="">
 					<div class="col-md-6">
-						* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
-							~ <input type="date" id="endDate" name="endDate"> 
-							<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
-							<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
-							<br/><br/>
-						* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode" readonly> <br/><br/>
-						* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode" readonly>
+						* 일자 
+						&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
+						<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
+						 &nbsp;&nbsp;&nbsp;
+						<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate"> <br/><br/>
+						* 제품 검색
+						<input type="hidden" id="erpProductCode" name="erpProductCode" readonly>
+						<input type="text" id="erpProductName" name="erpProductName" readonly> <br/><br/>
+						* 고객 검색 
+						<input type="hidden" id="erpCustomerCode" name="erpCustomerCode" readonly>
+						<input type="text" id="erpCustomerName" name="erpCustomerName" readonly> <br/><br/>
 						
 						<!-- 제품 모달창 -->
 						<a id="showModal1" href="${pageContext.request.contextPath}/pro/plan/ProdCode.do" rel="modal:open"></a>
@@ -185,10 +190,6 @@
 				header : '작업착수일',
 				name : 'proWorkDate',
 				align: 'center'
-			} , {
-				header : '작업순서',
-				name : 'proPlanSeq',
-				align: 'center'
 			}, {
 				header : '지시코드',
 				name : 'proOrderDetailCode',
@@ -198,12 +199,12 @@
 		
 		
 		// M 제품 인풋 한 번 클릭 시 이벤트
-		$("#erpProductCode").on("click", ev => {
+		$("#erpProductName").on("click", ev => {
 				$("#showModal1").click();
 		});
 		
 		// M 고객 인풋 한 번 클릭 시 이벤트
-		$("#erpCustomerCode").on("click", ev => {			
+		$("#erpCustomerName").on("click", ev => {			
 				$("#showModal2").click();
 		});
 		

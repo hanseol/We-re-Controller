@@ -80,12 +80,16 @@ public interface ProProcessService {
     //생산 공정 시작 시간 & 공정 작업 상태 업데이트
     int updateStartTime(ProProcessVO vo) throws Exception;
 
-    String selectProdName(ProProcessVO vo);
+    List<?> selectProdName(ProProcessVO vo);
 
 	List<?> selectProcLot(ProProcessVO searchVO);
 
 	List<?> selectfinishOrder(ProProcessVO searchVO);
 	
 	List<Map<String, Object>> procMatrExcel(ProProcessVO vo);
+
+	List<String> selectMacCode(ProProcessVO vo);
+
+	String selectLineNo(ProProcessVO vo);
     
 }

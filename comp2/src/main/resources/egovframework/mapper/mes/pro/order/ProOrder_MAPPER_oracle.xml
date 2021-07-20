@@ -227,14 +227,12 @@
 			     , pd.erp_order_code
 			     , TO_CHAR(pd.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
 			     , pd.erp_order_qty
-			     , m.mac_hour_qty
-			     , (m.mac_hour_qty*24) as pro_order_day_qty
+          		 , (SELECT mac_hour_qty FROM mac WHERE mac.com_product_code =  pd.erp_product_code and rownum = 1) as mac_hour_qty
+           		 , (((SELECT mac_hour_qty FROM mac WHERE mac.com_product_code =  pd.erp_product_code and rownum = 1))*24) as pro_order_day_qty
 			     , pd.pro_plan_qty
 			     , pd.erp_customer_code
 		FROM 	  pro_plan_detail pd
-		   		, mac m 
-		WHERE 	  pd.erp_product_code = m.com_product_code
-		  AND     pd.pro_order_detail_code IS NULL
+		WHERE     pd.pro_order_detail_code IS NULL
 			<if test="erpProductCode != null and erpProductCode != ''"> AND
 				pd.erp_product_code LIKE '%' || #{erpProductCode} || '%'
 			</if>
@@ -248,14 +246,14 @@
 	<select id="selectOrderForm" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT     od.erp_product_code
+						SELECT  od.erp_product_code
 						         , od.erp_product_name
 						         , om.pro_order_gubun
 						         , p.erp_order_code
 						         , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
 						         , p.pro_plan_qty
 						         , od.pro_order_qty
-						         , m.mac_hour_qty
+                     			 , (SELECT mac_hour_qty FROM mac WHERE mac.com_product_code = od.erp_product_code and rownum = 1) as mac_hour_qty
 						         , od.pro_order_day_qty
 						         , od.pro_order_expect_qty
 						         , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
@@ -268,10 +266,10 @@
 						FROM     pro_order_detail od
 						       , pro_order om
 						       , pro_plan_detail p
-						       , mac m     
 						WHERE  od.pro_order_code = om.pro_order_code
 						  AND  od.pro_plan_detail_code = p.pro_plan_detail_code
-						  AND  od.erp_product_code = m.com_product_code							  
+			              AND  om.pro_order_date LIKE '%' || TO_DATE(#{proOrderDate}) || '%'
+			              AND 	od.pro_order_detail_code LIKE '%' || #{proOrderDetailCode} || '%'				  
 							<if test="proOrderDate != null and proOrderDate != ''"> AND
 								om.pro_order_date LIKE '%' || TO_DATE(#{proOrderDate}) || '%'
 							</if>
@@ -307,6 +305,11 @@
 							         , TO_CHAR(om.pro_order_date, 'yyyy/MM/dd') as pro_order_date
 							         , cd.com_code_detail_name
 							         , CASE od.pro_process_status WHEN 6 THEN '생산완료'
+							         							  WHEN 5 THEN '생산중'
+							         							  WHEN 4 THEN '생산중'
+							         							  WHEN 3 THEN '생산중'
+							         							  WHEN 2 THEN '생산중'
+							         							  WHEN 1 THEN '생산중'
                                       							  ELSE ' ' END AS pro_process_status
 							FROM pro_order_detail od
 							   , pro_order om

@@ -25,12 +25,12 @@
 							<option value="${procg.comProcessCode}">${procg.comProcessName}</option>
 							</c:forEach>
 						</select></td>
-					<th>지시번호</th>
+					<th>지시번호 </th> 
+				
 					<td>
 						<select name="proOrderDetailCode" id="proOrderDetailCode">
 							<option value="">--------선택--------</option>
-							
-						</select>
+						</select> 
 					</td>
 					<th>제품명</th>
 					<td><input id="comProductName" name="comProductName"></td>
@@ -39,7 +39,10 @@
 					<th>라인번호</th>
 					<td><input id="macLineNo" name="macLineNo"></td>
 					<th>설비코드</th>
-					<td><input id="macCode" name="macCode"></td>
+					<td>
+						<select name="macCode" id="macCode">
+							<option value="">--------선택--------</option>
+						</select>
 					<th>작업자</th>
 					<td><input id="erpEmployeeId" name="erpEmployeeId"></td>
 				</tr>
@@ -48,7 +51,7 @@
 					<td><input id="proProcessStartTime" name="proProcessStartTime">
 						<button type="button" id="startBtn" class="btn btn-danger" disabled>시작</button>
 					<th>작업량</th>
-					<td><input id="proProcessQuantity" name="proProcessQuantity"></td>
+					<td><input id="proProcessQuantity" name="proProcessQuantity" placeholder=""></td>
 					</td><th>작업종료시간</th>
 					<td><input id="proProcessEndTime" name="proProcessEndTime">
 						<button type="button" id="endBtn" class="btn btn-success" disabled>종료</button>
@@ -85,6 +88,7 @@
 			$("#proProcessQuantity").val("");
 			
 			var comProcGubunCode = $("#comProcessCode option:selected").val();
+			// 생산지시코드 리스트 가져오는 아작스
 			$.ajax({
 				url:'${pageContext.request.contextPath}/ajax/pro/getProOrderDetailCode',
 				type: 'GET',
@@ -107,18 +111,43 @@
 				}
 			});
 			
+			// 공정별 설비 리스트 가져오는 아작스
+			$.ajax({
+				url:'${pageContext.request.contextPath}/ajax/pro/getMacCode',
+				type: 'GET',
+				contentType: "application/json",
+				dataType : "json",
+				data:{"comProcessCode": comProcGubunCode},
+				success: function(result){
+					
+					console.log(result);
+					
+					//기존 셀렉트박스 값 비우기
+					$("select[name='macCode']").empty(); 
+					$("select[name='macCode']").append('<option value="">--------선택--------</option>');
+					//결과를 select box option으로 만들기.
+					var data = result.list;
+					$.each(data,function(index,item){
+						var rdata = "<option value='"+item+"'>"+ item + "</option>";
+						$("select[name='macCode']").append(rdata);
+					});
+				}
+			});
+			
+			
 		});
 		
-		//2. 해당공정에서 작업해야 할 지시 코드를 선택한다.
+		//2-1) 해당공정에서 작업해야 할 지시 코드를 선택한다.
 		$("#proOrderDetailCode").on("change", function() {
-			
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
 			var comProcessCode = $("#comProcessCode option:selected").val();
+			var proOrderQty = $("#proOrderQty option:selected").val();
 			var erpProductName;
 			
 			var readParams = {
 					'proOrderDetailCode' : proOrderDetailCode,
-					'comProcessCode' : comProcessCode
+					'comProces3sCode' : comProcessCode,
+					'proOrderQty' : proOrderQty
 			};
 			//해당 지시에 필요한 자재정보를 가지고 온다.
 			proOrderGrid.readData(1, readParams, true);
@@ -129,15 +158,34 @@
 				dataType : 'json',
 				success : function(result){
 				
-					console.log(result.erpProductName);
-					$("#comProductName").val(result.erpProductName);
+					console.log(result.list);
+					
+					$("#comProductName").val(result.list[0].erpProductName);
+					$('#proProcessQuantity').attr('placeholder', '주문량: ' + result.list[0].proOrderQty );
 				}
 			});
-			
 			//시작버튼 활성화
 			$("#startBtn").prop("disabled",false);
 			
 		});
+	
+		 //2-2) 해당 공정에서 사용하는 설비코드를 선택하여 라인번호 가져오기
+		 $("#macCode").on("change", function() {
+			 var macCode = $("#macCode option:selected").val();
+			 
+			 $.ajax({
+				 url : '${pageContext.request.contextPath}/ajax/pro/readLineNo',
+				 data : { 'macCode' : macCode },
+				 dataType : 'json',
+				 success : function(result){
+					 console.log(result.macLineNo);
+					 $("#macLineNo").val(result.macLineNo);
+				 }
+			 })
+		 });
+		 
+		 // 2-3) 작업자 가져오기
+		 $("#erpEmployeeId").val("${loginVO.id}");
 		
 		
 		//3. 작업을 시작한다.

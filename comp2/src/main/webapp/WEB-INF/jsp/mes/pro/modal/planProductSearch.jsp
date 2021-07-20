@@ -41,7 +41,8 @@ $(document).ready(function() {
 	
 	//확인버튼
 	$("#ok").on("click", function(){
-
+		/* var chkRowKeys = gridModal.getCheckedRows();
+		proOrdergrid.appendRows(chkRowKeys); */
 		var chkRowKeys = gridModal.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
 			proPlanDetailCode = gridModal.getValue(chkRowKeys[i],'proPlanDetailCode');
@@ -74,7 +75,7 @@ $(document).ready(function() {
 			proOrdergrid.setValue(proOrderRowKey, 'proOrderDayQty', proOrderDayQty, false);
 			proOrdergrid.setValue(proOrderRowKey, 'proPlanQty', proPlanQty, false);
 			proOrdergrid.setValue(proOrderRowKey, 'erpCustomerCode', erpCustomerCode, false);
-		}
+		} 
 	});
 	
 	

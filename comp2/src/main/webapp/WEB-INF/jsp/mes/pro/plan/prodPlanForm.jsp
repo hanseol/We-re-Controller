@@ -115,7 +115,7 @@
 		//M 삭제버튼 (계획을 삭제)
 		$("#deletePlan").on("click", function() {
 			proPlanGrid.checkAll(true);
-			proPlanGrid.removeCheckedRows(true);
+			proPlanGrid.removeCheckedRows(false);
 			proPlanGrid.request('modifyData');
 		})
 		    
@@ -127,7 +127,7 @@
 		
 		//D 추가 버튼
 		$("#appendRow").on("click", function() {
-			var rowData = {
+			    var rowData = {
 				erpCustomerCode : "",
 				erpProductCode : "",
 				erpProductName : "",
@@ -141,6 +141,7 @@
 			} ;
 			proPlanGrid.appendRow(rowData, { at : 0, focus : true });
 			proPlanGrid.enable();
+			/* $('#showModal').click(); */ 
 		});
 		
 		
@@ -214,15 +215,16 @@
 					type : 'datePicker',
 					options : {
 						format : 'YYYY/MM/dd',
-						language: 'ko'
+						language: 'ko',
+						selectableRanges : [[new Date(), new Date(2099, 1, 1)]]
 					} 
 				}
-			}, {
+			},/*  {
 				header : '작업순서',
 				name : 'proPlanSeq',
 				align: 'center',
 				editor : 'text'
-			}, {
+			},  */{
 				header : '고객사코드',
 				name : 'erpCustomerCode',
 				align: 'center',

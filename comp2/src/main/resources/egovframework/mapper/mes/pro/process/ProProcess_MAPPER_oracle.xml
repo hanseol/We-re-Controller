@@ -216,6 +216,22 @@ SELECT * FROM (
 		</if>
 	</select>
 	
+	
+	<!-- 공정을 선택하여 공정코드로 설비 리스트를 가져오기 -->
+	<select id="selectMacCode" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
+		SELECT 	mac_code
+		FROM 	mac
+		WHERE 	com_process_code = #{comProcessCode}      	
+	</select>
+	
+	<!-- 설비리스트를 선택하여 라인번호 가져오기 -->
+	<select id="selectLineNo" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
+		SELECT	mac_line_no
+		FROM 	mac
+		WHERE 	mac_code = #{macCode}
+	</select>
+	
+	
 	<!-- 선택된 지시에 필요한 자재 LOT 정보를 자재 종류별로 보여준다. -->
 	<select id="selectMatrLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="mes.pro.proc.service.ProProcessVO">
 		SELECT  m.com_material_code
@@ -232,8 +248,8 @@ SELECT * FROM (
 	</select>
 	
 	<!-- 지시코드를 선택했을 때 제품명 가져오기 -->
-	<select id="selectProdName" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
-		SELECT 	erp_product_name
+	<select id="selectProdName" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT 	erp_product_name, pro_order_qty
 		FROM 	pro_order_detail
 		WHERE 	pro_order_detail_code = #{proOrderDetailCode}
 	</select>
@@ -322,7 +338,7 @@ SELECT * FROM (
 				UPDATE PRO_PROCESS
 				SET	PRO_PROCESS_END_TIME=#{proProcessEndTime},
 					PRO_PROCESS_QUANTITY=#{proProcessQuantity},
-					ERP_PRODUCT_NAME = #{erpProductName}
+					ERP_PRODUCT_NAME = #{comProductName}
 				<if test="comProcessCode=='PROCG003'">,
 					PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 				</if>

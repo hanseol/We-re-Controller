@@ -144,7 +144,7 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public String selectProdName(ProProcessVO vo) {
+	public List<?> selectProdName(ProProcessVO vo) {
 		return proProcessDAO.selectProdName(vo);
 	}
 
@@ -161,6 +161,16 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public List<Map<String, Object>> procMatrExcel(ProProcessVO vo) {
 		return proProcessDAO.procMatrExcel(vo);
+	}
+
+	@Override
+	public List<String> selectMacCode(ProProcessVO vo) {
+		return proProcessDAO.selectMacCode(vo);
+	}
+
+	@Override
+	public String selectLineNo(ProProcessVO vo) {
+		return proProcessDAO.selectLineNo(vo);
 	}
 
     

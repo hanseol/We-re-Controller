@@ -165,8 +165,6 @@
 		});
 
 
-		
-		
 	// 그리드 테마
 	tui.Grid.applyTheme('clean', 
 		{

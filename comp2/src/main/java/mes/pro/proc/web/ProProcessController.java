@@ -107,6 +107,32 @@ public class ProProcessController {
   		return map;
   	}
   	
+  	//공정명이 선택되면 해당 공정의 설비리스트를 조회
+  	@RequestMapping("ajax/pro/getMacCode")
+  	@ResponseBody
+  	public Map<String, Object> getMacCode(@ModelAttribute ProProcessVO vo) {
+  		
+  		List<String> MacCodeList = service.selectMacCode(vo);
+  		
+  		Map<String, Object> map = new HashMap<String, Object>();
+  		map.put("list", MacCodeList);
+  		
+  		return map;
+  	}
+  	
+  	//설비코드가 선택이 되면 라인번호 알아오기
+  	@RequestMapping("ajax/pro/readLineNo")
+  	@ResponseBody
+  	public Map<String, Object> readLinNo(@ModelAttribute ProProcessVO vo) {
+		String macLineNo = service.selectLineNo(vo);
+		System.out.println(macLineNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("macLineNo", macLineNo);
+		
+  		return map;
+  	}
+  	
+  	
   	//작업지시가 선택되면 해당 작업에 필요한 자재 정보를 전달.
   	@RequestMapping("ajax/pro/readMaterial")
   	@ResponseBody
@@ -122,12 +148,11 @@ public class ProProcessController {
   	@ResponseBody
   	public Map<String, Object> readProdName(@ModelAttribute ProProcessVO vo) {
   		
-  		
-  		String erpProductName = service.selectProdName(vo);
-  		System.out.println(erpProductName);
+  		List<?> list = service.selectProdName(vo);
+  		System.out.println(list);
   		Map<String, Object> map = new HashMap<String, Object>();
   		
-  		map.put("erpProductName", erpProductName );
+  		map.put("list", list );
   		
   		return map;
   	}

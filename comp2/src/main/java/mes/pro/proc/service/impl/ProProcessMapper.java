@@ -83,11 +83,15 @@ public interface ProProcessMapper {
     //생산 공정 상태 업데이트
     public int updateStartTime(ProProcessVO vo) throws Exception;
 
-	public String selectProdName(ProProcessVO vo);
+	public List<?> selectProdName(ProProcessVO vo);
 
 	public List<?> selectProcLot(ProProcessVO searchVO);
 
 	public List<?> selectfinishOrder(ProProcessVO searchVO);
 
 	public List<Map<String, Object>> procMatrExcel(ProProcessVO vo);
+
+	public List<String> selectMacCode(ProProcessVO vo);
+
+	public String selectLineNo(ProProcessVO vo);
 }

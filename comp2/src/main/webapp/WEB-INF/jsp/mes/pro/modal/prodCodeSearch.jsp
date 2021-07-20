@@ -45,10 +45,12 @@ $(document).ready(function() {
 		var chkRowKeys = gridModal.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
 			comProductCode = gridModal.getValue(chkRowKeys[i],'comProductCode');
+			comProductName = gridModal.getValue(chkRowKeys[i],'comProductName');
 			
 			console.log(comProductCode);
 			
 			$("#erpProductCode").val(comProductCode);
+			$("#erpProductName").val(comProductName);
 		}
 	});
 	

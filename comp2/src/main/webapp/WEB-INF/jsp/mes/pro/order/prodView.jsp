@@ -41,11 +41,14 @@
 					* 일자   &nbsp;&nbsp;&nbsp;<input type="date" id="startDate" name="startDate"> 
 						~ <input type="date" id="endDate" name="endDate"> 
 						<input type="radio" id="gubun1" name="gubun" value="1" checked> 작업일자
-						<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
-						<br/><br/>
-					* 제품 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="erpProductCode" name="erpProductCode" readonly> <br/><br/>
-					* 고객사 코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode" readonly>
-					
+						<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자 <br/><br/>
+					* 제품 검색
+					<input type="hidden" id="erpProductCode" name="erpProductCode" readonly>
+					<input type="text" id="erpProductName" name="erpProductName" readonly> <br/><br/>
+					* 고객 검색 
+					<input type="hidden" id="erpCustomerCode" name="erpCustomerCode" readonly>
+					<input type="text" id="erpCustomerName" name="erpCustomerName" readonly> <br/><br/>
+						
 						<!-- 제품 모달창 -->
 						<a id="showModal1" href="${pageContext.request.contextPath}/pro/plan/ProdCode.do" rel="modal:open"></a>
 						<!-- 고객 모달창 -->
@@ -198,18 +201,17 @@
 				align: 'center'
 			} ]
 		});
-	
-	grid.on('response', ev => {
-		  const {response} = ev.xhr;
-		  const responseObj = JSON.parse(response);
 
-		  console.log('result : ', responseObj.result);
-		  console.log('data : ', responseObj.data);
-		});
-	
-	grid.on('check', (ev) => {
-		  alert(`check: ${ev.rowKey}`);
+	// M 제품 인풋 한 번 클릭 시 이벤트
+	$("#erpProductName").on("click", ev => {
+			$("#showModal1").click();
 	});
+	
+	// M 고객 인풋 한 번 클릭 시 이벤트
+	$("#erpCustomerName").on("click", ev => {			
+			$("#showModal2").click();
+	});
+	
 	
 
 	// 그리드 테마
@@ -229,20 +231,20 @@
 					background: "#d5dae1"
 				}
 			}
+	});	
+	
+	
+	grid.on('response', ev => {
+		  const {response} = ev.xhr;
+		  const responseObj = JSON.parse(response);
+
+		  console.log('result : ', responseObj.result);
+		  console.log('data : ', responseObj.data);
+		});
+	
+	grid.on('check', (ev) => {
+		  alert(`check: ${ev.rowKey}`);
 	});
-	
-	
-	// M 제품 인풋 한 번 클릭 시 이벤트
-	$("#erpProductCode").on("click", ev => {
-			$("#showModal1").click();
-	});
-	
-	// M 고객 인풋 한 번 클릭 시 이벤트
-	$("#erpCustomerCode").on("click", ev => {			
-			$("#showModal2").click();
-	});
-	
-	
 	
 	
 }); //end of document ready

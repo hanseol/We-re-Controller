@@ -50,7 +50,9 @@ public class ProProcessVO extends SearchVO{
     
     private String comProductName;
     private String proWorkDate;
-
+    
+    private String proOrderQty;
+    
     
     
 }
