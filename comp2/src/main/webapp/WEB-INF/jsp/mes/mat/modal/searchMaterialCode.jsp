@@ -43,7 +43,7 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function(){
 
 		var chkRowKeys = matMatrModalGrid.getCheckedRowKeys();
 		
@@ -54,10 +54,16 @@ $(document).ready(function() {
 			comMaterialUnit = matMatrModalGrid.getValue(chkRowKeys[i],'comMaterialUnit');
 			
 			//view 페이지에 뿌려줄 부분 아이디값
-			if(materialRowId == -1){
+			
+			if(materialRowId == -1){//검사 그리드1 인풋전달
 				$("#materialCode").val(comMaterialCode);
-			} else if(materialRowId == -2){
+
+			} else if(materialRowId == -2){//검사 그리드2 인풋전달
 				$("#materialCodeTwo").val(comMaterialCode);
+			} else if(materialRowId == -3){//자재입고 인풋전달
+				$("#inMaterialCode").val(comMaterialCode);
+			} else if(materialRowId == -4){//자재출고 인풋전달
+				$("#outMaterialCode").val(comMaterialCode);
 			} else {
 				materialGrid.blur();
 				console.log(materialRowId);

@@ -10,47 +10,44 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-										SELECT  m.mat_inout_statement,
-										        TO_CHAR(m.mat_inout_date, 'YY/MM/DD') as mat_inout_date,
-										        q.erp_vendor_code,
-										        d.com_code_detail_name,
-										        m.com_material_code,
-                           						c.com_material_name,
-                           						c.com_material_size,
-										        c.com_material_unit,
-                           						m.mat_lot_no,
-										        m.mat_inout_quantity,
-										        m.mat_inout_unit_price,
-										        m.mat_inout_price
-                            
-										FROM    mat_inout m,
-										        qua_material_chk q,
-										        com_material c,
-										        com_code_detail d
-                            
-										WHERE   m.mat_inout_gubun = 'INOUT002'
-					                    AND     m.com_material_code = c.com_material_code
-					                    AND     m.com_material_code = q.com_material_code
-					                    AND     q.erp_vendor_code = d.com_code_detail_id
-					                    AND     q.qua_material_statement = m.qua_material_statement
+										SELECT  mi.qua_material_statement
+										        ,COUNT(mi.mat_inout_quantity) as mat_inout_quantity
+										        ,TO_CHAR(mi.mat_inout_date,'YY/MM/DD') as mat_inout_date
+        										,mi.com_material_code
+										        ,cm.com_material_name
+										        ,mi.mat_inout_unit_price
+										        ,SUM(mi.mat_inout_price) as mat_inout_price
+										        ,cm.com_material_unit
+        										,cm.com_material_vendor_code
+										        ,cd.com_code_detail_name
+										FROM    mat_inout mi, com_material cm, com_code_detail cd
+										WHERE 	mi.mat_inout_gubun = 'INOUT002'
+								        AND 	mi.com_material_code = cm.com_material_code
+								        AND 	cm.com_material_vendor_code = cd.com_code_detail_id
+
+
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
-							        	m.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
+							        	mi.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
 		                              </if>
 		                              <if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
-							        	q.erp_vendor_code LIKE '%' || #{erpVendorCode} || '%'
+							        	cm.com_material_vendor_code LIKE '%' || #{erpVendorCode} || '%'
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+							        	mi.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
-		                              <if test="matLotNo != null and matLotNo != ''">
-		                              	AND
-							        	m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
-		                              </if>
-									  
-		                              ORDER BY m.mat_inout_date  <![CDATA[ ) a
+									  GROUP BY 	  mi.QUA_MATERIAL_STATEMENT
+									        	, mi.mat_inout_date
+									        	, mi.com_material_code
+									        	, mi.mat_inout_unit_price
+									        	, mi.mat_inout_price
+									        	, cm.com_material_unit
+									        	, cm.com_material_name
+									        	, cm.com_material_vendor_code
+									        	, cd.com_code_detail_name
+		                              ORDER BY mi.qua_material_statement DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -62,43 +59,43 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-										SELECT    m.mat_inout_statement,
-										          m.qua_material_statement,
-										          TO_CHAR(m.mat_inout_date,'YY/MM/DD') as mat_inout_date,
-										          m.com_material_code,
-										          c.com_material_name,
-										          c.com_material_size,
-										          c.com_material_unit,
-										          m.mat_lot_no,
-										          m.mat_inout_quantity,
-										          m.mat_inout_unit_price,
-										          m.mat_inout_price,
-										          m.com_process_code,
-										          d.com_code_detail_name
-										          
-										FROM      mat_inout m,
-										          com_material c,
-										          com_code_detail d,
-										          qua_material_chk q
-										          
-										WHERE     m.com_material_code = c.com_material_code
-								        AND       m.com_process_code = d.com_code_detail_id
-								        AND       m.qua_material_statement = q.qua_material_statement
-								        AND       m.mat_inout_gubun = 'INOUT003'
-								        AND       d.com_code_id = 'MES007'
+										SELECT  mi.qua_material_statement
+										        ,COUNT(mi.mat_inout_quantity) as mat_inout_quantity
+										        ,TO_CHAR(mi.mat_inout_date,'YY/MM/DD') as mat_inout_date
+        										,mi.com_material_code
+										        ,cm.com_material_name
+										        ,mi.mat_inout_unit_price
+										        ,SUM(mi.mat_inout_price) as mat_inout_price
+										        ,cm.com_material_unit
+        										,mi.com_process_code
+										        ,cd.com_code_detail_name
+										FROM    mat_inout mi, com_material cm, com_code_detail cd
+										WHERE 	mi.mat_inout_gubun = 'INOUT003'
+										AND 	mi.com_material_code = cm.com_material_code
+										AND 	mi.com_process_code = cd.com_code_detail_id
+
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
-							        	m.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
+							        	mi.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	q.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+							        	mi.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
-									  <if test="matLotNo != null and matLotNo != ''">
+		                              <if test="comProcessCode != null and comProcessCode != ''">
 		                              	AND
-							        	m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+							        	mi.com_process_code LIKE '%' || #{comProcessCode} || '%'
 		                              </if>
-		                              ORDER BY m.mat_inout_date  <![CDATA[ ) a
+										GROUP BY mi.QUA_MATERIAL_STATEMENT
+										        , mi.mat_inout_date
+										        , mi.com_material_code
+										        , mi.mat_inout_unit_price
+										        , mi.mat_inout_price
+										        , cm.com_material_unit
+										        , cm.com_material_name
+										        , mi.com_process_code
+										        , cd.com_code_detail_name
+		                              ORDER BY mi.qua_material_statement DESC  <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>

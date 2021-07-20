@@ -131,22 +131,30 @@ $(document).ready(function () {
 	        rowHeight: 30,
 			columns : [ {
 				header : '자재코드',
-				name : 'comMaterialCode'
+				name : 'comMaterialCode',
+				align : 'center'
 			}, {
 				header : '자재명',
-				name : 'comMaterialName'
+				name : 'comMaterialName',
+				align : 'center'
 			}, {
 				header : '규격',
-				name : 'comMaterialSize'
+				name : 'comMaterialSize',
+				align : 'center'
 			}, {
 				header : '관리단위',
-				name : 'comMaterialUnit'
+				name : 'comMaterialUnit',
+				align : 'center'
 			}, {
 				header : '현재고',
-				name : 'materialStock'
+				name : 'materialStock',
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '안전재고',
-				name : 'comMaterialSafetyStock'
+				name : 'comMaterialSafetyStock',
+				align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}]
 		});
 //모달 그리드 초기화 ----------------------------------
