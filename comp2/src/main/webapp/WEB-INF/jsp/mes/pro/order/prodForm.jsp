@@ -25,18 +25,17 @@
          <div class="row">
             <form>
                <div class="col-md-6">
-                  * 지시일자 <input type="date" id="proOrderDate" name="proOrderDate"> <br/><br/>
-                  * 작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode" readonly>
+                  * 지시일자 <input type="date" id="proOrderDate" name="proOrderDate">
                   <!-- 지시검색모달 -->
                   <a href="${pageContext.request.contextPath}/pro/order/proOrderSearch.do" rel="modal:open">                  
-                          <i class="fa fa-search"></i>
-                       </a>
-                  
+                     <i class="fa fa-search"></i>
+                  </a> 
+					
                   <!-- 모달창 -->
                   <a id="showModal" href="${pageContext.request.contextPath}/pro/order/planProductSearch.do" rel="modal:open"></a>
-               
                </div>
-               <div class="col-md-6" align="right">   
+               <div class="col-md-6" align="right">
+               	      작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode" readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-success" id="findRow">조회</button>
                   <button type="reset" class="btn btn-danger" id="reset">새자료</button>
                   <button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button>
@@ -90,7 +89,7 @@
                <div>
                   자재코드 <input type="text" id="comMaterialCode" name="comMaterialCode" readonly>
                   자재명   <input type="text" id="comMaterialName" name="comMaterialName" readonly>
-                  
+        *생산 가능한 수량: <input type="text" id="total" name="total" style="border:0; width:80px; " readonly>          
                   <button type="button" id="modifyLot">저장</button>
                </div>
                <div class="panel-body">
@@ -157,40 +156,40 @@ var proOrderRowKey;
       $("#modifyRow").on("click", function() {
          
          var chkRows = proOrdergrid.getCheckedRowKeys();
-         
-         var proOrderDate = $("#proOrderDate").val();
-         var proOrderCode = $("proOrderCode").val();
-         var proOrderGubun = proOrdergrid.getValue(chkRows[0], 'proOrderGubun');
-         var proOrderQty = proOrdergrid.getValue(chkRows[0], 'proOrderQty');
-         var proOrderExpectQty = proOrdergrid.getValue(chkRows[0], 'proOrderExpectQty');
-         var proWorkDate = proOrdergrid.getValue(chkRows[0], 'proWorkDate');
-         var proOrderSeq = proOrdergrid.getValue(chkRows[0], 'proOrderSeq');
-         var proOrderDetailCode = proOrdergrid.getValue(chkRows[0], 'proOrderDetailCode');
-         
-         console.log(proOrderDate);
-         console.log(proOrderCode);
-         console.log(proOrderGubun);
-         console.log(proOrderQty);
-         console.log(proOrderExpectQty);
-         console.log(proWorkDate);
-         console.log(proOrderSeq);
-         console.log(proOrderDetailCode);
-         
-         var params = {
-               'proOrderDate' : proOrderDate,
-               'proOrderGubun' : proOrderGubun,
-               'proOrderQty' : proOrderQty,
-               'proOrderCode' : proOrderCode,
-               'proOrderExpectQty' : proOrderExpectQty,
-               'proWorkDate' : proWorkDate,
-               'proOrderSeq' : proOrderSeq,
-               'proOrderDetailCode' : proOrderDetailCode
+         for(var i=0; i<chkRows.length; i++) {
+	         var proOrderDate = $("#proOrderDate").val();
+	         var proOrderCode = $("#proOrderCode").val();
+	         var proOrderGubun = proOrdergrid.getValue(chkRows[0], 'proOrderGubun');
+	         var proOrderQty = proOrdergrid.getValue(chkRows[0], 'proOrderQty');
+	         var proOrderExpectQty = proOrdergrid.getValue(chkRows[0], 'proOrderExpectQty');
+	         var proWorkDate = proOrdergrid.getValue(chkRows[0], 'proWorkDate');
+	         var proOrderSeq = proOrdergrid.getValue(chkRows[0], 'proOrderSeq');
+	         var proOrderDetailCode = proOrdergrid.getValue(chkRows[0], 'proOrderDetailCode');
+	         
+	         console.log(proOrderDate);
+	         console.log(proOrderCode);
+	         console.log(proOrderGubun);
+	         console.log(proOrderQty);
+	         console.log(proOrderExpectQty);
+	         console.log(proWorkDate);
+	         console.log(proOrderSeq);
+	         console.log(proOrderDetailCode);
+	         
+	         var params = {
+	               'proOrderDate' : proOrderDate,
+	               'proOrderGubun' : proOrderGubun,
+	               'proOrderQty' : proOrderQty,
+	               'proOrderCode' : proOrderCode,
+	               'proOrderExpectQty' : proOrderExpectQty,
+	               'proWorkDate' : proWorkDate,
+	               'proOrderSeq' : proOrderSeq,
+	               'proOrderDetailCode' : proOrderDetailCode
+	         }
+	         
+	         proOrdergrid.setRequestParams(params);
+	         proOrdergrid.finishEditing('rowKey', 'columnName');
+	         proOrdergrid.request('modifyData');
          }
-         
-         proOrdergrid.setRequestParams(params);
-         proOrdergrid.finishEditing('rowKey', 'columnName');
-         proOrdergrid.request('modifyData');
-         
       });
       
       // M 리셋버튼  
@@ -297,7 +296,6 @@ var proOrderRowKey;
                     ]
                   }
                 }
-         
          }, {
             header : '주문번호',
             name : 'erpOrderCode',
@@ -524,7 +522,6 @@ var proOrderRowKey;
          var comMaterialCode = matInfogrid.getFocusedCell().value;
          var comMaterialName = matInfogrid.getValue(ev.rowKey, 'comMaterialName');
          
-
          var readParams = {
                'comMaterialCode' : comMaterialCode
          } 
@@ -535,6 +532,14 @@ var proOrderRowKey;
       }
    });
    
+   
+   // 3번 그리드의 체크 갯수*1900(한 자재로트가 만들수 있는 제품 수)
+   matLotgrid.on("check", function() {
+	  var chk = matLotgrid.getCheckedRows().length
+	  console.log(chk);
+	  $("#total").val(chk*1900);
+   });
+
    
    
    // 그리드 테마    
