@@ -189,7 +189,10 @@ $(document).ready(function() {
 			name : 'macConstructorPhone',
 			editor : 'text',
 			align : 'center'
-		}]
+		}],
+		columnOptions: {
+	        resizable: true
+	    }
 	});
 	
 // 그리드 테마

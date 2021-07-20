@@ -5,10 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendor/linearicons/style.css">
+
 <style>
 	#wrapper #sidebar-nav, #wrapper .main {
     	padding-top: 100px;
@@ -43,10 +40,10 @@
 <script>
 	$(document).ready(function(){
     	 $.ajax({
+    		async : false,
     		url : "${pageContext.request.contextPath}/mes/getMenuLeft.do",
     		contentType : "application/json",
     		success : function(result){
-    			console.log(result);
     			var arr = result.menuList;
     			$.each(arr, function(index, item){
     				if(item.chkURL == "dir"){

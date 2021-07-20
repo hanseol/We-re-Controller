@@ -73,7 +73,6 @@ public class HomeController {
 		
 		
 		List<?> list = menuManageService.selectMainMenuLeft(menuManageVO);
-		System.out.println("=============="+list.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("menuList",list);
 		
@@ -83,9 +82,9 @@ public class HomeController {
 	@RequestMapping("/home.do")
 	public String setContent(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
-		
+		//설비 점검일 알림 창
 		List<MacDateResultVO> list = macService.selectLeftDate();
-		request.setAttribute("macLeftDate", list);
+		request.getSession().setAttribute("macLeftDate", list);
 		
 		return "tiles/home.page";
 	}
