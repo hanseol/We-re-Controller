@@ -9,7 +9,7 @@ public interface MatLotService {
 	
 	
 	//등록
-	Map<String, Object> insertMatLot(LinkedHashMap vo) throws Exception;
+	void insertMatLot(LinkedHashMap vo) throws Exception;
     
     //수정
     void updateMatLot(LinkedHashMap vo) throws Exception;

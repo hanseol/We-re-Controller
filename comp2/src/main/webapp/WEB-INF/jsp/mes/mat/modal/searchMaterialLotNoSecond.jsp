@@ -61,9 +61,9 @@ $(document).ready(function() {
 				materialGrid.setValue(matrLotRowIdSecond, 'comMaterialCode', comMaterialCode, false);
 				materialGrid.setValue(matrLotRowIdSecond, 'comMaterialName', comMaterialName, false);
 				
-				if (materialGrid.getValue(chkRowKeys[i], 'matInoutGubun') == 'INOUT002') { //입고이면
-					materialGrid.setValue(matrLotRowIdSecond, 'matInoutQuantity', matInoutQuantity, false); //수량
-				} else if(materialGrid.getValue(chkRowKeys[i], 'matMatchInout') != null) { //정산입출고이면
+				if (matLotModalGrid.getValue(chkRowKeys[i], 'matInoutGubun') == 'INOUT002') { //입고이면
+					materialGrid.setValue(matrLotRowIdSecond, 'matPastQuantity', matInoutQuantity, false); //수량
+				} else if(materialGrid.getValue(matrLotRowIdSecond, 'matMatchInout') != null) { //정산입출고이면
 					materialGrid.setValue(matrLotRowIdSecond, 'matPastQuantity', matInoutQuantity, false); //기존수량
 				}
 				
@@ -122,6 +122,10 @@ $(document).ready(function() {
 		}, {
 			header : '수량',
 			name : 'matInoutQuantity'
+		}, {
+			header : '구분',
+			name : 'matInoutQuantity',
+			hidden : true
 		}]
 	});
 	

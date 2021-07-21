@@ -1,45 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<style>
-	.my-panel {
-		text-align: right;
-		border-top: 1px solid gray;
-		padding: 10px;
-		margin-bottom: 10px;
-		background-color: white;
-	}
-
-	.modal {
-		-webkit-border-radius: 0px;
-		border-radius: 0px;
-		overflow: visible;
-		text-align: center;
-		max-width: 900px;
-		width: 900px;
-		/* height: 600px;
-max-height: 600px; */
-	}
-
-	.blocker {
-		z-index: 1200;
-	}
-</style>
 
 <div class="content-fluid">
 	<div>
-		<h2>자재LOT재고 조정</h2>
+		<h2>자재 LOT 정산</h2>
 	</div>
 </div>
 
-<!-- 관리, 지시 탭 이동 -->
-<div id="tabs">
-	<ul class="nav nav-tabs" role="tablist">
-		<li class="active"><a onclick='location.href="matrLotForm.do"' aria-controls="tab1" role="tab"
-				data-toggle="tab">관리</a></li>
-		<li class=""><a onclick='location.href="matrLotView.do"' aria-controls="tab2" role="tab"
-				data-toggle="tab">조회</a></li>
-	</ul>
-</div>
+
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -214,16 +182,6 @@ let matLotGrid;
 	        bodyHeight :400,
 	        rowHeight: 30,
 			columns: [{
-				header : '입/출고일자',
-				name : 'matMatchDate',
-				editor : {
-					type : 'datePicker',
-					options : {
-						format : 'YYYY/MM/dd',
-						language: 'ko'
-					} 
-				}
-			}, {
 				header: '정산입출고구분',
 				name: 'matMatchInout',
 				editor : {
@@ -376,7 +334,7 @@ let matLotGrid;
 		    $(html).appendTo('body').modal();
 		  });
 	}
-	// 정산테이블에 있는 데이터는 제외한 자재LOT_NO
+	//더블클릭 모달 자재LOT_NO
 	var matrLotRowIdSecond;
 	function matLotNoSearchSecond(c) {
 		matrLotRowIdSecond = c;

@@ -21,8 +21,7 @@
 										          ELSE (i.mat_inout_quantity - m.mat_match_qty)
 										          END AS final_qty,
 										          m.mat_match_qty,
-										          m.mat_past_quantity,
-										          TO_CHAR(m.mat_write_date, 'YY/MM/DD') as mat_write_date
+										          m.mat_past_quantity
 										FROM      com_material c,
 										          mat_inout i,
 										          mat_match m
@@ -59,17 +58,16 @@
 									mat_match_qty,
 									com_material_code,
 									mat_lot_no,
-									mat_write_date,
 									mat_past_quantity)
 			VALUES (#{matMatchStatement}
 			, #{matMatchInout}
-			, #{matMatchDate}
+			, TO_CHAR(SYSDATE,'YY/MM/DD')
 			, #{matMatchQty}
 			, #{comMaterialCode}
 			, #{matLotNo}
-			, TO_CHAR(SYSDATE,'YY/MM/DD')
 			, #{matPastQuantity})
 	</insert>
+	
 	<!-- 자재입출고 테이블 업데이트 -->
 	<update id="updateMatInout">
 			UPDATE mat_inout
@@ -81,12 +79,11 @@
 	<!-- 정산입출고 테이블 업데이트 -->
 	<update id="updateMatLot">
 			UPDATE MAT_MATCH SET
-		MAT_MATCH_DATE = #{matMatchDate}
+		MAT_MATCH_DATE = TO_CHAR(SYSDATE,'YY/MM/DD')
 		, MAT_MATCH_INOUT = #{matMatchInout}
 		, MAT_MATCH_QTY = #{matMatchQty}
 		, COM_MATERIAL_CODE = #{comMaterialCode}
 		, MAT_LOT_NO = #{matLotNo}
-		, MAT_WRITE_DATE = #{matWriteDate}
 		, MAT_PAST_QUANTITY = #{matPastQuantity}
 		WHERE MAT_MATCH_STATEMENT = #{matMatchStatement}
 	</update>

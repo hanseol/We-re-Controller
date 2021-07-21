@@ -89,7 +89,7 @@ $(document).ready(function() {
 
 	const matFltyModalGrid = new tui.Grid({
 		el : document.getElementById('matFltyModalGrid'),
-		rowHeaders : [ 'checkbox' ],
+		rowHeaders : [ 'radio' ],
 		data : dataSource,
 			scrollX: true,
 	        scrollY: true,

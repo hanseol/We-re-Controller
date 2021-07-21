@@ -75,14 +75,11 @@ $('#subPages6').attr('style','');
 $('.matrQua').addClass('active');
 
 //그리드모달창을 위한 그리드 선언-------------------------------------
-let orderGrid;
-let materialGrid;
-let vendorGrid;
-let matFltyGrid;
+
+
 let materialTwoGrid;
 let vendorTwoGrid;
 //-----------------------------------------------------------
-let erpMaterialOrderCode;
 	
 
 		
@@ -203,10 +200,6 @@ let erpMaterialOrderCode;
 	
 	
 	//모달 그리드 초기화 ----------------------------------
-	orderGrid = grid;
-	materialGrid = grid;
-	vendorGrid = grid;
-	matFltyGrid = grid;
 	materialTwoGrid = passGrid;
 	vendorTwoGrid = passGrid;
 	//------------------------------------------------

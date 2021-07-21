@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 
+
+<div class="content-fluid">
+	<div>
+		<h2>자재 입/출고 조회</h2>
+	</div>
+</div>
 <!-- 입고, 출고 탭 이동 -->
 <div class="tabs">
    <ul class="nav nav-tabs" role="tablist">
@@ -8,14 +14,9 @@
      <li class="tablinks"><a href="#" onclick="tabgubun('outgrid');" aria-controls="tab2" role="tab" data-toggle="tab">출고</a></li>
    </ul>
 </div>
-
 <!-- ======================================입고시작================================================== -->
 <div id="ingrid" class="tabcontent" style="display: block;">
-<div class="content-fluid">
-	<div>
-		<h2>자재입출고관리</h2>
-	</div>
-</div>
+
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
@@ -65,11 +66,6 @@
 <!-- ======================================출고시작================================================== -->
 
 <div id="outgrid" class="tabcontent" style="display: none;">
-<div class="content-fluid">
-	<div>
-		<h2>자재입출고관리</h2>
-	</div>
-</div>
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">

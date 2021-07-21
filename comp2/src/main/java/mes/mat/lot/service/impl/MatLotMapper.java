@@ -12,7 +12,7 @@ public interface MatLotMapper {
 	
 	
 	//등록
-    public Map<String, Object> insertMatLot(LinkedHashMap vo) throws Exception;
+    public void insertMatLot(LinkedHashMap vo) throws Exception;
 
     //수정
     public void updateMatLot(LinkedHashMap vo) throws Exception;

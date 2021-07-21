@@ -214,7 +214,7 @@
 									  ORDER BY i.mat_lot_no
 	</select>	
 	
-	<!-- 모달 자재LOT_NO 더블클릭 리스트(INOUT005) -->
+	<!-- 모달 자재LOT_NO 더블클릭 리스트 -->
 	<select id="searchMaterialLotSecondList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
 		
 		                              SELECT    DISTINCT i.mat_lot_no,

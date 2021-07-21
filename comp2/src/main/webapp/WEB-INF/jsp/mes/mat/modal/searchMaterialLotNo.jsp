@@ -62,7 +62,7 @@ $(document).ready(function() {
 				materialGrid.setValue(matrLotRowId, 'comMaterialName', comMaterialName, false);
 				
 				if (materialGrid.getValue(chkRowKeys[i], 'matInoutGubun') == 'INOUT002') { //입고이면
-					materialGrid.setValue(matrLotRowId, 'matInoutQuantity', matInoutQuantity, false); //수량
+					materialGrid.setValue(matrLotRowId, 'matPastQuantity', matInoutQuantity, false); //수량
 				} else if(materialGrid.getValue(chkRowKeys[i], 'matMatchInout') != null) { //정산입출고이면
 					materialGrid.setValue(matrLotRowId, 'matPastQuantity', matInoutQuantity, false); //기존수량
 				}

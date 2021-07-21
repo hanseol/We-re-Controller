@@ -1,30 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
 
-.modal {
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-		max-height: 600px; */
-}
-
-.blocker {
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>
@@ -118,7 +95,7 @@ $(document).ready(function () {
 
 				},
 				// 바로 값 나오지않게함
-				initialRequest : false,
+				//initialRequest : false,
 				contentType: "application/json"
 			};
 
@@ -127,7 +104,7 @@ $(document).ready(function () {
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 300,
+	        bodyHeight: 400,
 	        rowHeight: 30,
 			columns : [ {
 				header : '자재코드',
@@ -171,12 +148,26 @@ $(document).ready(function () {
 			console.log('data : ', responseObj.data);
 		}); */
 		
+			
 		
 		
 		
 		
-		
-		
+		grid.on('click',ev => {
+			var rowKey = ev.rowKey;
+			var nowStock = grid.getValue(rowKey, 'materialStock'); 
+			var safetyStock = grid.getValue(rowKey, 'comMaterialSafetyStock');
+			
+			if(nowStock < safetyStock){
+				tui.Grid.applyTheme('clean',{
+					cell: {
+						currentRow : {
+							background: "red"
+						}
+					}
+				});
+			}else return;
+		});
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 
 			{
