@@ -73,30 +73,47 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
     	return salInoutDAO.selectSalProductOutList(searchVO);
     }
     
-    //입고 LOT_NO 조회
+    //출고시 세부 LOT_NO 조회
     @Override
-	public List selectSaloutList(SalInoutVO searchVO) throws Exception {
-		return salInoutDAO.selectSalProductOutList(searchVO);
+	public List selectSalOutDetail(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.selectSalOutDetail(searchVO);
 	}
     
-    //입출고목록 CRUD
-    public String insertSalInout(LinkedHashMap vo) throws Exception {
+    //입고목록 CRUD
+    public String insertSalIn(LinkedHashMap vo) throws Exception {
     	LOGGER.debug(vo.toString());
     	LOGGER.debug(vo.toString());
     	
-    	salInoutDAO.insertSalInout(vo);
+    	salInoutDAO.insertSalIn(vo);
         return null;
     }
 
-    public void updateSalInout(LinkedHashMap vo) throws Exception {
-        salInoutDAO.updateSalInout(vo);
+    public void updateSalIn(LinkedHashMap vo) throws Exception {
+        salInoutDAO.updateSalIn(vo);
     }
 
-    public void deleteSalInout(LinkedHashMap vo) throws Exception {
-        salInoutDAO.deleteSalInout(vo);
+    public void deleteSalIn(LinkedHashMap vo) throws Exception {
+        salInoutDAO.deleteSalIn(vo);
     }
     
+    
+    //출고목록 CRUD
+    public String insertSalOut(LinkedHashMap vo) throws Exception {
+    	LOGGER.debug(vo.toString());
+    	LOGGER.debug(vo.toString());
+    	
+    	salInoutDAO.insertSalOut(vo);
+        return null;
+    }
 
+    public void updateSalOut(LinkedHashMap vo) throws Exception {
+        salInoutDAO.updateSalOut(vo);
+    }
+
+    public void deleteSalOut(LinkedHashMap vo) throws Exception {
+        salInoutDAO.deleteSalOut(vo);
+    }
+    
 //-----------------------------반품------------------------------   
    
     //반품목록 조회

@@ -4,6 +4,7 @@
 <div class="modal">
 <!-- 210701 김현경 LOT_NO 검색 모달창 -->
 <!-- 210707 뿌려주는 곳 수정 -->
+<!-- 210721 이제와서 또 수정! -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -37,7 +38,7 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일단 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function(){
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 

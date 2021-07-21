@@ -22,52 +22,12 @@ import mes.sal.inout.service.SalInoutVO;
 @Mapper("salInoutMapper")
 public interface SalInoutMapper {
 
-	/**
-	 * SAL_INOUT을 등록한다.
-	 * @param vo - 등록할 정보가 담긴 SalInoutVO
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-    public void insertSalInout(LinkedHashMap vo) throws Exception;
+   
 
-    /**
-	 * SAL_INOUT을 수정한다.
-	 * @param vo - 수정할 정보가 담긴 SalInoutVO
-	 * @return void형
-	 * @exception Exception
-	 */
-    public void updateSalInout(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * SAL_INOUT을 삭제한다.
-	 * @param vo - 삭제할 정보가 담긴 SalInoutVO
-	 * @return void형 
-	 * @exception Exception
-	 */
-    public void deleteSalInout(LinkedHashMap vo) throws Exception;
-
-    /**
-	 * SAL_INOUT을 조회한다.
-	 * @param vo - 조회할 정보가 담긴 SalInoutVO
-	 * @return 조회한 SAL_INOUT
-	 * @exception Exception
-	 */
     public SalInoutVO selectSalInout(SalInoutVO vo) throws Exception;
 
-    /**
-	 * SAL_INOUT 목록을 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return SAL_INOUT 목록
-	 * @exception Exception
-	 */
+    //제품주문서 조회
     public List<?> selectSalInoutList(SalInoutVO searchVO) throws Exception;
-
-    /**
-	 * SAL_INOUT 총 갯수를 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return SAL_INOUT 총 갯수
-	 * @exception
-	 */
     public int selectSalInoutListTotCnt(SalInoutVO searchVO);
 
     //완제품입출고목록 조회
@@ -77,11 +37,19 @@ public interface SalInoutMapper {
     public List<?> selectSalProductInList(SalInoutVO searchVO) throws Exception;
     public int selectSalProductInListTotCnt(SalInoutVO searchVO);
     
-    //완제품출고목록 조회
-    public List selectSalProductOutList(SalInoutVO searchVO) throws Exception;
+    //입고 CRUD
+    public void insertSalIn(LinkedHashMap vo) throws Exception;
+    public void updateSalIn(LinkedHashMap vo) throws Exception;
+    public void deleteSalIn(LinkedHashMap vo) throws Exception;
     
-	//입고 완제품 목록 조회
-	
+	//출고 CRUD
+    public List<?> selectSalProductOutList(SalInoutVO searchVO) throws Exception;
+    public void insertSalOut(LinkedHashMap vo) throws Exception;
+    public void updateSalOut(LinkedHashMap vo) throws Exception;
+    public void deleteSalOut(LinkedHashMap vo) throws Exception;
+    
+    //출고 세부 내역
+    public List selectSalOutDetail(SalInoutVO searchVO) throws Exception;
     
     //반품목록 조회
     public List selectSalReturnList(SalInoutVO vo) throws Exception;

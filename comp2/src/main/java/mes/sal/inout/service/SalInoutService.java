@@ -21,7 +21,7 @@ public interface SalInoutService {
 
     //주문 목록 조회 페이지    
     List selectSalInoutList(SalInoutVO searchVO) throws Exception;
-    
+       
     //입출고 조회 페이지
     List selectSalProductInOutList(SalInoutVO searchVO) throws Exception;
 
@@ -32,13 +32,24 @@ public interface SalInoutService {
     //출고 조회 페이지
 	List selectSalProductOutList(SalInoutVO searchVO) throws Exception;
     
-    //입출고 관리 페이지
-    String insertSalInout(LinkedHashMap vo) throws Exception;    
-    void updateSalInout(LinkedHashMap vo) throws Exception;
-    void deleteSalInout(LinkedHashMap vo) throws Exception;
+	//출고 세부 목록 페이지
+	List selectSalOutDetail(SalInoutVO searchVO) throws Exception;
+	
+    //입고 CRUD
+    String insertSalIn(LinkedHashMap vo) throws Exception;    
+    void updateSalIn(LinkedHashMap vo) throws Exception;
+    void deleteSalIn(LinkedHashMap vo) throws Exception;
+    
+    //출고 CRUD
+    String insertSalOut(LinkedHashMap vo) throws Exception;    
+    void updateSalOut(LinkedHashMap vo) throws Exception;
+    void deleteSalOut(LinkedHashMap vo) throws Exception;
+    
+    //출고세부목록 CRUD
+    
     
     //입고 LOT_NO 목록 조회 페이지
-    List selectSaloutList(SalInoutVO searchVO) throws Exception;
+    //List selectSaloutList(SalInoutVO searchVO) throws Exception;
     
     //반품 조회 페이지
     List selectSalReturnList(SalInoutVO vo) throws Exception;
@@ -47,6 +58,9 @@ public interface SalInoutService {
     String insertSalReturn(LinkedHashMap vo) throws Exception;
     void updateSalReturn(LinkedHashMap vo) throws Exception;
     void deleteSalReturn(LinkedHashMap vo) throws Exception;
+    
+    
+    
     
     
     //모달 : 제품코드 조회

@@ -23,12 +23,4 @@ import mes.board.service.BoardVO;
 	private String proPlanDate;
 	private String proPlanName;
 	private String proOrderDate;
-	
-	private String comProductCode;
-	private String salInoutDate;
-	private String salInoutQuantity;
-	private String salInoutCode;
-	private String salInoutGubun;
-	private String proProcessLotNo;
-	private String salWriteDate;
 }

@@ -124,7 +124,7 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="outListGrid"></div>
+				<div id="ogrid"></div>
 			</div>
 		</div>
 	</div>
@@ -165,23 +165,28 @@ $('.9030000').addClass('active');
 
 
 let mgrid; //모달그리드
+let moGrid;
 let muGrid;
+
+var grid;
+var ogrid;
+var ugrid;
 
 //----------------------------------------------------------------입고그리드-----------------------------------------------------------------
 	$(document).ready(function() {
 		//Read
 		$("#inSearch").on("click", function() {
-					var date = $("#dateGubun").val();
-					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
-								
-					var readParams = {
-						'salInoutDate' : date,
-						'comProductCode' : productCode,
-						'proProcessLotNo' : productLotNo
-					};
-					grid.readData(1, readParams, true);
-				});
+			var date = $("#dateGubun").val();
+			var productCode = $("#productCode").val();
+			var productLotNo = $("#productLotNo").val();
+						
+			var readParams = {
+				'salInoutDate' : date,
+				'comProductCode' : productCode,
+				'proProcessLotNo' : productLotNo
+			};
+			grid.readData(1, readParams, true);
+		});
 		
 		//Insert
 		$("#inAppendRow").on("click", function() {
@@ -202,12 +207,12 @@ let muGrid;
 		});
 		
 		//Delete
-		$(document).on("click", "button[id=deleteRow]", function() {
+		$("#inDeleteRow").on("click", function() {
 			grid.removeCheckedRows(false);
 		});
 		
 		//Modify
-		$("#inModifyrow").on("click", function() {
+		$(document).on("click", "button[id=inModifyRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.request('modifyData');
 		});
@@ -220,7 +225,7 @@ let muGrid;
 					method : 'GET'
 				},
 				modifyData : {
-					url : '${pageContext.request.contextPath}/ajax/modifySalInList',
+					url : '${pageContext.request.contextPath}/ajax/sal/modifySalInList',
 					method : 'PUT'
 				}
 			},
@@ -229,17 +234,18 @@ let muGrid;
 		};
 		
 
-		const grid = new tui.Grid({
+		grid = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :150, 
+	        bodyHeight :300, 
 	        rowHeight: 30,
 			columns : [ {
 				header : '입고일자',
 				name : 'salInoutDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -250,25 +256,33 @@ let muGrid;
 			}, {
 				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			}, {
 				header : '지시코드',
-				name : 'salInoutCode'
+				name : 'salInoutCode',
+				align : 'center'
 			}, {
 				header : '제품명',
-				name : 'comProductName'
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '입고수량',
 				name : 'salInoutQuantity',
+				align : 'right',
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '전표번호',
 				name : 'salInoutStatement',
 				hidden : true
+			}, {
+				header : '입출고구분',
+				name : 'salInoutGubun',
+				hidden : true
 			}]
 		}); 
 		
-	 mgrid = grid;
+
 	 
 //end ----------------------------------------------------------------입고그리드-----------------------------------------------------------------
 
@@ -277,54 +291,58 @@ let muGrid;
 		//Read
 		$("#outSearch").on("click", function() {
 					var date = $("#dateGubun").val();
-					var productCode = $("#productCode").val();
+					var productName = $("#productCode").val();
 					var productLotNo = $("#productLotNo").val();				
 										
 					var readParams = {
 						'salInoutDate' : date,
-						'comProductCode' : productCode,
+						'comProductName' : productName,
 						'proProcessLotNo' : productLotNo
 					};
-					outGrid.readData(1, readParams, true);
+					ogrid.readData(1, readParams, true);
 		});
 		
 		//Insert
 		$("#outAppendRow").on("click", function() {
 			var rowData =[{
 					salInoutDate : "",
-					erpOrderCode : "",
-					comCustomerCode : "",
+					proOrderDetailCode : "",
+					comCustomerName : "",
+					comProductName : "",
 					comProductCode : "",
 					salInoutQuantity : "",
-					salWriteDate : ""
+					salWriteDate : "",
+					salInoutCode : "",
+					comProductCode : "",
+					proProcessLotNo : ""
 			}];
-			outGrid.appendRow(rowData, {
+			ogrid.appendRow(rowData, {
 				at : 0,
 				focus : true
 			});
-			outGrid.enable();
+			ogrid.enable();
 		});
 		
 		//Delete
 		$("#outDeleteRow").on("click", function() {
-			outGrid.removeCheckedRows(false);
+			ogrid.removeCheckedRows(false);
 		});
 		
 		//Modify
-		$("#outModifyrow").on("click", function() {
-			outGrid.finishEditing('rowKey','columnName');
-			outGrid.request('modifyData');
+		$(document).on("click", "button[id=outModifyRow]", function() {
+			ogrid.finishEditing('rowKey','columnName');
+			ogrid.request('modifyData');
 		});
 		
 		
 		const outdataSource = {
 			api : {
 				readData : {
-					url : '${pageContext.request.contextPath}/ajax/sal/readSalesProduct',
+					url : '${pageContext.request.contextPath}/ajax/sal/readSalOutList',
 					method : 'GET'
 				},
 				modifyData : {
-					url : '${pageContext.request.contextPath}/ajax/modifySalInoutList',
+					url : '${pageContext.request.contextPath}/ajax/sal/modifySalOutList',
 					method : 'PUT'
 				}
 			},
@@ -333,8 +351,8 @@ let muGrid;
 		};
 		
 
-		const outGrid = new tui.Grid({
-			el : document.getElementById('outListGrid'),
+		ogrid = new tui.Grid({
+			el : document.getElementById('ogrid'),
 			rowHeaders : [ 'checkbox' ],
 			data : outdataSource,
 			scrollX: true,
@@ -344,6 +362,7 @@ let muGrid;
 			columns : [ {
 				header : '출고일자',
 				name : 'salInoutDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -353,32 +372,81 @@ let muGrid;
 				}
 			}, {
 				header : '주문코드',
-				name : 'proProcessLotNo',
+				name : 'proOrderDetailCode',
+				align : 'center',
 				editor : 'text'
 			}, {
-				header : '거래처코드',
-				name : 'salInoutCode'
+				header : '거래처명',
+				name : 'comCustomerName',
+				align : 'center'
 			}, {
-				header : '제품코드',
-				name : 'comProductCode'
+				header : '제품명',
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '출고수량',
 				name : 'salInoutQuantity',
+				align : 'right',
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header : '전표번호',
-				name : 'salInoutStatement',
+				header : '거래처코드',
+				name : 'salInoutCode',
+				hidden : true
+			}, {
+				header : '제품코드',
+				name : 'comProductCode',
+				hidden : true
+			}, {
+				header : '로트넘버',
+				name : 'proProcessLotNo',
 				hidden : true
 			}]
-		}); 	
-	
+		});
 		
+
 		
 		//---------------출고세부내역 그리드-----------------
+		
+		//Read (출고내역을 체크하면 해당 주문코드가 일치하는 정보를 아래에 뿌려줌)
+		ogrid.on('dblclick', ev => {
+			if(ev.columnName == 'salInoutQuantity') {
+					var date = $("#dateGubun").val();
+					var productName = $("#productCode").val();
+					var productLotNo = $("#productLotNo").val();				
+										
+					var readParams = {
+						'salInoutDate' : date,
+						'comProductName' : productName,
+						'proProcessLotNo' : productLotNo
+					};
+					ugrid.readData(1, readParams, true);
+			}
+		});
+		
+		//Insert
+		$("#uappendRow").on("click", function() {
+			var rowData =[{
+				proProcessLotNo : "",
+				salNowQuantity : "",
+				finalQuantity : ""
+			}];
+			ugrid.appendRow(rowData, {
+				at : 0,
+				focus : true
+			});
+			ugrid.enable();
+		});
+		
+		//Delete
+		$("#udeleteRow").on("click", function() {
+			ugrid.removeCheckedRows(false);
+		});
+				
+		
 		const udataSource = {
 				api : {
 					readData : {
-						url : '${pageContext.request.contextPath}/ajax/insertSalOutList',
+						url : '${pageContext.request.contextPath}/ajax/sal/underSalOut',
 						method : 'GET'
 					}
 				},
@@ -386,7 +454,7 @@ let muGrid;
 				contentType : "application/json"
 			};
 		
-		const ugrid = new tui.Grid({
+		ugrid = new tui.Grid({
 				el : document.getElementById('ugrid'),
 				rowHeaders : [ 'checkbox' ],
 				data : udataSource,
@@ -395,21 +463,19 @@ let muGrid;
 		        bodyHeight :150, 
 		        rowHeight: 30,
 				columns : [{
-					header : '주문코드',
-					name : 'erpOrderCode',
-					align : 'center',
-					hidden : true
-				}, {
 					header : '완제품 LOT_NO',
 					name : 'proProcessLotNo',
+					align : 'center',
 					editor : 'text'
 				}, {
-					header : '현재고',
+					header : '현 재고',
 					name : 'salNowQuantity',
+					align : 'right',
 					formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 				}, {
 					header : '출고수량',
 					name : 'salOutQuantity',
+					align : 'right',
 					editor : 'text',
 					formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 				}, {
@@ -423,12 +489,16 @@ let muGrid;
 		            columnContent : {
 		            	salOutQuantity : {
 		                  template(val) {
+		                	 formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		                     return 'TOTAL : ' + val.sum;
 		                  }
 		               }
 		            }
 		         }
 			}); 
+		
+		mgrid = grid;
+		moGrid = ogrid;
 		muGrid = ugrid;
 
 //end ----------------------------------------------------------------출고그리드-----------------------------------------------------------------
@@ -456,22 +526,34 @@ let muGrid;
 		
 		//입고 : lot_no 클릭 이벤트
 		grid.on('dblclick', ev => {
-		var i = ev.rowKey;
 		   if(ev.columnName == 'proProcessLotNo') {
 		 	  	 productLotNoSearch(ev.rowKey);	    	  	 
 		 	  }
 		 });
 	 
 		
-		//출고 : 
-		muGrid.on('dblclick', ev => {
-			if(ev.columnName == 'proProcessLotNo') {
-				modProductLotNoSearch(ev.rowKey);
-			} else if(ev.columnName == 'erpOrderCode') {
-				orderListSearch(ev.rowKey); 
+		//출고 : 주문코드 클릭 이벤트
+		moGrid.on('dblclick', ev => {
+			if(ev.columnName == 'proOrderDetailCode') {
+				orderListSearch(ev.rowKey);
 			}
 		});
-	 
+		
+		//출고 : 체크 -> 정보 출고세부에 뿌려주기
+		moGrid.on('dblclick', ev => {
+	 		if(ev.colunName == 'salInoutQuantity') {
+	 			
+	 			muGrid.setValue(urowId, 'proProcessLotNo', proProcessLotNo, false);
+	 			//modProductLotNoSearch(ev.rowKey);
+	 		}
+	 	}); 
+		
+		//출고 세부 : lot_no 클릭 이벤트
+	 	moGrid.on('dblclick', ev => {
+	 		if(ev.colunName == 'proProcessLotNo') {
+	 			modProductLotNoSearch(ev.rowKey);
+	 		}
+	 	}); 
 	 
 	 grid.on('dblclick', ev => {
 		var j = ev.rowKey;
@@ -504,6 +586,7 @@ let muGrid;
 	      	if(this.id == "option") this.reset();  
 	     });  
 	});
+	
 
 });//end of document ready
 
@@ -511,6 +594,7 @@ let muGrid;
 	
 	//모달 실행 함수
 	var rowId;
+	var orowId;
 	var urowId;
 	
 	//입/출고 : 제품명 모달
@@ -535,9 +619,21 @@ let muGrid;
 		  $.get("searchProductLotNo.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
+	}	
+	
+	//출고 : ERP에서 주문 목록 받아오는 모달
+	function orderListSearch(c) {
+		orowId = c;
+		event.preventDefault();
+		$(".modal").remove();
+		this.blur(); // Manually remove focus from clicked link.
+		console.log(this.href);
+		$.get("searchOrderList.do", function(html) {
+			$(html).appendTo('body').modal();
+		});
 	}
 	
-	//출고 : 입고된 완제품 LOT_NO 모달
+	//출고 세부 : 입고된 완제품 LOT_NO 모달
 	function modProductLotNoSearch(c) {
 		urowId = c;
 		event.preventDefault();
@@ -546,18 +642,6 @@ let muGrid;
 		console.log(this.href);
 		$.get("modSearchProductLotNo.do", function(html) {
 		    $(html).appendTo('body').modal();
-		});
-	}
-	
-	//출고 : ERP에서 주문 목록 받아오는 모달
-	function orderListSearch(c) {
-		rowId = c;
-		event.preventDefault();
-		$(".modal").remove();
-		this.blur(); // Manually remove focus from clicked link.
-		console.log(this.href);
-		$.get("searchOrderList.do", function(html) {
-			$(html).appendTo('body').modal();
 		});
 	}
 	
@@ -575,5 +659,16 @@ let muGrid;
 		  }
 		  document.getElementById(inout).style.display = "block";
 		  evt.currentTarget.className += " active";
+		  
+		  if(inout == 'outgrid'){
+		        ogrid.refreshLayout();
+		        ugrid.refreshLayout();
+		  } else if(inout == 'ingrid'){
+		        grid.refreshLayout();
+		  }
 	}
+	
+	
+
+	
 </script>

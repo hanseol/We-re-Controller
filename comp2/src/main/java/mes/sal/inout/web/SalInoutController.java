@@ -113,6 +113,9 @@ public class SalInoutController {
 		return comFunc.sendResult(list);
 	}
 	
+	// 출고세부목록조회 grid
+	
+	
 	// 입출고조회 페이지
 	@RequestMapping("/sal/salInout/salesProdView.do")
 	public String selectSalesProductList(@ModelAttribute("searchVO") SalInoutVO searchVO, ModelMap model)
@@ -130,13 +133,13 @@ public class SalInoutController {
 	}
 	
 	
-	// 입고 후 출고할 LOT_NO 목록 조회 grid
-	@RequestMapping("/ajax/insertSalOutList")
+	// 출고세부내역 grid
+	@RequestMapping("/ajax/sal/underSalOut")
 	@ResponseBody
-	public Map<String, Object> insertSalOutList(@ModelAttribute("searchVO") SalInoutVO searchVO)
+	public Map<String, Object> underSalOut(@ModelAttribute("searchVO") SalInoutVO searchVO)
 			throws Exception {
 				
-		List<?> list = salInoutService.selectSaloutList(searchVO);
+		List<?> list = salInoutService.selectSalOutDetail(searchVO);
 
 		return comFunc.sendResult(list);
 	}
@@ -174,7 +177,7 @@ public class SalInoutController {
 // ------------------------------관리--------------------------------
 	
 	// 입고목록 CRUD
-	@PutMapping("/ajax/modifySalInList")
+	@PutMapping("/ajax/sal/modifySalInList")
 	@ResponseBody
 	public Map<String, Object> modifySalInList(@RequestBody GridDataVO gd) throws Exception {
 		
@@ -187,21 +190,17 @@ public class SalInoutController {
 		//C
 		if (createdList.size() != 0) {
 			for (int i = 0; i < createdList.size(); i++) {
-				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
-				
-				if(gubun.equals("INOUT002")) {
-					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
-					} else if(gubun.equals("INOUT003")) {
-					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
-					}			
-				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
+				((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
+				((LinkedHashMap)createdList.get(i)).put("salInoutGubun", "INOUT002");	
+				salInoutService.insertSalIn((LinkedHashMap)(createdList.get(i)));
 			}
 		}
 				
 		//U
 		if (updatedList.size() != 0) {
 			for (int i=0; i<updatedList.size(); i++) {
-				salInoutService.updateSalInout((LinkedHashMap) updatedList.get(i));
+				salInoutService.updateSalIn((LinkedHashMap) updatedList.get(i));
+				System.out.println("--------업데이트-------");
 			}
 		}
 		
@@ -209,7 +208,7 @@ public class SalInoutController {
 		if (deletedList.size() != 0)
 		{
 			for (int i = 0; i < deletedList.size(); i++) {
-				salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
+				salInoutService.deleteSalIn((LinkedHashMap) deletedList.get(i));
 			}
 		}
 		
@@ -219,7 +218,7 @@ public class SalInoutController {
 	}
 	
 	// 출고목록 CRUD
-		@PutMapping("/ajax/modifySalInoutList")
+		@PutMapping("/ajax/sal/modifySalOutList")
 		@ResponseBody
 		public Map<String, Object> modifySalInoutList(@RequestBody GridDataVO gd) throws Exception {
 			
@@ -232,21 +231,16 @@ public class SalInoutController {
 			//C
 			if (createdList.size() != 0) {
 				for (int i = 0; i < createdList.size(); i++) {
-					String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
-					
-					if(gubun.equals("INOUT002")) {
-						((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
-						} else if(gubun.equals("INOUT003")) {
-						((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
-						}			
-					salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
+					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());				
+					((LinkedHashMap)createdList.get(i)).put("salInoutGubun", "INOUT003");	
+					salInoutService.insertSalOut((LinkedHashMap)(createdList.get(i)));
 				}
 			}
 					
 			//U
 			if (updatedList.size() != 0) {
 				for (int i=0; i<updatedList.size(); i++) {
-					salInoutService.updateSalInout((LinkedHashMap) updatedList.get(i));
+					salInoutService.updateSalOut((LinkedHashMap) updatedList.get(i));
 				}
 			}
 			
@@ -254,43 +248,43 @@ public class SalInoutController {
 			if (deletedList.size() != 0)
 			{
 				for (int i = 0; i < deletedList.size(); i++) {
-					salInoutService.deleteSalInout((LinkedHashMap) deletedList.get(i));
+					salInoutService.deleteSalOut((LinkedHashMap) deletedList.get(i));
 				}
 			}
 			
 			map.put("result", true);
-			return map;
-			
+			return map;			
 		}
 	
-	@PutMapping("/ajax/modifySalOutList")
-	@ResponseBody
-	public Map<String, Object> modifySalOutList(@RequestBody GridDataVO gd) throws Exception {
-		
-		Map<String, Object> map = new HashMap<>();
-		
-		List<?> updatedList = gd.getUpdatedRows();
-		List<?> createdList = gd.getCreatedRows();
-		List<?> deletedList = gd.getDeletedRows();
-						
-		//C
-		if (createdList.size() != 0) {
-			for (int i = 0; i < createdList.size(); i++) {
-				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
-				
-				if(gubun.equals("INOUT002")) {
-					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
-					} else if(gubun.equals("INOUT003")) {
-					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
-					}			
-				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
-			}
-		}
-		
-		map.put("result", true);
-		return map;
-		
-	}
+		//출고 세부 내역 CRUD
+//	@PutMapping("/ajax/modifySalOutList")
+//	@ResponseBody
+//	public Map<String, Object> modifySalOutList(@RequestBody GridDataVO gd) throws Exception {
+//		
+//		Map<String, Object> map = new HashMap<>();
+//		
+//		List<?> updatedList = gd.getUpdatedRows();
+//		List<?> createdList = gd.getCreatedRows();
+//		List<?> deletedList = gd.getDeletedRows();
+//						
+//		//C
+//		if (createdList.size() != 0) {
+//			for (int i = 0; i < createdList.size(); i++) {
+//				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
+//				
+//				if(gubun.equals("INOUT002")) {
+//					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
+//					} else if(gubun.equals("INOUT003")) {
+//					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
+//					}			
+//				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
+//			}
+//		}
+//		
+//		map.put("result", true);
+//		return map;
+//		
+//	}
 
 
 	

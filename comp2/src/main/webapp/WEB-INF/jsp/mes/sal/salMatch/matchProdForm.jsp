@@ -197,13 +197,11 @@ let mgrid;
 				name : 'proProcessLotNo',
 				editor : 'text'
 			}, {
-				header : '제품코드',
-				name : 'comProductCode',
-				editor : 'text'
+				header : '제품명',
+				name : 'comProductName'
 			}, {
 				header : '기존수량',
-				name : 'salPastQuantity',
-				editor : 'text'
+				name : 'salPastQuantity'
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty',

@@ -3,6 +3,7 @@
 
 <div class="modal">
 <!-- 210719 김현경 주문 목록 검색 모달창 -->
+<!-- 210721 수정 -->
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -15,8 +16,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					고객사코드 <input type="text" id="erpCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
-					제품코드 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" />
+					고객사명 <input type="text" id="erpCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
+					제품명 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" />
 					<button id="findRow">검색</button><br>
 					<br>
 				<div id="modalGrid"></div>
@@ -35,7 +36,7 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일단 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function(){
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
@@ -43,25 +44,36 @@ $(document).ready(function() {
 
 		for(var i=0; i<chkRowKeys.length; i++){
 			erpOrderCode = grid.getValue(chkRowKeys[i], 'erpOrderCode');
-			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
-			erpProductCode = grid.getValue(chkRowKeys[i],'erpProductCode');
+			erpCustomerName = grid.getValue(chkRowKeys[i], 'erpCustomerName');
+			erpProductName = grid.getValue(chkRowKeys[i],'erpProductName');
 			erpOrderQty = grid.getValue(chkRowKeys[i], 'erpOrderQty');
+			customerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
+			productCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
 			
-					
-			console.log(erpProductCode);
-			console.log(erpCustomerCode);
-			console.log(erpOrderQty);
 			console.log(erpOrderCode);
+			console.log(erpCustomerName);
+			console.log(erpProductName);
+			console.log(erpOrderQty);
+			console.log(customerCode);
+			console.log(productCode);
 			
-			mgrid.blur();
-			mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
-			mgrid.setValue(rowId, 'salInoutCode', erpCustomerCode, false);
-			mgrid.setValue(rowId, 'salInoutQuantity', erpOrderQty, false);
-			mgrid.setValue(rowId, 'proProcessLotNo', erpOrderCode, false);
+
+			moGrid.blur();
+			moGrid.setValue(orowId, 'proOrderDetailCode', erpOrderCode, false);
+			moGrid.setValue(orowId, 'comProductName', erpProductName, false);
+			moGrid.setValue(orowId, 'comCustomerName', erpCustomerName, false);
+			moGrid.setValue(orowId, 'salInoutQuantity', erpOrderQty, false);
+			moGrid.setValue(orowId, 'salInoutCode', customerCode, false);
+			moGrid.setValue(orowId, 'comProductCode', productCode, false);
+			moGrid.setValue(orowId, 'proProcessLotNo', '0', false);
+			moGrid.setValue(orowId, 'salNowQuantity', '0', false);
+			
+			console.log(moGrid.setValue(orowId, 'proProcessLotNo', '0', false));
+			console.log(moGrid.setValue(orowId, 'salNowQuantity', '0', false));
 		}
 	});
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$("#findRow").on("click", function() {
 		var no = $("#erpCustomerCode").val();
 		var code = $("#erpProductCode").val();
 		var readParams = {
@@ -91,16 +103,29 @@ $(document).ready(function() {
 	        rowHeight: 30,
 		columns : [ {
 			header : '주문코드',
-			name : 'erpOrderCode'
+			name : 'erpOrderCode',
+			align : 'center'
 		}, {
-			header : '고객사코드',
-			name : 'erpCustomerCode'
+			header : '고객사명',
+			name : 'erpCustomerName',
+			align : 'center'
 		}, {
-			header : '제품코드',
-			name : 'erpProductCode'
+			header : '제품명',
+			name : 'erpProductName',
+			align : 'center'
 		}, {
 			header : '주문량',
-			name : 'erpOrderQty'
+			name : 'erpOrderQty',
+			align : 'right',
+			formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+		}, {
+			header : '거래처코드',
+			name : 'erpCustomerCode',
+			hidden : true
+		}, {
+			header : '제품코드',
+			name : 'erpProductCode',
+			hidden : true
 		}]
 	});
 });

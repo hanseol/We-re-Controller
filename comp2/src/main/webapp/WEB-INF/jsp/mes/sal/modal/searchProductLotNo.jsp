@@ -7,7 +7,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>완제품 LOT_NO 검색</h3>
+		<h3>입고예정 완제품 LOT_NO</h3>
 	</div>
 </div>
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일단 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function(){
 		//console.log(grid.getCheckedRowKeys()); //체크박스 선택된 행의 번호를 배열형태로 가져옴.
 		//console.log(grid.getValue(chkRowKey,'comProductCode')); //행의 컬럼명으로 값을 가져옴.
 
@@ -47,41 +47,30 @@ $(document).ready(function() {
 			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
 			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
 			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
-			proOrderDetailCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
-			proProcessQuantity = grid.getValue(chkRowKeys[i], 'proProcessQuantity');
-			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');
 			salInoutCode = grid.getValue(chkRowKeys[i], 'salInoutCode');
-			
-			
-			console.log(proProcessLotNo);
-			console.log(erpProductCode);
-			console.log(erpCustomerCode);
-			console.log(proOrderDetailCode);
-			console.log(proProcessQuantity);
-			console.log(salNowQuantity);
-			
-			
+			proOrderQty = grid.getValue(chkRowKeys[i], 'proOrderQty');
+						
 			//view 페이지에 뿌려줄 부분 아이디값
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
 				$("#productLotNo").val(proProcessLotNo);
-				proProcessLotNo = [];
 			} else { //아니면 mgrid(모달그리드)에 뿌려준다
 				mgrid.blur();
 				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
+				mgrid.setValue(rowId, 'comProductName', erpProductName, false);
 				mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
 														
-				if (mgrid.getValue(chkRowKeys[i], 'salInoutGubun') == 'INOUT002') { //입고이면
-					mgrid.setValue(rowId, 'salInoutCode', proOrderDetailCode, false); //지시코드
-					mgrid.setValue(rowId, 'salInoutQuantity', proProcessQuantity, false); //수량
-					mgrid.setValue(rowId, 'salNowQuantity', salNowQuantity, false); //현재고
-				} else if(mgrid.getValue(chkRowKeys[i], 'salMatchInout') != null) { //정산입출고이면
+				if(mgrid.getValue(chkRowKeys[i], 'salMatchInout') != null) { //정산입출고이면
 					mgrid.setValue(rowId, 'salPastQuantity', proProcessQuantity, false); //기존수량
+				} else { //입고이면
+					mgrid.setValue(rowId, 'salInoutCode', salInoutCode, false); //지시코드
+					mgrid.setValue(rowId, 'salInoutQuantity', proOrderQty, false); //수량
+					mgrid.setValue(rowId, 'salNowQuantity', proOrderQty, false); //현재고		
 				}
 			}
 		}
 	});
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$("#findRow").on("click", function() {
 		var no = $("#proProcessLotNo").val();
 		var code = $("#erpProductCode").val();
 		var name = $("#erpProductName").val();
@@ -122,10 +111,11 @@ $(document).ready(function() {
 			name : 'erpProductName'
 		}, {
 			header : '입고수량',
-			name : 'proProcessQuantity'
+			name : 'proOrderQty'
 		}, {
 			header : '현재고',
-			name : 'salNowQuantity'
+			name : 'salNowQuantity',
+			hidden : true
 		}]
 	});
 });
