@@ -41,7 +41,7 @@
 						</select> 
 					</td>
 					<th>제품명</th>
-					<td><input class="form-control" id="comProductName" name="comProductName"></td>
+					<td><input class="form-control" id="erpProductName" name="erpProductName"></td>
 				</tr>
 				<tr>
 					<th>라인번호</th>
@@ -68,7 +68,10 @@
            		 </tr>
 			</tbody>
 		</table>
-		<button type="submit">공정이동표발행</button>
+		<input type="hidden" id="proProcessLotNo" name="proProcessLotNo"/>
+		<input type="hidden" id="erpCustomerName" name="erpCustomerName"/>
+		<!-- <input type="hidden" id="erpOrderCode" name="erpOrderCode"/> -->
+		<button type="button" id="processMoving">공정이동표발행</button>
 	</form>
 	</div>
 </div>
@@ -169,8 +172,14 @@
 				dataType : 'json',
 				success : function(result){
 				
-					$("#comProductName").val(result.list[0].erpProductName);
+					$("#erpProductName").val(result.list[0].erpProductName);
 					$('#proProcessQuantity').attr('placeholder', '주문량: ' + result.list[0].proOrderQty );
+					
+					// type=hidden : 공정이동표 발행 시 필요한 데이터.
+					$("#proProcessLotNo").val(result.list[0].proProcessLotNo);
+					$("#erpCustomerName").val(result.list[0].erpCustomerName);
+					/* $("#erpOrderCode").val(result.list[0].erpOrderCode); */
+
 				}
 			});
 			//시작버튼 활성화
@@ -263,6 +272,12 @@
 						
 				}
 			});
+		});
+		
+		//공정이동표를 발행한다.
+		//공정이동표 발행 버튼 클릭 시.
+		$("#processMoving").on("click", function(){
+			window.open('${pageContext.request.contextPath}/pro/proc/printProcessMove.do','공정이동표 발행','height=600,width=500,scrollbars=yes,titlebar=yes,location=no');
 		});
 		
 		const dataSource = {

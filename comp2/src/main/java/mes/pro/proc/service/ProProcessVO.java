@@ -56,8 +56,15 @@ public class ProProcessVO extends SearchVO{
     
     private String totalProOrderDetailCode;
     
+    /**
+     * 고객사명 : 공정이동표 발행 시 필요한 정보.
+     */
+    private String erpCustomerName;
     
-    
+    /**
+     * 주문코드 : 공정이동표 발행 시 필요한 정보.
+     */
+    private String erpOrderCode;
     
     
 }
