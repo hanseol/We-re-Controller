@@ -277,9 +277,9 @@ let vendorGrid;
 		});
 		
 //2번 그리드에 클릭한 발주코드에 해당하는 불량데이터 뿌려주기---------------------------------------------------		
-		grid.on('click', ev => {
+/* 		grid.on('click', ev => {
 			if(ev.columnName == 'erpMaterialOrderCode'){
-
+					
 				//데이터 넘겨주기.
 				var materialOrderCode = grid.getFocusedCell().value;
 				var matFltyCode = $("#matFltyCode").val();
@@ -291,7 +291,15 @@ let vendorGrid;
 				console.log(readData);
 				
 			}
-		});
+		}); */
+ 		grid.on('click', ev => {
+			var rKey = ev.rowKey;
+			var getOrderCode = grid.getValue(rKey, 'erpMaterialOrderCode');
+			var readParams = {
+					'erpMaterialOrderCode' : getOrderCode
+			} 
+			fltyGrid.readData(1, readParams, true);
+		}); 
 //--------------------------------------------------------------------------------------------		
 
 		//날짜 범위 검색 옵션

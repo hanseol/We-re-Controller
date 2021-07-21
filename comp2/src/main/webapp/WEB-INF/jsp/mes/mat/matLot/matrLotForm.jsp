@@ -151,9 +151,8 @@ let matLotGrid;
 		$("#modifyRow").on("click", function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				grid.finishEditing('rowKey', 'columnName');
-				
 				grid.request('modifyData');
-				location.reload(true);
+				grid.reloadData();
 			});
 		//삭제 버튼(체크된 행 삭제)
 		$("#deleteRow").on("click", function () {
@@ -268,22 +267,17 @@ let matLotGrid;
 //--------------------------------------------------
 
 
-		//자동 계산 (수량 *단가)
+		//자동 계산 
   		grid.on('afterChange', ev => {
   			if (ev.changes[0].columnName == 'matMatchQty') {
   				var match = grid.getValue(ev.changes[0].rowKey, 'matMatchQty');
   				var order = grid.getValue(ev.changes[0].rowKey, 'matPastQuantity');
   				if(grid.getValue(ev.changes[0].rowKey, 'matMatchInout') == 'INOUT004') {
-  					grid.setValue(ev.changes[0].rowKey, 'matInoutQuantity', parseInt(order) + parseInt(match));
-  				} else {
-  					grid.setValue(ev.changes[0].rowKey, 'matInoutQuantity', parseInt(order) - parseInt(match));
+  					grid.setValue(ev.changes[0].rowKey, 'matInoutQuantity', parseInt(order)+parseInt(match));
+  				} else if(grid.getValue(ev.changes[0].rowKey, 'matMatchInout') == 'INOUT005') {
+  					grid.setValue(ev.changes[0].rowKey, 'matInoutQuantity', parseInt(order)-parseInt(match));
   				}
   			}
-/*   			var iQty = grid.getValue(rowKey, 'matInoutQuantity');
-  			var mQty = grid.getValue(rowKey, 'matMatchQty');
-  			if(iQty == mQty){
-  				console.log('hi');
-  			} */
 		});
 //그리드 모달 더블클릭--------------------------------------------------
 

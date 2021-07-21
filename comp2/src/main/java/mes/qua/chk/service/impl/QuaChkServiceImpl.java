@@ -80,7 +80,7 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 							quaChkMapper.insertQuaChkMatIn(updatedMap);
 
 						}
-											
+					
 					}else if ((fltyQty != 0)&&(passQty != 0)) {//불량이 있는데 합격량도 있는 것은
 						//검사완료 업데이트
 						quaChkMapper.updateQuaChk(updatedMap);
@@ -107,7 +107,6 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 						quaChkMapper.insertMatFlty(updatedMap);
 					}
 				}
-				
 			}
 		}
 		
