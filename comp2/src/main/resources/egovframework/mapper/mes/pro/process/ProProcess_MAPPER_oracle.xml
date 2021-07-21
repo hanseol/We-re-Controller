@@ -151,12 +151,13 @@ SELECT * FROM (
 	          	 FROM pro_process pp 
 	          	 WHERE pp.pro_order_detail_code = od.pro_order_detail_code 
 	          	 AND ROWNUM = 1) as pro_process_quantity -->
-	          , CASE  
-			            WHEN (SELECT pro_process_quantity 
-			            	  FROM pro_process pp 
-			            	  WHERE pp.pro_order_detail_code = od.pro_order_detail_code 
-			            	  AND ROWNUM = 1) IS NULL THEN '미완료'
-			            ELSE '완료' END as pro_process_quantity
+	          ,CASE od.pro_process_status  WHEN 6 THEN '완료'
+		                                   WHEN 5 THEN '생산중'
+		                                   WHEN 4 THEN '생산중'
+		                                   WHEN 3 THEN '생산중'
+		                                   WHEN 2 THEN '생산중'
+		                                   WHEN 1 THEN '생산중'
+      		  ELSE '미완료' END AS pro_process_status
 		FROM    mat_inout m
 		      , pro_material_lot l
 		      , com_material c
@@ -311,8 +312,13 @@ SELECT * FROM (
 	</select>
 	
 	<!-- 지시코드를 선택했을 때 제품명 가져오기 -->
+	<!-- 공정이동표 발행에 필요한 고객사명, 완제품lot 번호 가져오기 -->
+	<!-- 주문코드 받아오기 (미완성) -->
 	<select id="selectProdName" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
-		SELECT 	erp_product_name, pro_order_qty
+		SELECT 	erp_product_name
+				, pro_order_qty
+				, get_code_detail(erp_customer_code) as erp_customer_name 
+				, pro_process_lot_no
 		FROM 	pro_order_detail
 		WHERE 	pro_order_detail_code = #{proOrderDetailCode}
 	</select>

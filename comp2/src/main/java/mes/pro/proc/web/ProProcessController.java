@@ -1,6 +1,8 @@
 package mes.pro.proc.web;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,9 +108,6 @@ public class ProProcessController {
     }
     
     
-    
-    
-    
     // 생산관리 페이지
     //모니터링 페이지 호출(생산관리) > 선택가능한 지시정보를 가지고 옴
     @RequestMapping("pro/proc/mntView.do")
@@ -183,8 +182,7 @@ public class ProProcessController {
   		
   		return map;
   	}
-  	
-  	
+ 
   	
   	//선택한 작업지시가 start 되었을 때.
   	@RequestMapping("ajax/pro/startProProcess")
@@ -210,42 +208,49 @@ public class ProProcessController {
   	}
   	
   	
-  //공정이동표 발행
-    @RequestMapping("pro/proc/printProcessMove.do")
-    public String printProcessMove(ProProcessVO vo, Model model) {
-
-    //지시번호와 공정코드 값을 저장한다.
-       String str = vo.getProOrderDetailCode();
-       str += vo.getComProcessCode();
-      
-       //저장된 값으로 바코드를 생성한다.
-       try{
-          Barcode barcode = BarcodeFactory.createCode128B(str);
-          barcode.setBarHeight(80);
-          barcode.setLabel("barcode createTEST");
-       
-          //파일이름을 랜덤으로 생성 후 이미지를 저장한다.
-          UUID uuid = UUID.randomUUID();
-          File file = new File(EgovProperties.getProperty("Globals.fileStorePath"), uuid.toString()+".jpg");
-          BarcodeImageHandler.saveJPEG(barcode, file);
-          
-          byte[] bc = FileUtils.readFileToByteArray(file);
-          byte[] test = Base64.getEncoder().encode(bc);
-          
-          //페이지에 결과 전송.
-          String base64DataString = new String(test , "UTF-8");
-
-          model.addAttribute("barcode", base64DataString);
-          model.addAttribute("vo", vo);
-          
-          //생성된 파일 삭제.
-          file.delete();
-       }catch (Exception e) {
-          e.printStackTrace();
-       }
-    
-       return "mes/pro/proc/printProcessMove";
-    }
+  	
+  	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+  	//공정이동표 발행
+  	@RequestMapping("pro/proc/printProcessMove.do")
+  	    public String printProcessMove(ProProcessVO vo, Model model) {
+  	    
+  	        //현재 날짜 + 시간으로 변경.
+  	        Date time = new Date();
+  	        String startTime = sdf.format(time) + " " +vo.getProProcessStartTime();
+  	        vo.setProProcessStartTime(startTime);
+  	     
+  	        //지시번호와 공정코드 값을 저장한다.
+  	        String str = vo.getProOrderDetailCode();
+  	        str += vo.getComProcessCode();
+  	        
+  	    	//파일이름을 랜덤으로 생성한다.
+  	        UUID uuid = UUID.randomUUID();
+  	        
+  	        File file = new File(EgovProperties.getProperty("Globals.fileStorePath"), uuid.toString()+".jpg");
+  	        
+  	        //저장된 값으로 바코드를 생성한다.
+  	        try{
+  				Barcode barcode = BarcodeFactory.createCode128B(str);
+  				barcode.setBarHeight(100);
+  				   
+  				//이미지 파일 저장.
+  				BarcodeImageHandler.saveJPEG(barcode, file);
+  				//저장된 이미지를 byte 배열로 읽기.
+  				byte[] fileToByte = FileUtils.readFileToByteArray(file);
+  				byte[] newByteArr = Base64.getEncoder().encode(fileToByte);
+  				
+  				//페이지에 결과 전송.
+  				String base64DataString = new String(newByteArr , "UTF-8");
+  				
+  				model.addAttribute("barcode", base64DataString);
+  				model.addAttribute("vo", vo);
+  				file.delete();
+  			}catch (Exception e) {
+  				e.printStackTrace();
+  			}
+  	    
+  	       return "mes/pro/proc/printProcessMove";
+  	    }
       
     
 }

@@ -67,8 +67,8 @@ $(document).ready(function() {
 			proPlanGrid.setValue(proPlanRowKey, 'erpProductDeadline', erpProductDeadline, false);
 			proPlanGrid.setValue(proPlanRowKey, 'erpCustomerCode', erpCustomerCode, false);
 		}
-		
-		
+
+			
 	});
 	
 	

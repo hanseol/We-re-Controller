@@ -337,7 +337,7 @@ var grid;
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '생산여부',
-				name : 'proProcessQuantity',
+				name : 'proProcessStatus',
 				align: 'center',
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			} ]
