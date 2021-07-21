@@ -57,7 +57,7 @@ public class SalMatchController {
 
 //----------------------------조회--------------------------------
     
-    //정산입출록조회 salesMatch grid
+    //정산입출고목록조회 salesMatch grid
     @RequestMapping("ajax/sal/readSalesMatch")
     @ResponseBody
     public Map<String, Object> readSalesMatch(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
@@ -133,15 +133,15 @@ public class SalMatchController {
         
 //--------------------------- 모달 -------------------------------
     // 모달 : 완제품 LOT_NO 조회
- 	@GetMapping("sal/salMatch/searchProductLotNo.do")
+ 	@GetMapping("/ajax/searchReturnProduct")
  	public String searchProductLotNoView() {
 
  		// 모달창 띄워주는 페이지
- 		return "mes/sal/modal/searchProductLotNo";
+ 		return "mes/sal/modal/searchReturnProduct";
  	}
 
  	// 모달 : 완제품 LOT_NO 조회값 전달
- 	@RequestMapping("mes/salMatch/searchProductLotNo")
+ 	@RequestMapping("mes/sal/modal/searchReturnProduct")
  	@ResponseBody
  	public Map<String, Object> searchProductLotNo(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
 
