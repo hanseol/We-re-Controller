@@ -50,6 +50,7 @@ public interface SalInoutMapper {
     
     //출고 세부 내역
     public List selectSalOutDetail(SalInoutVO searchVO) throws Exception;
+    public void updateSalModify(LinkedHashMap vo) throws Exception;
     
     //반품목록 조회
     public List selectSalReturnList(SalInoutVO vo) throws Exception;

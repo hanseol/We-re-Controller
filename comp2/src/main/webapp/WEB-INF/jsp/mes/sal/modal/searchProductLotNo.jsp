@@ -47,8 +47,9 @@ $(document).ready(function() {
 			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
 			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
 			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
-			salInoutCode = grid.getValue(chkRowKeys[i], 'salInoutCode');
+			salInoutCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
 			proOrderQty = grid.getValue(chkRowKeys[i], 'proOrderQty');
+			erpProductName = grid.getValue(chkRowKeys[i], 'erpProductName');
 						
 			//view 페이지에 뿌려줄 부분 아이디값
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
@@ -104,8 +105,8 @@ $(document).ready(function() {
 			header : '완제품 LOT_NO',
 			name : 'proProcessLotNo'
 		}, {
-			header : '제품코드',
-			name : 'erpProductCode'
+			header : '생산지시코드',
+			name : 'proOrderDetailCode'
 		}, {
 			header : '제품명',
 			name : 'erpProductName'
@@ -115,6 +116,10 @@ $(document).ready(function() {
 		}, {
 			header : '현재고',
 			name : 'salNowQuantity',
+			hidden : true
+		}, {
+			header : '제품코드',
+			name : 'erpProductCode',
 			hidden : true
 		}]
 	});

@@ -114,6 +114,12 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
         salInoutDAO.deleteSalOut(vo);
     }
     
+    //출고목록 세부 U
+    @Override
+	public void updateUnderSal(LinkedHashMap vo) throws Exception {
+		salInoutDAO.updateSalModify(vo);
+	}
+    
 //-----------------------------반품------------------------------   
    
     //반품목록 조회
@@ -221,6 +227,9 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 	public List<?> searchOrderList(SalInoutVO searchVO) throws Exception {
 		return salInoutDAO.searchOrderList(searchVO);
 	}
+
+
+	
 
 
 	

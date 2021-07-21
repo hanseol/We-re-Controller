@@ -137,8 +137,7 @@
 					<p class="panel-subtitle">출고 세부 사항</p>
 				</div>
 				<div class="col-md-5" align="right">
-					<button type="button" id="uappendRow">추가</button>
-					<button type="button" id="udeleteRow">삭제</button>
+					<button type="button" id="underModifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -279,6 +278,10 @@ var ugrid;
 				header : '입출고구분',
 				name : 'salInoutGubun',
 				hidden : true
+			}, {
+				header : '제품코드',
+				name : 'comProductCode',
+				hidden : true
 			}]
 		}); 
 		
@@ -292,13 +295,14 @@ var ugrid;
 		$("#outSearch").on("click", function() {
 					var date = $("#dateGubun").val();
 					var productName = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();				
+					var productLotNo = $("#productLotNo").val();
 										
 					var readParams = {
 						'salInoutDate' : date,
 						'comProductName' : productName,
 						'proProcessLotNo' : productLotNo
 					};
+					
 					ogrid.readData(1, readParams, true);
 		});
 		
@@ -400,58 +404,26 @@ var ugrid;
 				header : '로트넘버',
 				name : 'proProcessLotNo',
 				hidden : true
-			}, {
-				header : '코드',
-				name : 'scomProductCode',
-				hidden : true
 			}]
 		});
 		
 
 		
 		//---------------출고세부내역 그리드-----------------
-		
-		//Read (출고내역을 체크하면 해당 주문코드가 일치하는 정보를 아래에 뿌려줌)
-		ogrid.on('dblclick', ev => {
-			if(ev.columnName == 'salInoutQuantity') {
-					var date = $("#dateGubun").val();
-					var productName = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();				
-										
-					var readParams = {
-						'salInoutDate' : date,
-						'comProductName' : productName,
-						'proProcessLotNo' : productLotNo
-					};
-					ugrid.readData(1, readParams, true);
-			}
+		//Modify
+		$(document).on("click", "button[id=underModifyRow]", function() {
+			ugrid.finishEditing('rowKey','columnName');
+			ugrid.request('modifyData');
 		});
-		
-		//Insert
-		$("#uappendRow").on("click", function() {
-			var rowData =[{
-				proProcessLotNo : "",
-				salNowQuantity : "",
-				finalQuantity : ""
-			}];
-			ugrid.appendRow(rowData, {
-				at : 0,
-				focus : true
-			});
-			ugrid.enable();
-		});
-		
-		//Delete
-		$("#udeleteRow").on("click", function() {
-			ugrid.removeCheckedRows(false);
-		});
-				
-		
+
 		const udataSource = {
 				api : {
 					readData : {
 						url : '${pageContext.request.contextPath}/ajax/sal/underSalOut',
 						method : 'GET'
+					}, modifyData : {
+						url : '${pageContext.request.contextPath}/ajax/sal/underSalModify',
+						method : 'PUT'
 					}
 				},
 				initialRequest: false, 
@@ -485,10 +457,6 @@ var ugrid;
 				}, {
 					header : '전표번호',
 					name : 'salInoutStatement',
-					hidden : true
-				}, {
-					header : '제품코드',
-					name : 'underCode',
 					hidden : true
 				}],
 				summary : {
@@ -548,38 +516,17 @@ var ugrid;
 		});
 		
 		//출고 : 체크 -> 정보 출고세부에 뿌려주기
-		moGrid.on('dblclick', ev => {
-	 		if(moGrid.getValue(ev.columnName == 'comProductCode') == moGrid.getValue(ev.columnName == 'scomProductCode') == muGrid.getValue(ev.columnName == 'underCode')) { 			
-	 			muGrid.setValue(urowId, 'proProcessLotNo', proProcessLotNo, false);
-	 			//modProductLotNoSearch(ev.rowKey);
-	 		}
-	 	}); 
-		
-		//출고 세부 : lot_no 클릭 이벤트
-	 	muGrid.on('dblclick', ev => {
-	 		if(ev.colunName == 'proProcessLotNo') {
-	 			modProductLotNoSearch(ev.rowKey);
-	 		}
-	 	}); 
-	 
-	 grid.on('dblclick', ev => {
-		var j = ev.rowKey;
+		ogrid.on('dblclick', ev => {
+		var i = ev.rowKey;
 		if(ev.columnName == 'salInoutQuantity') {
-			if(grid.getValue(j, 'salInoutGubun') == 'INOUT003' && grid.getValue(j, 'salInoutQuantity') != null) {
-	  		  var proProcessLotNo = grid.getValue(j, 'proProcessLotNo');
-	  		  var comProductCode = grid.getValue(j, 'comProductCode');
-	  		  var salInoutQuantity = grid.getValue(j, 'salInoutQuantity');
-	  		 	  		  
+	  		  var comProductCode = ogrid.getValue(i, 'comProductCode');	  		 	  		  
 	  		  var readParams = {
-	  				  'proProcessLotNo' : proProcessLotNo,
-	  				  'comProductCode' : comProductCode,
-	  				  'salInoutQuantity' : salInoutQuantity
+	  				  'comProductCode' : comProductCode
 	  		  }
-	  		  
 	  		  ugrid.readData(1, readParams, true);
   	  		}
-		}
-	 });
+	 });		
+		
 	
 	// option form reset  
 	$("#inReset").on("click", function() {

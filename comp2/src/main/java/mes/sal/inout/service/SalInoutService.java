@@ -45,8 +45,8 @@ public interface SalInoutService {
     void updateSalOut(LinkedHashMap vo) throws Exception;
     void deleteSalOut(LinkedHashMap vo) throws Exception;
     
-    //출고세부목록 CRUD
-    
+    //출고세부목록 U
+    void updateUnderSal(LinkedHashMap linkedHashMap) throws Exception;
     
     //입고 LOT_NO 목록 조회 페이지
     //List selectSaloutList(SalInoutVO searchVO) throws Exception;
@@ -89,6 +89,8 @@ public interface SalInoutService {
 	//모달 : 전표번호 조회(반품페이지)
 	List<?> searchInoutStatement(SalInoutVO searchVO) throws Exception;
 	int searchInoutStatementListTotCnt(SalInoutVO searchVO);
+
+	
 
 
 	

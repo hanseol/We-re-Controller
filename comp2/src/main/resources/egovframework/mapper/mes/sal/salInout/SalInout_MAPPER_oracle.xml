@@ -156,18 +156,18 @@
 		FROM (
 				SELECT A.*,
 				ROWNUM RNUM FROM (	
-									SELECT
+									SELECT DISTINCT
 									TO_CHAR(I.SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
 									E.ERP_ORDER_CODE as PRO_ORDER_DETAIL_CODE,
 				                  	E.ERP_PRODUCT_NAME as COM_PRODUCT_NAME,
 				                  	E.ERP_ORDER_QTY as SAL_INOUT_QUANTITY,
+				                  	I.COM_PRODUCT_CODE as COM_PRODUCT_CODE,
 									GET_CODE_DETAIL(E.ERP_CUSTOMER_CODE) as COM_CUSTOMER_NAME
 									FROM ERP_PRODUCT_ORDER E, PRO_PLAN_DETAIL D,
 									PRO_ORDER_DETAIL O, PRO_PROCESS P, SAL_INOUT I
 									WHERE E.ERP_ORDER_CODE = D.ERP_ORDER_CODE
 									AND D.PRO_PLAN_DETAIL_CODE = O.PRO_PLAN_DETAIL_CODE
 									AND O.PRO_ORDER_DETAIL_CODE = P.PRO_ORDER_DETAIL_CODE
-									AND P.PRO_PROCESS_LOT_NO IS NOT NULL
 									AND I.SAL_INOUT_GUBUN = 'INOUT003'
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					SAL_INOUT_DATE = #{salInoutDate}
@@ -191,7 +191,10 @@
 		SELECT PRO_PROCESS_LOT_NO, SAL_NOW_QUANTITY, COM_PRODUCT_CODE
 		FROM SAL_INOUT
 		WHERE SAL_INOUT_GUBUN = 'INOUT002'
-		AND SAL_NOW_QUANTITY NOT IN (0)
+		AND SAL_NOW_QUANTITY NOT IN
+    	(SELECT SAL_NOW_QUANTITY FROM SAL_INOUT WHERE SAL_NOW_QUANTITY = '0') 
+		AND COM_PRODUCT_CODE = #{comProductCode}
+		ORDER BY PRO_PROCESS_LOT_NO
 	</select>
 	
 	<!-- 입출고목록 삽입 -->
@@ -249,6 +252,14 @@
 		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
 	</update>
 	
+	<update id="updateSalModify">
+		UPDATE SAL_INOUT SET
+		PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+		, SAL_NOW_QUANTITY = (SAL_NOW_QUANTITY - #{salOutQuantity})
+		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
+		AND SAL_INOUT_GUBUN = 'INOUT003'
+	</update>
+	
 	<!-- 입출고목록 삭제 -->
 	<!-- 입고 -->
 	<delete id="deleteSalIn">
@@ -267,8 +278,6 @@
 		AND PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		</if>
 	</delete>
-	
-	<!-- 출고 세부 삭제? -->
 	
 	
 	<!-- 반품목록 -->

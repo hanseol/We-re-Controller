@@ -112,9 +112,7 @@ public class SalInoutController {
 		
 		return comFunc.sendResult(list);
 	}
-	
-	// 출고세부목록조회 grid
-	
+		
 	
 	// 입출고조회 페이지
 	@RequestMapping("/sal/salInout/salesProdView.do")
@@ -143,8 +141,6 @@ public class SalInoutController {
 
 		return comFunc.sendResult(list);
 	}
-
-	
 	
 	// 반품 목록 조회 grid
 	@RequestMapping("/ajax/sal/readReturnProduct")
@@ -256,35 +252,28 @@ public class SalInoutController {
 			return map;			
 		}
 	
-		//출고 세부 내역 CRUD
-//	@PutMapping("/ajax/modifySalOutList")
-//	@ResponseBody
-//	public Map<String, Object> modifySalOutList(@RequestBody GridDataVO gd) throws Exception {
-//		
-//		Map<String, Object> map = new HashMap<>();
-//		
-//		List<?> updatedList = gd.getUpdatedRows();
-//		List<?> createdList = gd.getCreatedRows();
-//		List<?> deletedList = gd.getDeletedRows();
-//						
-//		//C
-//		if (createdList.size() != 0) {
-//			for (int i = 0; i < createdList.size(); i++) {
-//				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("salInoutGubun");
-//				
-//				if(gubun.equals("INOUT002")) {
-//					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salInStatementIdGnrService.getNextStringId());	
-//					} else if(gubun.equals("INOUT003")) {
-//					((LinkedHashMap)createdList.get(i)).put("salInoutStatement", salOutStatementIdGnrService.getNextStringId());		
-//					}			
-//				salInoutService.insertSalInout((LinkedHashMap)(createdList.get(i)));
-//			}
-//		}
-//		
-//		map.put("result", true);
-//		return map;
-//		
-//	}
+	//출고 세부 내역 CRUD
+	@PutMapping("/ajax/sal/underSalModify")
+	@ResponseBody
+	public Map<String, Object> underSalModify(@RequestBody GridDataVO gd) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		List<?> updatedList = gd.getUpdatedRows();
+		List<?> createdList = gd.getCreatedRows();
+		List<?> deletedList = gd.getDeletedRows();
+						
+		//U
+		if (updatedList.size() != 0) {
+			for (int i=0; i<updatedList.size(); i++) {
+				salInoutService.updateUnderSal((LinkedHashMap) updatedList.get(i));
+			}
+		}
+		
+		map.put("result", true);
+		return map;
+		
+	}
 
 
 	
