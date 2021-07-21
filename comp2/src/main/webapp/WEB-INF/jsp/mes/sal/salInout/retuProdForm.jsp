@@ -195,12 +195,12 @@ let mgrid; //모달 그리드
 		//모달 : 완제품 LOT_NO
 		   grid.on('dblclick', ev => {
 		      if(ev.columnName == 'proProcessLotNo'){    
-		    	  productLotNoSearch(ev.rowKey);         
+		    	 returnProductLotNo(ev.rowKey);         
 		      }
 		   });
 		 
 			$('#searchProductLotNo').click(function(event) {
-			 	productLotNoSearch(-1);
+				returnProductLotNo(-1);
 			});
 		
 	
@@ -230,7 +230,7 @@ function productCodeSearch(c) {
 }
 
 //완제품 LOT_NO 모달
-function productLotNoSearch(c) {
+function returnProductLotNo(c) {
 	  rowId = c;
 	  event.preventDefault();
 	  $(".modal").remove();

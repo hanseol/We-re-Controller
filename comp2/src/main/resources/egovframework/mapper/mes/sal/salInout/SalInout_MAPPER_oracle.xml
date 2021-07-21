@@ -137,7 +137,7 @@
 					SAL_INOUT_DATE = #{salInoutDate}
 				</if>
 				<if test="comProductName != null and comProductName != ''">AND
-					COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+					GET_CODE_DETAIL(COM_PRODUCT_CODE) LIKE '%' || #{comProductName} || '%'
 				</if>
 				<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
 					PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'

@@ -7,7 +7,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>입고예정 완제품 LOT_NO</h3>
+		<h3>입고 완제품 LOT_NO</h3>
 	</div>
 </div>
 
@@ -59,11 +59,8 @@ $(document).ready(function() {
 				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
 				mgrid.setValue(rowId, 'comProductName', erpProductName, false);
 				mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
-														
-				if(mgrid.getValue(chkRowKeys[i], 'salMatchInout') != null) { //정산입출고이면
-					mgrid.setValue(rowId, 'salPastQuantity', proProcessQuantity, false); //기존수량
-				} else { //입고이면
-					mgrid.setValue(rowId, 'salInoutCode', salInoutCode, false); //지시코드
+				mgrid.setValue(rowId, 'salPastQuantity', proProcessQuantity, false); //기존수량
+				mgrid.setValue(rowId, 'salInoutCode', salInoutCode, false); //지시코드
 					mgrid.setValue(rowId, 'salInoutQuantity', proOrderQty, false); //수량
 					mgrid.setValue(rowId, 'salNowQuantity', proOrderQty, false); //현재고		
 				}
@@ -86,7 +83,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/ajax/searchProductLotNo',
+				url : '${pageContext.request.contextPath}/ajax/searchReturnProduct',
 				method : 'GET'
 			}
 		},

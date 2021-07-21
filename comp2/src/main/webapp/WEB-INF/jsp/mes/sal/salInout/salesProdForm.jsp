@@ -37,13 +37,13 @@
 				</div>
 				<div class="col-md-4">
 						제품명
-						<input type="text" id="productCode" name="productCode">	
+						<input type="text" id="comProductName" name="comProductName">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -96,13 +96,13 @@
 				</div>
 				<div class="col-md-4">
 						제품명
-						<input type="text" id="productCode" name="productCode">	
+						<input type="text" id="comProductName" name="comProductName">	
 						<a id="outSearchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
 						<a id="outSearchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -176,13 +176,13 @@ var ugrid;
 		//Read
 		$("#inSearch").on("click", function() {
 			var date = $("#dateGubun").val();
-			var productCode = $("#productCode").val();
-			var productLotNo = $("#productLotNo").val();
+			var name = $("#comProductName").val();
+			var lotno = $("#proProcessLotNo").val();
 						
 			var readParams = {
 				'salInoutDate' : date,
-				'comProductCode' : productCode,
-				'proProcessLotNo' : productLotNo
+				'comProductName' : name,
+				'proProcessLotNo' : lotno
 			};
 			grid.readData(1, readParams, true);
 		});
@@ -294,13 +294,13 @@ var ugrid;
 		//Read
 		$("#outSearch").on("click", function() {
 					var date = $("#dateGubun").val();
-					var productName = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
+					var name = $("#comProductName").val();
+					var lotno = $("#proProcessLotNo").val();
 										
 					var readParams = {
 						'salInoutDate' : date,
-						'comProductName' : productName,
-						'proProcessLotNo' : productLotNo
+						'comProductName' : name,
+						'proProcessLotNo' : lotno
 					};
 					
 					ogrid.readData(1, readParams, true);
