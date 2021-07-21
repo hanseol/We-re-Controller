@@ -1,24 +1,30 @@
 package mes.pro.proc.web;
 
+import java.io.File;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import mes.main.service.ComFunc;
-import mes.pro.order.service.ProOrderVO;
 import mes.pro.proc.service.ProProcessService;
 import mes.pro.proc.service.ProProcessVO;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.BarcodeImageHandler;
 
 /**
  * @Class Name : ProProcessController.java
@@ -53,7 +59,7 @@ public class ProProcessController {
         return "mes/pro/proc/procMatrView.page";
     }
     
-    //생산지시리스트 조회
+    //생산지시에 등록한 로트 조회 (완료 조회)
     @RequestMapping("pro/proc/procMatView")
     @ResponseBody
     public Map<String, Object> readMatView(@ModelAttribute("searchVO") ProProcessVO searchVO ) throws Exception {
@@ -61,13 +67,13 @@ public class ProProcessController {
     	return comFunc.sendResult(list);
     }
     
-    //모달호출: 공정에서 작업이 끝난 지시리스트 불러오기
+    //모달호출: 공정에서 작업이 끝난 지시리스트 불러오기(완료 조회)
     @GetMapping("pro/proc/finishOrderSearch.do")
     public String finishOrderSearch() {
     	return "mes/pro/modal/finishOrderSearch";
     }
     
-    //모달 내용 조회
+    //모달 내용 조회(완료 조회)
     @RequestMapping("finishOrderSearch")
     @ResponseBody
     public Map<String, Object> finishOrderSearch(@ModelAttribute("SearchVO") ProProcessVO searchVO) {
@@ -76,7 +82,27 @@ public class ProProcessController {
     	return comFunc.sendResult(list);
     }
     
+    //생산지시에 등록한 로트 조회 (전체 조회)
+    @RequestMapping("pro/proc/totalProcLot")
+    @ResponseBody
+    public Map<String, Object> totalProcLot(@ModelAttribute("searchVO") ProProcessVO searchVO ) throws Exception {
+    	List<?> list = service.selectTotalProcLot(searchVO);
+    	return comFunc.sendResult(list);
+    }
     
+    
+    //모달호출: 모든 지시 디테일코드 조회(전체 조회)
+    @GetMapping("pro/proc/totalOrderSearch.do")
+    public String totalOrderSearch() {
+    	return "mes/pro/modal/PODSearch";
+    }
+    
+    @RequestMapping("totalOrderSearch")
+    @ResponseBody
+    public Map<String, Object> totalOrderSearch(@ModelAttribute("searchVO") ProProcessVO searchVO) {
+    	List<?> list = service.selectTotalOrder(searchVO);
+    	return comFunc.sendResult(list);
+    }
     
     
     
@@ -181,6 +207,44 @@ public class ProProcessController {
   		
   		return null;
   	}
+  	
+  	
+  //공정이동표 발행
+    @RequestMapping("pro/proc/printProcessMove.do")
+    public String printProcessMove(ProProcessVO vo, Model model) {
+
+    //지시번호와 공정코드 값을 저장한다.
+       String str = vo.getProOrderDetailCode();
+       str += vo.getComProcessCode();
+      
+       //저장된 값으로 바코드를 생성한다.
+       try{
+          Barcode barcode = BarcodeFactory.createCode128B(str);
+          barcode.setBarHeight(80);
+          barcode.setLabel("barcode createTEST");
+       
+          //파일이름을 랜덤으로 생성 후 이미지를 저장한다.
+          UUID uuid = UUID.randomUUID();
+          File file = new File(EgovProperties.getProperty("Globals.fileStorePath"), uuid.toString()+".jpg");
+          BarcodeImageHandler.saveJPEG(barcode, file);
+          
+          byte[] bc = FileUtils.readFileToByteArray(file);
+          byte[] test = Base64.getEncoder().encode(bc);
+          
+          //페이지에 결과 전송.
+          String base64DataString = new String(test , "UTF-8");
+
+          model.addAttribute("barcode", base64DataString);
+          model.addAttribute("vo", vo);
+          
+          //생성된 파일 삭제.
+          file.delete();
+       }catch (Exception e) {
+          e.printStackTrace();
+       }
+    
+       return "mes/pro/proc/printProcessMove";
+    }
       
     
 }

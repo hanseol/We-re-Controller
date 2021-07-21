@@ -38,7 +38,7 @@
                	      작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode" readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-success" id="findRow">조회</button>
                   <button type="reset" class="btn btn-danger" id="reset">새자료</button>
-                  <button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button>
+                  <!-- <button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button> -->
                </div> 
             </form>
          </div>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-5" align="right">
                <button type="button" id="appendRow">추가</button>
-               <button type="button" id="deleteRow">삭제</button>
+               <!-- <button type="button" id="deleteRow">삭제</button> -->
                <button type="button" id="modifyRow">저장</button>
             </div>
          </div>
@@ -154,42 +154,17 @@ var proOrderRowKey;
       
       // D 저장 버튼
       $("#modifyRow").on("click", function() {
-         
-         var chkRows = proOrdergrid.getCheckedRowKeys();
-         for(var i=0; i<chkRows.length; i++) {
+
 	         var proOrderDate = $("#proOrderDate").val();
-	         var proOrderCode = $("#proOrderCode").val();
-	         var proOrderGubun = proOrdergrid.getValue(chkRows[0], 'proOrderGubun');
-	         var proOrderQty = proOrdergrid.getValue(chkRows[0], 'proOrderQty');
-	         var proOrderExpectQty = proOrdergrid.getValue(chkRows[0], 'proOrderExpectQty');
-	         var proWorkDate = proOrdergrid.getValue(chkRows[0], 'proWorkDate');
-	         var proOrderSeq = proOrdergrid.getValue(chkRows[0], 'proOrderSeq');
-	         var proOrderDetailCode = proOrdergrid.getValue(chkRows[0], 'proOrderDetailCode');
-	         
-	         console.log(proOrderDate);
-	         console.log(proOrderCode);
-	         console.log(proOrderGubun);
-	         console.log(proOrderQty);
-	         console.log(proOrderExpectQty);
-	         console.log(proWorkDate);
-	         console.log(proOrderSeq);
-	         console.log(proOrderDetailCode);
 	         
 	         var params = {
 	               'proOrderDate' : proOrderDate,
-	               'proOrderGubun' : proOrderGubun,
-	               'proOrderQty' : proOrderQty,
-	               'proOrderCode' : proOrderCode,
-	               'proOrderExpectQty' : proOrderExpectQty,
-	               'proWorkDate' : proWorkDate,
-	               'proOrderSeq' : proOrderSeq,
-	               'proOrderDetailCode' : proOrderDetailCode
 	         }
 	         
 	         proOrdergrid.setRequestParams(params);
 	         proOrdergrid.finishEditing('rowKey', 'columnName');
 	         proOrdergrid.request('modifyData');
-         }
+        
       });
       
       // M 리셋버튼  
@@ -219,12 +194,9 @@ var proOrderRowKey;
             comMaterialCode = matLotgrid.getValue(chkRows[i], 'comMaterialCode');
             comProcessCode = matLotgrid.getValue(chkRows[i], 'comProcessCode');
             proOrderDate = $("#proOrderDate").val();
-            proOrderDetailCode = proOrderDetailCode;
             matInoutUnitPrice = matLotgrid.getValue(chkRows[i], 'matInoutUnitPrice');
             matInoutPrice = matLotgrid.getValue(chkRows[i], 'matInoutPrice');
             quaMaterialStatement = matLotgrid.getValue(chkRows[i], 'quaMaterialStatement');
-            
-            console.log(proOrderDetailCode);
             
             $.ajax({
                url : '${pageContext.request.contextPath}/ajax/proOrder/insertMat',
@@ -354,8 +326,8 @@ var proOrderRowKey;
             hidden : true
          }, {
             header : '생산지시디테일코드',
-            name : 'proOrderDetailCode',
-            hidden : true
+            name : 'proOrderDetailCode'/* ,
+            hidden : true */
          }, {
             header : '고객코드',
             name : 'erpCustomerCode',
@@ -503,8 +475,8 @@ var proOrderRowKey;
       if(ev.columnName == 'erpProductCode'){
          var comProductCode = proOrdergrid.getFocusedCell().value;
          var comProductName = proOrdergrid.getValue(ev.rowKey, 'erpProductName');
-         test = proOrdergrid.getValue(ev.rowKey,'proOrderDetailCode');
          
+         proOrderDetailCode = proOrdergrid.getValue(ev.rowKey,'proOrderDetailCode');
          
          var readParams = {
                'comProductCode' : comProductCode,

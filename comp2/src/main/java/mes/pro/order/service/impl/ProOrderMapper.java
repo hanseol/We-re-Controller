@@ -91,5 +91,7 @@ public interface ProOrderMapper {
 
 	public int updateProOrder(LinkedHashMap linkedHashMap);
 
+	public void insertProOrderDetail(LinkedHashMap vo);
+
 
 }

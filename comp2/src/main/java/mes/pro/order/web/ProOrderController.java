@@ -183,14 +183,25 @@ public class ProOrderController {
 			poId = proOrderCodeService.getNextStringId();
 			
 			for(int i = 0; i < createdList.size(); i++) {
-				((LinkedHashMap)createdList.get(i)).put("proOrderDate", gd.getProOrderDate());
-				((LinkedHashMap)createdList.get(i)).put("proOrderCode", poId);
-				((LinkedHashMap)createdList.get(i)).put("proOrderDetailCode", proOrderCodeDetailService.getNextStringId());
-				((LinkedHashMap)createdList.get(i)).put("proProcessLotNo", productLotCodeService.getNextStringId());
-				
-				service.insertProOrder((LinkedHashMap)createdList.get(i));
+				if(i == 0) {
+					((LinkedHashMap)createdList.get(i)).put("proOrderDate", gd.getProOrderDate());
+					((LinkedHashMap)createdList.get(i)).put("proOrderCode", poId);
+					((LinkedHashMap)createdList.get(i)).put("proOrderDetailCode", proOrderCodeDetailService.getNextStringId());
+					((LinkedHashMap)createdList.get(i)).put("proProcessLotNo", productLotCodeService.getNextStringId());
+					
+					service.insertProOrder((LinkedHashMap)createdList.get(i));
+					service.insertProOrderDetail((LinkedHashMap)createdList.get(i));
+				} else {
+					((LinkedHashMap)createdList.get(i)).put("proOrderDate", gd.getProOrderDate());
+					((LinkedHashMap)createdList.get(i)).put("proOrderCode", poId);
+					((LinkedHashMap)createdList.get(i)).put("proOrderDetailCode", proOrderCodeDetailService.getNextStringId());
+					((LinkedHashMap)createdList.get(i)).put("proProcessLotNo", productLotCodeService.getNextStringId());
+					
+					service.insertProOrderDetail((LinkedHashMap)createdList.get(i));
+				}
 			}
 		 }
+		
 		map.put("result", true);
 		
 		return map;

@@ -3,13 +3,13 @@
 
 
 
-<!-- 공정별 자재 소요 조회용 모달 -->
+<!-- 공정별 자재 소요 조회용 모달(전체) -->
 
 
       
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>작업이 왼료된 지시 검색</h3>
+		<h3>전체 지시 검색</h3>
 	</div>
 </div>
 
@@ -48,7 +48,7 @@ $(document).ready(function() {
 		
 			console.log(proOrderDetailCode);
 		
-			$("#proOrderDetailCode").val(proOrderDetailCode);
+			$("#totalProOrderDetailCode").val(proOrderDetailCode);
 			
 		}
 	}); //end of click button
@@ -70,7 +70,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : {
-				url : '${pageContext.request.contextPath}/finishOrderSearch',
+				url : '${pageContext.request.contextPath}/totalOrderSearch',
 				method : 'GET'
 			}
 		},

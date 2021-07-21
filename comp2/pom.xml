@@ -547,6 +547,17 @@
 			<version>1.18.12</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- 바코드 생성 -->
+		<dependency>
+           <groupId>barbecue</groupId>
+           <artifactId>barbecue</artifactId>
+           <version>1-5</version>
+           <scope>system</scope>
+           <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/barbecue-1.5-beta1.jar</systemPath>
+         </dependency>
+
+
 
 	</dependencies>
 

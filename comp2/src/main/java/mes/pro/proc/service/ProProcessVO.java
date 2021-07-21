@@ -49,9 +49,14 @@ public class ProProcessVO extends SearchVO{
     private String erpProductName;
     
     private String comProductName;
+    
     private String proWorkDate;
     
     private String proOrderQty;
+    
+    private String totalProOrderDetailCode;
+    
+    
     
     
     

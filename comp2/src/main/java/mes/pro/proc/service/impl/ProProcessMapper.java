@@ -94,4 +94,9 @@ public interface ProProcessMapper {
 	public List<String> selectMacCode(ProProcessVO vo);
 
 	public String selectLineNo(ProProcessVO vo);
+
+	public List<?> selectTotalProcLot(ProProcessVO searchVO);
+	
+	public List<?> selectTotalOrder(ProProcessVO searchVO);
+	
 }

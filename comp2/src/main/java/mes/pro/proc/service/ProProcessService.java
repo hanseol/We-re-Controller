@@ -91,5 +91,9 @@ public interface ProProcessService {
 	List<String> selectMacCode(ProProcessVO vo);
 
 	String selectLineNo(ProProcessVO vo);
+
+	List<?> selectTotalProcLot(ProProcessVO searchVO);
+
+	List<?> selectTotalOrder(ProProcessVO searchVO);
     
 }

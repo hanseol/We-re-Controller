@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style>
+ #proProcessStartTime, #proProcessEndTime {
+ 	display: inline;
+ 	width: 35%;
+ 	
+ }
+</style>
+
 
 <!-- 타이틀 -->
 <div class="content-fluid">
@@ -12,14 +20,14 @@
 	<!-- 정보 (테이블 출력) -->
 <div class="panel">
 	<div class="panel-body">
-	<form name="frm" id="frm" method="post">
+		<form name="frm" id="frm" action="${pageContext.request.contextPath}/pro/proc/printProcessMove.do" method="POST">
 		<table class="table table-bordered" id="process">
 			<thead>
 			</thead>
 			<tbody id="tbody">
 				<tr>
 					<th>공정명</th>
-					<td><select name="comProcessCode" id="comProcessCode">
+					<td><select class="form-control" name="comProcessCode" id="comProcessCode">
 							<option value="">--------선택--------</option>
 							<c:forEach var="procg" items="${procgs }">
 							<option value="${procg.comProcessCode}">${procg.comProcessName}</option>
@@ -28,37 +36,39 @@
 					<th>지시번호 </th> 
 				
 					<td>
-						<select name="proOrderDetailCode" id="proOrderDetailCode">
+						<select class="form-control" name="proOrderDetailCode" id="proOrderDetailCode">
 							<option value="">--------선택--------</option>
 						</select> 
 					</td>
 					<th>제품명</th>
-					<td><input id="comProductName" name="comProductName"></td>
+					<td><input class="form-control" id="comProductName" name="comProductName"></td>
 				</tr>
 				<tr>
 					<th>라인번호</th>
-					<td><input id="macLineNo" name="macLineNo"></td>
+					<td><input class="form-control" id="macLineNo" name="macLineNo"></td>
 					<th>설비코드</th>
 					<td>
-						<select name="macCode" id="macCode">
+						<select class="form-control" name="macCode" id="macCode">
 							<option value="">--------선택--------</option>
 						</select>
 					<th>작업자</th>
-					<td><input id="erpEmployeeId" name="erpEmployeeId"></td>
+					<td><input class="form-control" id="erpEmployeeId" name="erpEmployeeId"></td>
 				</tr>
 				<tr>
-					<th>작업시작시간</th>
-					<td><input id="proProcessStartTime" name="proProcessStartTime">
-						<button type="button" id="startBtn" class="btn btn-danger" disabled>시작</button>
 					<th>작업량</th>
-					<td><input id="proProcessQuantity" name="proProcessQuantity" placeholder=""></td>
-					</td><th>작업종료시간</th>
-					<td><input id="proProcessEndTime" name="proProcessEndTime">
-						<button type="button" id="endBtn" class="btn btn-success" disabled>종료</button>
-					</td>
-				</tr>
+	               <td><input class="form-control" id="proProcessQuantity" name="proProcessQuantity"></td>
+	               <th>작업시간</th>
+	               <td colspan="3">
+	                  <input class="form-control" type="text" id="proProcessStartTime" name="proProcessStartTime">
+	                  <button style="margin-right: 70px" type="button" id="startBtn" class="btn btn-danger" disabled>시작</button> 
+	                  <input class="form-control" type="text" id="proProcessEndTime" name="proProcessEndTime">
+	                  <button type="button" id="endBtn" class="btn btn-success" disabled>종료</button>
+	               </td>
+	               
+           		 </tr>
 			</tbody>
 		</table>
+		<button type="submit">공정이동표발행</button>
 	</form>
 	</div>
 </div>
@@ -66,6 +76,7 @@
 
 <div class="panel">
 	<div class="panel-body">
+	* 자재 LOT
 		<div id="proOrderGrid"></div>
 	</div>
 </div>
@@ -73,11 +84,11 @@
 <script>
 	$(document).ready(function(){
 		//네비게이션 바 고정.
-		$('#proNav').addClass('active');
-		$('#subPages4').addClass('in');
-		$('#subPages4').attr('aria-expanded','true');
-		$('#subPages4').attr('style','');
-		$('.proMnt').addClass('active');
+		$('#n7000000').addClass('active');
+		$('#subPages7000000').addClass('in');
+		$('#subPages7000000').attr('aria-expanded','true');
+		$('#subPages7000000').attr('style','');
+		$('.7030000').addClass('active');
 		
 		//1. 공정을 먼저 선택한다.
 		$("#comProcessCode").on("change", function() {
@@ -143,10 +154,10 @@
 			var comProcessCode = $("#comProcessCode option:selected").val();
 			var proOrderQty = $("#proOrderQty option:selected").val();
 			var erpProductName;
-			
+
 			var readParams = {
 					'proOrderDetailCode' : proOrderDetailCode,
-					'comProces3sCode' : comProcessCode,
+					'comProcessCode' : comProcessCode,
 					'proOrderQty' : proOrderQty
 			};
 			//해당 지시에 필요한 자재정보를 가지고 온다.
@@ -158,8 +169,6 @@
 				dataType : 'json',
 				success : function(result){
 				
-					console.log(result.list);
-					
 					$("#comProductName").val(result.list[0].erpProductName);
 					$('#proProcessQuantity').attr('placeholder', '주문량: ' + result.list[0].proOrderQty );
 				}
@@ -178,7 +187,6 @@
 				 data : { 'macCode' : macCode },
 				 dataType : 'json',
 				 success : function(result){
-					 console.log(result.macLineNo);
 					 $("#macLineNo").val(result.macLineNo);
 				 }
 			 })
@@ -208,6 +216,7 @@
 			var erpEmployeeId = $("#erpEmployeeId").val();
 			var macLineNo = $("#macLineNo").val();
 			var macCode = $("#macCode").val();
+			var comProductName = $("#comProductName").val();
 			
 			$.ajax({
 				url:'${pageContext.request.contextPath}/ajax/pro/startProProcess',
@@ -219,6 +228,7 @@
 						, "erpEmployeeId" : erpEmployeeId
 						, "macLineNo" : macLineNo
 						, "macCode" : macCode
+						, "comProductName" : comProductName
 				},
 				success: function(result){
 					

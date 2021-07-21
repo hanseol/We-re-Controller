@@ -9,7 +9,7 @@
    
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>작성한 생산지시 검색</h3>
+		<h3>생산지시 검색</h3>
 	</div>
 </div>
 

@@ -84,5 +84,7 @@ public interface ProOrderService {
 
 	int insertMat(ProOrderVO searchVO);
 
+	void insertProOrderDetail(LinkedHashMap linkedHashMap);
+
     
 }

@@ -12,10 +12,8 @@
 		<result property="proOrderDate" column="PRO_ORDER_DATE" />
 	</resultMap>
 	
-	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 M + D -->
+	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 M + UPDATE: 생산계획 D -->
 	<insert id="insertProOrder">
-		DECLARE
-			BEGIN
 				INSERT INTO pro_order 
 									( pro_order_code
 		                      		, pro_order_gubun
@@ -26,42 +24,48 @@
 		  		  		 , #{proOrderGubun}
 		  		  		 , #{proOrderQty}
 		  		  		 , #{proOrderSeq}
-		  		  		 , #{proOrderDate}  );
-		
-				INSERT INTO pro_order_detail
-										 (pro_order_detail_code
-		                           	 	, pro_order_code
-		                           		, pro_plan_detail_code
-		                           		, erp_product_deadline
-		                          		, pro_work_date
-		                          		, erp_customer_code
-		                          		, pro_order_expect_qty
-		                          		, pro_order_day_qty
-		                          		, pro_order_seq
-		                        		, pro_order_qty
-		                           		, erp_product_name
-		                        		, erp_product_code
-		                           		, pro_process_lot_no)
-		      		  VALUES(  #{proOrderDetailCode}
-			  		  		 , #{proOrderCode}
-			  		  		 , #{proPlanDetailCode}
-			  		  		 , #{erpProductDeadline}
-			  		  		 , #{proWorkDate}
-			  		  		 , #{erpCustomerCode} 
-			  		  		 , #{proOrderExpectQty}
-			  		  		 , #{proOrderDayQty}
-			  		  		 , #{proOrderSeq}
-			  		  		 , #{proOrderQty}
-			  		  		 , #{erpProductName}
-			  		  		 , #{erpProductCode}
-			  		  		 , #{proProcessLotNo}  );
-			  		  		 
-			  	UPDATE    pro_plan_detail
-				  SET     pro_order_detail_code = #{proOrderDetailCode}
-				  WHERE   pro_plan_detail_code = #{proPlanDetailCode} ;
-		END;
-		
+		  		  		 , #{proOrderDate}  )
 	</insert>
+	
+	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 D -->
+	<insert id="insertProOrderDetail">
+			DECLARE
+			BEGIN
+				INSERT INTO pro_order_detail
+							 (pro_order_detail_code
+		                       	 	, pro_order_code
+		                       		, pro_plan_detail_code
+		                       		, erp_product_deadline
+		                       		, pro_work_date
+		                       		, erp_customer_code
+		                       		, pro_order_expect_qty
+		                       		, pro_order_day_qty
+		                       		, pro_order_seq
+		                     		, pro_order_qty
+		                       		, erp_product_name
+		                     		, erp_product_code
+		                       		, pro_process_lot_no)
+		   		  VALUES(  #{proOrderDetailCode}
+				  		 , #{proOrderCode}
+				  		 , #{proPlanDetailCode}
+				  		 , #{erpProductDeadline}
+				  		 , #{proWorkDate}
+				  		 , #{erpCustomerCode} 
+				  		 , #{proOrderExpectQty}
+				  		 , #{proOrderDayQty}
+				  		 , #{proOrderSeq}
+				  		 , #{proOrderQty}
+				  		 , #{erpProductName}
+				  		 , #{erpProductCode}
+				  		 , #{proProcessLotNo}  );
+				  	
+				  		 UPDATE   pro_plan_detail
+							 SET     pro_order_detail_code = #{proOrderDetailCode}
+							 WHERE   pro_plan_detail_code = #{proPlanDetailCode};
+  		END; 	
+
+	</insert>
+	
 	
 	<!-- 1번 그리드 저장버튼 > UPDATE: pro_order + pro_order_detail -->	
 	<update id="updateProOrder">
@@ -208,11 +212,12 @@
 		SELECT m.pro_order_code
 		     , TO_CHAR(m.pro_order_date, 'yyyy-MM-dd') as pro_order_date
 		     , m.pro_order_gubun
-		     , d.pro_order_detail_code
+		     , (SELECT pro_order_detail_code 
+		        FROM pro_order_detail d
+		        WHERE m.pro_order_code = d.pro_order_code 
+		          AND d.pro_process_status IS NULL
+		          AND ROWNUM = 1) as pro_order_detail_code 
 		FROM  pro_order m 
-			, pro_order_detail d
-		WHERE m.pro_order_code = d.pro_order_code
-		  AND d.pro_process_status IS NULL
 			<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
 				pro_order_date BETWEEN #{startDate} AND #{endDate} 
 			</if>	

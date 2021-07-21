@@ -98,7 +98,7 @@ SELECT * FROM (
 	
 	
 	
-	<!-- 공정별 소요자재 조회 -->
+	<!-- 공정별 소요자재 조회(생산 완료된 지시의 소요 자재만 조회) -->
 	<select id="selectProcLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
 		SELECT  cd.com_code_detail_name
 		      , l.pro_order_detail_code
@@ -121,6 +121,7 @@ SELECT * FROM (
 		  AND   m.com_process_code = cd.com_code_detail_id
 		  AND   l.pro_order_detail_code = od.pro_order_detail_code
 		  AND   od.pro_plan_detail_code = pd.pro_plan_detail_code
+		  AND   od.pro_process_status = '6'
 		<if test="searchCondition == 1"> AND
 			m.com_process_code = 'PROCG001'
 		</if>
@@ -132,6 +133,82 @@ SELECT * FROM (
 		</if>
 		ORDER BY m.com_material_code
 	</select>
+	
+	
+	<!-- 공정별 소요자재 조회(전체 조회) -->
+	<select id="selectTotalProcLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT  cd.com_code_detail_name
+		      , l.pro_order_detail_code
+		      , od.erp_product_code
+		      , od.erp_product_name
+		      , l.mat_lot_no
+		      , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+		      , m.com_material_code
+		      , c.com_material_name
+		      , pd.pro_plan_qty
+		      , od.pro_order_qty
+	          <!-- , (SELECT pro_process_quantity 
+	          	 FROM pro_process pp 
+	          	 WHERE pp.pro_order_detail_code = od.pro_order_detail_code 
+	          	 AND ROWNUM = 1) as pro_process_quantity -->
+	          , CASE  
+			            WHEN (SELECT pro_process_quantity 
+			            	  FROM pro_process pp 
+			            	  WHERE pp.pro_order_detail_code = od.pro_order_detail_code 
+			            	  AND ROWNUM = 1) IS NULL THEN '미완료'
+			            ELSE '완료' END as pro_process_quantity
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		      , com_code_detail cd
+		      , pro_order_detail od
+		      , pro_plan_detail pd
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = cd.com_code_detail_id
+		  AND   l.pro_order_detail_code = od.pro_order_detail_code
+		  AND   od.pro_plan_detail_code = pd.pro_plan_detail_code
+				<if test="searchCondition == 1"> AND
+					m.com_process_code = 'PROCG001'
+				</if>
+				<if test="searchCondition == 2"> AND
+					m.com_process_code = 'PROCG003'
+				</if>
+				<if test="totalProOrderDetailCode != null and totalProOrderDetailCode != ''"> AND
+					l.pro_order_detail_code = #{totalProOrderDetailCode}
+				</if>
+		ORDER BY m.com_material_code
+	
+	</select>
+	
+	
+
+
+	<!-- 생산이 완료된 지시코드 조회하기: 모달용 -->
+	<select id="selectfinishOrder" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT pro_order_detail_code
+			 , TO_CHAR(pro_work_date, 'yyyy-MM-dd') as pro_work_date
+			 , erp_product_name
+		FROM   pro_order_detail
+		WHERE  pro_process_status = '6'
+		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+			pro_work_date BETWEEN #{startDate} AND #{endDate} 
+		</if>	
+	</select>
+	
+	
+	<!-- 전체 지시코드 조회하기: 모달용 -->
+	<select id="selectTotalOrder" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT pro_order_detail_code
+			 , TO_CHAR(pro_work_date, 'yyyy-MM-dd') as pro_work_date
+			 , erp_product_name
+		FROM   pro_order_detail
+		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+			pro_work_date BETWEEN #{startDate} AND #{endDate} 
+		</if>
+	
+	</select>
+
 	
 	
 	<!-- 엑셀작업 -->
@@ -168,20 +245,6 @@ SELECT * FROM (
 		</if>
 		ORDER BY m.com_material_code
 	</select>
-
-
-	<!-- 생산이 완료된 지시코드 조회하기: 모달용 -->
-	<select id="selectfinishOrder" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
-		SELECT pro_order_detail_code
-			 , TO_CHAR(pro_work_date, 'yyyy-MM-dd') as pro_work_date
-			 , erp_product_name
-		FROM   pro_order_detail
-		WHERE  pro_process_status = '6'
-		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
-			pro_work_date BETWEEN #{startDate} AND #{endDate} 
-		</if>	
-	</select>
-
 
 
 	<!-- 김한설 공정흐름관리 -->
@@ -272,7 +335,7 @@ SELECT * FROM (
 				  , #{proProcessStartTime}
 				  , #{erpEmployeeId}
 				  , #{macCode} 
-				  , #{erpProductName});
+				  , #{comProductName});
 	
 			INSERT INTO PRO_PROCESS 
 				( COM_PROCESS_CODE
@@ -280,7 +343,7 @@ SELECT * FROM (
 				  , ERP_PRODUCT_NAME)
 			VALUES ( 'PROCG002'
 				  , #{proOrderDetailCode}
-				  , #{erpProductName});
+				  , #{comProductName});
 				  
 			INSERT INTO PRO_PROCESS 
 				( COM_PROCESS_CODE
@@ -288,7 +351,7 @@ SELECT * FROM (
 				  , ERP_PRODUCT_NAME)
 			VALUES ( 'PROCG003'
 				  , #{proOrderDetailCode}
-				  , #{erpProductName});
+				  , #{comProductName});
 				  
 			UPDATE PRO_ORDER_DETAIL
 			SET PRO_PROCESS_STATUS = 1
@@ -337,8 +400,7 @@ SELECT * FROM (
 			BEGIN
 				UPDATE PRO_PROCESS
 				SET	PRO_PROCESS_END_TIME=#{proProcessEndTime},
-					PRO_PROCESS_QUANTITY=#{proProcessQuantity},
-					ERP_PRODUCT_NAME = #{comProductName}
+					PRO_PROCESS_QUANTITY=#{proProcessQuantity}
 				<if test="comProcessCode=='PROCG003'">,
 					PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 				</if>

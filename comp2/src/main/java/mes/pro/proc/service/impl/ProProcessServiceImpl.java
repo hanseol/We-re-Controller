@@ -173,5 +173,15 @@ public class ProProcessServiceImpl extends EgovAbstractServiceImpl implements
 		return proProcessDAO.selectLineNo(vo);
 	}
 
+	@Override
+	public List<?> selectTotalProcLot(ProProcessVO searchVO) {
+		return proProcessDAO.selectTotalProcLot(searchVO);
+	}
+
+	@Override
+	public List<?> selectTotalOrder(ProProcessVO searchVO) {
+		return proProcessDAO.selectTotalOrder(searchVO);
+	}
+
     
 }
