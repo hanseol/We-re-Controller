@@ -27,7 +27,7 @@ max-height: 600px; */
 
 <div class="content-fluid">
 	<div>
-		<h2>자재입고검사 관리</h2>
+		<h2>자재품질 관리</h2>
 	</div>
 </div>
 
@@ -36,12 +36,13 @@ max-height: 600px; */
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-12" align="right">
-					<button type="button" class="btn btn-danger" id="reset">새자료</button>
-				</div>
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<p class="panel-subtitle">자재 발주 목록</p>
 				</div>
+				<div class="col-md-6" align="right">
+					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				</div>
+				<div class="col-md-12"><br/></div>
 				<form id="option">
 					<div class="col-md-3">
 						입고일자<input type="date" id="materialDate" name="materialDate"> ~ <input type="date" id="materialEndDate" name="materialEndDate">
@@ -189,8 +190,8 @@ let erpMaterialOrderCode;
 		$("#modifyRow").on("click", function() {
 			grid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
-
-			location.reload(true);
+			grid.reloadData();
+			passGrid.reloadData();
 			});
 		
 		
@@ -230,6 +231,7 @@ let erpMaterialOrderCode;
 		$("#modifyPass").on("click", function () {
 			passGrid.finishEditing('rowKey', 'columnName');
 			passGrid.request('modifyData');
+			passGrid.reloadData();
 		});
 		
 		
@@ -457,21 +459,31 @@ let erpMaterialOrderCode;
 		//그리드2 모달그리드 선언 초기화-----------------------------------------------------
 		materialTwoGrid = passGrid;
 		vendorTwoGrid = passGrid;
-		//불량량,합격량에 값이 있을 때만 검사 유무 설정 가능하게
 		
-/* 		grid.on('click', ev=>{
+		//불량량,합격량에 값이 있을 때만 검사 유무 설정 가능하게
+		grid.on('click', ev=>{
 			var i = ev.rowKey;
-			var passQty = grid.getValue(i, 'quaMaterialPQty');
-			var fltyQty = grid.getValue(i, 'quaMaterialFQty');
-			var fltyCode = grid.getValue(i, 'comMaterialFCode');
-			if(ev.columnName =='quaMaterialChk'){
-				if(((passQty==null)||(passQty==""))||((fltyQty==null)||(fltyQty==""))){
-					alert('합격량/불량량을 지정해주세요.');
-				} else if ((fltyCode==null)||(fltyCode=="")){
-					alert('불량코드를 지정해주세요.');
-				} 
-			}
-		}); */
+	        if(ev.columnName =='quaMaterialChk'){
+	            var passQty = grid.getValue(i, 'quaMaterialPQty');
+	            var fltyQty = grid.getValue(i, 'quaMaterialFQty');
+	            var fltyCode = grid.getValue(i, 'comMaterialFCode');
+	            
+            	if(passQty==0){
+            		alert('불량코드를 지정해주세요.');
+            		return;
+            	}else if(fltyQty==0){
+            		return;
+            	}else{
+            		if (passQty==null||passQty==""){
+            			alert('합격량을 지정해주세요.');
+            		} else if (fltyQty==null||fltyQty==""){
+            			alert('불량량을 지정해주세요.');
+            		} else if (fltyCode==null||fltyCode==""){
+            			alert('불량코드를 지정해주세요.');
+            		}
+            	}
+	         }
+	      });
 		
 		
 		

@@ -64,12 +64,12 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 				int passQty =  Integer.parseInt(String.valueOf(updatedMap.get("quaMaterialPQty")));
 				int fltyQty =  Integer.parseInt(String.valueOf(updatedMap.get("quaMaterialFQty")));
 				int quaChk = Integer.parseInt(String.valueOf(updatedMap.get("quaMaterialChk")));
-				if(quaChk == 0) {
-					quaChkMapper.updateQuaChk(updatedMap);
-				} else {
-					if(fltyQty == 0) {//불량이 없는 것.
-						//검사완료 업데이트
-						quaChkMapper.updateQuaChk(updatedMap);
+				if (quaChk == 0) { //검사완료가 아니면
+					quaChkMapper.updateQuaChk(updatedMap); //검사테이블 업데이트만 하고
+				} else if (quaChk == 1) { //검사완료된 거라면
+					if(fltyQty == 0) {//불량이 없는 것은
+						
+						quaChkMapper.updateQuaChk(updatedMap);//검사테이블에 업데이트하고
 
 						//합격량만큼 반복 인서트
 						for(int j = 0; j < passQty;j++) {
@@ -81,7 +81,7 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 
 						}
 											
-					}else if ((fltyQty != 0)&&(passQty != 0)) {//불량이 있는데 합격량도 있는 것.
+					}else if ((fltyQty != 0)&&(passQty != 0)) {//불량이 있는데 합격량도 있는 것은
 						//검사완료 업데이트
 						quaChkMapper.updateQuaChk(updatedMap);
 						//자재 불량으로 인서트
@@ -100,7 +100,7 @@ public class QuaChkServiceImpl extends EgovAbstractServiceImpl implements
 						///////////////////불량내역과 입고내역을 분리 할 수 있는 방법(계산) 알아내기.///////////////////
 						
 						
-					}else if ((fltyQty != 0)&&(passQty == 0)) {//불량이 있는데, 합격량이 0 인 것
+					}else if ((fltyQty != 0)&&(passQty == 0)) { //전부 불량인 것은
 						//검사완료 업데이트
 						quaChkMapper.updateQuaChk(updatedMap);
 						//자재 불량으로 인서트

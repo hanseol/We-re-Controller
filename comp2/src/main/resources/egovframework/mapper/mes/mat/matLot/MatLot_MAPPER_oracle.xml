@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mes.mat.lot.service.impl.MatLotMapper">
 
-	<!-- 자재LOT 전체 조회 -->
+	<!-- 자재LOT 조정 전체 조회 -->
 	<select id="selectMatLotList" parameterType="mes.mat.lot.service.MatLotVO" resultType="egovMap" >
 		SELECT *
 		FROM   (

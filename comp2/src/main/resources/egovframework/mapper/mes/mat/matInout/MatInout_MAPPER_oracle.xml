@@ -193,11 +193,6 @@
 	
 		<!-- 모달 자재LOT_NO 리스트 -->
 	<select id="searchMaterialLotList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
-		SELECT *
-		FROM   (
-		          	SELECT a.*,
-		                     ROWNUM rnum
-		            FROM   (
 		                              SELECT    DISTINCT i.mat_lot_no,
                                             	i.mat_inout_gubun,
                                             	i.qua_material_statement,
@@ -216,9 +211,7 @@
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
 					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 					                  </if>
-									  ORDER BY i.mat_lot_no <![CDATA[ ) A
-         			WHERE ROWNUM <= #{lastIndex})
-		WHERE RNUM >= #{firstIndex}]]>
+									  ORDER BY i.mat_lot_no
 	</select>	
 	
 	<!-- 모달 자재LOT_NO 더블클릭 리스트(INOUT005) -->

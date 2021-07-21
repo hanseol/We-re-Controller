@@ -115,13 +115,20 @@ let vendorGrid;
 		
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() { 
-			location.reload(true);
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+		    	fltyGrid.clear();
+		    	
+		    	$('#materialCode').val("");
+		    	$('#vendorCode').val("");
+		    	$('#orderCode').val("");
+		    	});
 			}); 
 
 		
 		//검색데이터 전송
-		$(document).on("click",	"button[id=search]",
-				function () {
+		$("#search").on("click", function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 					
@@ -140,6 +147,7 @@ let vendorGrid;
 						'quaMaterialChkEndDate' : quaMaterialChkEndDate
 					};
 					grid.readData(1, readParams, true);
+					fltyGrid.clear();
 				});
 		
 		
@@ -150,6 +158,7 @@ let vendorGrid;
 					method : 'GET'
 				}
 			},
+			initialRequest : false,
 			contentType : "application/json"
 		};
 		
@@ -160,7 +169,7 @@ let vendorGrid;
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 300,
+	        bodyHeight: 250,
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주코드',
@@ -232,7 +241,7 @@ let vendorGrid;
 			data : fltyDataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 100,
+	        bodyHeight: 150,
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주코드',
@@ -251,13 +260,19 @@ let vendorGrid;
 				name : 'comMaterialFName'
 			}, {
 				header : '불량량',
-				name : 'quaMaterialFQty'
+				name : 'quaMaterialFQty',
+		        align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header: '단가',
-				name: 'erpMaterialUnitPrice'
+				name: 'erpMaterialUnitPrice',
+		        align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header: '청구금액',
-				name: 'erpMatFltyPrice'
+				name: 'erpMatFltyPrice',
+		        align : 'right',
+	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}]
 		});
 		

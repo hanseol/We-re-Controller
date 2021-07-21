@@ -123,6 +123,8 @@
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let materialGrid;
 let vendorGrid;
+var outGrid;
+var grid;
 //-----------------------------------------------------------
 //네비게이션 바 고정.
 $('#matNav').addClass('active');
@@ -178,7 +180,7 @@ $('.matrInout').addClass('active');
 			contentType: "application/json"
 		};
 		//입고 그리드
-		const grid = new tui.Grid({
+		grid = new tui.Grid({
 			el: document.getElementById('grid'),
 			data: dataSource,
 			scrollX: true,
@@ -295,7 +297,7 @@ $('.matrInout').addClass('active');
 			};
 		
 		//출고 그리드
-		const outGrid = new tui.Grid({
+		outGrid = new tui.Grid({
 			el: document.getElementById('outGrid'),
 			data: outDataSource,
 			scrollX: true,
@@ -463,5 +465,12 @@ $('.matrInout').addClass('active');
 		  }
 		  document.getElementById(inout).style.display = "block";
 		  evt.currentTarget.className += " active";
+		  
+			 
+		  if(inout == 'outgrid'){
+			  outGrid.refreshLayout();
+		  } else if(inout == 'ingrid'){
+			  grid.refreshLayout();
+		  }
 	}
 </script>
