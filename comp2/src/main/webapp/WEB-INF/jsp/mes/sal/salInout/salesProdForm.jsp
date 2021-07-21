@@ -400,6 +400,10 @@ var ugrid;
 				header : '로트넘버',
 				name : 'proProcessLotNo',
 				hidden : true
+			}, {
+				header : '코드',
+				name : 'scomProductCode',
+				hidden : true
 			}]
 		});
 		
@@ -482,6 +486,10 @@ var ugrid;
 					header : '전표번호',
 					name : 'salInoutStatement',
 					hidden : true
+				}, {
+					header : '제품코드',
+					name : 'underCode',
+					hidden : true
 				}],
 				summary : {
 		            height : 40,
@@ -541,15 +549,14 @@ var ugrid;
 		
 		//출고 : 체크 -> 정보 출고세부에 뿌려주기
 		moGrid.on('dblclick', ev => {
-	 		if(ev.colunName == 'salInoutQuantity') {
-	 			
+	 		if(moGrid.getValue(ev.columnName == 'comProductCode') == moGrid.getValue(ev.columnName == 'scomProductCode') == muGrid.getValue(ev.columnName == 'underCode')) { 			
 	 			muGrid.setValue(urowId, 'proProcessLotNo', proProcessLotNo, false);
 	 			//modProductLotNoSearch(ev.rowKey);
 	 		}
 	 	}); 
 		
 		//출고 세부 : lot_no 클릭 이벤트
-	 	moGrid.on('dblclick', ev => {
+	 	muGrid.on('dblclick', ev => {
 	 		if(ev.colunName == 'proProcessLotNo') {
 	 			modProductLotNoSearch(ev.rowKey);
 	 		}

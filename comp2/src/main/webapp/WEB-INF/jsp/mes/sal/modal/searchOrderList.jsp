@@ -68,8 +68,6 @@ $(document).ready(function() {
 			moGrid.setValue(orowId, 'proProcessLotNo', '0', false);
 			moGrid.setValue(orowId, 'salNowQuantity', '0', false);
 			
-			console.log(moGrid.setValue(orowId, 'proProcessLotNo', '0', false));
-			console.log(moGrid.setValue(orowId, 'salNowQuantity', '0', false));
 		}
 	});
 	
