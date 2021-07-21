@@ -36,9 +36,6 @@
 
 
 $(document).ready(function() {
-	//그리드 선언을 ready밖으로 빼기
-	//(모달 취소하고 다시 모달 들어가서 체크하면 값을 찾지 못하는 현상 해결)
-	let vendorModalGrid;
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
@@ -56,6 +53,10 @@ $(document).ready(function() {
 				$("#vendorCode").val(comCodeDetailId);
 			} else if(vendorRowId == -2){
 				$("#vendorCodeTwo").val(comCodeDetailId);
+			} else if(vendorRowId == -3){//입고인풋 전달
+				$("#inVendorCode").val(comCodeDetailId);
+			} else if(vendorRowId == -4){//출고인풋 전달
+				$("#outVendorCode").val(comCodeDetailId);
 			} else {
 			
 				vendorGrid.blur();
@@ -93,7 +94,7 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	vendorModalGrid = new tui.Grid({
+	const vendorModalGrid = new tui.Grid({
 		el : document.getElementById('vendorModalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,

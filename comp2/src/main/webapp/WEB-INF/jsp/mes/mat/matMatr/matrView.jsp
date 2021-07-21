@@ -86,6 +86,7 @@ $(document).ready(function () {
 	$("#reset").click(function() { 
 		$("form").each(function() {  
 	    	if(this.id == "option") this.reset();
+	    	grid.clear();
 	    	
 	    	$('#materialCode').val("");
 	    	
@@ -93,8 +94,7 @@ $(document).ready(function () {
 		}); 
 		
 	//조회버튼
-	$(document).on("click", "button[id=search]",
-		function () {
+	$("#search").on("click", function () {
 			//데이터를 변수에 담아서 parameter로 만들기.
 			var comMaterialCode = $("#materialCode").val();
 			var erpVendorCode = $("#vendorCode").val();
@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 				},
 				// 바로 값 나오지않게함
-				//initialRequest : false,
+				initialRequest : false,
 				contentType: "application/json"
 			};
 

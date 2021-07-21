@@ -108,7 +108,14 @@ $(document).ready(function () {
 	
 	// 옵션 폼 리셋버튼  
 	$("#reset").click(function() { 
-		location.reload(true);
+		$("form").each(function() {  
+	    	if(this.id == "option") this.reset();
+	    	grid.clear();
+	    	
+	    	$('#materialCode').val("");
+	    	$('#matLot').val("");
+	    	
+	    	});
 		}); 
 
 	

@@ -97,13 +97,19 @@ let materialGrid;
 		
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() { 
-			location.reload(true);
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+		    	
+		    	$('#orderCode').val("");
+		    	$('#materialCode').val("");
+		    	
+		    	});
 			}); 
 
 		
 		//검색데이터 전송
-		$(document).on("click",	"button[id=search]",
-				function () {
+		$("#search").on("click", function () {
 
 					//데이터를 변수에 담아서 parameter로 만들기.
 					var materialCode = $("#materialCode").val();
@@ -127,7 +133,7 @@ let materialGrid;
 					method : 'GET'
 				}
 			},
-			initialRequest : false,
+			//initialRequest : false,
 			contentType : "application/json"
 		};
 
@@ -137,7 +143,7 @@ let materialGrid;
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 300,
+	        bodyHeight: 400,
 	        rowHeight: 30,
 			columns : [ {
 				header : '발주일자',

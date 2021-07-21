@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 
-
-
 <!-- 입고, 출고 탭 이동 -->
 <div class="tabs">
    <ul class="nav nav-tabs" role="tablist">
@@ -26,18 +24,18 @@
 					<div class="col-md-12">
 						일자<input type="date" id="inDate" name="inDate">~<input type="date" id="inEndDate" name="inEndDate">
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						자재검색<input type="text" id="inMaterialCode" name="inMaterialCode">
 						<a id="inSearchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						업체검색<input type="text" id="inVendorCode" name="inVendorCode">
 						<a id="inSearchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
+				<div class="col-md-4" align="right">
 					<button type="button" class="btn btn-success" id="inSearch">조회</button>
 					<button type="button" class="btn btn-danger" id="inReset">새자료</button>
 				</div>
@@ -77,15 +75,15 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-12">
+					<div class="col-md-3">
 						일자<input type="date" id="outDate" name="outDate">~<input type="date" id="outEndDate" name="outEndDate">
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-3" align="left">
 						자재검색<input type="text" id="outMaterialCode" name="outMmaterialCode">
 						<a id="outSearchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-3" align="left">
 						출고공정검색<input type="text" id="outProcessCode" name="outProcessCode">
 						<a id="outSearchProcessCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
@@ -189,7 +187,7 @@ $('.matrInout').addClass('active');
 			data: dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 300, 
+	        bodyHeight: 400, 
 	        rowHeight: 30,
 			columns: [ {
 				header: '전표번호',
@@ -310,7 +308,7 @@ $('.matrInout').addClass('active');
 			data: outDataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 300,
+	        bodyHeight: 400,
 	        rowHeight: 30,
 			columns: [{
 				header: '전표번호',
@@ -413,19 +411,20 @@ $('.matrInout').addClass('active');
 		});
 
 		//그리드 로우아이디 지정--------------------------------------
-		//자재
+		//입고탭 자재인풋 로우키
 		$('#inSearchMaterialCode').click(function(event) {
 			materialCodeSearch(-3);
 		});
-		//업체
+		//입고탭 업체인풋 로우키
 		$('#inSearchVendorCode').click(function(event) {
 			vendorCodeSearch(-3);
 		});
-		//자재
+		
+		//출고탭 자재인풋 로우키
 		$('#outSearchMaterialCode').click(function(event) {
 			materialCodeSearch(-4);
 		});
-		//공정
+		//출고탭 공정인풋 로우키
 		$('#outSearchProcessCode').click(function(event) {
 			processCodeSearch(-4);
 		});
@@ -442,19 +441,6 @@ $('.matrInout').addClass('active');
 		  this.blur(); // Manually remove focus from clicked link.
 		  console.log(this.href);
 		  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
-		    $(html).appendTo('body').modal();
-		  });
-	}
-	//업체
-	var vendorRowId;
-	function vendorCodeSearch(c) {
-		vendorRowId = c;
-		  console.log(vendorRowId);
-		  event.preventDefault();
-		  $(".modal").remove();
-		  this.blur(); // Manually remove focus from clicked link.
-		  console.log(this.href);
-		  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
 	}

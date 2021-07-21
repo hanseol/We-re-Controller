@@ -41,7 +41,7 @@ $(document).ready(function() {
 	
 	//확인을 눌렀을 때 선택한 값이 있다면 그 값을 전달 해야 함.
 	//일딴 한건만 선택했을 때의 경우.
-	$(document).on("click","button[id=ok]", function(){
+	$("#ok").on("click", function(){
 
 		var chkRowKeys = matLotModalGrid.getCheckedRowKeys();
 		var code = [];
@@ -77,7 +77,7 @@ $(document).ready(function() {
 	});
 
 	
-	$(document).on("click", "button[id=modalSearch]", function() {
+	$("#modalSearch").on("click", function() {
 		var materialCode = $("#materialCode").val();
 		
 		var materialName = $("#materialName").val();

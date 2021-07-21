@@ -198,54 +198,50 @@
 		          	SELECT a.*,
 		                     ROWNUM rnum
 		            FROM   (
-		                              SELECT   c.com_material_code,
-		                                       c.com_material_name,
-		                                       m.mat_lot_no,
-		                                       m.mat_inout_quantity,
-		                                       m.mat_inout_date
-		                              FROM     mat_inout m,
-		                              		   com_material c
-		                              WHERE	   c.com_material_code = m.com_material_code
-		                              AND	   m.mat_inout_gubun = 'INOUT002'
+		                              SELECT    DISTINCT i.mat_lot_no,
+                                            	i.mat_inout_gubun,
+                                            	i.qua_material_statement,
+                                            	i.com_material_code,
+                                            	get_code_detail(i.com_material_code) as com_material_name,
+                                            	i.mat_inout_quantity
+		                              FROM      mat_inout i,
+                                            	mat_inout o
+                                            
+		                              WHERE	    i.mat_inout_gubun = 'INOUT002'
+		                              AND	    o.mat_inout_gubun NOT IN ('INOUT003')
+                                  	  AND       i.mat_inout_quantity NOT IN('0')
 					                  <if test="matLotNo != null and matLotNo !=''"> AND
-					                     m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+					                     i.mat_lot_no LIKE '%' || #{matLotNo} || '%'
 					                  </if>
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
-					                     c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 					                  </if>
-									  ORDER BY m.mat_lot_no <![CDATA[ ) A
+									  ORDER BY i.mat_lot_no <![CDATA[ ) A
          			WHERE ROWNUM <= #{lastIndex})
 		WHERE RNUM >= #{firstIndex}]]>
-	</select>
+	</select>	
 	
-	
-	<!-- 모달 자재LOT_NO LOT조정 리스트(정산테이블에 있는 데이터 제외한 조회) -->
+	<!-- 모달 자재LOT_NO 더블클릭 리스트(INOUT005) -->
 	<select id="searchMaterialLotSecondList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
-		SELECT *
-		FROM   (
-		          	SELECT a.*,
-		                     ROWNUM rnum
-		            FROM   (
-		                              SELECT   c.com_material_code,
-		                                       c.com_material_name,
-		                                       m.mat_lot_no,
-		                                       m.mat_inout_quantity,
-		                                       m.mat_inout_date
-		                              FROM     mat_inout m,
-		                              		   com_material c
-		                              WHERE	   c.com_material_code = m.com_material_code
-		                              AND	   m.mat_inout_gubun = 'INOUT002'
-		                              AND	   m.mat_lot_no NOT IN (SELECT	mat_lot_no
-		                              								FROM	mat_match
-		                              								WHERE	mat_lot_no IS NOT NULL)
+		
+		                              SELECT    DISTINCT i.mat_lot_no,
+                                            	i.mat_inout_gubun,
+                                            	i.qua_material_statement,
+                                            	i.com_material_code,
+                                            	get_code_detail(i.com_material_code) as com_material_name,
+                                            	i.mat_inout_quantity
+		                              FROM      mat_inout i,
+                                            	mat_inout o
+                                            
+		                              WHERE	    i.mat_inout_gubun = 'INOUT002'
+		                              AND	    o.mat_inout_gubun NOT IN ('INOUT003')
+                                  	  AND       i.mat_inout_quantity NOT IN('0')
 					                  <if test="matLotNo != null and matLotNo !=''"> AND
-					                     m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+					                     i.mat_lot_no LIKE '%' || #{matLotNo} || '%'
 					                  </if>
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
-					                     c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 					                  </if>
-									  ORDER BY m.mat_lot_no <![CDATA[ ) A
-         			WHERE ROWNUM <= #{lastIndex})
-		WHERE RNUM >= #{firstIndex}]]>
+									  ORDER BY i.mat_lot_no DESC
 	</select>
 </mapper>

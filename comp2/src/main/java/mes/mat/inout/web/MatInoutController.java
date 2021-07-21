@@ -63,7 +63,7 @@ public class MatInoutController {
 
         return "mes/mat/matInout/matrInoutView.page";
     }
-    //자재입출고조회 리스트
+    //자재입고조회 리스트
     @RequestMapping("/ajax/readMatInout")
     @ResponseBody
     public Map<String, Object> matInout(Model model, 
@@ -75,7 +75,7 @@ public class MatInoutController {
     	ComFunc comFunc = new ComFunc();
     	return comFunc.sendResult(list);
     }
-    //자재입출고조회 리스트
+    //자재출고조회 리스트
     @RequestMapping("/ajax/readMatInoutPass")
     @ResponseBody
     public Map<String, Object> matInoutPass(Model model, 
@@ -90,52 +90,46 @@ public class MatInoutController {
 
 //--------------------------------------관리 페이지--------------------------------------    
     
-  	//자재입출고 [관리] 페이지
-    @RequestMapping("/mat/inout/matrInoutForm.do")
-    public String selectMatInoutForm(@ModelAttribute("searchVO") MatInoutVO searchVO, 
-    		ModelMap model) {
-
-        return "mes/mat/matInout/matrInoutForm.page";
-    }
+	/*
+	 * //자재입출고 [관리] 페이지
+	 * 
+	 * @RequestMapping("/mat/inout/matrInoutForm.do") public String
+	 * selectMatInoutForm(@ModelAttribute("searchVO") MatInoutVO searchVO, ModelMap
+	 * model) {
+	 * 
+	 * return "mes/mat/matInout/matrInoutForm.page"; }
+	 */
   	
-  	//자재입출고 [관리] 등록 수정 삭제 
-    @PutMapping("/ajax/modifyMatInout")
-	@ResponseBody
-	public Map<String, Object> modifyMatInout(@RequestBody GridDataVO gd) throws Exception {
-    	Map<String, Object> map = new HashMap<String, Object>();
-		List<?> updatedList = gd.getUpdatedRows();
-		List<?> createdList = gd.getCreatedRows();
-		List<?> deletedList = gd.getDeletedRows();
-
-		if (updatedList.size() != 0) {
-			for (int i = 0; i < updatedList.size(); i++) {
-				service.updateMatInout((LinkedHashMap) updatedList.get(i));
-			}
-		}
-		
-		if (createdList.size() != 0) {
-			for (int i = 0; i < createdList.size(); i++) {
-//				String gubun = (String) ((LinkedHashMap)createdList.get(i)).get("matInoutGubun");
-				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", mesMatOutStatementIdGnrService.getNextStringId());
-//				//전표번호 부여
-//				if(gubun.equals("INOUT002")) {
-//				((LinkedHashMap)createdList.get(i)).put("matInoutStatement", mesMatInStatementIdGnrService.getNextStringId());
-//				}else if(gubun.equals("INOUT003")){
-//					
-//				}
-				service.insertMatInout((LinkedHashMap) createdList.get(i));
-			}
-		}
-
-		if (deletedList.size() != 0) {
-			for (int i = 0; i < deletedList.size(); i++) {
-				service.deleteMatInout((LinkedHashMap) deletedList.get(i));
-			}
-		}
-		map.put("result", true);
-		
-		return map;
-	}
+	/*
+	 * //자재입출고 [관리] 등록 수정 삭제
+	 * 
+	 * @PutMapping("/ajax/modifyMatInout")
+	 * 
+	 * @ResponseBody public Map<String, Object> modifyMatInout(@RequestBody
+	 * GridDataVO gd) throws Exception { Map<String, Object> map = new
+	 * HashMap<String, Object>(); List<?> updatedList = gd.getUpdatedRows(); List<?>
+	 * createdList = gd.getCreatedRows(); List<?> deletedList = gd.getDeletedRows();
+	 * 
+	 * if (updatedList.size() != 0) { for (int i = 0; i < updatedList.size(); i++) {
+	 * service.updateMatInout((LinkedHashMap) updatedList.get(i)); } }
+	 * 
+	 * if (createdList.size() != 0) { for (int i = 0; i < createdList.size(); i++) {
+	 * // String gubun = (String)
+	 * ((LinkedHashMap)createdList.get(i)).get("matInoutGubun");
+	 * ((LinkedHashMap)createdList.get(i)).put("matInoutStatement",
+	 * mesMatOutStatementIdGnrService.getNextStringId()); // //전표번호 부여 //
+	 * if(gubun.equals("INOUT002")) { //
+	 * ((LinkedHashMap)createdList.get(i)).put("matInoutStatement",
+	 * mesMatInStatementIdGnrService.getNextStringId()); // }else
+	 * if(gubun.equals("INOUT003")){ // // } service.insertMatInout((LinkedHashMap)
+	 * createdList.get(i)); } }
+	 * 
+	 * if (deletedList.size() != 0) { for (int i = 0; i < deletedList.size(); i++) {
+	 * service.deleteMatInout((LinkedHashMap) deletedList.get(i)); } }
+	 * map.put("result", true);
+	 * 
+	 * return map; }
+	 */
 
 
 //--------------------------------------모달 페이지--------------------------------------

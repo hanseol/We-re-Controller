@@ -107,7 +107,7 @@
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
+							        	q.qua_material_chk_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
 		                              ORDER BY q.erp_material_order_code DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )

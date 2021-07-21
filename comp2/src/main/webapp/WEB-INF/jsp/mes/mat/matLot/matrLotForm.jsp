@@ -46,25 +46,26 @@ max-height: 600px; */
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-12">
-						일자<input type="date" id="matchDate" name="matchDate">~<input type="date" id="matchEndDate" name="matchEndDate">
+					<div class="col-md-4">
+						일자&nbsp;&nbsp;&nbsp;<input type="date" id="matchDate" name="matchDate">~<input type="date" id="matchEndDate" name="matchEndDate">
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-8" align="left">
 						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
 						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
 					</div>
-					<div class="col-md-3">
-						자재검색<input type="text" id="materialCode" name="materialCode">
+					<div class="col-md-12"><br/></div>
+					<div class="col-md-4">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
-						자재LOT검색<input type="text" id="matLot" name="matLot">
+					<div class="col-md-4" align="left">
+						자재LOT검색&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot">
 						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
+				<div class="col-md-4" align="right">
 					<button type="button" class="btn btn-success" id="search">조회</button>
 					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 					<button type="button" class="btn btn-danger" id="reset">새자료</button>
@@ -109,7 +110,14 @@ let matLotGrid;
 		
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() { 
-			location.reload(true);
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	grid.clear();
+		    	
+		    	$('#materialCode').val("");
+		    	$('#matLot').val("");
+		    	
+		    	});
 			}); 
 		
 		//정산입출고구분 체크박스 하나만 체크되거나 해제가능.
@@ -121,8 +129,7 @@ let matLotGrid;
 		});
 
 		//추가버튼 (행 추가)
-		$(document).on("click", "button[id=appendRow]",
-			function () {
+		$("#appendRow").on("click", function () {
 				var rowData = [{
 					//여기 수정 해야함.
 					matMatchDate: "",
@@ -141,8 +148,7 @@ let matLotGrid;
 				grid.enable();
 			});
 		//저장버튼 (등록, 수정, 삭제)
-		$(document).on("click", "button[id=modifyRow]",
-			function () {
+		$("#modifyRow").on("click", function () {
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				grid.finishEditing('rowKey', 'columnName');
 				
@@ -150,14 +156,12 @@ let matLotGrid;
 				location.reload(true);
 			});
 		//삭제 버튼(체크된 행 삭제)
-		$(document).on("click", "button[id=deleteRow]",
-			function () {
+		$("#deleteRow").on("click", function () {
 				grid.removeCheckedRows(false);
 			});
 
 		//검색데이터 전송
-		$(document).on("click",	"button[id=search]",
-				function () {
+		$("#search").on("click", function () {
 					//입출고구분 테스트
 					var inGubun = $('input:checkbox[id="inGubun"]').is(":checked")
 					var outGubun = $('input:checkbox[id="outGubun"]').is(":checked")
@@ -198,7 +202,7 @@ let matLotGrid;
 
 			},
 			// 리스트에 값이 바로 나오지않도록 함.
-			//initialRequest : false,
+			initialRequest : false,
 			contentType: "application/json"
 		};
 
@@ -208,7 +212,7 @@ let matLotGrid;
 			data: dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight :300,
+	        bodyHeight :400,
 	        rowHeight: 30,
 			columns: [{
 				header : '입/출고일자',

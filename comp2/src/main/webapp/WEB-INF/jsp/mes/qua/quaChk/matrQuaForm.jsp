@@ -31,13 +31,6 @@ max-height: 600px; */
 	</div>
 </div>
 
-<!-- 관리, 지시 탭 이동 -->
-<div id="tabs">
-	<ul class="nav nav-tabs" role="tablist">
-		<li class="active"><a onclick='location.href="matrQuaForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
-		<li class=""><a onclick='location.href="matrQuaView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
-	</ul>
-</div>
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
@@ -46,15 +39,6 @@ max-height: 600px; */
 				<div class="col-md-12" align="right">
 					<button type="button" class="btn btn-danger" id="reset">새자료</button>
 				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="content-fluid">
-	<div class="panel panel-headline">
-		<div class="panel-body">
-			<div class="row">
 				<div class="col-md-12">
 					<p class="panel-subtitle">자재 발주 목록</p>
 				</div>
@@ -205,7 +189,8 @@ let erpMaterialOrderCode;
 		$("#modifyRow").on("click", function() {
 			grid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
-			
+
+			location.reload(true);
 			});
 		
 		
@@ -288,7 +273,6 @@ let erpMaterialOrderCode;
 			}, {
 				header: '입고일자',
 				name: 'quaMaterialDate',
-				width: '80',
 				align: 'center'
 			}, {
 				header: '업체코드',
@@ -415,12 +399,10 @@ let erpMaterialOrderCode;
 			}, {
 				header: '검사일자',
 				name: 'quaMaterialChkDate',
-				width: '80',
 				align: 'center',
 			}, {
 				header: '입고일자',
 				name: 'quaMaterialDate',
-				width: '80',
 				align: 'center'
 			}, {
 				header: '업체코드',
@@ -565,17 +547,9 @@ let erpMaterialOrderCode;
 
 
 
-		//그리드 응답(제이슨)
-		grid.on('response', ev => {
-			const { response } = ev.xhr;
-			const responseObj = JSON.parse(response);
 
-			//console.log('result : ', responseObj.result);
-			//console.log('data : ', responseObj.data);
-		});
 		
-		
-		//날짜 범위 검색 옵션
+		//날짜 범위 검색 옵션(그리드1)
 		var start = $("#materialDate");
 		var end = $("#materialEndDate");
 		start.change(function(){
@@ -589,6 +563,19 @@ let erpMaterialOrderCode;
 			}
 		});
 		
+		//날짜 범위 검색 옵션(그리드2)
+		var start = $("#quaChkDate");
+		var end = $("#quaChkEndDate");
+		start.change(function(){
+			if(end.val() == ""){
+				end.val(start.val());
+			}
+		});
+		end.change(function(){
+			if(start.val() == ""){
+				start.val(end.val());
+			}
+		});
 		
 		
 		// 그리드 테마
