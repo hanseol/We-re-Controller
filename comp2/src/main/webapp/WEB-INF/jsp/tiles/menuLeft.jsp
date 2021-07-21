@@ -44,7 +44,7 @@
     			$.each(arr, function(index, item){
     				if(item.chkURL == "dir"){
     					$("#leftMenu").append('<li><a href="#subPages' + item.menuNo + '" data-toggle="collapse" class="collapsed" id="n' 
-    										+ item.menuNo + '"><i class="lnr lnr-star-half"></i><span>'
+    										+ item.menuNo + '"><i class="lnr lnr-layers"></i><span>'
     										+item.menuNm+'</span><i class="icon-submenu lnr lnr-chevron-left"></i></a>'
     										+ '<div id="subPages' + item.menuNo + '" class="collapse ">'
     										+ '<ul class="nav" id="u' + item.menuNo + '"></ul></div></li>');

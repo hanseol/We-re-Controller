@@ -33,7 +33,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-   
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&display=swap" rel="stylesheet">
    
    
    
@@ -52,6 +52,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 	
 	<style>
+	
 	.my-panel {
 		text-align: right;
 		border-top: 1px solid gray;
@@ -91,6 +92,19 @@
 		margin-top: 24px;
 	}
 	
+	/*제목 폰트*/
+	h1, h2, h3 {
+		font-family: 'Do Hyeon', sans-serif;
+		color : black;
+	}
+	
+	.sidebar .nav span {
+	    font-size: 17px;
+	}
+	
+	div {
+		font-family: 'Nanum Gothic Coding', monospace;
+	}
 </style>
 </head>
 <body> 

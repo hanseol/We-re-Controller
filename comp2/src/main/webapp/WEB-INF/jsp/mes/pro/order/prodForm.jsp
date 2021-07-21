@@ -35,7 +35,7 @@
                   <a id="showModal" href="${pageContext.request.contextPath}/pro/order/planProductSearch.do" rel="modal:open"></a>
                </div>
                <div class="col-md-6" align="right">
-               	      작업지시코드 <input type="text" id="proOrderCode" name="proOrderCode" readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               	      작업지시코드 :<input type="text" id="proOrderCode" name="proOrderCode" style="border:0; width:130px; " readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-success" id="findRow">조회</button>
                   <button type="reset" class="btn btn-danger" id="reset">새자료</button>
                   <!-- <button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button> -->
@@ -108,9 +108,11 @@ var proOrdergrid;
 var proOrderRowKey;
 
    $(document).ready(function() {
+	   
+	  //date 태그 디폴드 값 설정 (오늘 날짜)
+	  $("#proOrderDate").val(new Date().toISOString().substring(0,10)); 
+	 
       //네비게이션 고정
-      
-      //$(document).find("#n7000000").addClass('active');
       $('#n7000000').addClass('active');
       $('#subPages7000000').addClass('in');
       $('#subPages7000000').attr('aria-expanded','true');
@@ -164,7 +166,7 @@ var proOrderRowKey;
 	         proOrdergrid.setRequestParams(params);
 	         proOrdergrid.finishEditing('rowKey', 'columnName');
 	         proOrdergrid.request('modifyData');
-        
+        	
       });
       
       // M 리셋버튼  
@@ -326,8 +328,8 @@ var proOrderRowKey;
             hidden : true
          }, {
             header : '생산지시디테일코드',
-            name : 'proOrderDetailCode'/* ,
-            hidden : true */
+            name : 'proOrderDetailCode' ,
+            hidden : true 
          }, {
             header : '고객코드',
             name : 'erpCustomerCode',

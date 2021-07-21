@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<style>
+
+	#proPlanName{
+		display: inline;
+		width : 80%;
+	}
+	#searchImg{
+		display: inline;
+	}
+</style>
+
 <!-- 타이틀 -->
 <div class="content-fluid">
 	<div>
@@ -24,17 +35,19 @@
 		<div class="panel-body">
 			<div class="row">
 				<form>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<input type="hidden" id="proPlanCode" name="proPlanCode">
-						* 계획일자   &nbsp;&nbsp;&nbsp;<input type="date" id="date" name="date" > <br/><br/>
-						* 생산계획이름  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName">
-						<a href="${pageContext.request.contextPath}/pro/plan/proPlanName.do" rel="modal:open">						
-                    		<i class="fa fa-search"></i>
-                 		</a>
-						<!-- 모달창 -->
-						<a id="showModal" href="${pageContext.request.contextPath}/pro/plan/erpProductSearch.do" rel="modal:open"></a>
+						* 계획일자   &nbsp;&nbsp;&nbsp;<input type="date" id="date" name="date" class="form-control"> <br/><br/>
 					</div>
-					<div class="col-md-6" align="right">
+					<div class="col-md-4">
+						* 생산계획이름  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName" class="form-control">
+						<a href="${pageContext.request.contextPath}/pro/plan/proPlanName.do" rel="modal:open">						
+                    		<i id="searchImg" class="fa fa-search"></i>
+                 		</a>
+                 	</div>
+					<!-- 모달창 -->
+					<a id="showModal" href="${pageContext.request.contextPath}/pro/plan/erpProductSearch.do" rel="modal:open"></a>
+					<div class="col-md-4" align="right">
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
 						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
 						<button type="button" class="btn btn-fail" id="deletePlan">계획삭제</button>
@@ -57,7 +70,7 @@
 				<div class="col-md-5" align="right">
 					<!-- <button type="button">조회</button> -->
 					<button type="button" id="appendRow">추가</button>
-					<button type="button" id="deleteRow">삭제</button>
+					<!-- <button type="button" id="deleteRow">삭제</button> -->
 					<button type="button" id="modifyRow">저장</button>
 				</div>
 			</div>
@@ -76,12 +89,15 @@
 	
 	$(document).ready(function() {
 
+		//date 태그 디폴드 값 설정 (오늘 날짜)
+		$("#date").val(new Date().toISOString().substring(0,10)); 
+		
 		//네비게이션 고정
-		$('#proNav').addClass('active');
-		$('#subPages4').addClass('in');
-		$('#subPages4').attr('aria-expanded','true');
-		$('#subPages4').attr('style','');
-		$('.proProdPlan').addClass('active');
+		$('#n7000000').addClass('active');
+		$('#subPages7000000').addClass('in');
+		$('#subPages7000000').attr('aria-expanded','true');
+		$('#subPages7000000').attr('style','');
+		$('.7010000').addClass('active');
 		
 		//M 조회 버튼
 		$("#findRow").on("click", function() {
@@ -115,14 +131,13 @@
 		//M 삭제버튼 (계획을 삭제)
 		$("#deletePlan").on("click", function() {
 			proPlanGrid.checkAll(true);
-			proPlanGrid.removeCheckedRows(false);
 			proPlanGrid.request('modifyData');
+			$("#reset").click();
 		})
 		    
-		//D 삭제 버튼 
+		//D 삭제 버튼 : 행만 삭제, 저장버튼 눌러야함.
 		$("#deleteRow").on("click", function() {
-			proPlanGrid.removeCheckedRows(true);
-			proPlanGrid.request('modifyData');
+			proPlanGrid.removeCheckedRows(false);
 		});
 		
 		//D 추가 버튼

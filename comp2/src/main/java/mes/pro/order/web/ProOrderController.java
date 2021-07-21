@@ -160,7 +160,8 @@ public class ProOrderController {
 		List<?> createdList = gd.getCreatedRows();
 		List<?> deletedList = gd.getDeletedRows();
 		
-
+		String poId = null;
+		
 		//수정
 		if (updatedList.size() != 0) {
 			for (int i = 0; i < updatedList.size(); i++) {
@@ -178,7 +179,7 @@ public class ProOrderController {
 		//생성
 		//시퀀스 포멧팅 
 		if(createdList.size() != 0) { 
-			String poId = null;
+			
 			
 			poId = proOrderCodeService.getNextStringId();
 			
@@ -202,7 +203,7 @@ public class ProOrderController {
 			}
 		 }
 		
-		map.put("result", true);
+		map.put("poId",poId);
 		
 		return map;
 	}
