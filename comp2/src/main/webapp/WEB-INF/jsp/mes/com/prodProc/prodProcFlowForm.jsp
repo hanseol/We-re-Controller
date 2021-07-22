@@ -284,7 +284,7 @@ let procGrid;
 			  $(".modal").remove();
 			  this.blur(); // Manually remove focus from clicked link.
 			  console.log(this.href);
-			  $.get("${pageContext.request.contextPath}/prodUseMatr/ProCodeSearchModal.do", function(html) {
+			  $.get("${pageContext.request.contextPath}/com/prodUseMatr/ProCodeSearchModal.do", function(html) {
 			    $(html).appendTo('body').modal();
 			  });
 		}

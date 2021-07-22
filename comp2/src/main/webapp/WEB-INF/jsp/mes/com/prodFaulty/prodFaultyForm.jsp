@@ -10,8 +10,6 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
 			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
 		</div>
 	</div>
@@ -91,16 +89,10 @@ let procGrid;
 				header : '제품불량코드',
 				name : 'comProductFCode',
 				editor : 'text',
-				validation: {
-		               required:true
-		            } 
 			}, {
 				header : '불량명',
 				name : 'comProductFName',
 				editor : 'text',
-				validation: {
-		               required:true
-	            } 
 			}, {
 				header : '불량내역',
 				name : 'comProductFDetail',
@@ -228,7 +220,7 @@ let procGrid;
 		  $(".modal").remove();
 		  this.blur(); // Manually remove focus from clicked link.
 		  console.log(this.href);
-		  $.get("${pageContext.request.contextPath}/prodUseMatr/ProCodeSearchModal.do", function(html) {
+		  $.get("${pageContext.request.contextPath}/com/prodUseMatr/ProCodeSearchModal.do", function(html) {
 		    $(html).appendTo('body').modal();
 		  });
 	}
