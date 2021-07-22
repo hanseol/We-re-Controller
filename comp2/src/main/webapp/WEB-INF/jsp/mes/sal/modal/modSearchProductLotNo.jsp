@@ -17,9 +17,9 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" /> <br> <br>
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" />
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" /> &nbsp;
+					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" /> <br> <br>
+					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" class="form-control" />
 					<button id="findRow">검색</button><br>
 					<br>
 				<div id="modalGrid"></div>

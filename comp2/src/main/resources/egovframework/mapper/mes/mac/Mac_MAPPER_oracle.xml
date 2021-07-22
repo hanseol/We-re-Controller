@@ -130,58 +130,58 @@
 				, MAC_IMAGE
 				, MAC_CONSTRUCTOR_PHONE
 			FROM MAC
-						WHERE MAC_CODE=#{macCode}
-				]]>
+			WHERE MAC_CODE=#{macCode}
+		]]>
 	</select>
 	
 	<select id="selectMacList" parameterType="mes.mac.service.MacVO" resultType="egovMap">
-SELECT * FROM (
-	SELECT A.*, ROWNUM RNUM FROM (
-				SELECT
-								MAC_CODE
-								, MAC_LINE_NO
-								, MAC_HOUR_QTY
-								, COM_PRODUCT_CODE
-								, COM_PROCESS_CODE
-								, MAC_UNUSED
-								, ERP_EMPLOYEE_ID
-								, MAC_USE_PURPOSE
-								, MAC_GUBUN
-								, MAC_NAME
-								, MAC_SIZE
-								, MAC_MODEL
-								, MAC_MACHINE_CONSTRUCTOR
-								, MAC_POSSIBLE_SIZE
-								, TO_CHAR(MAC_MACHINE_DATE,'YYYY-MM-DD') AS MAC_MACHINE_DATE
-								, TO_CHAR(MAC_MACHINE_COST,'999,999,999,999') AS MAC_MACHINE_COST
-								, MAC_BUHA
-								, MAC_TEMP
-								, TO_CHAR(MAC_CHK_DATE,'YYYY-MM-DD') AS MAC_CHK_DATE
-								, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY-MM-DD') AS MAC_NEXT_CHK_DATE
-								, MAC_CHK_CYCLE
-								, MAC_IMAGE
-								, MAC_CONSTRUCTOR_PHONE
-						FROM MAC
-				WHERE 1=1
-				<if test="comProductCode != null and comProductCode != ''">AND
-					COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
-				</if>
-				<if test="macLineNo != null and macLineNo != ''">AND
-					MAC_LINE_NO LIKE '%' || #{macLineNo} || '%'
-				</if>
-				<if test="macCode != null and macCode != ''">AND
-					MAC_CODE LIKE '%' || #{macCode} || '%'
-				</if>
-				<if test="macNextChkDate != null and macNextChkDate != ''">AND
-					TO_CHAR(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') = #{macNextChkDate} 
-				</if>
-					ORDER BY 
-						MAC_NEXT_CHK_DATE ASC
-		
-		<![CDATA[					
-	) A WHERE ROWNUM <= #{lastIndex}
-)WHERE RNUM >= #{firstIndex}
-]]>
+	SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+					SELECT
+									MAC_CODE
+									, MAC_LINE_NO
+									, MAC_HOUR_QTY
+									, COM_PRODUCT_CODE
+									, COM_PROCESS_CODE
+									, MAC_UNUSED
+									, ERP_EMPLOYEE_ID
+									, MAC_USE_PURPOSE
+									, MAC_GUBUN
+									, MAC_NAME
+									, MAC_SIZE
+									, MAC_MODEL
+									, MAC_MACHINE_CONSTRUCTOR
+									, MAC_POSSIBLE_SIZE
+									, TO_CHAR(MAC_MACHINE_DATE,'YYYY-MM-DD') AS MAC_MACHINE_DATE
+									, TO_CHAR(MAC_MACHINE_COST,'999,999,999,999') AS MAC_MACHINE_COST
+									, MAC_BUHA
+									, MAC_TEMP
+									, TO_CHAR(MAC_CHK_DATE,'YYYY-MM-DD') AS MAC_CHK_DATE
+									, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY-MM-DD') AS MAC_NEXT_CHK_DATE
+									, MAC_CHK_CYCLE
+									, MAC_IMAGE
+									, MAC_CONSTRUCTOR_PHONE
+							FROM MAC
+					WHERE 1=1
+					<if test="comProductCode != null and comProductCode != ''">AND
+						COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+					</if>
+					<if test="macLineNo != null and macLineNo != ''">AND
+						MAC_LINE_NO LIKE '%' || #{macLineNo} || '%'
+					</if>
+					<if test="macCode != null and macCode != ''">AND
+						MAC_CODE LIKE '%' || #{macCode} || '%'
+					</if>
+					<if test="macNextChkDate != null and macNextChkDate != ''">AND
+						TO_CHAR(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') = #{macNextChkDate} 
+					</if>
+						ORDER BY 
+							MAC_NEXT_CHK_DATE ASC
+			
+			<![CDATA[					
+		) A WHERE ROWNUM <= #{lastIndex}
+	)WHERE RNUM >= #{firstIndex}
+	]]>
 	</select>	
 
 	<!-- 설비 점검일 알림 조회 -->

@@ -11,8 +11,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-primary" id="search">조회</button>
+			<button type="button" class="btn btn-success" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -24,18 +24,18 @@
 			<div class="row">
 				<div class="col-md-4">
 						주문일자
-						<input type="date" id="orderDate" name="erpProdcutOrderDate">					
+						<input type="date" id="orderDate" name="erpProdcutOrderDate" class="form-control">					
 				</div>
 				<div class="col-md-4">			
 						제품명
-						<input type="text" id="productCode" name="productCode">	
+						<input type="text" id="productCode" name="productCode" class="form-control">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
                   </a>											
 				</div>
 				<div class="col-md-4">
 						고객사명
-						<input type="text" id="customerCode" name="customerCode">
+						<input type="text" id="customerCode" name="customerCode" class="form-control">
 						<a id="searchCustomerCode" href="${pageContext.request.contextPath}/searchCustomerCode.do">					
 						<i class="fa fa-search"></i></a>
 				</div>

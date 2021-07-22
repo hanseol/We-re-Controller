@@ -19,9 +19,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="inSearch">조회</button>
-			<button type="button" class="btn btn-danger" id="inReset">새자료</button>
-			<button type="button" class="btn btn-warning" id="inModifyRow">저장</button>
+			<button type="button" class="btn btn-primary" id="inSearch">조회</button>
+			<button type="button" class="btn btn-success" id="inReset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -33,17 +32,17 @@
 			<div class="row">
 				<div class="col-md-4">
 						일자
-						<input type="date" id="dateGubun" name="dateGubun">
+						<input type="date" id="dateGubun" name="dateGubun" class="form-control">
 				</div>
 				<div class="col-md-4">
 						제품명
-						<input type="text" id="comProductName" name="comProductName">	
+						<input type="text" id="comProductName" name="comProductName" class="form-control">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -62,6 +61,7 @@
 				<div class="col-md-5" align="right">
 					<button type="button" id="inAppendRow">추가</button>
 					<button type="button" id="inDeleteRow">삭제</button>
+					<button type="button" id="inModifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -78,9 +78,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="outSearch">조회</button>
-			<button type="button" class="btn btn-danger" id="outReset">새자료</button>
-			<button type="button" class="btn btn-warning" id="outModifyRow">저장</button>
+			<button type="button" class="btn btn-primary" id="outSearch">조회</button>
+			<button type="button" class="btn btn-success" id="outReset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -92,17 +91,17 @@
 			<div class="row">
 				<div class="col-md-4">
 						일자
-						<input type="date" id="outDateGubun" name="outDateGubun">
+						<input type="date" id="outDateGubun" name="outDateGubun" class="form-control">
 				</div>
 				<div class="col-md-4">
 						제품명
-						<input type="text" id="comProductName" name="comProductName">	
+						<input type="text" id="comProductName" name="comProductName" class="form-control">	
 						<a id="outSearchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
 						<a id="outSearchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -121,6 +120,7 @@
 				<div class="col-md-5" align="right">
 					<button type="button" id="outAppendRow">추가</button>
 					<button type="button" id="outDeleteRow">삭제</button>
+					<button type="button" id="outModifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">

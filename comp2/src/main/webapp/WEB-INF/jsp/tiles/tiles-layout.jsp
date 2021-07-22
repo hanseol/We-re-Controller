@@ -53,9 +53,29 @@
 	
 	<style>
 	
+	/*
+	탭 글씨 크기 조정
+	*/
+	.nav-tabs>li>a{
+		cursor : pointer;
+		font-size: 20px;
+	}
+	
+	/*
+	input 태그 속성
+	*/
+	.form-control{
+		display: inline;
+		font-size:17px; 
+		width: 200px;
+	}
+	
+	
+	/*
+	오른쪽 정렬
+	*/
 	.my-panel {
 		text-align: right;
-		border-top: 1px solid gray;
 		padding: 10px;
 		margin-bottom: 10px;
 		background-color: white;
@@ -104,6 +124,7 @@
 	
 	div {
 		font-family: 'Nanum Gothic Coding', monospace;
+		color: black;
 	}
 </style>
 </head>

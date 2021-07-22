@@ -20,8 +20,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-primary" id="search">조회</button>
+			<button type="button" class="btn btn-success" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -31,24 +31,22 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-5">
 						일자
-						<input type="date" id="dateGubun" name="dateGubun">
-				</div>
-				<div class="col-md-3">
-						구분 &nbsp;
+						<input type="date" id="dateGubun" name="dateGubun" class="form-control">&nbsp;
+						구분 
 						<input type="checkbox" id="inMatch" name="gubun" value="1" checked>정산입고
-						<input type="checkbox" id="outMatch" name="gubun" value="2">정산출고
+						<input type="checkbox" id="outMatch" name="gubun" value="2" >정산출고
 				</div>
 				<div class="col-md-3">
 						제품코드
-						<input type="text" id="productCode" name="productCode">	
+						<input type="text" id="productCode" name="productCode" class="form-control">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo">	
+						<input type="text" id="productLotNo" name="productLotNo" class="form-control">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>

@@ -20,8 +20,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
+			<button type="button" class="btn btn-primary" id="search">조회</button>
+			<button type="button" class="btn btn-success" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -33,11 +33,11 @@
 			<div class="row">
 				<div class="col-md-6">
 						반품일자
-						<input type="date" id="returnDate" name="returnDate">			
+						<input type="date" id="returnDate" name="returnDate" class="form-control">			
 				</div>
 				<div class="col-md-6">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo">	
+						<input type="text" id="productLotNo" name="productLotNo" class="form-control">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>		
 				</div>

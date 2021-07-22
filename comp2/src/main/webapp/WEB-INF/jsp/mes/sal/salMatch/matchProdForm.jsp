@@ -20,9 +20,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-warning" id="modifyRow">저장</button>
+			<button type="button" class="btn btn-primary" id="search">조회</button>
+			<button type="button" class="btn btn-success" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -34,16 +33,16 @@
 			<div class="row">
 				<div class="col-md-4">
 						일자
-						<input type="date" id="dateGubun" name="dateGubun">
+						<input type="date" id="dateGubun" name="dateGubun" class="form-control">
 				</div>
 				<div class="col-md-4">
 						구분 &nbsp;
 						<input type="checkbox" id="inMatch" name="gubun" value="1" checked>정산입고
-						<input type="checkbox" id="outMatch" name="gubun" value="2">정산출고
+						<input type="checkbox" id="outMatch" name="gubun" value="2" >정산출고
 				</div>
 				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/modSearchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -63,6 +62,7 @@
 				<div class="col-md-5" align="right">
 					<button type="button" id="appendRow">추가</button>
 					<button type="button" id="deleteRow">삭제</button>
+					<button type="button" id="modifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">

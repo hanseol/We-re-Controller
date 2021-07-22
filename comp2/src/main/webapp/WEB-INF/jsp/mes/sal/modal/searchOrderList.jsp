@@ -16,8 +16,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					고객사명 <input type="text" id="erpCustomerCode" name="erpCustomerCode" placeholder="고객사코드" />
-					제품명 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" />
+					고객사명 <input type="text" id="erpCustomerCode" name="erpCustomerCode" placeholder="고객사코드" class="form-control" />
+					제품명 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" />
 					<button id="findRow">검색</button><br>
 					<br>
 				<div id="modalGrid"></div>

@@ -44,6 +44,13 @@ th {
 	{
 	padding-left: 5px;
 }
+
+.btn {
+	font-size: 17px;
+}
+
+	
+
 </style>
 <div>
 	<!-- 관리, 조회 탭 이동 -->
@@ -63,11 +70,11 @@ th {
 	<!-- 검색  -->
 	<div class="panel" id="searchDiv">
 		<div class="panel-title">
-			<h3>설비 검색</h3>
+			<h2>설비 검색</h2>
 		</div>
 		<div class="panel-body">
 			<a href="openMacListModal.do" rel="modal:open">
-			<input type="text" id="mac"></a>
+			<input type="text" id="mac" class="form-control"></a>
 			<button type="button" id="showMachine" class="btn btn-info">조회</button>
 		</div>
 	</div>

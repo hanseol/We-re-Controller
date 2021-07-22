@@ -14,8 +14,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					생산지시디테일코드 <input type="text" id="proOrderDetailCode" name="proOrderDetailCode" placeholder="생산지시디테일코드" />
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" />
+					생산지시디테일코드 <input type="text" id="proOrderDetailCode" name="proOrderDetailCode" placeholder="생산지시디테일코드" class="form-control" />
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" />
 					<button id="findRow">검색</button>
 					<br> <br>
 				<div id="modalGrid"></div>

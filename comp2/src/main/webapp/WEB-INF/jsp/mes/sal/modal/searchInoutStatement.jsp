@@ -16,8 +16,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					전표번호 <input type="text" id="salInoutStatement" name="salInoutStatement" placeholder="전표번호" /> &nbsp;
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" />
+					전표번호 <input type="text" id="salInoutStatement" name="salInoutStatement" placeholder="전표번호" class="form-control" /> &nbsp;
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" />
 					<button id="findRow">검색</button>
 					<br>
 				<div id="modalGrid"></div>

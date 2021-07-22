@@ -45,6 +45,7 @@ import mes.pro.proc.service.ProProcessService;
 @Controller
 public class MacController {
 
+	//설비
 	@Resource(name = "macService")
 	private MacService macService;
 	
@@ -58,18 +59,14 @@ public class MacController {
 
 	ComFunc comFunc = new ComFunc();
 	
-	/**
-	 * 조회
-	 * 
-	 */
-	// 설비 정보 조회 페이지를 연다.
+	/** 설비 조회 페이지 open.	 */
 	@RequestMapping("/mac/miv/macInfoView.do")
 	public String macInfoView() {
 
 		return "mes/mac/macInfoView.page";
 	}
 
-	// 설비 조회 결과 값 전달 (1건 상세내용)
+	/** 설비 조회 결과 값 전달 (1건 상세내용)*/
 	@RequestMapping("ajax/mac/macInfo")
 	@ResponseBody
 	public Map<String, Object> macInfo(@ModelAttribute("vo") MacVO vo) throws Exception {
