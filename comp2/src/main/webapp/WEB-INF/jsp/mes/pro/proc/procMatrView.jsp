@@ -31,7 +31,7 @@
 						<input type="radio" id="totalGubun2" name="totalGubun" value="2" > 포장공정
 					
 						<br/><br/>
-					* 지시 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="totalProOrderDetailCode" name="totalProOrderDetailCode">
+					* 지시 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="totalProOrderDetailCode" name="totalProOrderDetailCode" class="form-control">
 						<!-- 지시검색모달 -->
 						<a href="${pageContext.request.contextPath}/pro/proc/totalOrderSearch.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
@@ -40,9 +40,9 @@
 					
 					</div>
 					<div class="col-md-6" align="right">
-						<button type="button" class="btn btn-success" id="totalFindRow">조회</button>
-						<button type="reset" class="btn btn-danger" id="totalReset">새자료</button>
-						<button type="submit" class="btn btn-primary" id="totalExcelBtn">Excel</button>
+						<button type="button" class="btn btn-primary" id="totalFindRow">조회</button>
+						<button type="reset" class="btn btn-success" id="totalReset">새자료</button>
+						<button type="submit" class="btn btn-warning" id="totalExcelBtn">Excel</button>
 					</div>
 				</form>
 			</div>
@@ -83,7 +83,7 @@
 						<input type="radio" id="gubun2" name="gubun" value="2" > 포장공정
 					
 						<br/><br/>
-					* 지시 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="proOrderDetailCode" name="proOrderDetailCode">
+					* 지시 코드   &nbsp;&nbsp;&nbsp;<input type="text" id="proOrderDetailCode" name="proOrderDetailCode" class="form-control">
 						<!-- 지시검색모달 -->
 						<a href="${pageContext.request.contextPath}/pro/proc/finishOrderSearch.do" rel="modal:open">						
                     		<i class="fa fa-search"></i>
@@ -92,9 +92,9 @@
 					
 					</div>
 					<div class="col-md-6" align="right">
-						<button type="button" class="btn btn-success" id="findRow">조회</button>
-						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
-						<button type="submit" class="btn btn-primary" id="excelBtn">Excel</button>
+						<button type="button" class="btn btn-primary" id="findRow">조회</button>
+						<button type="reset" class="btn btn-success" id="reset">새자료</button>
+						<button type="submit" class="btn btn-warning" id="excelBtn">Excel</button>
 					</div>
 				</form>
 			</div>

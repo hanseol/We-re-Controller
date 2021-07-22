@@ -25,7 +25,7 @@
 }
 
 th {
-	background-color: #fff9bd;
+	background-color: #f1f7fe;
 	width: 120px;
 	text-align: center;
 	color:black;
@@ -36,7 +36,7 @@ th {
 }
 
 #img {
-	width : 100%;
+	width : 50%;
 }
 
 .panel .table>thead>tr>td:last-child, .panel .table>thead>tr>th:last-child,
@@ -52,6 +52,12 @@ th {
 	{
 	padding-left: 5px;
 }
+	.form-control{
+		display: inline;
+		font-size:17px; 
+		width: 100%;
+	}
+
 </style>
 <div>
 	<!-- 관리, 조회 탭 이동 -->
@@ -71,7 +77,7 @@ th {
 	
 	<!-- 정보 (테이블 출력) -->
 	<div class="panel">
-		<div align="center" id="headline"><h3>설비등록</h3></div>
+		<div align="center" id="headline"><h2>설비 등록</h2></div>
 		<div class="panel-body">
 		<form name="frm" id="frm" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 			<input type="hidden" id="erpEmployeeId" name="erpEmployeeId" value="${loginVO.id }">
@@ -85,23 +91,23 @@ th {
 						<th>설비규격</th>
 						<td><select class="form-control" name="macSize" id="macSize"></select></td>
 						<th>모델명</th>
-						<td><select class="form-control" name="macModel" id="macModel" required></select></td>
+						<td><select class="form-control" name="macModel" id="macModel"></select></td>
 					</tr>
 					<tr>
 						<th>설비구분</th>
-						<td><select class="form-control" name="macGubun" id="macGubun" required></select></td>
+						<td><select class="form-control" name="macGubun" id="macGubun"></select></td>
 						<th>사용여부</th>
 						<td><input class="form-control" id="macUnused" name="macUnused" value="1"></td>
 						<th>구매일자</th>
-						<td><input class="form-control" type="date" id="macMachineDate" name="macMachineDate" required></td>
+						<td><input class="form-control" type="date" id="macMachineDate" name="macMachineDate"></td>
 					</tr>
 					<tr>
 						<th>라인번호</th>
-						<td><input class="form-control" id="macLineNo" name="macLineNo" required></td>
+						<td><input class="form-control" id="macLineNo" name="macLineNo"></td>
 						<th>공정코드</th>
-						<td><input class="form-control" id="macProcessCode" name="macProcessCode" required></td>
+						<td><input class="form-control" id="macProcessCode" name="macProcessCode"></td>
 						<th>점검일</th>
-						<td><input class="form-control" type="date" id="macChkDate" name="macChkDate" required></td>
+						<td><input class="form-control" type="date" id="macChkDate" name="macChkDate"></td>
 					</tr>
 					<tr>
 						<th>용도</th>
@@ -134,8 +140,8 @@ th {
 				</tbody>
 			</table>
 			<div align="center">
-				<button type="reset" id="resetBtn" class="btn btn-warning">새자료</button>
-				<button type="button" id="registerMac" class="btn btn-success">등록</button>
+				<button type="button" id="registerMac" class="btn btn-primary">등록</button>
+				<button type="reset" id="resetBtn" class="btn btn-success">새자료</button>
 			</div>
 			</form>
 		</div>

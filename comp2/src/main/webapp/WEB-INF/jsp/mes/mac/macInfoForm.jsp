@@ -18,6 +18,8 @@
   */
 %>
 
+
+
 <div>
 	<!-- 조회, 수정/삭제, 등록 탭 이동 -->
 	<div id="tabs">
@@ -31,23 +33,21 @@
 	   </ul>
 	</div>
 	
+	
 	<!-- 검색  -->
 	<div class="panel" id="searchDiv">
-		<div class="panel-title">
-			<h3>설비 검색</h3>
-		</div>
 		<div class="panel-body">
 		<form>
-			<div class="col-md-6">
-				* 설비코드   &nbsp;&nbsp;&nbsp;<input type="text" id="viewMacCode" >  &nbsp;&nbsp;&nbsp;
-				* 차기점검일  &nbsp;&nbsp;&nbsp; <input type="date" id="viewMacNextChkDate"> &nbsp;&nbsp;&nbsp;
+			<div class="col-md-8">
+				* 설비코드   &nbsp;&nbsp;&nbsp;<input type="text" id="viewMacCode" class="form-control" >  &nbsp;&nbsp;&nbsp;
+				* 차기점검일  &nbsp;&nbsp;&nbsp; <input type="date" id="viewMacNextChkDate" class="form-control"> &nbsp;&nbsp;&nbsp;
 				<a href="${pageContext.request.contextPath}/mac/miv/openMacListModal.do" rel="modal:open">						
                   	<i class="fa fa-search"></i>
                	</a>
 			</div>
-			<div class="col-md-6" align="right">
-				<button type="button" class="btn btn-success" id="findRowForm">조회</button>
-				<button type="reset" class="btn btn-danger">새자료</button>
+			<div class="col-md-4" align="right">
+				<button type="button" class="btn btn-primary" id="findRowForm">조회</button>
+				<button type="reset" class="btn btn-success">새자료</button>
 			</div>
 		</form> 
 		</div>
@@ -130,6 +130,10 @@ $(document).ready(function() {
 		el : document.getElementById('macGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
+		scrollX: true,
+        scrollY: true,
+        bodyHeight :300, 
+        rowHeight: 30,
 		columns : [ {
 			header : '설비코드',
 			name : 'macCode',

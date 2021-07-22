@@ -19,16 +19,19 @@
 %>
 <style>
 th {
+	background-color: #f1f7fe;
 	width: 120px;
 	text-align: center;
+	color:black;
 }
+
 
 #imgDiv, #searchDiv {
 	text-align: center;
 }
 
 #macImage {
-	width : 100%;
+	width : 50%;
 }
 
 .panel .table>thead>tr>td:last-child, .panel .table>thead>tr>th:last-child,

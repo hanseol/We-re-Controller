@@ -1,17 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style>
-
-	#proPlanName{
-		display: inline;
-		width : 80%;
-	}
-	#searchImg{
-		display: inline;
-	}
-</style>
-
 <!-- 타이틀 -->
 <div class="content-fluid">
 	<div>
@@ -49,8 +38,8 @@
 					<!-- 모달창 -->
 					<a id="showModal" href="${pageContext.request.contextPath}/pro/plan/erpProductSearch.do" rel="modal:open"></a>
 					<div class="col-md-4" align="right">
-						<button type="button" class="btn btn-success" id="findRow">조회</button>
-						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+						<button type="button" class="btn btn-primary" id="findRow">조회</button>
+						<button type="reset" class="btn btn-success" id="reset">새자료</button>
 						<button type="button" class="btn btn-fail" id="deletePlan">계획삭제</button>
 					</div> 
 				</form>
@@ -193,6 +182,10 @@
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :300, 
+	        rowHeight: 30,
 			columns : [ {
 				header : '제품코드',
 				name : 'erpProductCode',

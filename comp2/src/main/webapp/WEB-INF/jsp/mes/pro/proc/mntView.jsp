@@ -2,84 +2,122 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
- #proProcessStartTime, #proProcessEndTime {
+
+
+th {
+	background-color: #f1f7fe;
+	width: 100px;
+}
+
+td{
+	text-align: center;
+}
+
+.form-control{
+		display: inline;
+		font-size:17px; 
+		width: 100%;
+}
+
+#proProcessStartTime, #proProcessEndTime {
  	display: inline;
- 	width: 35%;
- 	
- }
+ 	width: 50%;
+}
+
+#chart {
+	display : none;
+}
 </style>
 
-
-<!-- 타이틀 -->
-<div class="content-fluid">
-	<div>
-		<h2>생산관리</h2>
-	</div>
-</div>
-
-	<!-- 정보 (테이블 출력) -->
+<!-- 키오스크 화면  -->
 <div class="panel">
+	<div>
+		<h2>&nbsp;&nbsp;&nbsp;생산 관리</h2>
+	</div>
 	<div class="panel-body">
-		<form name="frm" id="frm" action="${pageContext.request.contextPath}/pro/proc/printProcessMove.do" method="POST">
-		<table class="table table-bordered" id="process">
-			<thead>
-			</thead>
-			<tbody id="tbody">
-				<tr>
-					<th>공정명</th>
-					<td><select class="form-control" name="comProcessCode" id="comProcessCode">
-							<option value="">--------선택--------</option>
-							<c:forEach var="procg" items="${procgs }">
-							<option value="${procg.comProcessCode}">${procg.comProcessName}</option>
-							</c:forEach>
-						</select></td>
-					<th>지시번호 </th> 
-				
-					<td>
-						<select class="form-control" name="proOrderDetailCode" id="proOrderDetailCode">
-							<option value="">--------선택--------</option>
-						</select> 
-					</td>
-					<th>제품명</th>
-					<td><input class="form-control" id="erpProductName" name="erpProductName"></td>
-				</tr>
-				<tr>
-					<th>라인번호</th>
-					<td><input class="form-control" id="macLineNo" name="macLineNo"></td>
-					<th>설비코드</th>
-					<td>
-						<select class="form-control" name="macCode" id="macCode">
-							<option value="">--------선택--------</option>
-						</select>
-					<th>작업자</th>
-					<td><input class="form-control" id="erpEmployeeId" name="erpEmployeeId"></td>
-				</tr>
-				<tr>
-					<th>작업량</th>
-	               <td><input class="form-control" id="proProcessQuantity" name="proProcessQuantity"></td>
-	               <th>작업시간</th>
-	               <td colspan="3">
-	                  <input class="form-control" type="text" id="proProcessStartTime" name="proProcessStartTime">
-	                  <button style="margin-right: 70px" type="button" id="startBtn" class="btn btn-danger" disabled>시작</button> 
-	                  <input class="form-control" type="text" id="proProcessEndTime" name="proProcessEndTime">
-	                  <button type="button" id="endBtn" class="btn btn-success" disabled>종료</button>
-	               </td>
-	               
-           		 </tr>
-			</tbody>
-		</table>
-		<button type="button" id="processMoving">공정이동표발행</button>
-	</form>
+		<div class="row">
+			<div class="col-md-5">
+				<table class="table table-bordered" id="process">
+				<thead>
+				</thead>
+				<tbody id="tbody">
+					<tr>
+						<th>공정명</th>
+						<td colspan="3"><select class="form-control" name="comProcessCode" id="comProcessCode">
+								<option value="">선택</option>
+								<c:forEach var="procg" items="${procgs }">
+								<option value="${procg.comProcessCode}">${procg.comProcessName}</option>
+								</c:forEach>
+							</select></td>
+					</tr>
+					<tr>
+						<th>지시번호 </th> 
+						<td colspan="3">
+							<select class="form-control" name="proOrderDetailCode" id="proOrderDetailCode">
+								<option value="">선택</option>
+							</select> 
+						</td>
+					</tr>
+					<tr>
+						<th>제품명</th>
+						<td colspan="3"><input class="form-control" id="erpProductName" name="erpProductName"></td>
+					</tr>
+					<tr>
+						<th>설비코드</th>
+						<td>
+							<select class="form-control" name="macCode" id="macCode">
+								<option value="">선택</option>
+							</select>
+						</td>
+						<th>라인번호</th>
+						<td><input class="form-control" id="macLineNo" name="macLineNo"></td>
+					</tr>
+					<tr>
+						<th>작업자</th>
+						<td><input class="form-control" id="erpEmployeeId" name="erpEmployeeId"></td>
+						<td colspan="2"><input class="form-control" type="text" id="proProcessStartTime" name="proProcessStartTime">
+		                	 <button type="button" id="startBtn" class="btn btn-info" disabled>시작</button> 
+		               	</td>
+					</tr>
+					<tr>
+						<th>작업량</th>
+		               <td><input class="form-control" id="proProcessQuantity" name="proProcessQuantity"></td>
+		               <td colspan="2">
+		                  <input class="form-control" type="text" id="proProcessEndTime" name="proProcessEndTime">
+		                  <button type="button" id="endBtn" class="btn btn-info" disabled>종료</button>
+		               </td>
+		            </tr>
+		             <tr>
+		               <td colspan="4">
+		                  <button type="button" id="processMoving" class="btn btn-danger">공정 이동표 발행</button>
+		               </td>
+	           		 </tr>
+				</tbody>
+				</table>
+				<div class="panel-body" id="chart">
+					<div id="system-load" class="easy-pie-chart" data-percent="87">
+						<span class="percent">87</span>
+					</div>
+					<ul class="list-unstyled list-justify">
+						<li>지시량: <span>7,800</span></li>
+						<li>달성률: <span id="goal">87%</span></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-7">
+				<div class="panel">
+					<div class="panel-body">
+					* 자재 LOT
+					<div id="proOrderGrid"></div>
+				</div>
+			</div>
+			</div>
+		</div>
 	</div>
 </div>
 <!-- END 정보 -->
 
-<div class="panel">
-	<div class="panel-body">
-	* 자재 LOT
-		<div id="proOrderGrid"></div>
-	</div>
-</div>
+
 
 <script>
 	$(document).ready(function(){
@@ -120,7 +158,7 @@
 					
 					//기존 셀렉트박스 값 비우기
 					$("select[name='proOrderDetailCode']").empty(); 
-					$("select[name='proOrderDetailCode']").append('<option value="">--------선택--------</option>');
+					$("select[name='proOrderDetailCode']").append('<option value="">선택</option>');
 					//결과를 select box option으로 만들기.
 					var data = result.list;
 					$.each(data,function(index,item){
@@ -143,7 +181,7 @@
 					
 					//기존 셀렉트박스 값 비우기
 					$("select[name='macCode']").empty(); 
-					$("select[name='macCode']").append('<option value="">--------선택--------</option>');
+					$("select[name='macCode']").append('<option value="">선택</option>');
 					//결과를 select box option으로 만들기.
 					var data = result.list;
 					$.each(data,function(index,item){
@@ -249,8 +287,39 @@
 					
 				}
 			});
-		});
-		
+			
+			$("#chart").css("display","block");
+			// real-time pie chart
+			var sysLoad = $('#system-load').easyPieChart({
+				size: 130,
+				barColor: function(percent) {
+					return "rgb(" + Math.round(200 * percent / 100) + ", " + Math.round(200 * (1.1 - percent / 100)) + ", 0)";
+				},
+				trackColor: 'rgba(245, 245, 245, 0.8)',
+				scaleColor: false,
+				lineWidth: 5,
+				lineCap: "square",
+				animate: 800
+			});
+
+			var updateInterval = 3000; // in milliseconds
+
+			setInterval(function() {
+				
+				var randomVal;
+				randomVal = getRandomInt(0, 100);
+
+				sysLoad.data('easyPieChart').update(randomVal);
+				sysLoad.find('.percent').text(randomVal);
+				$("#goal").html(randomVal+"%");
+			}, updateInterval);
+
+			function getRandomInt(min, max) {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+
+		});//end 3.
+	
 		//4. 작업을 종료한다.
 		$("#endBtn").on("click",function(){
 			//종료버튼 비활성화.
@@ -319,7 +388,7 @@
 			data : dataSource,
 			scrollX : true,
 			scrollY : true,
-			bodyHeight :200, //테이블 높이
+			bodyHeight :400, //테이블 높이
 	        rowHeight: 30, //테이블 행 높이
 			columns : [ {
 				header : '자재코드',
@@ -335,5 +404,6 @@
 				align : 'center'
 			} ]
 		});
-	});
+		
+});	
 </script>

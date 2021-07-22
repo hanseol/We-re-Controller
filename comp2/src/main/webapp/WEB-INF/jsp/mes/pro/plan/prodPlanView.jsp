@@ -36,19 +36,19 @@
 		<div class="panel-body">
 			<div class="row">
 				<form action="">
-					<div class="col-md-6">
+					<div class="col-md-8">
 						* 일자 
 						&nbsp;&nbsp;&nbsp;
 						<input type="radio" id="gubun1" name="gubun" value="1" checked> 계획일자
 						<input type="radio" id="gubun2" name="gubun" value="2" > 납기일자
 						 &nbsp;&nbsp;&nbsp;
-						<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate"> <br/><br/>
+						<input type="date" id="startDate" name="startDate" class="form-control"> ~ <input type="date" id="endDate" name="endDate" class="form-control"> <br/><br/>
 						* 제품 검색
-						<input type="hidden" id="erpProductCode" name="erpProductCode" readonly>
-						<input type="text" id="erpProductName" name="erpProductName" readonly> <br/><br/>
+						<input type="hidden" id="erpProductCode" name="erpProductCode" class="form-control" readonly>
+						<input type="text" id="erpProductName" name="erpProductName" class="form-control" readonly> &nbsp;&nbsp;
 						* 고객 검색 
-						<input type="hidden" id="erpCustomerCode" name="erpCustomerCode" readonly>
-						<input type="text" id="erpCustomerName" name="erpCustomerName" readonly> <br/><br/>
+						<input type="hidden" id="erpCustomerCode" name="erpCustomerCode" class="form-control" readonly>
+						<input type="text" id="erpCustomerName" name="erpCustomerName" class="form-control" readonly> <br/><br/>
 						
 						<!-- 제품 모달창 -->
 						<a id="showModal1" href="${pageContext.request.contextPath}/pro/plan/ProdCode.do" rel="modal:open"></a>
@@ -57,9 +57,9 @@
 						
 						
 					</div>
-					<div class="col-md-6" align="right">
-						<button type="button" class="btn btn-success" id="findRow">조회</button>
-						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
+					<div class="col-md-4" align="right">
+						<button type="button" class="btn btn-primary" id="findRow">조회</button>
+						<button type="reset" class="btn btn-success" id="reset">새자료</button>
 					</div>  
 				</form>
 			</div>
@@ -89,11 +89,11 @@
 	$(document).ready(function() {
 		
 		//네비게이션 바 고정.
-		$('#proNav').addClass('active');
-		$('#subPages4').addClass('in');
-		$('#subPages4').attr('aria-expanded','true');
-		$('#subPages4').attr('style','');
-		$('.proProdPlan').addClass('active');
+		$('#n7000000').addClass('active');
+		$('#subPages7000000').addClass('in');
+		$('#subPages7000000').attr('aria-expanded','true');
+		$('#subPages7000000').attr('style','');
+		$('.7010000').addClass('active');
 		
 		//M 조회 버튼	
 		$(document).on("click", "button[id=findRow]",
@@ -143,6 +143,10 @@
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders : [ 'checkbox' ],
+			scrollX: true,
+	        scrollY: true,
+	        bodyHeight :300, 
+	        rowHeight: 30,
 			data : dataSource,
 			columns : [ {
 				header : '계획명',

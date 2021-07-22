@@ -25,7 +25,7 @@
          <div class="row">
             <form>
                <div class="col-md-6">
-                  * 지시일자 <input type="date" id="proOrderDate" name="proOrderDate">
+                  * 지시일자 <input type="date" id="proOrderDate" name="proOrderDate" class="form-control">
                   <!-- 지시검색모달 -->
                   <a href="${pageContext.request.contextPath}/pro/order/proOrderSearch.do" rel="modal:open">                  
                      <i class="fa fa-search"></i>
@@ -35,9 +35,9 @@
                   <a id="showModal" href="${pageContext.request.contextPath}/pro/order/planProductSearch.do" rel="modal:open"></a>
                </div>
                <div class="col-md-6" align="right">
-               	      작업지시코드 :<input type="text" id="proOrderCode" name="proOrderCode" style="border:0; width:130px; " readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="btn btn-success" id="findRow">조회</button>
-                  <button type="reset" class="btn btn-danger" id="reset">새자료</button>
+               	      작업지시코드 :<input type="text" id="proOrderCode" name="proOrderCode" style="border:0; width:130px;" readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="button" class="btn btn-primary" id="findRow">조회</button>
+                  <button type="reset" class="btn btn-success" id="reset">새자료</button>
                   <!-- <button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button> -->
                </div> 
             </form>
