@@ -244,7 +244,7 @@ var proOrderRowKey;
          data : dataSource,
          scrollX: true, 
            scrollY: true, 
-           bodyHeight :300, 
+           bodyHeight :150, 
            rowHeight: 30, 
          columns : [ {
             header : '제품코드',
