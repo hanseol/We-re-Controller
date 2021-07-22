@@ -8,11 +8,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,6 @@ import mes.mac.service.MacVO;
 import mes.main.service.ComFunc;
 import mes.main.service.GridDataVO;
 import mes.pro.proc.service.ProProcessService;
-import mes.pro.proc.service.ProProcessVO;
 
 /**
  * @Class Name : MacController.java
@@ -187,10 +187,14 @@ public class MacController {
 
 	@RequestMapping(value="ajax/mac/registerMac", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> macInsert(MacVO vo) throws Exception {
+	public Map<String, Object> macInsert(MacVO vo, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		String pdfPath = request.getSession().getServletContext().getRealPath("/resources/images/upload");
 		 // 파일 업로드 처리
 		String fileName = null; 
 		MultipartFile uploadFile = vo.getUploadFile(); 
@@ -201,7 +205,8 @@ public class MacController {
 			UUID uuid = UUID.randomUUID(); // UUID 구하기 
 			System.out.println("UUID: "+ uuid);
 			fileName = uuid + "." + ext;
-			uploadFile.transferTo(new File("C:\\eGovFrameDev-3.10.0-64bit\\workspace\\We-re-Controller\\comp2\\src\\main\\webapp\\resources\\images\\upload\\" + fileName));
+			
+			uploadFile.transferTo(new File(pdfPath, fileName));
 		 }
 		
 		 vo.setMacImage(fileName);

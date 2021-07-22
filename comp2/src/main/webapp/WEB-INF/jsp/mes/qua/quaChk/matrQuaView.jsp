@@ -51,13 +51,6 @@
 	</div>
 </div>
 <script>
-//네비게이션 고정
-$('#quaNav').addClass('active');
-$('#subPages6').addClass('in');
-$('#subPages6').attr('aria-expanded','true');
-$('#subPages6').attr('style','');
-$('.matrQua').addClass('active');
-
 //그리드모달창을 위한 그리드 선언-------------------------------------
 
 
@@ -71,6 +64,14 @@ let vendorTwoGrid;
 		
 //=======================================그리드 버튼설정===========================================
 	$(document).ready(function () {
+		
+		//네비게이션 고정
+		$('#n5000000').addClass('active');
+		$('#subPages5000000').addClass('in');
+		$('#subPages5000000').attr('aria-expanded','true');
+		$('#subPages5000000').attr('style','');
+		$('.5020000').addClass('active');
+		
 		//그리드 [조회]버튼
 		$("#searchPass").on("click", function () {
 
@@ -205,24 +206,7 @@ let vendorTwoGrid;
 			}
 		});
 	
-	
-	// 그리드 테마
-	tui.Grid.applyTheme('clean', 
-		{
-			row: {
-	       		hover: {
-	       			background: "#DFEFF7"
-	       		}
-			},
-			cell: {
-				header: {
-					background: "#D5ECED"
-				},
-				currentRow : {
-					background: "#d5dae1"
-				}
-			}
-	});
+
 		//---------------------------그리드2
 	//그리드2 자재
 	$('#searchMaterialCodeTwo').click(function(event) {

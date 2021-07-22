@@ -1,29 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<style>
-	.my-panel {
-		text-align: right;
-		border-top: 1px solid gray;
-		padding: 10px;
-		margin-bottom: 10px;
-		background-color: white;
-	}
-
-	.modal {
-		-webkit-border-radius: 0px;
-		border-radius: 0px;
-		overflow: visible;
-		text-align: center;
-		max-width: 900px;
-		width: 900px;
-		/* height: 600px;
-max-height: 600px; */
-	}
-
-	.blocker {
-		z-index: 1200;
-	}
-</style>
 
 <div class="content-fluid">
 	<div>
@@ -143,6 +119,14 @@ let erpMaterialOrderCode;
 
 	$(document).ready(function () {
 		
+		//네비게이션 고정
+		$('#n5000000').addClass('active');
+		$('#subPages5000000').addClass('in');
+		$('#subPages5000000').attr('aria-expanded','true');
+		$('#subPages5000000').attr('style','');
+		$('.5010000').addClass('active');
+		
+		
 		// 옵션 폼 리셋버튼  1
 		$("#reset").click(function() { 
 			$("form").each(function() {  
@@ -155,6 +139,7 @@ let erpMaterialOrderCode;
 		    	
 		    	});
 			}); 
+		
 		// 옵션 폼 리셋버튼  2
 		$("#resetTwo").click(function() { 
 			$("form").each(function() {  
@@ -631,25 +616,7 @@ let erpMaterialOrderCode;
 				start.val(end.val());
 			}
 		});
-		
-		
-		// 그리드 테마
-		tui.Grid.applyTheme('clean', 
-			{
-				row: {
-		       		hover: {
-		       			background: "#DFEFF7"
-		       		}
-				},
-				cell: {
-					header: {
-						background: "#D5ECED"
-					},
-					currentRow : {
-						background: "#d5dae1"
-					}
-				}
-		});
+
 		
 		//발주코드 모달 로우아이디 값--------------------------------------
 		//---------------------------그리드1

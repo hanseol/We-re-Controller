@@ -72,12 +72,7 @@
 </div>
 
 <script>
-//네비게이션 고정
-$('#quaNav').addClass('active');
-$('#subPages6').addClass('in');
-$('#subPages6').attr('aria-expanded','true');
-$('#subPages6').attr('style','');
-$('.matrFaulty').addClass('active');
+
 		
 
 //그리드모달창을 위한 그리드 선언-------------------------------------
@@ -88,6 +83,14 @@ let vendorGrid;
 
 
 	$(document).ready(function() {
+		
+		//네비게이션 고정
+		$('#n5000000').addClass('active');
+		$('#subPages5000000').addClass('in');
+		$('#subPages5000000').attr('aria-expanded','true');
+		$('#subPages5000000').attr('style','');
+		$('.5030000').addClass('active');
+		
 		
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() { 
@@ -278,24 +281,6 @@ let vendorGrid;
 			}
 		});
 		
-		
-		// 그리드 테마
-		tui.Grid.applyTheme('clean', 
-			{
-				row: {
-		       		hover: {
-		       			background: "#DFEFF7"
-		       		}
-				},
-				cell: {
-					header: {
-						background: "#D5ECED"
-					},
-					currentRow : {
-						background: "#d5dae1"
-					}
-				}
-		});
 		
 		
 		//발주코드 모달 로우아이디 값--------------------------------------

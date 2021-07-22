@@ -50,14 +50,16 @@
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let materialGrid;
 //-----------------------------------------------------------
-//네비게이션 바 고정.
-$('#matNav').addClass('active');
-$('#subPages3').addClass('in');
-$('#subPages3').attr('aria-expanded','true');
-$('#subPages3').attr('style','');
-$('.matrView').addClass('active');
 
 $(document).ready(function () {
+	
+	//네비게이션 바 고정.
+	$('#n6000000').addClass('active');
+	$('#subPages6000000').addClass('in');
+	$('#subPages6000000').attr('aria-expanded','true');
+	$('#subPages6000000').attr('style','');
+	$('.6060000').addClass('active');
+	
 	
 	// 옵션 폼 리셋버튼  
 	$("#reset").click(function() { 
@@ -159,25 +161,11 @@ $(document).ready(function () {
 		
 		
 		
-		
+		//현재고가 안전재고보다 낮을 때 빨간 글씨.
 		grid.on('onGridUpdated',ev => {
-			
 			rowColor();
 		});
-		// 그리드 테마
-		tui.Grid.applyTheme('clean', 
-			{
-				row: {
-		       		hover: {
-		       			background: "#CFD8DC"
-		       		}
-				},
-				cell: {
-					header: {
-						background: "#E6EE9C"
-					}
-				}
-		});
+
 		
 		//발주코드 모달 로우아이디 값--------------------------------------
 		
@@ -202,6 +190,9 @@ function materialCodeSearch(c) {
 	  });
 }
 
+
+
+//안전재고 현재고 비교 및 색부여 함수.
 function rowColor(){
 	$(".tui-grid-table tbody tr").each(function(index, item){
 		var materialStock = $(this).find('td').eq(4).text();

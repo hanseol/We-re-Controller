@@ -74,6 +74,7 @@ th {
 		<div align="center" id="headline"><h3>설비등록</h3></div>
 		<div class="panel-body">
 		<form name="frm" id="frm" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+			<input type="hidden" id="erpEmployeeId" name="erpEmployeeId" value="${loginVO.id }">
 			<table class="table table-bordered">
 				<thead>
 				</thead>
@@ -166,9 +167,6 @@ th {
 			$("#frm").ajaxForm({
 				url: '${pageContext.request.contextPath}/ajax/mac/registerMac',
 				type: 'POST',
-				contentType: "application/json;",
-				dataType : "json",
-				data:{"erpEmployoeeId": erpEmployeeId},
 				enctype: "multipart/form-data",
 				success: function(response){
 					alert("등록 완료");

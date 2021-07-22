@@ -58,12 +58,7 @@
 </div>
 
 <script>
-//네비게이션 바 고정.
-$('#matNav').addClass('active');
-$('#subPages3').addClass('in');
-$('#subPages3').attr('aria-expanded','true');
-$('#subPages3').attr('style','');
-$('.matrLot').addClass('active');
+
 
 //그리드모달창을 위한 그리드 선언-------------------------------------
 let materialGrid;
@@ -72,6 +67,13 @@ let matLotGrid;
 
 
 $(document).ready(function () {
+	
+	//네비게이션 바 고정.
+	$('#n6000000').addClass('active');
+	$('#subPages6000000').addClass('in');
+	$('#subPages6000000').attr('aria-expanded','true');
+	$('#subPages6000000').attr('style','');
+	$('.6050000').addClass('active');
 	
 	// 옵션 폼 리셋버튼  
 	$("#reset").click(function() { 
@@ -94,8 +96,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$(document).on("click",	"button[id=search]",
-			function () {
+	$("#search").on("click", function () {
 				//입출고구분 테스트
 				var inGubun = $('input:checkbox[id="inGubun"]').is(":checked");
 				var outGubun = $('input:checkbox[id="outGubun"]').is(":checked");
@@ -198,17 +199,6 @@ $(document).ready(function () {
   			} */
 		});
 	
-	
-	
-	//데이터 제이슨타입 보기
-	grid.on('response', ev => {
-		const { response } = ev.xhr;
-		const responseObj = JSON.parse(response);
-
-		console.log('result : ', responseObj.result);
-		console.log('data : ', responseObj.data);
-	});
-	
 	//날짜 범위 검색 옵션
 	var start = $("#inoutDate");
 	var end = $("inoutEndDate");
@@ -239,26 +229,7 @@ $(document).ready(function () {
 	}); */
 	
 //-----------------------------------------------------------------
-	
-	
-	
-	//그리드 테마
-	tui.Grid.applyTheme('clean', 
-		{
-			row: {
-	       		hover: {
-	       			background: "#DFEFF7"
-	       		}
-			},
-			cell: {
-				header: {
-					background: "#D5ECED"
-				},
-				currentRow : {
-					background: "#d5dae1"
-				}
-			}
-	});
+
 	
 	
 	//그리드 로우아이디 지정--------------------------------------

@@ -124,16 +124,18 @@ let vendorGrid;
 var outGrid;
 var grid;
 //-----------------------------------------------------------
-//네비게이션 바 고정.
-$('#matNav').addClass('active');
-$('#subPages3').addClass('in');
-$('#subPages3').attr('aria-expanded','true');
-$('#subPages3').attr('style','');
-$('.matrInout').addClass('active');
 
 //=====================================================입고그리드=====================================================
 	$(document).ready(function () {
 		
+		//네비게이션 바 고정.
+		$('#n6000000').addClass('active');
+		$('#subPages6000000').addClass('in');
+		$('#subPages6000000').attr('aria-expanded','true');
+		$('#subPages6000000').attr('style','');
+		$('.6030000').addClass('active');
+		
+
 		// 옵션 폼 리셋버튼  
 		$("#inReset").click(function() { 
 			$("form").each(function() {  
@@ -359,9 +361,9 @@ $('.matrInout').addClass('active');
 
 
 //=====================================================기타 실행 함수=====================================================
-		
+		//자동 계산 (수량 *단가)
 		grid.on('afterChange',ev => {
-			//자동 계산 (수량 *단가)
+			
 			var qty = grid.getValue( ev.changes[0].rowKey, 'matInoutQuantity');
 			var unitPrice = grid.getValue( ev.changes[0].rowKey, 'erpMaterialUnitPrice');
 			grid.setValue( ev.changes[0].rowKey, 'matInoutPrice', qty*unitPrice);
@@ -384,7 +386,7 @@ $('.matrInout').addClass('active');
 		
 
 		
-		// 그리드 테마
+/* 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 
 			{
 				row: {
@@ -400,7 +402,7 @@ $('.matrInout').addClass('active');
 						background: "#d5dae1"
 					}
 				}
-		});
+		}); */
 
 		//그리드 로우아이디 지정--------------------------------------
 		//입고탭 자재인풋 로우키
