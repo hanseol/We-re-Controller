@@ -211,7 +211,10 @@
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
 					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 					                  </if>
-									  ORDER BY i.mat_lot_no
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     com_material_name LIKE '%' || #{comMaterialName} || '%'
+					                  </if>
+									  ORDER BY i.mat_lot_no DESC
 	</select>	
 	
 	<!-- 모달 자재LOT_NO 더블클릭 리스트 -->
@@ -234,6 +237,9 @@
 					                  </if>
 					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
 					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                  </if>
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     com_material_name LIKE '%' || #{comMaterialName} || '%'
 					                  </if>
 									  ORDER BY i.mat_lot_no DESC
 	</select>

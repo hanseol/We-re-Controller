@@ -15,14 +15,14 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div class="col-md-12" align="left">
-					자재LOT_NO&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot" placeholder="자재LOT_NO"/>
+					자재LOT_NO&nbsp;&nbsp;&nbsp;<input type="text" id="modalMatLotSecond" name="modalMatLotSecond" placeholder="자재LOT_NO"/>
 				</div>
 				<div class="col-md-12"><br/></div>
 				<div class="col-md-5" align="left">
-					&nbsp;&nbsp;자재코드&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode" placeholder="자재코드"/>
+					&nbsp;&nbsp;자재코드&nbsp;&nbsp;&nbsp;<input type="text" id="modalMaterialCodeSecond" name="modalMaterialCodeSecond" placeholder="자재코드"/>
 				</div>
 				<div class="col-md-7" align="left">
-				 	자재명&nbsp;&nbsp;&nbsp;<input type="text" id="materialName" name="materialName" placeholder="자재명"/>
+				 	자재명&nbsp;&nbsp;&nbsp;<input type="text" id="modalMaterialNameSecond" name="modalMaterialNameSecond" placeholder="자재명"/>
 				    <button id="modalSearch">검색</button>
 				</div>
 				<div class="col-md-12"><br/></div>
@@ -83,17 +83,17 @@ $(document).ready(function() {
 	});
 
 	
-	$(document).on("click", "button[id=modalSearch]", function() {
-		var materialCode = $("#materialCode").val();
+	$("#modalSearch").on("click", function() {
+		var modalMaterialCodeSecond = $("#modalMaterialCodeSecond").val();
 		
-		var materialName = $("#materialName").val();
+		var modalMaterialNameSecond = $("#modalMaterialNameSecond").val();
 		
-		var matLot = $("#matLot").val();
+		var modalMatLotSecond = $("#modalMatLotSecond").val();
 		
 		var readParams = {
-				'matLotNo' : matLot,
-				'comMaterialCode' : materialCode,
-				'comMaterialName' : materialName
+				'matLotNo' : modalMatLotSecond,
+				'comMaterialCode' : modalMaterialCodeSecond,
+				'comMaterialName' : modalMaterialNameSecond
 			};
 		matLotModalGrid.readData(1, readParams, true);
 	});

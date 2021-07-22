@@ -34,7 +34,7 @@
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
-							        	c.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+							        	m.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
 									  <if test="matMatchInout != null and matMatchInout != ''">
 									  	AND

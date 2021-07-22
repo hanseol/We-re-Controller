@@ -118,7 +118,6 @@ let matLotGrid;
 			//null이면 안되는 값 입력하라고 창 띄우기 넣어야함.
 				grid.finishEditing('rowKey', 'columnName');
 				grid.request('modifyData');
-				grid.reloadData();
 			});
 		//삭제 버튼(체크된 행 삭제)
 		$("#deleteRow").on("click", function () {
@@ -182,15 +181,17 @@ let matLotGrid;
 			columns: [{
 				header: '정산입출고구분',
 				name: 'matMatchInout',
+				formatter: 'listItemText',
 				editor : {
-					type: 'select',
+					type: 'radio',
 					options : {
 					listItems: [
 						{text : '정산입고', value : 'INOUT004'},
 						{text : '정산출고', value : 'INOUT005'}
 						]
 					}
-				}
+				},
+				align : 'center'
 			}, {
 				header: '자재LOT_NO',
 				name: 'matLotNo'
@@ -221,6 +222,8 @@ let matLotGrid;
 		materialGrid = grid;
 		matLotGrid = grid;
 //--------------------------------------------------
+
+
 
 
 		//자동 계산 

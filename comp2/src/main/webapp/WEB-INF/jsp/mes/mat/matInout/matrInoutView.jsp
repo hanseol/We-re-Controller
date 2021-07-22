@@ -208,8 +208,7 @@ var grid;
 			}, {
 				header: '수량',
 				name: 'matInoutQuantity',
-				align: 'right',
-				editor: 'text'
+				align: 'right'
 			}, {
 				header: '금액(원)',
 				name: 'matInoutPrice',
@@ -223,14 +222,7 @@ var grid;
 			}, {
 				header: '입고일자',
 				name: 'matInoutDate',
-				align: 'center',
-				editor: {
-					type: 'datePicker',
-					options: {
-						format: 'YYYY/MM/dd',
-						language: 'ko'
-					}
-				}
+				align: 'center'
 			}, {
 				header: '업체코드',
 				name: 'comMaterialVendorCode',

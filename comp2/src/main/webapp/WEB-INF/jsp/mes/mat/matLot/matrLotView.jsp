@@ -149,7 +149,17 @@ $(document).ready(function () {
 			name : 'matMatchDate'
 		}, {
 			header: '정산입출고구분',
-			name: 'matMatchInout'
+			name: 'matMatchInout',
+			formatter: 'listItemText',
+			editor : {
+				type: 'radio',
+				options : {
+				listItems: [
+					{text : '정산입고', value : 'INOUT004'},
+					{text : '정산출고', value : 'INOUT005'}
+					]
+				}
+			},
 		}, {
 			header: '자재LOT_NO',
 			name: 'matLotNo'
@@ -161,13 +171,13 @@ $(document).ready(function () {
 			name: 'comMaterialName'
 		}, {
 			header: '기존수량',
-			name: 'matInoutQuantity'
+			name: 'matPastQuantity'
 		}, {
 			header: '정산수량',
 			name: 'matMatchQty'
 		}, {
 			header: '최종수량',
-			name: 'finalQty'
+			name: 'matInoutQuantity'
 		}, {
 			header : '전표번호',
 			name : 'matMatchStatement',
@@ -179,7 +189,9 @@ $(document).ready(function () {
 	materialGrid = grid;
 	matLotGrid = grid;
 //--------------------------------------------------
-
+		grid.on('onGridUpdated', ev=>{
+			ev.grid.columnDisable(matMatchInout);
+		});
 	
 		//자동 계산 (수량 *단가)
   		grid.on('afterChange', ev => {

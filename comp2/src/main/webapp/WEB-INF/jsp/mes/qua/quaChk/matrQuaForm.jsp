@@ -207,8 +207,6 @@ let erpMaterialOrderCode;
 		$("#modifyRow").on("click", function() {
 			grid.finishEditing('rowKey', 'columnName');
 			grid.request('modifyData');
-			grid.reloadData();
-			passGrid.reloadData();
 			});
 		
 		
@@ -248,7 +246,6 @@ let erpMaterialOrderCode;
 		$("#modifyPass").on("click", function () {
 			passGrid.finishEditing('rowKey', 'columnName');
 			passGrid.request('modifyData');
-			passGrid.reloadData();
 		});
 		
 		
@@ -337,12 +334,13 @@ let erpMaterialOrderCode;
 			}, {
 				header: '불량코드',
 				name: 'comMaterialFCode',
+				editor : 'text',
 				align: 'center'
+				
 				
 			}, {
 				header: '단가(원)',
 				name: 'erpMaterialUnitPrice',
-				editor: 'text',
 				align : 'right',
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
 				width : 'auto',
@@ -350,7 +348,6 @@ let erpMaterialOrderCode;
 			}, {
 				header: '금액(원)',
 				name: 'erpMaterialPrice',
-				editor: 'text',
 				align : 'right',
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
 				width : 'auto',
@@ -497,8 +494,11 @@ let erpMaterialOrderCode;
 	            var fltyCode = grid.getValue(i, 'comMaterialFCode');
 	            
             	if(passQty==0){
-            		alert('불량코드를 지정해주세요.');
-            		return;
+            		if (fltyCode==null||fltyCode==""){
+            			alert('불량코드를 지정해주세요.');
+            		} else {
+            			return;
+            		}
             	}else if(fltyQty==0){
             		return;
             	}else{
@@ -576,8 +576,18 @@ let erpMaterialOrderCode;
 		});*/
 		//불량
 		grid.on('dblclick', ev =>{
+			
 			if(ev.columnName == 'comMaterialFCode'){
-				matFltyCodeSearch(ev.rowKey);
+				var fltyQty = grid.getValue(ev.rowKey, 'quaMaterialFQty');
+				if(fltyQty==null||fltyQty==""){
+					alert("불량량이 없습니다");
+					return;
+				} else if(fltyQty==0){
+					alert("불량량이 없습니다");
+					return;
+				} else {
+					matFltyCodeSearch(ev.rowKey);
+				}
 			}
 		});
 
@@ -679,7 +689,7 @@ function vendorCodeSearch(c) {
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
+	  //console.log(this.href);
 	  $.get("${pageContext.request.contextPath}/mat/inout/searchVendorCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
@@ -692,7 +702,7 @@ function matFltyCodeSearch(c) {
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
+	  //console.log(this.href);
 	  $.get("${pageContext.request.contextPath}/qua/flty/searchMatFltyCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });

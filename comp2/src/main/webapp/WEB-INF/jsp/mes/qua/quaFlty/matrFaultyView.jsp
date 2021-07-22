@@ -137,7 +137,6 @@ let vendorGrid;
 					method : 'GET'
 				}
 			},
-			initialRequest : false,
 			contentType : "application/json"
 		};
 		
