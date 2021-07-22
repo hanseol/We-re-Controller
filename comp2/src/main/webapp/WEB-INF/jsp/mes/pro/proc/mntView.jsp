@@ -68,9 +68,6 @@
            		 </tr>
 			</tbody>
 		</table>
-		<input type="hidden" id="proProcessLotNo" name="proProcessLotNo"/>
-		<input type="hidden" id="erpCustomerName" name="erpCustomerName"/>
-		<!-- <input type="hidden" id="erpOrderCode" name="erpOrderCode"/> -->
 		<button type="button" id="processMoving">공정이동표발행</button>
 	</form>
 	</div>
@@ -86,6 +83,14 @@
 
 <script>
 	$(document).ready(function(){
+		let erpOrderCode; //주문코드
+		let erpCustomerName; //고객사명
+		let proProcessLotNo; //완제품lot
+		let erpProductName; //제품명
+		let proProcessQuantity; //주문량
+		let proProcessEndTime; //종료시간
+		let comProcessCode; //공정코드
+		
 		//네비게이션 바 고정.
 		$('#n7000000').addClass('active');
 		$('#subPages7000000').addClass('in');
@@ -156,7 +161,7 @@
 			var proOrderDetailCode = $("#proOrderDetailCode option:selected").val();
 			var comProcessCode = $("#comProcessCode option:selected").val();
 			var proOrderQty = $("#proOrderQty option:selected").val();
-			var erpProductName;
+			
 
 			var readParams = {
 					'proOrderDetailCode' : proOrderDetailCode,
@@ -175,11 +180,12 @@
 					$("#erpProductName").val(result.list[0].erpProductName);
 					$('#proProcessQuantity').attr('placeholder', '주문량: ' + result.list[0].proOrderQty );
 					
-					// type=hidden : 공정이동표 발행 시 필요한 데이터.
-					$("#proProcessLotNo").val(result.list[0].proProcessLotNo);
-					$("#erpCustomerName").val(result.list[0].erpCustomerName);
-					/* $("#erpOrderCode").val(result.list[0].erpOrderCode); */
-
+					//공정이동표 발행 시 필요한 데이터.
+					erpOrderCode=result.list[0].erpOrderCode;
+					erpCustomerName =result.list[0].erpCustomerName;
+					proProcessLotNo =result.list[0].proProcessLotNo;
+					erpProductName =result.list[0].erpProductName;
+					
 				}
 			});
 			//시작버튼 활성화
@@ -277,7 +283,24 @@
 		//공정이동표를 발행한다.
 		//공정이동표 발행 버튼 클릭 시.
 		$("#processMoving").on("click", function(){
-			window.open('${pageContext.request.contextPath}/pro/proc/printProcessMove.do','공정이동표 발행','height=600,width=500,scrollbars=yes,titlebar=yes,location=no');
+			
+			proProcessQuantity = $("#proProcessQuantity").val(); //주문량
+			proProcessEndTime = $("#proProcessEndTime").val(); //종료시간
+			comProcessCode = $("#comProcessCode option:selected").val();
+			var proOrderDetailCode = $("#proOrderDetailCode").val();
+			var macCode = $("#macCode").val();
+			
+			var str = '?erpCustomerName='+erpCustomerName
+					+"&proProcessLotNo="+proProcessLotNo
+					+"&erpOrderCode="+erpOrderCode
+					+"&proProcessQuantity="+proProcessQuantity
+					+"&proProcessEndTime="+proProcessEndTime
+					+"&erpProductName="+erpProductName
+					+"&comProcessCode="+comProcessCode
+					+"&proOrderDetailCode="+proOrderDetailCode
+					+"&macCode="+macCode;
+			
+			window.open('${pageContext.request.contextPath}/pro/proc/printProcessMove.do'+str,'공정이동표 발행','height=600,width=900,scrollbars=yes,titlebar=yes,location=no');
 		});
 		
 		const dataSource = {

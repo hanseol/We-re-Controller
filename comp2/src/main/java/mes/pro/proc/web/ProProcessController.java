@@ -223,6 +223,15 @@ public class ProProcessController {
   	        String str = vo.getProOrderDetailCode();
   	        str += vo.getComProcessCode();
   	        
+  	        //상태 지정
+  	        if(vo.getComProcessCode().equals("PROCG001")) {
+  	        	vo.setComProcessCode("제 작 완 료");
+  	        }else if(vo.getComProcessCode().equals("PROCG002")) {
+  	        	vo.setComProcessCode("검 사 완 료");
+  	        }else if(vo.getComProcessCode().equals("PROCG003")) {
+  	        	vo.setComProcessCode("포 장 완 료");
+  	        }
+  	        
   	    	//파일이름을 랜덤으로 생성한다.
   	        UUID uuid = UUID.randomUUID();
   	        
