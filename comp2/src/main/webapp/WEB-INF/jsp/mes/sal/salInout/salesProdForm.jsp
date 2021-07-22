@@ -155,13 +155,6 @@
 <a id="searchOrderList" href="searchOrderList.do"></a>
 
 <script>
-//내비바 고정
-$('#n9000000').addClass('active');
-$('#subPages9000000').addClass('in');
-$('#subPages9000000').attr('aria-expanded','true');
-$('#subPages9000000').attr('style','');
-$('.9030000').addClass('active');
-
 
 let mgrid; //모달그리드
 let moGrid;
@@ -173,6 +166,13 @@ var ugrid;
 
 //----------------------------------------------------------------입고그리드-----------------------------------------------------------------
 	$(document).ready(function() {
+		//내비바 고정
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9030000').addClass('active');
+		
 		//Read
 		$("#inSearch").on("click", function() {
 			var date = $("#dateGubun").val();

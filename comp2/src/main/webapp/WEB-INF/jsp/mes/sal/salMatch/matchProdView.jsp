@@ -74,18 +74,18 @@
 </div>
 
 <script>
-//내비바 고정
-$('#n9000000').addClass('active');
-$('#subPages9000000').addClass('in');
-$('#subPages9000000').attr('aria-expanded','true');
-$('#subPages9000000').attr('style','');
-$('.9070000').addClass('active');
 
 let mgrid;
 
-	$(document).ready(function() {	
-		$(document).on("click", "button[id=search]",
-				function() {
+	$(document).ready(function() {
+		//내비바 고정
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9060000').addClass('active');
+		
+		$("#search").on("click", function() {
 					var date = $("#dateGubun").val();
 					var inMatch = $("#inMatch").val();
 					var outMatch = $("#outMatch").val();
@@ -195,13 +195,11 @@ let mgrid;
 			});
 	
 	// option form reset  
-	 $(document).ready(function() {  
 	    $("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
-	             });  
+	         });  
 	    });  
-	 });  
 	
 }); //end of document ready
 

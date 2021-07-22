@@ -64,17 +64,17 @@
 
 <script>
 //내비바 고정
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.retuProdView').addClass('active');
+
 
 let mgrid; //모달 그리드
-
 	$(document).ready(function() {
-		$(document).on("click", "button[id=search]",
-				function() {
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9040000').addClass('active');
+		
+		$("#search").on("click", function() {
 					var returnDate = $("#returnDate").val();
 					var productCode = $("#productCode").val();
 					var customerCode = $("#customerCode").val();
@@ -153,13 +153,11 @@ let mgrid; //모달 그리드
 		});
 	
 	// option form reset  
-	 $(document).ready(function() {  
 	    $("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
 	             });  
 	    });  
-	 });  
 	
 }); //end of document ready
 

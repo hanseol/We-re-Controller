@@ -63,16 +63,19 @@
 </div>
 
 <script>
-$('#n9000000').addClass('active');
-$('#subPages9000000').addClass('in');
-$('#subPages9000000').attr('aria-expanded','true');
-$('#subPages9000000').attr('style','');
-$('.9035000').addClass('active');
+
 
 let mgrid;
-	$(document).ready(function() {	
-		$(document).on("click", "button[id=search]",
-				function() {
+
+	$(document).ready(function() {
+		
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9020000').addClass('active');
+		
+		$("#search").on("click", function() {
 					var date = $("#dateGubun").val();
 					var inGubun = $("#inGubun").val();
 					var outGubun = $("#outGubun").val();
@@ -167,15 +170,12 @@ let mgrid;
 			 	productLotNoSearch(-1);
 			});
 	
-	// option form reset  
-	 $(document).ready(function() {  
+	// option form reset    
 	    $("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
 	             });  
-	    });  
-	 });  
-	
+	    });   	
 }); //end of document ready
 
 //모달 실행 함수

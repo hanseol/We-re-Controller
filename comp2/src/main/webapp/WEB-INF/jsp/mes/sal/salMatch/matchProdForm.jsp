@@ -73,16 +73,16 @@
 </div>
 
 <script>
-//내비바 고정
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.matchProdForm').addClass('active');
-
 let mgrid;
 
-	$(document).ready(function() {	
+	$(document).ready(function() {
+		//내비바 고정
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9060000').addClass('active');
+		
 		//Read
 		$("#search").on("click",
 				function() {
@@ -245,13 +245,11 @@ let mgrid;
 			});
 	
 	// option form reset  
-	 $(document).ready(function() {  
 	    $("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
-	             });  
-	    });  
-	 });  
+	         });  
+	    });   
 	
 }); //end of document ready
 

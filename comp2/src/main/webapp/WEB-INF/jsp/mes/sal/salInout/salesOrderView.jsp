@@ -61,16 +61,18 @@
 </div>
 
 <script>
-//내비바 고정
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.salesOrderView').addClass('active');
+
 
 let mgrid; //모달 그리드
 
 	$(document).ready(function() {
+		//내비바 고정
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9010000').addClass('active');
+		
 		$("#search").on("click", function() {
 					var orderDate = $("#orderDate").val();
 					var product = $("#productCode").val();

@@ -68,19 +68,18 @@
 </div>
 
 <script>
-//내비바 고정
-$('#n9000000').addClass('active');
-$('#subPages9000000').addClass('in');
-$('#subPages9000000').attr('aria-expanded','true');
-$('#subPages9000000').attr('style','');
-$('.9050000').addClass('active');
 
 let mgrid; //모달 그리드
 
 	$(document).ready(function() {
+		$('#n9000000').addClass('active');
+		$('#subPages9000000').addClass('in');
+		$('#subPages9000000').attr('aria-expanded','true');
+		$('#subPages9000000').attr('style','');
+		$('.9040000').addClass('active');
+		
 		//Read
-		$(document).on("click", "button[id=search]",
-				function() {
+		$("#search").on("click", function() {
 					var returnDate = $("#returnDate").val();
 					var productLotNo = $("#productLotNo").val();
 					console.log(returnDate, productLotNo);
@@ -92,7 +91,7 @@ let mgrid; //모달 그리드
 				});
 		
 		//Insert
-		$(document).on("click", "button[id=appendRow]", function() {
+		$("#appendRow").on("click", function() {
 			var rowData =[{
 					salInoutDate : "",
 					salInoutCode : "",
@@ -109,7 +108,7 @@ let mgrid; //모달 그리드
 		});
 		
 		//Delete
-		$(document).on("click", "button[id=deleteRow]", function() {
+		$("#deleteRow").on("click", function() {
 			grid.removeCheckedRows(false);
 		});
 		
@@ -205,13 +204,11 @@ let mgrid; //모달 그리드
 		
 	
 	// option form reset  
-	 $(document).ready(function() {  
 	    $("#reset").click(function() {  
 	         $("form").each(function() {  
 	                if(this.id == "option") this.reset();  
-	             });  
-	    });  
-	 });  
+	         });  
+	 	});  
 	
 }); //end of document ready
 
