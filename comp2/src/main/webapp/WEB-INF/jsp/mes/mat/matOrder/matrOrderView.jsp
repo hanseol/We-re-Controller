@@ -1,30 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal{
-	-webkit-border-radius :0px;
-	border-radius:0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-	max-height: 600px; */
-}
-
-.blocker{
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>
@@ -37,26 +13,24 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
-						발주일자<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">~<input type="date" id="erpMaterialOrderEndDate" name="erpMaterialOrderEndDate">	
+					<div class="col-md-12">
+						발주일자&nbsp;&nbsp;&nbsp;<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">&nbsp;~&nbsp;<input type="date" id="erpMaterialOrderEndDate" name="erpMaterialOrderEndDate">	
 					</div>
-					<div class="col-md-3">
-						발주검색
-						<input type="text" id="orderCode" name="orderCode">	
+					<div class="col-md-12"><br/></div>
+					<div class="col-md-4">
+						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode">	
 						<a id="searchMatOrderCodePure" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
-						자재검색
-						<input type="text" id="materialCode" name="materialCode">
+					<div class="col-md-4">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">					
-						
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				<div class="col-md-4" align="right">
+					<button type="button" class="btn btn-primary" id="search">조회</button>
+					<button type="button" class="btn btn-success" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>

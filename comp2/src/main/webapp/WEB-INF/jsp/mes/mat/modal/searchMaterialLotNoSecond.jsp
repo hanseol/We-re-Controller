@@ -14,12 +14,18 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="panel-body">
-				<div>
-					자재LOT_NO<input type="text" id="matLot" name="matLot" placeholder="자재LOT_NO"/><br/>
-					자재코드 <input type="text" id="materialCode" name="materialCode" placeholder="자재코드"/>
-				 	자재명 <input type="text" id="materialName" name="materialName" placeholder="자재명"/>
+				<div class="col-md-12" align="left">
+					자재LOT_NO&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot" placeholder="자재LOT_NO"/>
+				</div>
+				<div class="col-md-12"><br/></div>
+				<div class="col-md-5" align="left">
+					&nbsp;&nbsp;자재코드&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode" placeholder="자재코드"/>
+				</div>
+				<div class="col-md-7" align="left">
+				 	자재명&nbsp;&nbsp;&nbsp;<input type="text" id="materialName" name="materialName" placeholder="자재명"/>
 				    <button id="modalSearch">검색</button>
 				</div>
+				<div class="col-md-12"><br/></div>
 				<div id="matLotModalGrid"></div>
 			</div>
 		</div>

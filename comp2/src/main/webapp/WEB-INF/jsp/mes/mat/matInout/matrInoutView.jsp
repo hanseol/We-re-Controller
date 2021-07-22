@@ -22,23 +22,24 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
-						일자<input type="date" id="inDate" name="inDate">~<input type="date" id="inEndDate" name="inEndDate">
+					<div class="col-md-12">
+						입고일자&nbsp;&nbsp;&nbsp;<input type="date" id="inDate" name="inDate">&nbsp;~&nbsp;<input type="date" id="inEndDate" name="inEndDate">
 					</div>
-					<div class="col-md-3" align="left">
-						자재검색<input type="text" id="inMaterialCode" name="inMaterialCode">
+					<div class="col-md-12"><br/></div>
+					<div class="col-md-4" align="left">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="inMaterialCode" name="inMaterialCode">
 						<a id="inSearchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3" align="left">
-						업체검색<input type="text" id="inVendorCode" name="inVendorCode">
+					<div class="col-md-4" align="left">
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="inVendorCode" name="inVendorCode">
 						<a id="inSearchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="inSearch">조회</button>
-					<button type="button" class="btn btn-danger" id="inReset">새자료</button>
+				<div class="col-md-4" align="right">
+					<button type="button" class="btn btn-primary" id="inSearch">조회</button>
+					<button type="button" class="btn btn-success" id="inReset">새자료</button>
 				</div>
 			</div>
 		</div>
@@ -71,23 +72,24 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
-						일자<input type="date" id="outDate" name="outDate">~<input type="date" id="outEndDate" name="outEndDate">
+					<div class="col-md-12">
+						출고일자&nbsp;&nbsp;&nbsp;<input type="date" id="outDate" name="outDate">&nbsp;~&nbsp;<input type="date" id="outEndDate" name="outEndDate">
 					</div>
-					<div class="col-md-3" align="left">
-						자재검색<input type="text" id="outMaterialCode" name="outMmaterialCode">
+					<div class="col-md-12"><br/></div>
+					<div class="col-md-4" align="left">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="outMaterialCode" name="outMmaterialCode">
 						<a id="outSearchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3" align="left">
-						출고공정검색<input type="text" id="outProcessCode" name="outProcessCode">
+					<div class="col-md-4" align="left">
+						출고공정검색&nbsp;<input type="text" id="outProcessCode" name="outProcessCode">
 						<a id="outSearchProcessCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="outSearch">조회</button>
-					<button type="button" class="btn btn-danger" id="outReset">새자료</button>
+				<div class="col-md-4" align="right">
+					<button type="button" class="btn btn-primary" id="outSearch">조회</button>
+					<button type="button" class="btn btn-success" id="outReset">새자료</button>
 				</div>
 			</div>
 		</div>

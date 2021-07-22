@@ -14,10 +14,11 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="panel-body">
-				<div>
+				<div class="col-md-12" align="left">
 					발주코드 <input type="text" id="modalOrderCode" name="modalOrderCode" placeholder="발주코드"/>
 				    <button id="modalSearch">검색</button>
 				</div>
+				<div class="col-md-12"><br/></div>
 				<div id="matOrderPureModalGrid"></div>
 			</div>
 		</div>

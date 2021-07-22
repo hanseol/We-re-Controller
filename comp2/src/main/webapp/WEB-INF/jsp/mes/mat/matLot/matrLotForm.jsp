@@ -14,29 +14,25 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-4">
-						일자&nbsp;&nbsp;&nbsp;<input type="date" id="matchDate" name="matchDate">~<input type="date" id="matchEndDate" name="matchEndDate">
-					</div>
-					<div class="col-md-8" align="left">
-						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
-						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
-					</div>
-					<div class="col-md-12"><br/></div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-4" align="left">
+					<div class="col-md-9" align="left">
 						자재LOT검색&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot">
 						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
 					</div>
+					<div class="col-md-12"><br/></div>
+					<div class="col-md-8" align="left">
+						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
+						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
+					</div>
 				</form>
 				<div class="col-md-4" align="right">
-					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+					<button type="button" class="btn btn-primary" id="search">조회</button>
+					<button type="button" class="btn btn-success" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
@@ -44,14 +40,15 @@
 </div>
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<div class="panel-body">
+		<div class="panel-heading">
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-md-7">
 					<p class="panel-subtitle">자재LOT재고 목록</p>
 				</div>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-info" id="appendRow">추가</button>
-					<button type="button" class="btn btn-warning" id="deleteRow">선택삭제</button>
+				<div class="col-md-5" align="right">
+					<button type="button" id="appendRow">추가</button>
+					<button type="button" id="deleteRow">선택삭제</button>
+					<button type="button" id="modifyRow">저장</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
 			</div>
 			<div class="panel-body">

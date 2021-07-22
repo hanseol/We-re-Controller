@@ -14,11 +14,14 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="panel-body">
-				<div>
+				<div class="col-md-5">
 					업체코드 <input type="text" id="comCodeDetailId" name="comCodeDetailId" placeholder="업체코드"/>
-				    업체명 <input type="text" id="comCodeDetailName" name="comCodeDetailName" placeholder="업체명"/>
+				</div>
+				<div class="col-md-7" align="left">
+					업체명 <input type="text" id="comCodeDetailName" name="comCodeDetailName" placeholder="업체명"/>
 				    <button id="findRow">검색</button>
 				</div>
+				<div class="col-md-12"><br/></div>
 				<div id="vendorModalGrid"></div>
 			</div>
 		</div>

@@ -16,14 +16,14 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-3">
-						자재검색<input type="text" id="materialCode" name="materialCode">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
 				<div class="col-md-9" align="right">
-					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+					<button type="button" class="btn btn-primary" id="search">조회</button>
+					<button type="button" class="btn btn-success" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
@@ -104,8 +104,11 @@ $(document).ready(function () {
 			data : dataSource,
 			scrollX: true,
 	        scrollY: true,
-	        bodyHeight: 400,
+	        bodyHeight: 600,
 	        rowHeight: 30,
+	        columnOptions: {
+		        resizable: true
+		      },
 			columns : [ {
 				header : '자재코드',
 				name : 'comMaterialCode',
@@ -113,7 +116,9 @@ $(document).ready(function () {
 			}, {
 				header : '자재명',
 				name : 'comMaterialName',
-				align : 'center'
+				align : 'center',
+				width : 'auto',
+				minWidth : 100
 			}, {
 				header : '규격',
 				name : 'comMaterialSize',
@@ -121,7 +126,8 @@ $(document).ready(function () {
 			}, {
 				header : '관리단위',
 				name : 'comMaterialUnit',
-				align : 'center'
+				align : 'center',
+				width : 70
 			}, {
 				header : '현재고',
 				name : 'materialStock',
@@ -132,7 +138,8 @@ $(document).ready(function () {
 				name : 'comMaterialSafetyStock',
 				align : 'right',
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
-			}]
+			}],
+			
 		});
 //모달 그리드 초기화 ----------------------------------
 		materialGrid = grid;
@@ -153,35 +160,21 @@ $(document).ready(function () {
 		
 		
 		
-		grid.on('click',ev => {
-			var rowKey = ev.rowKey;
-			var nowStock = grid.getValue(rowKey, 'materialStock'); 
-			var safetyStock = grid.getValue(rowKey, 'comMaterialSafetyStock');
+		grid.on('onGridUpdated',ev => {
 			
-			if(nowStock < safetyStock){
-				tui.Grid.applyTheme('clean',{
-					cell: {
-						currentRow : {
-							background: "red"
-						}
-					}
-				});
-			}else return;
+			rowColor();
 		});
 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 
 			{
 				row: {
 		       		hover: {
-		       			background: "#DFEFF7"
+		       			background: "#CFD8DC"
 		       		}
 				},
 				cell: {
 					header: {
-						background: "#D5ECED"
-					},
-					currentRow : {
-						background: "#d5dae1"
+						background: "#E6EE9C"
 					}
 				}
 		});
@@ -207,6 +200,19 @@ function materialCodeSearch(c) {
 	  $.get("${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
+}
+
+function rowColor(){
+	$(".tui-grid-table tbody tr").each(function(index, item){
+		var materialStock = $(this).find('td').eq(4).text();
+		var comMaterialSafetyStock = $(this).find('td').eq(5).text();
+		
+		if(parseInt(materialStock)< parseInt(comMaterialSafetyStock)){
+			/* $(this).find('td').css('backgroundColor',"lightgray"); */
+			$(this).find('td').css('color',"red");
+		}
+	})
+	
 }
 
 </script>

@@ -1,30 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal{
-	-webkit-border-radius :0px;
-	border-radius:0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-	max-height: 600px; */
-}
-
-.blocker{
-	z-index: 1200;
-}
-</style>
 
 <div class="content-fluid">
 	<div>
@@ -37,29 +13,29 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
-						검사일자<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" value="">~<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" value="">	
+					<div class="col-md-12">
+						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" value="">&nbsp;~&nbsp;<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" value="">	
 					</div>
+					<div class="col-md-12"><br/></div>
 					<div class="col-md-3">
-						발주검색
-						<input type="text" id="orderCode" name="orderCode">	
+						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode">	
 						<a id="searchMatOrderCodeFlty" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodeFlty.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						자재검색<input type="text" id="materialCode" name="materialCode">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
 						<a id="searchMaterialCode" href="searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-3">
-						업체검색<input type="text" id="vendorCode" name="vendorCode">
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCode" name="vendorCode">
 						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-12" align="right">
-					<button type="button" class="btn btn-success" id="search">조회</button>
-					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				<div class="col-md-3" align="right">
+					<button type="button" class="btn btn-primary" id="search">조회</button>
+					<button type="button" class="btn btn-success" id="reset">새자료</button>
 				</div>
 			</div>
 		</div>
@@ -277,21 +253,7 @@ let vendorGrid;
 		});
 		
 //2번 그리드에 클릭한 발주코드에 해당하는 불량데이터 뿌려주기---------------------------------------------------		
-/* 		grid.on('click', ev => {
-			if(ev.columnName == 'erpMaterialOrderCode'){
-					
-				//데이터 넘겨주기.
-				var materialOrderCode = grid.getFocusedCell().value;
-				var matFltyCode = $("#matFltyCode").val();
-				var readParams = {
-						'erpMaterialOrderCode' : materialOrderCode,
-						'comMaterialFCode' : matFltyCode
-				} 
-				fltyGrid.readData(1, readParams, true);
-				console.log(readData);
-				
-			}
-		}); */
+
  		grid.on('click', ev => {
 			var rKey = ev.rowKey;
 			var getOrderCode = grid.getValue(rKey, 'erpMaterialOrderCode');

@@ -1,31 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<style>
-.my-panel {
-	text-align: right;
-	border-top: 1px solid gray;
-	padding: 10px;
-	margin-bottom: 10px;
-	background-color: white;
-}
-
-.modal {
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
-	overflow: visible;
-	text-align: center;
-	max-width: 900px;
-	width: 900px;
-	/* height: 600px;
-		max-height: 600px; */
-}
-
-.blocker {
-	z-index: 1200;
-}
-</style>
-
 <div class="content-fluid">
 	<div>
 		<h2>자재검사결과 조회</h2>
@@ -36,27 +11,37 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-12">
-					<p class="panel-subtitle">검사 완료 목록</p>
-				</div>
 				<form id="option">
-					<div class="col-md-3">
-						검사일자<input type="date" id="quaChkDate" name="quaChkDate"> ~ <input type="date" id="quaChkEndDate" name="quaChkEndDate">
+					<div class="col-md-12">
+						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaChkDate" name="quaChkDate">&nbsp;~&nbsp;<input type="date" id="quaChkEndDate" name="quaChkEndDate">
 					</div>
-					<div class="col-md-3">
-						자재검색<input type="text" id="materialCodeTwo" name="materialCodeTwo">
+					<div class="col-md-12"><br/></div>
+					<div class="col-md-4">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCodeTwo" name="materialCodeTwo">
 						<a id="searchMaterialCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
-					<div class="col-md-3">
-						업체검색<input type="text" id="vendorCodeTwo" name="vendorCodeTwo">
+					<div class="col-md-4">
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCodeTwo" name="vendorCodeTwo">
 						<a id="searchVendorCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-success" id="searchPass">조회</button>
-					<button type="button" class="btn btn-danger" id="reset">새자료</button>
+				<div class="col-md-4" align="right">
+					<button type="button" class="btn btn-primary" id="searchPass">조회</button>
+					<button type="button" class="btn btn-success" id="reset">새자료</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="content-fluid">
+	<div class="panel panel-headline">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-12">
+					<p class="panel-subtitle">검사 완료 목록</p>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -65,7 +50,6 @@
 		</div>
 	</div>
 </div>
-
 <script>
 //네비게이션 고정
 $('#quaNav').addClass('active');

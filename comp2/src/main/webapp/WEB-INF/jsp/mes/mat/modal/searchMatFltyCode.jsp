@@ -14,11 +14,14 @@
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="panel-body">
-				<div>
+				<div class="col-md-5">
 					자재불량코드 <input type="text" id="fltyCode" name="fltyCode" placeholder="자재불량코드"/>
-				    불량명 <input type="text" id="fltyName" name="fltyName" placeholder="불량명"/>
+				</div>
+				<div class="col-md-7" align="left">    
+				        불량명 <input type="text" id="fltyName" name="fltyName" placeholder="불량명"/>
 				    <button id="modalSearch">검색</button>
 				</div>
+				<div class="col-md-12"><br/></div>
 				<div id="matFltyModalGrid"></div>
 			</div>
 		</div>
@@ -89,7 +92,7 @@ $(document).ready(function() {
 
 	const matFltyModalGrid = new tui.Grid({
 		el : document.getElementById('matFltyModalGrid'),
-		rowHeaders : [ 'radio' ],
+		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
 			scrollX: true,
 	        scrollY: true,
