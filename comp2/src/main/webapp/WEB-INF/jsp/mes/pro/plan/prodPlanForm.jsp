@@ -41,6 +41,9 @@
 					</div>
 					<div class="col-md-4">
 						* 생산계획이름  &nbsp;&nbsp;&nbsp; <input type="text" id="proPlanName" name="proPlanName" class="form-control">
+					<a href="${pageContext.request.contextPath}/pro/plan/proPlanName.do" rel="modal:open">						
+                   		<i id="searchImg" class="fa fa-search"></i>
+           			</a>
 						
                  	</div>
 					<!-- 모달창 -->
@@ -49,11 +52,6 @@
 						<button type="button" class="btn btn-success" id="findRow">조회</button>
 						<button type="reset" class="btn btn-danger" id="reset">새자료</button>
 						<button type="button" class="btn btn-fail" id="deletePlan">계획삭제</button>
-						<div style="position: absolute; bottom: -80px; left: 100px">
-							<a href="${pageContext.request.contextPath}/pro/plan/proPlanName.do" rel="modal:open">						
-                    		<i id="searchImg" class="fa fa-search"></i>
-                 			</a>
-						</div>
 					</div> 
 				</form>
 			</div>

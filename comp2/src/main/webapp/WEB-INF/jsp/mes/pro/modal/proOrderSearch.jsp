@@ -112,6 +112,9 @@ $(document).ready(function() {
 			header : '생산계획디테일코드',
 			name : 'proOrderDetailCode',
 			hidden : true
+		}, {
+			header : '생산여부',
+			name : 'proProcessStatus'
 		}]
 	});
 	
