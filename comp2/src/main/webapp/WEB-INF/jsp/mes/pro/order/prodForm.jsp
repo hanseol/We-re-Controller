@@ -307,15 +307,18 @@ var proOrderRowKey;
          }, {
             header : '예상작업일수',
             name : 'proOrderExpectQty',
+            align: 'right',
             editor : 'text'
          }, {
             header : '작업일자',
             name : 'proWorkDate',
+            align: 'center',
             editor : {
                type : 'datePicker',
                options : {
                   format : 'YYYY/MM/dd',
-                  language: 'ko'
+                  language: 'ko',
+				  selectableRanges : [[new Date(), new Date(2099, 1, 1)]]
                } 
             }
          }, {
