@@ -11,33 +11,31 @@
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
-			<div class="row">
-				<form id="option">
-					<div class="col-md-12">
-						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" value="">&nbsp;~&nbsp;<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" value="">	
-					</div>
-					<div class="col-md-12"><br/></div>
-					<div class="col-md-3">
-						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode">	
-						<a id="searchMatOrderCodeFlty" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodeFlty.do">
-                     	<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="searchMaterialCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3">
-						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCode" name="vendorCode">
-						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-primary" id="search">조회</button>
-					<button type="button" class="btn btn-success" id="reset">새자료</button>
-				</div>
+			<form id="option">
+			<div>
+				검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" class="form-control">&nbsp;~&nbsp;<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" class="form-control">	
 			</div>
+			<br/>
+			<div class="row">
+					<div class="col-md-10">
+						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode" class="form-control">	
+						<a id="searchMatOrderCodeFlty" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodeFlty.do">
+                     	<i class="fa fa-search"></i></a>&nbsp;&nbsp;
+						
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode" class="form-control">
+						<a id="searchMaterialCode" href="searchMaterialCode.do">
+						<i class="fa fa-search"></i></a>&nbsp;&nbsp;
+					
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCode" name="vendorCode" class="form-control">
+						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
+						<i class="fa fa-search"></i></a>&nbsp;&nbsp;
+					</div>
+					<div class="col-md-2" align="right">
+						<button type="button" class="btn btn-primary" id="search">조회</button>
+						<button type="button" class="btn btn-success" id="reset">새자료</button>
+					</div>
+			</div>
+			</form>
 		</div>
 	</div>
 </div>

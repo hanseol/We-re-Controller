@@ -14,16 +14,17 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-12">
-						발주일자&nbsp;&nbsp;&nbsp;<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate">&nbsp;~&nbsp;<input type="date" id="erpMaterialOrderEndDate" name="erpMaterialOrderEndDate">	
+						발주일자&nbsp;&nbsp;&nbsp;<input type="date" id="erpMaterialOrderDate" name="erpMaterialOrderDate" class="form-control">&nbsp;
+												~&nbsp;<input type="date" id="erpMaterialOrderEndDate" name="erpMaterialOrderEndDate" class="form-control">	
 					</div>
 					<div class="col-md-12"><br/></div>
 					<div class="col-md-4">
-						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode">	
+						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode" class="form-control">	
 						<a id="searchMatOrderCodePure" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodePure.do">
                      	<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-4">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode" class="form-control">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">					
 						<i class="fa fa-search"></i></a>
 					</div>

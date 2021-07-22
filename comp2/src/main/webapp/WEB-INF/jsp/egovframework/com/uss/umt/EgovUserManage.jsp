@@ -25,9 +25,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.deptUserManage.title"/></c:set>
-<!DOCTYPE html>
-<html>
-<head>
+
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -122,8 +120,7 @@ function fnViewCheck(){
 <c:if test="${!empty resultMsg}">alert("<spring:message code="${resultMsg}" />");</c:if>
 -->
 </script>
-</head>
-<body>
+
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
@@ -225,8 +222,4 @@ function fnViewCheck(){
 	<input name="pageIndex" type="hidden" value="<c:out value='${userSearchVO.pageIndex}'/>"/>
 </div>
 </form>
-	
 
-
-</body>
-</html>

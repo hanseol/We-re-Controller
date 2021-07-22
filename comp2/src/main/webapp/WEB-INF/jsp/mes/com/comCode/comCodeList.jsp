@@ -48,12 +48,6 @@
 
 <!-- 마스터데이터 -->
 <script>
-//네비게이션 고정
-$('#proNav').addClass('active');
-$('#subPages1').addClass('in');
-$('#subPages1').attr('aria-expanded','true');
-$('#subPages1').attr('style','');
-$('.comCodeList').addClass('active');
 
 /* 체크박스 */
  class CustomCheckboxRenderer {
@@ -110,6 +104,14 @@ $('.comCodeList').addClass('active');
 	$(document)
 			.ready(
 					function() {
+						
+						//네비게이션 고정 - 2021.07.23 김한설 수정
+						$('#n4000000').addClass('active');
+						$('#subPages4000000').addClass('in');
+						$('#subPages4000000').attr('aria-expanded','true');
+						$('#subPages4000000').attr('style','');
+						$('.4010000').addClass('active');
+						
 						//변수생성
 						var comCodeIdclick = 0;
 						

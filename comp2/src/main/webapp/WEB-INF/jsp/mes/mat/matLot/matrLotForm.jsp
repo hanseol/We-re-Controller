@@ -14,20 +14,19 @@
 		<div class="panel-body">
 			<div class="row">
 				<form id="option">
-					<div class="col-md-3">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
+					<div class="col-md-8">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode" class="form-control">
 						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-9" align="left">
-						자재LOT검색&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot">
+						&nbsp;&nbsp;&nbsp;
+						자재LOT검색&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot" class="form-control">
 						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
 						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-12"><br/></div>
-					<div class="col-md-8" align="left">
-						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
-						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
+						<br/><br/>
+						<div>
+							자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
+							<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
+						</div>
 					</div>
 				</form>
 				<div class="col-md-4" align="right">

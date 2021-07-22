@@ -13,31 +13,32 @@
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
-			<div class="row">
-				<form id="option">
-					<div class="col-md-12">
-						조정일자&nbsp;&nbsp;&nbsp;<input type="date" id="matchDate" name="matchDate">&nbsp;~&nbsp;<input type="date" id="matchEndDate" name="matchEndDate">
+			<form id="option">
+					<div>
+						조정일자&nbsp;&nbsp;&nbsp;<input type="date" id="matchDate" name="matchDate" class="form-control">&nbsp;
+							~&nbsp;<input type="date" id="matchEndDate" name="matchEndDate" class="form-control">
 					</div>
-					<div class="col-md-12"><br/></div>
-					<div class="col-md-3">
-						자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
-						<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
-					</div>
-					<div class="col-md-3">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode">
-						<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
-						<i class="fa fa-search"></i></a>
-					</div>
-					<div class="col-md-3">
-						자재LOT검색&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot">
-						<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
-						<i class="fa fa-search"></i></a>
+					<br/>
+					<div class="row">
+						<div class="col-md-3">
+							자료구분&nbsp;&nbsp;&nbsp;<input type="checkbox" id="inGubun" name="gubunChkBox">정산입고
+							<input type="checkbox" id="outGubun" name="gubunChkBox">정산출고
+						</div>
+						<div class="col-md-7">
+							자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCode" name="materialCode" class="form-control">
+							<a id="searchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
+							<i class="fa fa-search"></i></a>
+							&nbsp;&nbsp;
+							자재LOT검색&nbsp;&nbsp;&nbsp;<input type="text" id="matLot" name="matLot" class="form-control">
+							<a id="searchMatLotNo" href="${pageContext.request.contextPath}/mat/lot/searchMatLotNo.do">
+							<i class="fa fa-search"></i></a>
+						</div>
+						<div class="col-md-2" align="right">
+							<button type="button" class="btn btn-primary" id="search">조회</button>
+							<button type="button" class="btn btn-success" id="reset">새자료</button>
+						</div>
 					</div>
 				</form>
-				<div class="col-md-3" align="right">
-					<button type="button" class="btn btn-primary" id="search">조회</button>
-					<button type="button" class="btn btn-success" id="reset">새자료</button>
-				</div>
 			</div>
 		</div>
 	</div>

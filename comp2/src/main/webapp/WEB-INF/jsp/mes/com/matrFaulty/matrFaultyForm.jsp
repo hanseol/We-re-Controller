@@ -35,14 +35,15 @@
 </div>
 
 <script>
-//네비게이션고정
-$('#proNav').addClass('active');
-$('#subPages1').addClass('in');
-$('#subPages1').attr('aria-expanded','true');
-$('#subPages1').attr('style','');
-$('.matrFaultyForm').addClass('active');
-
 	$(document).ready(function() {
+		
+		//네비게이션 고정 - 2021.07.23 김한설 수정
+		$('#n4000000').addClass('active');
+		$('#subPages4000000').addClass('in');
+		$('#subPages4000000').attr('aria-expanded','true');
+		$('#subPages4000000').attr('style','');
+		$('.4060000').addClass('active');
+		
 		//변수생성
 		var productFCode = 0;
 		//코드명 검색

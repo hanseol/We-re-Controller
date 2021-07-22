@@ -23,16 +23,17 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-12">
-						입고일자&nbsp;&nbsp;&nbsp;<input type="date" id="inDate" name="inDate">&nbsp;~&nbsp;<input type="date" id="inEndDate" name="inEndDate">
+						입고일자&nbsp;&nbsp;&nbsp;<input type="date" id="inDate" name="inDate" class="form-control">&nbsp;
+										~&nbsp;<input type="date" id="inEndDate" name="inEndDate" class="form-control">
 					</div>
 					<div class="col-md-12"><br/></div>
 					<div class="col-md-4" align="left">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="inMaterialCode" name="inMaterialCode">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="inMaterialCode" name="inMaterialCode" class="form-control">
 						<a id="inSearchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-4" align="left">
-						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="inVendorCode" name="inVendorCode">
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="inVendorCode" name="inVendorCode" class="form-control">
 						<a id="inSearchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
@@ -73,16 +74,17 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-12">
-						출고일자&nbsp;&nbsp;&nbsp;<input type="date" id="outDate" name="outDate">&nbsp;~&nbsp;<input type="date" id="outEndDate" name="outEndDate">
+						출고일자&nbsp;&nbsp;&nbsp;<input type="date" id="outDate" name="outDate" class="form-control">&nbsp;
+						~&nbsp;<input type="date" id="outEndDate" name="outEndDate" class="form-control">
 					</div>
 					<div class="col-md-12"><br/></div>
 					<div class="col-md-4" align="left">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="outMaterialCode" name="outMmaterialCode">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="outMaterialCode" name="outMmaterialCode" class="form-control">
 						<a id="outSearchMaterialCode" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-4" align="left">
-						출고공정검색&nbsp;<input type="text" id="outProcessCode" name="outProcessCode">
+						출고공정검색&nbsp;<input type="text" id="outProcessCode" name="outProcessCode" class="form-control">
 						<a id="outSearchProcessCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>

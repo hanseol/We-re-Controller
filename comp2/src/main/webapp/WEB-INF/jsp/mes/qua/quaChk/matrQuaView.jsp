@@ -13,16 +13,16 @@
 			<div class="row">
 				<form id="option">
 					<div class="col-md-12">
-						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaChkDate" name="quaChkDate">&nbsp;~&nbsp;<input type="date" id="quaChkEndDate" name="quaChkEndDate">
+						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaChkDate" name="quaChkDate" class="form-control">&nbsp;~&nbsp;<input type="date" id="quaChkEndDate" name="quaChkEndDate" class="form-control">
 					</div>
 					<div class="col-md-12"><br/></div>
 					<div class="col-md-4">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCodeTwo" name="materialCodeTwo">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCodeTwo" name="materialCodeTwo" class="form-control">
 						<a id="searchMaterialCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-4">
-						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCodeTwo" name="vendorCodeTwo">
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCodeTwo" name="vendorCodeTwo" class="form-control">
 						<a id="searchVendorCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
