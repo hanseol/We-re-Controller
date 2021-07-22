@@ -144,7 +144,8 @@ $(document).ready(function() {
 				type : 'datePicker',
 				options : {
 					format : 'YYYY-MM-dd',
-					language: 'ko'
+					language: 'ko',
+					selectableRanges : [[new Date(), new Date(2099, 1, 1)]]
 				} 
 			},
 			align : 'center'
@@ -155,7 +156,8 @@ $(document).ready(function() {
 				type : 'datePicker',
 				options : {
 					format : 'YYYY-MM-dd',
-					language: 'ko'
+					language: 'ko',
+					selectableRanges : [[new Date(), new Date(2099, 1, 1)]]
 				} 
 			},
 			align : 'center'

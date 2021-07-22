@@ -176,7 +176,7 @@ SELECT * FROM (
 					TO_CHAR(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') = #{macNextChkDate} 
 				</if>
 					ORDER BY 
-						MAC_NEXT_CHK_DATE DESC
+						MAC_NEXT_CHK_DATE ASC
 		
 		<![CDATA[					
 	) A WHERE ROWNUM <= #{lastIndex}
@@ -184,7 +184,7 @@ SELECT * FROM (
 ]]>
 	</select>	
 
-	
+	<!-- 설비 점검일 알림 조회 -->
 	<select id="selectLeftDate" resultType="mes.member.service.MacDateResultVO">
 	  <![CDATA[
 		SELECT  TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) || 
@@ -198,16 +198,22 @@ SELECT * FROM (
 		]]>
 	</select>
 	
+	<!-- 설비 등록 시 자동 부여 될 코드 생성 -->
 	<select id="selectNextMacCode" resultType="String">
-		SELECT 'MAC' || TO_CHAR(MAX(SUBSTR(MAC_CODE,4))+1) FROM MAC
+		SELECT 'MAC' || 
+				TO_CHAR(MAX(TO_NUMBER(SUBSTR(MAC_CODE, 4,LENGTH(MAC_CODE))))+1) 
+		FROM MAC
 	</select>
 	
+	
+	<!-- 설비 등록 시 필요한 정보 조회 -->
+	<!-- 설비 규격 -->
 	<select id="selectMacSize" resultType="String">
 		SELECT com_code_detail_name AS macSize 
 		FROM com_code_detail
 		WHERE com_code_detail_id LIKE 'MACSIZE%'
 	</select>
-	
+	<!-- 사용 용도 -->
 	<select id="selectMacUsePurpose" resultType="String">
 		SELECT com_code_detail_name AS macUsePurpose
 		FROM com_code_detail
