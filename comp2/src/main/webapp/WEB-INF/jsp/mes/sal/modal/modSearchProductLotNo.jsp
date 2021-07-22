@@ -8,7 +8,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>완제품 LOT_NO 검색</h3>
+		<h3>입고 완제품 LOT_NO 검색</h3>
 	</div>
 </div>
 
@@ -46,31 +46,36 @@ $(document).ready(function() {
 
 		for(var i=0; i<chkRowKeys.length; i++){
 			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
-			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
-			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
+			erpProductName = grid.getValue(chkRowKeys[i], 'erpProductName')
 			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');
+			comProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
 			
 			
 			console.log(proProcessLotNo);
-			console.log(erpProductCode);
-			console.log(erpCustomerCode);
+			console.log(erpProductName);
 			console.log(salNowQuantity);
-			
-			muGrid.blur();	
-			muGrid.setValue(chkRowKeys[i], 'proProcessLotNo', proProcessLotNo, false);
-			muGrid.setValue(chkRowKeys[i], 'comProductCode', erpProductCode, false);
-			muGrid.setValue(chkRowKeys[i], 'salNowQuantity', salNowQuantity, false); //수량									
+			console.log(comProductCode);
+						
+			if(rowId == -1) {
+				$("#proProcessLotNo").val(proProcessLotNo);
+			} else {
+				mgrid.blur();
+				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
+				mgrid.setValue(rowId, 'comProductName', erpProductName, false);
+				mgrid.setValue(rowId, 'salNowQuantity', salNowQuantity, false);
+				mgrid.setValue(rowId, 'comProductCode', comProductCode, false);
+			}										
 		}
 	});
 	
-	$(document).on("click", "button[id=findRow]", function() {
+	$("#findRow").on("click", function() {
 		var no = $("#proProcessLotNo").val();
-		var code = $("#erpProductCode").val();
-		var name = $("#erpProductName").val();
+		var code = $("#comProductCode").val();
+		var name = $("#comProductName").val();
 		var readParams = {
 				'proProcessLotNo' : no,
-				'erpProductCode' : code,
-				'erpProductName' : name
+				'comProductCode' : code,
+				'comProductName' : name
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -78,7 +83,7 @@ $(document).ready(function() {
 	const dataSource = {
 		api : {
 			readData : { //url = modal 페이지
-				url : '${pageContext.request.contextPath}/ajax/modSearchProductLotNo',
+				url : '${pageContext.request.contextPath}/ajax/salM/modSearchProductLotNo',
 				method : 'GET'
 			}
 		},

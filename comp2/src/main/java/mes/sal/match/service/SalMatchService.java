@@ -31,8 +31,8 @@ public interface SalMatchService {
 //---------------------- 모달 -----------------------
     
     //완제품 LOT_NO
-	List<?> searchProductLotNoList(SalMatchVO searchVO) throws Exception;
-	int searchProductLotNoListTotCnt(SalMatchVO searchVO);
+	List<?> searchProductMatchList(SalMatchVO searchVO) throws Exception;
+	int searchProductMatchListTotCnt(SalMatchVO searchVO);
 	
 	//제품코드
 	List<?> searchProductList(SalMatchVO searchVO) throws Exception;

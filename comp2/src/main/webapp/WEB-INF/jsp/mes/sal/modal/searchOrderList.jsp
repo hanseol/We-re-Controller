@@ -7,7 +7,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>제품주문서 목록</h3>
+		<h3>제품주문 목록</h3>
 	</div>
 </div>
 
@@ -50,21 +50,13 @@ $(document).ready(function() {
 			customerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
 			productCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
 			
-			console.log(erpOrderCode);
-			console.log(erpCustomerName);
-			console.log(erpProductName);
-			console.log(erpOrderQty);
-			console.log(customerCode);
-			console.log(productCode);
-			
-
 			moGrid.blur();
-			moGrid.setValue(orowId, 'proOrderDetailCode', erpOrderCode, false);
-			moGrid.setValue(orowId, 'comProductName', erpProductName, false);
-			moGrid.setValue(orowId, 'comCustomerName', erpCustomerName, false);
-			moGrid.setValue(orowId, 'salInoutQuantity', erpOrderQty, false);
-			moGrid.setValue(orowId, 'salInoutCode', customerCode, false);
-			moGrid.setValue(orowId, 'comProductCode', productCode, false);
+			moGrid.setValue(orowId, 'erpOrderCode', erpOrderCode, false);
+			moGrid.setValue(orowId, 'erpProductName', erpProductName, false);
+			moGrid.setValue(orowId, 'erpCustomerName', erpCustomerName, false);
+			moGrid.setValue(orowId, 'erpOrderQty', erpOrderQty, false);
+			moGrid.setValue(orowId, 'erpCustomerCode', customerCode, false);
+			moGrid.setValue(orowId, 'erpProductCode', productCode, false);
 			moGrid.setValue(orowId, 'proProcessLotNo', '0', false);
 			moGrid.setValue(orowId, 'salNowQuantity', '0', false);
 			

@@ -310,14 +310,14 @@ var ugrid;
 		$("#outAppendRow").on("click", function() {
 			var rowData =[{
 					salInoutDate : "",
-					proOrderDetailCode : "",
-					comCustomerName : "",
-					comProductName : "",
-					comProductCode : "",
-					salInoutQuantity : "",
+					erpOrderCode : "",
+					erpCustomerName : "",
+					erpProductName : "",
+					erpOrderQty : "",
+					erpCustomerCode : "",
 					salWriteDate : "",
 					salInoutCode : "",
-					comProductCode : "",
+					erpProductCode : "",
 					proProcessLotNo : ""
 			}];
 			ogrid.appendRow(rowData, {
@@ -376,33 +376,41 @@ var ugrid;
 				}
 			}, {
 				header : '주문코드',
-				name : 'proOrderDetailCode',
+				name : 'erpOrderCode',
 				align : 'center',
 				editor : 'text'
 			}, {
 				header : '거래처명',
-				name : 'comCustomerName',
+				name : 'erpCustomerName',
 				align : 'center'
 			}, {
 				header : '제품명',
-				name : 'comProductName',
+				name : 'erpProductName',
 				align : 'center'
 			}, {
-				header : '출고수량',
-				name : 'salInoutQuantity',
+				header : '주문량',
+				name : 'erpOrderQty',
 				align : 'right',
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '거래처코드',
-				name : 'salInoutCode',
+				name : 'erpCustomerCode',
 				hidden : true
 			}, {
 				header : '제품코드',
-				name : 'comProductCode',
+				name : 'erpProductCode',
 				hidden : true
 			}, {
 				header : '로트넘버',
 				name : 'proProcessLotNo',
+				hidden : true
+			}, {
+				header : '전표번호',
+				name : 'salInoutStatement',
+				hidden : true
+			}, {
+				header : '수량',
+				name : 'salNowQuantity',
 				hidden : true
 			}]
 		});
@@ -510,7 +518,7 @@ var ugrid;
 		
 		//출고 : 주문코드 클릭 이벤트
 		moGrid.on('dblclick', ev => {
-			if(ev.columnName == 'proOrderDetailCode') {
+			if(ev.columnName == 'erpOrderCode') {
 				orderListSearch(ev.rowKey);
 			}
 		});
@@ -518,14 +526,15 @@ var ugrid;
 		//출고 : 체크 -> 정보 출고세부에 뿌려주기
 		ogrid.on('dblclick', ev => {
 		var i = ev.rowKey;
-		if(ev.columnName == 'salInoutQuantity') {
-	  		  var comProductCode = ogrid.getValue(i, 'comProductCode');	  		 	  		  
+		if(ev.columnName == 'erpOrderQty') {
+	  		  var comProductCode = ogrid.getValue(i, 'erpProductCode');	  		 	  		  
 	  		  var readParams = {
-	  				  'comProductCode' : comProductCode
+	  				  'erpProductCode' : comProductCode
 	  		  }
 	  		  ugrid.readData(1, readParams, true);
   	  		}
-	 });		
+	 	});
+		
 		
 	
 	// option form reset  

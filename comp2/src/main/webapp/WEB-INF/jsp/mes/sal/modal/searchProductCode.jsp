@@ -48,7 +48,7 @@ $(document).ready(function() {
 		
 		//view 페이지에 뿌려줄 부분 아이디값
 		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-			$("#productCode").val(name);
+			$("#comProductName").val(name);
 		} else { //아니면 mgrid에 뿌려준다
 			mgrid.blur();
 			ugrid.blur();

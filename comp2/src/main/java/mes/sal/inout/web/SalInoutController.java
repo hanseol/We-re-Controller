@@ -378,6 +378,8 @@ public class SalInoutController {
 		}
 		
 		
+		
+		
 		// 모달 : 출고시 완제품 LOT_NO 조회
 		@GetMapping("sal/salInout/modSearchProductLotNo.do")
 		public String searchModProductLotNoView() {

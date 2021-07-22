@@ -73,13 +73,13 @@ public class SalMatchServiceImpl extends EgovAbstractServiceImpl implements
 	
     //완제품 LOT_NO
     @Override
-	public List<?> searchProductLotNoList(SalMatchVO searchVO) throws Exception {		
-    	return salMatchDAO.searchProductLotNoList(searchVO);
+	public List<?> searchProductMatchList(SalMatchVO searchVO) throws Exception {		
+    	return salMatchDAO.searchProductMatchList(searchVO);
 	}
 
 	@Override
-	public int searchProductLotNoListTotCnt(SalMatchVO searchVO) {
-		return salMatchDAO.searchProductLotNoListTotCnt(searchVO);
+	public int searchProductMatchListTotCnt(SalMatchVO searchVO) {
+		return salMatchDAO.searchProductMatchListTotCnt(searchVO);
 	}
 	
 	//제품코드
@@ -98,7 +98,5 @@ public class SalMatchServiceImpl extends EgovAbstractServiceImpl implements
 	public void updateSalInout(LinkedHashMap vo) throws Exception {
 		salMatchDAO.updateSalInout(vo);		
 	}
-
-   
     
 }

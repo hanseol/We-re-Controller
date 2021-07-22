@@ -7,7 +7,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>입고예정 완제품 LOT_NO</h3>
+		<h3>완제품 LOT_NO</h3>
 	</div>
 </div>
 

@@ -33,8 +33,8 @@ public interface SalMatchMapper {
     
     
     //모달
-	public List<?> searchProductLotNoList(SalMatchVO searchVO) throws Exception;
-	public int searchProductLotNoListTotCnt(SalMatchVO searchVO);
+	public List<?> searchProductMatchList(SalMatchVO searchVO) throws Exception;
+	public int searchProductMatchListTotCnt(SalMatchVO searchVO);
 	public List<?> searchProductList(SalMatchVO searchVO) throws Exception;
 	public int searchProductListTotCnt(SalMatchVO searchVO);
 

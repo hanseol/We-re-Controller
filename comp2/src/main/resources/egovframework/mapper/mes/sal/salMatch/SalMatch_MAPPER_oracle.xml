@@ -38,7 +38,7 @@
 										TO_CHAR(SAL_MATCH_DATE, 'YYYY/MM/dd') as SAL_MATCH_DATE,
 										S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
 										TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
-										C.COM_PRODUCT_NAME, SAL_MATCH_QTY, SAL_PAST_QUANTITY,								
+										C.COM_PRODUCT_NAME, SAL_MATCH_QTY, SAL_NOW_QUANTITY,								
 										CASE WHEN S.SAL_MATCH_INOUT = 'INOUT004'
 						                THEN (SAL_PAST_QUANTITY + S.SAL_MATCH_QTY)
 						               	ELSE (SAL_PAST_QUANTITY - S.SAL_MATCH_QTY)
@@ -53,9 +53,6 @@
 			</if>
 			<if test="salMatchInout != null and salMatchInout != ''"> AND
 					SAL_MATCH_INOUT = #{salMatchInout}
-			</if>
-			<if test="comProductCode != null and comProductCode != ''">AND
-					S.COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
 			</if>
 			<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
 					S.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
@@ -78,7 +75,7 @@
 			, #{comProductCode}
 			, #{proProcessLotNo}
 			, SYSDATE
-			, #{salPastQuantity})
+			, #{salNowQuantity})
 	</insert>
 	
 	<!-- 입출고 테이블 수량 업데이트 -->
@@ -98,7 +95,7 @@
 		, COM_PRODUCT_CODE = #{comProductCode}
 		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		, SAL_WRITE_DATE = #{salWriteDate}
-		, SAL_PAST_QUANTITY = #{salPastQuantity}
+		, SAL_PAST_QUANTITY = #{salNowQuantity}
 		WHERE SAL_MATCH_STATEMENT = #{salMatchStatement}
 	</update>
 	
@@ -122,5 +119,23 @@
 				</if>
 			</if>
 	</select>
-
+	
+	<!-- 모달 : 입고된 완제품 LOT_NO 조회 -->
+	<select id="searchProductMatchList"
+	parameterType="mes.sal.match.service.SalMatchVO" resultType="egovMap">
+		SELECT
+		PRO_PROCESS_LOT_NO, SAL_NOW_QUANTITY, COM_PRODUCT_CODE,		
+		GET_CODE_DETAIL(COM_PRODUCT_CODE) as COM_PRODUCT_NAME
+		FROM SAL_INOUT
+		WHERE SAL_INOUT_GUBUN = 'INOUT002'
+		<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
+			PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+		</if>
+		<if test="comProductCode != null and comProductCode != ''"> AND
+			COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+		</if>
+		<if test="comProductName != null and comProductName != ''"> AND
+			GET_CODE_DETAIL(COM_PRODUCT_CODE) LIKE '%' || #{comProductName} || '%'
+		</if>
+	</select>
 </mapper>

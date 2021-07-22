@@ -32,25 +32,19 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-4">
 						일자
 						<input type="date" id="dateGubun" name="dateGubun">
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 						구분 &nbsp;
 						<input type="checkbox" id="inMatch" name="gubun" value="1" checked>정산입고
 						<input type="checkbox" id="outMatch" name="gubun" value="2">정산출고
 				</div>
-				<div class="col-md-3">
-						제품코드
-						<input type="text" id="productCode" name="productCode">	
-						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
-                     	<i class="fa fa-search"></i></a>
-				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo">	
-						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
+						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/modSearchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -90,7 +84,7 @@ let mgrid;
 
 	$(document).ready(function() {	
 		//Read
-		$(document).on("click", "button[id=search]",
+		$("#search").on("click",
 				function() {
 					var date = $("#dateGubun").val();
 					var inMatch = $("#inMatch").val();
@@ -120,7 +114,7 @@ let mgrid;
 				});
 		
 		//Insert
-		$(document).on("click", "button[id=appendRow]", function() {
+		$("#appendRow").on("click", function() {
 			var rowData =[{
 					salMatchDate : "",
 					salMatchInout : "",
@@ -137,7 +131,7 @@ let mgrid;
 		});
 		
 		//Delete
-		$(document).on("click", "button[id=deleteRow]", function() {
+		$("#deleteRow").on("click", function() {
 			grid.removeCheckedRows(false);
 		});
 		
@@ -201,7 +195,7 @@ let mgrid;
 				name : 'comProductName'
 			}, {
 				header : '기존수량',
-				name : 'salPastQuantity'
+				name : 'salNowQuantity'
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty',
@@ -213,6 +207,10 @@ let mgrid;
 				header : '전표번호',
 				name : 'salMatchStatement',
 				hidden : true
+			}, {
+				header : '제품코드',
+				name : 'comProductCode',
+				hidden : true
 			}]
 		});
 		
@@ -222,11 +220,11 @@ let mgrid;
   		mgrid.on('afterChange', ev => { 			
   			if (ev.changes[0].columnName == 'salMatchQty') {
   				var match = mgrid.getValue(ev.changes[0].rowKey, 'salMatchQty');
-  				var order = mgrid.getValue(ev.changes[0].rowKey, 'salPastQuantity');
+  				var now = mgrid.getValue(ev.changes[0].rowKey, 'salNowQuantity');
   				if(mgrid.getValue(ev.changes[0].rowKey, 'salMatchInout') == 'INOUT004') {
-					mgrid.setValue(ev.changes[0].rowKey, 'salInoutQuantity', parseInt(order) + parseInt(match));
+					mgrid.setValue(ev.changes[0].rowKey, 'salInoutQuantity', parseInt(now) + parseInt(match));
   				} else {
-					mgrid.setValue(ev.changes[0].rowKey, 'salInoutQuantity', parseInt(order) - parseInt(match));
+					mgrid.setValue(ev.changes[0].rowKey, 'salInoutQuantity', parseInt(now) - parseInt(match));
   				}
   			}
 		});
@@ -237,9 +235,9 @@ let mgrid;
 			
 		 //모달 : 완제품 LOT_NO
 		   grid.on('dblclick', ev => {
-		      if(ev.columnName == 'proProcessLotNo'){    
-		    	  productLotNoSearch(ev.rowKey);         
-		      }
+		      	if(ev.columnName == 'proProcessLotNo') {    
+		    	 	productLotNoSearch(ev.rowKey);         
+			  }
 		   });
 		 
 			$('#searchProductLotNo').click(function(event) {
@@ -279,7 +277,7 @@ function productLotNoSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchProductLotNo.do", function(html) {
+	  $.get("modSearchProductLotNo.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

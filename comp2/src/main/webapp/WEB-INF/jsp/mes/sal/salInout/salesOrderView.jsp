@@ -146,10 +146,6 @@ let mgrid; //모달 그리드
 						language: 'ko'
 					} 
 				}
-			}, {
-				header : '출고여부',
-				name : 'outStatement',
-				align : 'center'
 			}]
 		}); 
 	

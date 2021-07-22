@@ -58,9 +58,10 @@
 									ERP_ORDER_QTY, ERP_PRODUCT_UNIT_PRICE,
 					                GET_CODE_DETAIL(ERP_CUSTOMER_CODE) AS ERP_CUSTOMER_NAME,
 									TO_CHAR(ERP_PRODUCT_DEADLINE, 'YYYY/MM/dd') AS ERP_PRODUCT_DEADLINE,
-									TO_CHAR(ERP_PRODUCT_ORDER_DATE, 'YYYY/MM/dd') AS ERP_PRODUCT_ORDER_DATE	
-									FROM ERP_PRODUCT_ORDER
+									TO_CHAR(ERP_PRODUCT_ORDER_DATE, 'YYYY/MM/dd') AS ERP_PRODUCT_ORDER_DATE                                                                                                       
+									FROM ERP_PRODUCT_ORDER		
 				WHERE 1=1
+				AND ERP_ORDER_CODE NOT IN(SELECT ERP_ORDER_CODE FROM PRO_PLAN_DETAIL)
 			<if test="erpProductOrderDate != null and erpProductOrderDate != ''">AND
 				ERP_PRODUCT_ORDER_DATE = #{erpProductOrderDate}
 			</if>
@@ -87,7 +88,7 @@
 				SELECT A.*,
 				ROWNUM RNUM FROM (
 									SELECT
-									SAL_INOUT_STATEMENT, I.COM_PRODUCT_CODE, P.PRO_PROCESS_LOT_NO,
+									SAL_INOUT_STATEMENT, I.COM_PRODUCT_CODE, I.PRO_PROCESS_LOT_NO,
 									TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
 									I.SAL_INOUT_QUANTITY as SAL_INOUT_QUANTITY, SAL_INOUT_GUBUN,
 									GET_CODE_DETAIL(COM_PRODUCT_CODE) AS COM_PRODUCT_NAME,
@@ -95,14 +96,15 @@
 									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
 									FROM SAL_INOUT I, PRO_PROCESS P
 									WHERE SAL_INOUT_GUBUN NOT IN('INOUT001')
+                  					AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					SAL_INOUT_DATE = #{salInoutDate}
 				</if>
 				<if test="salInoutGubun != null and salInoutGubun != ''"> AND
 					SAL_INOUT_GUBUN = #{salInoutGubun}
 				</if>
-				<if test="comProductCode != null and comProductCode != ''">AND
-					I.COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+				<if test="comProductName != null and comProductName != ''">AND
+					GET_CODE_DETAIL(COM_PRODUCT_CODE) LIKE '%' || #{comProductName} || '%'
 				</if>
 				<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
 					P.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
@@ -129,10 +131,7 @@
 									TO_CHAR(SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE
 									FROM SAL_INOUT
 									WHERE SAL_INOUT_GUBUN = 'INOUT002'
-				                	AND NOT PRO_PROCESS_LOT_NO IN
-				                	(SELECT PRO_PROCESS_LOT_NO
-				                	FROM SAL_INOUT
-				                	WHERE SAL_INOUT_GUBUN = 'INOUT003')
+				                	AND PRO_PROCESS_LOT_NO NOT IN ('0')
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					SAL_INOUT_DATE = #{salInoutDate}
 				</if>
@@ -152,23 +151,18 @@
 	<!-- 출고목록 조회 -->
 	<select id="selectSalProductOutList"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
-		SELECT *
-		FROM (
-				SELECT A.*,
-				ROWNUM RNUM FROM (	
-									SELECT DISTINCT
-									TO_CHAR(I.SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
-									E.ERP_ORDER_CODE as PRO_ORDER_DETAIL_CODE,
-				                  	E.ERP_PRODUCT_NAME as COM_PRODUCT_NAME,
-				                  	E.ERP_ORDER_QTY as SAL_INOUT_QUANTITY,
-				                  	I.COM_PRODUCT_CODE as COM_PRODUCT_CODE,
-									GET_CODE_DETAIL(E.ERP_CUSTOMER_CODE) as COM_CUSTOMER_NAME
-									FROM ERP_PRODUCT_ORDER E, PRO_PLAN_DETAIL D,
-									PRO_ORDER_DETAIL O, PRO_PROCESS P, SAL_INOUT I
-									WHERE E.ERP_ORDER_CODE = D.ERP_ORDER_CODE
-									AND D.PRO_PLAN_DETAIL_CODE = O.PRO_PLAN_DETAIL_CODE
-									AND O.PRO_ORDER_DETAIL_CODE = P.PRO_ORDER_DETAIL_CODE
-									AND I.SAL_INOUT_GUBUN = 'INOUT003'
+				 	SELECT 
+				 	TO_CHAR(I.SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE,
+				 	D.ERP_ORDER_CODE, D.ERP_PRODUCT_CODE, D.ERP_PRODUCT_NAME, D.PRO_PLAN_QTY as ERP_ORDER_QTY,
+					D.ERP_CUSTOMER_CODE, GET_CODE_DETAIL(D.ERP_CUSTOMER_CODE) as ERP_CUSTOMER_NAME
+					FROM SAL_INOUT I, PRO_PLAN_DETAIL D, PRO_ORDER_DETAIL O, PRO_PROCESS P
+					WHERE D.PRO_PLAN_DETAIL_CODE = O.PRO_PLAN_DETAIL_CODE
+					AND O.PRO_ORDER_DETAIL_CODE = P.PRO_ORDER_DETAIL_CODE
+		          	AND O.PRO_PROCESS_LOT_NO = P.PRO_PROCESS_LOT_NO
+		          	AND P.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
+					AND P.PRO_PROCESS_LOT_NO IS NOT NULL
+					AND I.SAL_INOUT_GUBUN = 'INOUT002'
+					AND I.SAL_NOW_QUANTITY NOT IN('0')
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					SAL_INOUT_DATE = #{salInoutDate}
 				</if>
@@ -179,21 +173,20 @@
 					I.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 				</if>
 		ORDER BY SAL_INOUT_DATE DESC		
-			<![CDATA[						
-			) A WHERE ROWNUM <= #{lastIndex}
-		)WHERE RNUM >= #{firstIndex}
-		]]>
 	</select>
 	
 	<!-- 출고세부내역조회 -->
 	<select id="selectSalOutDetail"
 		parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
-		SELECT PRO_PROCESS_LOT_NO, SAL_NOW_QUANTITY, COM_PRODUCT_CODE
+		SELECT
+		PRO_PROCESS_LOT_NO,
+		SAL_NOW_QUANTITY,
+		COM_PRODUCT_CODE,
+		SAL_INOUT_STATEMENT
 		FROM SAL_INOUT
 		WHERE SAL_INOUT_GUBUN = 'INOUT002'
-		AND SAL_NOW_QUANTITY NOT IN
-    	(SELECT SAL_NOW_QUANTITY FROM SAL_INOUT WHERE SAL_NOW_QUANTITY = '0') 
-		AND COM_PRODUCT_CODE = #{comProductCode}
+		AND SAL_NOW_QUANTITY NOT IN('0')
+		AND COM_PRODUCT_CODE = #{erpProductCode}
 		ORDER BY PRO_PROCESS_LOT_NO
 	</select>
 	
@@ -209,20 +202,21 @@
 			, 'INOUT002'
 			, #{proProcessLotNo} <!-- LOT_NO는 세부 사항 업데이트 할 때 -->
 			, SYSDATE
-			, #{salNowQuantity}) <!-- 현 수량은 세부 사항 업데이트 할 때 -->
+			, #{salInoutQuantity}) <!-- 현 수량은 세부 사항 업데이트 할 때 -->
 	</insert>
+	
 	<!-- 출고 -->
 	<insert id="insertSalOut">			
 		INSERT INTO SAL_INOUT
 		VALUES (#{salInoutStatement}
-			, #{comProductCode}
+			, #{erpProductCode}
 			, #{salInoutDate}
-			, #{salInoutQuantity}
-			, #{salInoutCode}
+			, #{erpOrderQty}
+			, #{erpCustomerCode}
 			, 'INOUT003'
 			, #{proProcessLotNo}
 			, SYSDATE
-			, (#{salInoutQuantity} - #{salOutQuantity})) <!-- 현수량에  -->
+			, null) <!-- 현수량에  -->
 	</insert>
 	
 	<!-- 입출고목록 수정 -->
@@ -246,18 +240,19 @@
 		, SAL_INOUT_DATE = #{salInoutDate}
 		, SAL_INOUT_QUANTITY = #{proProcessQuantity}
 		, SAL_INOUT_CODE = #{salInoutCode}
-		, SAL_INOUT_GUBUN = #{salInoutGubun}
+		, SAL_INOUT_GUBUN = 'INOUT003'
 		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		, SAL_WRITE_DATE = #{salWriteDate}
 		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
 	</update>
 	
+	<!-- 출고세부사항 수정 -->
 	<update id="updateSalModify">
 		UPDATE SAL_INOUT SET
 		PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 		, SAL_NOW_QUANTITY = (SAL_NOW_QUANTITY - #{salOutQuantity})
-		WHERE SAL_INOUT_STATEMENT = #{salInoutStatement}
-		AND SAL_INOUT_GUBUN = 'INOUT003'
+		WHERE SAL_INOUT_GUBUN = 'INOUT002'
+		AND SAL_INOUT_STATEMENT = #{salInoutStatement}
 	</update>
 	
 	<!-- 입출고목록 삭제 -->
@@ -301,7 +296,6 @@
 									FROM SAL_INOUT S, SAL_INOUT I
 									WHERE 1=1
 									AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
-									AND S.SAL_INOUT_GUBUN = 'INOUT003'
 									AND I.SAL_INOUT_GUBUN = 'INOUT001'
 				<if test="salInoutDate != null and salInoutDate != ''"> AND
 					I.SAL_INOUT_DATE = #{salInoutDate}
@@ -326,7 +320,8 @@
 			, #{salInoutCode}
 			, 'INOUT001'
 			, #{proProcessLotNo}
-			, SYSDATE)
+			, SYSDATE
+			, null)
 	</insert>
 	
 	<!-- 반품입고목록 수정 -->
@@ -598,15 +593,37 @@
 	
 	<!-- 모달 : 제품주문서 목록 -->
 	<select id="searchOrderList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
-		SELECT * FROM (
-				SELECT A.*, ROWNUM RNUM FROM (
-												SELECT
-												ERP_ORDER_CODE, ERP_PRODUCT_CODE,
-												ERP_ORDER_QTY, ERP_CUSTOMER_CODE,
-												GET_CODE_DETAIL(ERP_PRODUCT_CODE) as ERP_PRODUCT_NAME,
-												GET_CODE_DETAIL(ERP_CUSTOMER_CODE) as ERP_CUSTOMER_NAME,
-												TO_CHAR(ERP_PRODUCT_DEADLINE, 'YYYY/MM/dd') AS ERP_PRODUCT_DEADLINE
-												FROM ERP_PRODUCT_ORDER		                 					
+			SELECT
+		     (SELECT TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE
+		      FROM   sal_inout l
+		      WHERE  e.erp_product_code = l.com_product_code
+		      AND SAL_INOUT_GUBUN = 'INOUT002'
+		      AND ROWNUM = 1) as sal_inout_date
+		      , e.erp_order_code
+		      , e.erp_product_name
+		      , e.erp_order_qty
+		      , e.erp_product_code
+		      , GET_CODE_DETAIL(e.erp_customer_code) as ERP_CUSTOMER_NAME
+		      , e.erp_customer_code
+		      , (SELECT SAL_INOUT_STATEMENT
+		      	FROM   sal_inout l
+		      	WHERE  e.erp_product_code = l.com_product_code
+		      	AND SAL_INOUT_GUBUN = 'INOUT002'
+		      	AND ROWNUM = 1) as SAL_INOUT_STATEMENT
+			  FROM  erp_product_order e
+			  WHERE 
+		      (SELECT sal_inout_date
+		       FROM   sal_inout l
+		       WHERE  e.erp_product_code = l.com_product_code
+		       AND ROWNUM = 1) IS NOT NULL 
+		       AND erp_order_code IN (SELECT erp_order_code
+		                              FROM pro_plan_detail
+		                              WHERE pro_plan_detail_code IN (SELECT pro_plan_detail_code
+		                                                        	 FROM pro_order_detail
+		                                                         	 WHERE pro_order_detail_code IN
+                                                               		(SELECT pro_order_detail_code
+                                                               		FROM SAL_INOUT
+                     												WHERE SAL_INOUT_GUBUN = 'INOUT002')))	                 					
 							<if test="erpCustomerName != null and erpCustomerName != ''"> AND
 								ERP_CUSTOMER_NAME LIKE '%' || #{erpCustomerName} || '%'
 							</if>
@@ -614,10 +631,6 @@
 								ERP_PRODUCT_NAME LIKE '%' || #{erpProductName} || '%'
 							</if>
 							ORDER BY ERP_ORDER_CODE
-					<![CDATA[					
-				) A WHERE ROWNUM <= #{lastIndex}
-			)WHERE RNUM >= #{firstIndex}
-		]]>
 	</select>
 	
 	<!-- 모달 : 생산지시디테일코드 목록 -->

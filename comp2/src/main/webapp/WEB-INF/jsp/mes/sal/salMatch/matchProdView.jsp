@@ -75,11 +75,11 @@
 
 <script>
 //내비바 고정
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.matchProdView').addClass('active');
+$('#n9000000').addClass('active');
+$('#subPages9000000').addClass('in');
+$('#subPages9000000').attr('aria-expanded','true');
+$('#subPages9000000').attr('style','');
+$('.9070000').addClass('active');
 
 let mgrid;
 
@@ -135,6 +135,7 @@ let mgrid;
 			columns : [ {
 				header : '입/출고일자',
 				name : 'salMatchDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -144,31 +145,41 @@ let mgrid;
 				}
 			},{
 				header : '입/출고구분',
-				name : 'salMatchInout'
+				name : 'salMatchInout',
+				align : 'center'
 			}, {
 				header : '정산 전표번호',
-				name : 'salMatchStatement'
+				name : 'salMatchStatement',
+				align : 'center'
 			}, {
 				header : '제품코드',
-				name : 'comProductCode'
+				name : 'comProductCode',
+				align : 'center',
+				hidden : true
 			}, {
 				header : '제품명',
-				name : 'comProductName'
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '완제품 LOT_NO',
-				name : 'proProcessLotNo'
+				name : 'proProcessLotNo',
+				align : 'center'
 			}, {
 				header : '기존수량',
-				name : 'salPastQuantity'
+				name : 'salNowQuantity',
+				align : 'right'
 			}, {
 				header : '정산수량',
-				name : 'salMatchQty'
+				name : 'salMatchQty',
+				align : 'right'
 			}, {
 				header : '최종수량',
-				name : 'salInoutQuantity'
+				name : 'salInoutQuantity',
+				align : 'right'
 			}, {
 				header : '작성일자',
-				name : 'salWriteDate'
+				name : 'salWriteDate',
+				align : 'center'
 			}]
 		});
 		

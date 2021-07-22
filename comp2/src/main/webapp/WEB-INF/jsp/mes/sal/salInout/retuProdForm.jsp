@@ -69,11 +69,11 @@
 
 <script>
 //내비바 고정
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.retuProdForm').addClass('active');
+$('#n9000000').addClass('active');
+$('#subPages9000000').addClass('in');
+$('#subPages9000000').attr('aria-expanded','true');
+$('#subPages9000000').attr('style','');
+$('.9050000').addClass('active');
 
 let mgrid; //모달 그리드
 

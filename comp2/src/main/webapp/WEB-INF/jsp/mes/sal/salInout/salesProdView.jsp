@@ -6,16 +6,6 @@
 		<h2>입/출고목록조회</h2>
 	</div>
 </div>
-
-<!-- 관리, 지시 탭 이동 -->
-<div id="tabs">
-   <ul class="nav nav-tabs" role="tablist">
-     <li class=""><a onclick='location.href="salesProdForm.do"' aria-controls="tab1" role="tab" data-toggle="tab">관리</a></li>
-     <li class="active"><a onclick='location.href="salesProdView.do"' aria-controls="tab2" role="tab" data-toggle="tab">조회</a></li>
-   </ul>
-</div>
-
-
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
@@ -40,14 +30,14 @@
 						<input type="checkbox" id="outGubun" name="gubun" value="2">출고
 				</div>
 				<div class="col-md-3">
-						제품코드
-						<input type="text" id="productCode" name="productCode">	
+						제품명
+						<input type="text" id="comProductName" name="comProductName">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 				<div class="col-md-3">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -73,11 +63,11 @@
 </div>
 
 <script>
-$('#salNav').addClass('active');
-$('#subPages2').addClass('in');
-$('#subPages2').attr('aria-expanded','true');
-$('#subPages2').attr('style','');
-$('.salesProdView').addClass('active');
+$('#n9000000').addClass('active');
+$('#subPages9000000').addClass('in');
+$('#subPages9000000').attr('aria-expanded','true');
+$('#subPages9000000').attr('style','');
+$('.9035000').addClass('active');
 
 let mgrid;
 	$(document).ready(function() {	
@@ -87,8 +77,8 @@ let mgrid;
 					var inGubun = $("#inGubun").val();
 					var outGubun = $("#outGubun").val();
 					var gubun;
-					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
+					var productCode = $("#comProductName").val();
+					var productLotNo = $("#proProcessLotNo").val();
 					
 					//체크박스 옵션
 					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
@@ -104,7 +94,7 @@ let mgrid;
 					var readParams = {
 						'salInoutDate' : date,
 						'salInoutGubun' : gubun,
-						'comProductCode' : productCode,
+						'comProductName' : productCode,
 						'proProcessLotNo' : productLotNo
 					};
 					grid.readData(1, readParams, true);

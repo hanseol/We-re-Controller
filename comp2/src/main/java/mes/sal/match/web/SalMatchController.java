@@ -133,19 +133,19 @@ public class SalMatchController {
         
 //--------------------------- 모달 -------------------------------
     // 모달 : 완제품 LOT_NO 조회
- 	@GetMapping("/ajax/searchReturnProduct")
+ 	@GetMapping("sal/salMatch/modSearchProductLotNo.do")
  	public String searchProductLotNoView() {
 
  		// 모달창 띄워주는 페이지
- 		return "mes/sal/modal/searchReturnProduct";
+ 		return "mes/sal/modal/modSearchProductLotNo";
  	}
 
  	// 모달 : 완제품 LOT_NO 조회값 전달
- 	@RequestMapping("mes/sal/modal/searchReturnProduct")
+ 	@RequestMapping("/ajax/salM/modSearchProductLotNo")
  	@ResponseBody
  	public Map<String, Object> searchProductLotNo(@ModelAttribute("searchVO") SalMatchVO searchVO) throws Exception {
 
- 		List<?> list = salMatchService.searchProductLotNoList(searchVO);
+ 		List<?> list = salMatchService.searchProductMatchList(searchVO);
 
  		return comFunc.sendResult(list);
  	}
