@@ -22,7 +22,7 @@
 								  , ERP_CUSTOMER_CODE )
 			       		VALUES ( #{proPlanCode}
 							   , #{proPlanName}
-							   , #{proPlanDate}
+							   , TO_DATE(#{proPlanDate},'YYYY-MM-DD')
 							   , #{erpCustomerCode} )
 		]]>
 	</insert>
@@ -44,7 +44,7 @@
 				        	VALUES(	#{proPlanDetailCode}
 								  , #{proPlanCode}
 								  , #{erpOrderCode}
-								  , #{erpProductDeadline}
+								  , TO_DATE(#{erpProductDeadline},'YYYY-MM-DD')
 								  , #{proWorkDate}
 								  , #{erpCustomerCode}
 								  , #{proPlanDayQty}
@@ -60,7 +60,7 @@
 		<![CDATA[
 		UPDATE PRO_PLAN
 		    SET PRO_PLAN_NAME = #{proPlanName}
-		      , PRO_PLAN_DATE = #{proPlanDate}
+		      , PRO_PLAN_DATE = TO_DATE(#{proPlanDate},'YYYY-MM-DD')
 		WHERE PRO_PLAN_CODE = #{proPlanCode}
 
 				]]>
@@ -71,7 +71,7 @@
 		<![CDATA[
 			UPDATE PRO_PLAN_DETAIL
 			    SET PRO_PLAN_QTY = #{proPlanQty}
-			      , PRO_WORK_DATE = #{proWorkDate}
+			      , PRO_WORK_DATE = TO_DATE(#{proWorkDate},'YYYY-MM-DD')
 			      , PRO_PLAN_SEQ = #{proPlanSeq}
 			WHERE PRO_PLAN_DETAIL_CODE = #{proPlanDetailCode}
 				]]>
@@ -110,7 +110,7 @@
 			SELECT
 				PRO_PLAN_CODE
 				, PRO_PLAN_NAME
-				, PRO_PLAN_DATE
+				, TO_CHAR(PRO_PLAN_DATE,'YYYY-MM-DD')
 				, ERP_CUSTOMER_CODE
 			FROM PRO_PLAN
 						WHERE PRO_PLAN_CODE=#{proPlanCode}
@@ -123,16 +123,16 @@
 	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy/MM/dd') as pro_plan_date
+						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy-MM-dd') as pro_plan_date
 								       , e.erp_customer_code
 								       , m.pro_plan_code
 								       , e.erp_product_code
 								       , e.erp_product_name 
 								       , e.erp_order_code
-								       , TO_CHAR(e.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+								       , TO_CHAR(e.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
 								       , e.erp_order_qty
 								       , d.pro_plan_qty
-								       , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+								       , TO_CHAR(d.pro_work_date, 'yyyy-MM-dd') as pro_work_date
 								       , d.pro_plan_seq
 								       , m.pro_plan_name
 								       , d.pro_order_detail_code
@@ -189,16 +189,16 @@
 	<select id="selectProPlanFormList" resultType="egovMap">
 		SELECT * FROM (
 			SELECT A.*, ROWNUM RNUM FROM (
-						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy/MM/dd') as pro_plan_date
+						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy-MM-dd') as pro_plan_date
 							 , e.erp_customer_code
 							 , m.pro_plan_code
 						     , e.erp_product_code
 						     , e.erp_product_name 
 						     , e.erp_order_code
-						     , TO_CHAR(e.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+						     , TO_CHAR(e.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
 						     , e.erp_order_qty
 						     , d.pro_plan_qty
-						     , TO_CHAR(d.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+						     , TO_CHAR(d.pro_work_date, 'yyyy-MM-dd') as pro_work_date
 						     , d.pro_plan_seq
 						     , m.pro_plan_name
 						     , d.pro_plan_detail_code
@@ -246,7 +246,7 @@
 						SELECT erp_product_code
 						     , erp_product_name
 						     , erp_order_code
-						     , TO_CHAR(erp_product_deadline, 'yyyy/MM/dd' ) as erp_product_deadline
+						     , TO_CHAR(erp_product_deadline, 'yyyy-MM-dd' ) as erp_product_deadline
 						     , erp_order_qty
 						     , erp_customer_code
 						FROM erp_product_order
@@ -310,7 +310,7 @@
 		WHERE 1=1
 		<if test="searchKeyword != null and searchKeyword != ''">
 			<if test="searchCondition == 0">AND
-				pro_plan_date = #{searchKeyword}
+				pro_plan_date = TO_DATE(#{searchKeyword},'YYYY-MM-DD')
 			</if>
 		</if>
 	</select>
@@ -323,7 +323,7 @@
 		SELECT erp_product_code
 		     , erp_product_name
 		     , erp_order_code
-		     , TO_CHAR(erp_product_deadline, 'yyyy/MM/dd' ) as erp_product_deadline
+		     , TO_CHAR(erp_product_deadline, 'yyyy-MM-dd' ) as erp_product_deadline
 		     ,erp_order_qty
 		FROM erp_product_order
 		WHERE erp_order_code = 'EO-0627-001';

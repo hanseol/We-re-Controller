@@ -31,22 +31,18 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-5">
+				<div class="col-md-4">
 						일자
-						<input type="date" id="dateGubun" name="dateGubun" class="form-control">&nbsp;
+						<input type="date" id="dateGubun" name="dateGubun" class="form-control">
+				</div>
+				<div class="col-md-4">
 						구분 
 						<input type="checkbox" id="inMatch" name="gubun" value="1" checked>정산입고
 						<input type="checkbox" id="outMatch" name="gubun" value="2" >정산출고
 				</div>
-				<div class="col-md-3">
-						제품코드
-						<input type="text" id="productCode" name="productCode" class="form-control">	
-						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
-                     	<i class="fa fa-search"></i></a>
-				</div>
 				<div class="col-md-4">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo" class="form-control">	
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
@@ -88,8 +84,7 @@ let mgrid;
 					var inMatch = $("#inMatch").val();
 					var outMatch = $("#outMatch").val();
 					var gubun;
-					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
+					var proProcessLotNo = $("#proProcessLotNo").val();
 					
 					//체크박스 옵션
 					if ($('input:checkbox[id="inMatch"]').is(":checked") && $('input:checkbox[id="outMatch"]').is(":checked") == true) {
@@ -106,7 +101,7 @@ let mgrid;
 						'salMatchDate' : date,
 						'salMatchInout' : gubun,
 						'comProductCode' : productCode,
-						'proProcessLotNo' : productLotNo
+						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -141,10 +136,20 @@ let mgrid;
 						language: 'ko'
 					} 
 				}
-			},{
+			}, {
 				header : '입/출고구분',
 				name : 'salMatchInout',
-				align : 'center'
+				align : 'center',
+				formatter: 'listItemText',
+	            editor : {
+	               type: 'radio',
+	               options : {
+	               listItems: [
+	                  {text : '정산입고', value : 'INOUT004'},
+	                  {text : '정산출고', value : 'INOUT005'}
+	                  ]
+	               }
+	            }
 			}, {
 				header : '정산 전표번호',
 				name : 'salMatchStatement',
@@ -165,15 +170,18 @@ let mgrid;
 			}, {
 				header : '기존수량',
 				name : 'salNowQuantity',
-				align : 'right'
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty',
-				align : 'right'
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '최종수량',
 				name : 'salInoutQuantity',
-				align : 'right'
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate',

@@ -123,6 +123,7 @@ let mgrid;
 			columns : [ {
 				header : '입/출고일자',
 				name : 'salInoutDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -130,30 +131,49 @@ let mgrid;
 						language: 'ko'
 					} 
 				}
-			},{
+			}, {
 				header : '입/출고구분',
-				name : 'salInoutGubun'
+				name : 'salInoutGubun',
+				align : 'center',
+				formatter: 'listItemText',
+	            editor : {
+	               type: 'radio',
+	               options : {
+	               listItems: [
+	                  {text : '입고', value : 'INOUT002'},
+	                  {text : '출고', value : 'INOUT003'}
+	                  ]
+	               }
+	            }
 			}, {
 				header : '전표번호',
-				name : 'salInoutStatement'
+				name : 'salInoutStatement',
+				align : 'center'
 			}, {
 				header : '완제품 LOT_NO',
-				name : 'proProcessLotNo'
+				name : 'proProcessLotNo',
+				align : 'center'
 			}, {
 				header : '지시/거래처코드',
-				name : 'salInoutCode'
+				name : 'salInoutCode',
+				align : 'center'
 			}, {
 				header : '제품코드',
-				name : 'comProductCode'
+				name : 'comProductCode',
+				align : 'center'
 			}, {
 				header : '제품명',
-				name : 'comProductName'
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '수량',
-				name : 'salInoutQuantity'
+				name : 'salInoutQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '작성일자',
-				name : 'salWriteDate'
+				name : 'salWriteDate',
+				align : 'center'
 			}]
 		});
 		

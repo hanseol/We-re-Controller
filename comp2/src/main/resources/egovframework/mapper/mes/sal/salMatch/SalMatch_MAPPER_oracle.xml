@@ -32,22 +32,20 @@
 	<!-- 정산입출고 조회 -->
 	<select id="selectSalMatchList"
 		parameterType="mes.sal.match.service.SalMatchVO" resultType="egovMap">
-		SELECT * FROM (
-		SELECT A.*, ROWNUM RNUM FROM (
-										SELECT SAL_MATCH_STATEMENT, SAL_MATCH_INOUT,
-										TO_CHAR(SAL_MATCH_DATE, 'YYYY/MM/dd') as SAL_MATCH_DATE,
-										S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
-										TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
-										C.COM_PRODUCT_NAME, SAL_MATCH_QTY, SAL_NOW_QUANTITY,								
-										CASE WHEN S.SAL_MATCH_INOUT = 'INOUT004'
-						                THEN (SAL_PAST_QUANTITY + S.SAL_MATCH_QTY)
-						               	ELSE (SAL_PAST_QUANTITY - S.SAL_MATCH_QTY)
-						                END AS SAL_INOUT_QUANTITY         
-										FROM SAL_MATCH S, SAL_INOUT I, COM_PRODUCT C
-										WHERE 1=1
-										AND S.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE
-					                    AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
-					                    AND I.SAL_INOUT_GUBUN = 'INOUT002'
+					SELECT SAL_MATCH_STATEMENT, SAL_MATCH_INOUT,
+					TO_CHAR(SAL_MATCH_DATE, 'YYYY/MM/dd') as SAL_MATCH_DATE,
+					S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
+					TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
+					C.COM_PRODUCT_NAME, SAL_MATCH_QTY, SAL_NOW_QUANTITY,								
+					CASE WHEN S.SAL_MATCH_INOUT = 'INOUT004'
+	                THEN (SAL_PAST_QUANTITY + S.SAL_MATCH_QTY)
+	               	ELSE (SAL_PAST_QUANTITY - S.SAL_MATCH_QTY)
+	                END AS SAL_INOUT_QUANTITY         
+					FROM SAL_MATCH S, SAL_INOUT I, COM_PRODUCT C
+					WHERE
+					S.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE
+                    AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
+                    AND I.SAL_INOUT_GUBUN = 'INOUT002'
 			<if test="salMatchDate != null and salMatchDate != ''"> AND
 					SAL_MATCH_DATE = #{salMatchDate}
 			</if>
@@ -57,12 +55,7 @@
 			<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
 					S.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 			</if>
-		ORDER BY
-		SAL_MATCH_DATE DESC	
-				<![CDATA[						
-			) A WHERE ROWNUM <= #{lastIndex}
-		)WHERE RNUM >= #{firstIndex}
-		]]>
+		ORDER BY SAL_MATCH_DATE DESC	
 	</select>
 	
 	<!-- 정산입출고 삽입 -->
@@ -81,7 +74,9 @@
 	<!-- 입출고 테이블 수량 업데이트 -->
 	<update id="updateSalInout">		
 			UPDATE SAL_INOUT
-			SET SAL_INOUT_QUANTITY = #{salInoutQuantity}
+			SET
+			SAL_INOUT_QUANTITY = #{salInoutQuantity}
+			ㅁ
 			WHERE PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 			AND SAL_INOUT_GUBUN = 'INOUT002'
 	</update> 
@@ -129,7 +124,7 @@
 		FROM SAL_INOUT
 		WHERE SAL_INOUT_GUBUN = 'INOUT002'
 		<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
-			PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+			PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 		</if>
 		<if test="comProductCode != null and comProductCode != ''"> AND
 			COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'

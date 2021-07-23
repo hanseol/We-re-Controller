@@ -90,8 +90,7 @@ let mgrid;
 					var inMatch = $("#inMatch").val();
 					var outMatch = $("#outMatch").val();
 					var gubun;
-					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
+					var proProcessLotNo = $("#proProcessLotNo").val();
 					
 					//체크박스 옵션
 					if ($('input:checkbox[id="inMatch"]').is(":checked") && $('input:checkbox[id="outMatch"]').is(":checked") == true) {
@@ -107,8 +106,7 @@ let mgrid;
 					var readParams = {
 						'salMatchDate' : date,
 						'salMatchInout' : gubun,
-						'comProductCode' : productCode,
-						'proProcessLotNo' : productLotNo
+						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -167,6 +165,7 @@ let mgrid;
 			columns : [ {
 				header : '입/출고일자',
 				name : 'salMatchDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -177,32 +176,42 @@ let mgrid;
 			},{
 				header : '입/출고구분',
 				name : 'salMatchInout',
-				editor : {
-					type: 'select',
-					options : {
-					listItems: [
-						{text : '정산입고', value : 'INOUT004'},
-						{text : '정산출고', value : 'INOUT005'}
-						]
-					}
-				}
+				align : 'center',
+				formatter: 'listItemText',
+	            editor : {
+	               type: 'radio',
+	               options : {
+	               listItems: [
+	                  {text : '정산입고', value : 'INOUT004'},
+	                  {text : '정산출고', value : 'INOUT005'}
+	                  ]
+	               }
+	            }
 			}, {
 				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
+				align : 'center',
 				editor : 'text'
 			}, {
 				header : '제품명',
-				name : 'comProductName'
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '기존수량',
-				name : 'salNowQuantity'
+				name : 'salNowQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty',
-				editor : 'text'
+				align : 'right',
+				editor : 'text',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '최종수량',
-				name : 'salInoutQuantity'
+				name : 'salInoutQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '전표번호',
 				name : 'salMatchStatement',
