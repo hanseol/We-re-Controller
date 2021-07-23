@@ -303,6 +303,7 @@ var ugrid;
 		//Insert
 		$("#outAppendRow").on("click", function() {
 			var rowData =[{
+					salInoutStatement : "",
 					salInoutDate : "",
 					erpOrderCode : "",
 					erpCustomerName : "",
@@ -311,7 +312,7 @@ var ugrid;
 					erpCustomerCode : "",
 					salWriteDate : "",
 					salInoutCode : "",
-					erpProductCode : "",
+					comProductCode : "",
 					proProcessLotNo : ""
 			}];
 			ogrid.appendRow(rowData, {

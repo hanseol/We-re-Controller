@@ -154,13 +154,14 @@ let mgrid;
 				name : 'proProcessLotNo',
 				align : 'center'
 			}, {
-				header : '지시/거래처코드',
+				header : '지시코드/거래처',
 				name : 'salInoutCode',
 				align : 'center'
 			}, {
 				header : '제품코드',
 				name : 'comProductCode',
-				align : 'center'
+				align : 'center',
+				hidden : true
 			}, {
 				header : '제품명',
 				name : 'comProductName',
