@@ -37,12 +37,13 @@
                  	</div>
 					<!-- 모달창 -->
 					<a id="showModal" href="${pageContext.request.contextPath}/pro/plan/erpProductSearch.do" rel="modal:open"></a>
+					
+				</form>
 					<div class="col-md-4" align="right">
 						<button type="button" class="btn btn-primary" id="findRow">조회</button>
 						<button type="reset" class="btn btn-success" id="reset">새자료</button>
 						<button type="button" class="btn btn-fail" id="deletePlan">계획삭제</button>
 					</div> 
-				</form>
 			</div>
 		</div>
 	</div>
@@ -157,7 +158,6 @@
 		    	if(this.id == "option") this.reset();
 		    	proPlanGrid.clear();
 		    	
-		    	$('#date').val("");
 		    	$('#proPlanName').val("");
 		    	
 		    	});
