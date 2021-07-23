@@ -77,8 +77,12 @@
 			rowHeaders : [ 'checkbox' ],
 			data : dataSource,
 			columns : [ {
-				header : '자재불량코드',
+				header : '불량번호',
 				name : 'comMaterialFNo',
+			},{
+				header : '자재불량코드',
+				name : 'comMaterialFCode',
+				editor : 'text',
 			}, {
 				header : '자재불량명',
 				name : 'comMaterialFName',
