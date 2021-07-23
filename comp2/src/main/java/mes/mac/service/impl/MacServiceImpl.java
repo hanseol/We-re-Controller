@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import mes.mac.service.MacService;
 import mes.mac.service.MacVO;
-import mes.member.service.MacDateResultVO;
+import mes.main.service.MacDateResultVO;
 import mes.pro.proc.service.ProProcessVO;
 /**
  * @Class Name : MacServiceImpl.java

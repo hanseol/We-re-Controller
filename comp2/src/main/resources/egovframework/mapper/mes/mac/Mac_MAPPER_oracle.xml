@@ -185,9 +185,9 @@
 	</select>	
 
 	<!-- 설비 점검일 알림 조회 -->
-	<select id="selectLeftDate" resultType="mes.member.service.MacDateResultVO">
+	<select id="selectLeftDate" resultType="mes.main.service.MacDateResultVO">
 	  <![CDATA[
-		SELECT  TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) || 
+		SELECT  TO_CHAR(TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE))) || 
 	        		'일 : (' ||
 	        		MAC_CODE || ', ' ||
 	       			MAC_LINE_NO || ', ' ||

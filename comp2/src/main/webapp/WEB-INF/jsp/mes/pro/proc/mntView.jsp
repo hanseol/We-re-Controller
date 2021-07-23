@@ -95,12 +95,12 @@ td{
 				</tbody>
 				</table>
 				<div class="panel-body" id="chart">
-					<div id="system-load" class="easy-pie-chart" data-percent="87">
-						<span class="percent">87</span>
+					<div id="system-load" class="easy-pie-chart" data-percent="">
+						<span class="percent"></span>
 					</div>
 					<ul class="list-unstyled list-justify">
-						<li>지시량: <span>7,800</span></li>
-						<li>달성률: <span id="goal">87%</span></li>
+						<li>지시량: <span id="qty"></span></li>
+						<li>달성률: <span id="goal"></span></li>
 					</ul>
 				</div>
 			</div>
@@ -128,6 +128,7 @@ td{
 		let proProcessQuantity; //주문량
 		let proProcessEndTime; //종료시간
 		let comProcessCode; //공정코드
+		let qty;
 		
 		//네비게이션 바 고정.
 		$('#n7000000').addClass('active');
@@ -217,7 +218,7 @@ td{
 				
 					$("#erpProductName").val(result.list[0].erpProductName);
 					$('#proProcessQuantity').attr('placeholder', '주문량: ' + result.list[0].proOrderQty );
-					
+					qty = result.list[0].proOrderQty;
 					//공정이동표 발행 시 필요한 데이터.
 					erpOrderCode=result.list[0].erpOrderCode;
 					erpCustomerName =result.list[0].erpCustomerName;
@@ -302,20 +303,27 @@ td{
 				animate: 800
 			});
 
-			var updateInterval = 3000; // in milliseconds
-
+			var updateInterval = 1000; // in milliseconds
+			var pct = 0;
+			var goal = 100;
+			
 			setInterval(function() {
 				
 				var randomVal;
-				randomVal = getRandomInt(0, 100);
+				randomVal = getRandomInt(pct, goal);
 
 				sysLoad.data('easyPieChart').update(randomVal);
 				sysLoad.find('.percent').text(randomVal);
+				$("#qty").html(qty+"개")
 				$("#goal").html(randomVal+"%");
 			}, updateInterval);
 
-			function getRandomInt(min, max) {
-				return Math.floor(Math.random() * (max - min + 1)) + min;
+			function getRandomInt(pct, goal) {
+				if(pct<goal){
+					pct = pct+10;
+				}
+				
+				return pct;
 			}
 
 		});//end 3.

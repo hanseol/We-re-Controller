@@ -1,4 +1,4 @@
-package mes.member.service;
+package mes.main.service;
 
 import lombok.Data;
 
