@@ -223,7 +223,7 @@
 				editor : {
 					type : 'datePicker',
 					options : {
-						format : 'YYYY/MM/dd',
+						format : 'YYYY-MM-dd',
 						language: 'ko',
 						selectableRanges : [[new Date(), new Date(2099, 1, 1)]]
 					} 
