@@ -24,47 +24,47 @@ import mes.main.service.SearchVO;
 public class ProProcessVO extends SearchVO{
     private static final long serialVersionUID = 1L;
     
-    private String comProcessCode;
+    private java.lang.String comProcessCode;
     private java.lang.String proOrderDetailCode;
-    private String comProductFCode;
+    private java.lang.String comProductFCode;
     private java.math.BigDecimal proProcessFQty;
-    private String macLineNo;
-    private String proProcessStartTime;
-    private String proProcessEndTime;
-    private String erpEmployeeId;
-    private String macCode;
-    private String proProcessLotNo;
+    private java.lang.String macLineNo;
+    private java.lang.String proProcessStartTime;
+    private java.lang.String proProcessEndTime;
+    private java.lang.String erpEmployeeId;
+    private java.lang.String macCode;
+    private java.lang.String proProcessLotNo;
     private java.math.BigDecimal proProcessQuantity;
     
     //확장
     //pro_material_lot 테이블의 자재로트번호
-    private String matLotNo;
+    private java.lang.String matLotNo;
     //자재코드
-    private String comMaterialCode;
+    private java.lang.String comMaterialCode;
     //자재명
-    private String comMaterialName;
+    private java.lang.String comMaterialName;
     //공정명
-    private String comProcessName;
+    private java.lang.String comProcessName;
     //제품명
-    private String erpProductName;
+    private java.lang.String erpProductName;
     
-    private String comProductName;
+    private java.lang.String comProductName;
     
-    private String proWorkDate;
+    private java.lang.String proWorkDate;
     
-    private String proOrderQty;
+    private java.lang.String proOrderQty;
     
-    private String totalProOrderDetailCode;
+    private java.lang.String totalProOrderDetailCode;
     
     /**
      * 고객사명 : 공정이동표 발행 시 필요한 정보.
      */
-    private String erpCustomerName;
+    private java.lang.String erpCustomerName;
     
     /**
      * 주문코드 : 공정이동표 발행 시 필요한 정보.
      */
-    private String erpOrderCode;
+    private java.lang.String erpOrderCode;
     
     
 }

@@ -32,14 +32,14 @@ public class ProOrderVO extends SearchVO{
     private java.math.BigDecimal proOrderQty;
     private java.math.BigDecimal proOrderRank;
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private String proOrderDate;
+    private java.lang.String proOrderDate;
     
     //확장
     //pro_order_detail 테이블
     private java.lang.String proOrderDetailCode;
     private java.lang.String proPlanDetailCode;
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private String erpProductDeadline;
+    private java.lang.String erpProductDeadline;
     private java.lang.String erpCustomerCode;
     private java.math.BigDecimal proOrderExpectQty;
     private java.math.BigDecimal proOrderDayQty;
@@ -48,38 +48,38 @@ public class ProOrderVO extends SearchVO{
     
     //추가
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private String proWorkDate;
-    private String erpProductCode;
-    private String erpProductName;
-    private String erpOrderCode;
-    private String erpOrderQty;
+    private java.lang.String proWorkDate;
+    private java.lang.String erpProductCode;
+    private java.lang.String erpProductName;
+    private java.lang.String erpOrderCode;
+    private java.lang.String erpOrderQty;
     
-    private String macHourQty;
-    private String dayQty;
-    private String dayCount;
+    private java.lang.String macHourQty;
+    private java.lang.String dayQty;
+    private java.lang.String dayCount;
     
-    private String proMaterialLot;
+    private java.lang.String proMaterialLot;
     
-    private String comProductCode;
+    private java.lang.String comProductCode;
     
-    private String comMaterialCode;
-    private String comMaterialName;
-    private String comProcessCode;
+    private java.lang.String comMaterialCode;
+    private java.lang.String comMaterialName;
+    private java.lang.String comProcessCode;
     
-    private String matLotNo;
-    private String matInoutDate;
-    private String matInoutQuantity;
-    private String matInoutGubun;
-    private String matInoutUnitPrice;
-    private String matInoutPrice;
+    private java.lang.String matLotNo;
+    private java.lang.String matInoutDate;
+    private java.lang.String matInoutQuantity;
+    private java.lang.String matInoutGubun;
+    private java.lang.String matInoutUnitPrice;
+    private java.lang.String matInoutPrice;
     
-    private String proPlanQty;
-    private String ProProcessLotNo;
-    private String matInoutStatement;
-    private String proMaterialNumber;
+    private java.lang.String proPlanQty;
+    private java.lang.String ProProcessLotNo;
+    private java.lang.String matInoutStatement;
+    private java.lang.String proMaterialNumber;
     
-    private String quaMaterialStatement;
+    private java.lang.String quaMaterialStatement;
     
-    private String proProcessStatus;
+    private java.lang.String proProcessStatus;
     
 }

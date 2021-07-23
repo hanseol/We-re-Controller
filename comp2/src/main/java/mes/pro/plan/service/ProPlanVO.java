@@ -36,14 +36,14 @@ public class ProPlanVO extends SearchVO{
     private java.lang.String proPlanCode;
     private java.lang.String proPlanName;
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private String proPlanDate;
+    private java.lang.String proPlanDate;
     private java.lang.String erpCustomerCode;
 
     //생산관리D 테이블
     private java.lang.String proPlanDetailCode;
     private java.lang.String erpOrderCode;
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private String erpProductDeadline;
+    private java.lang.String erpProductDeadline;
     private java.math.BigDecimal proPlanExpectQty;
     private java.math.BigDecimal proPlanDayQty;
     private java.math.BigDecimal proPlanSeq;
