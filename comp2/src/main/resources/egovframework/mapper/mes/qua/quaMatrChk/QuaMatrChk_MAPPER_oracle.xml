@@ -109,7 +109,7 @@
 		                              	AND
 							        	q.qua_material_chk_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
-		                              ORDER BY q.erp_material_order_code DESC <![CDATA[ ) a
+		                              ORDER BY q.qua_material_statement DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
@@ -233,7 +233,7 @@
 					qua_material_p_qty = #{quaMaterialPQty},
 					qua_material_f_qty = #{quaMaterialFQty},
 					qua_material_chk = #{quaMaterialChk},
-					qua_material_chk_date = TO_CHAR(SYSDATE, 'YY/MM/DD'),
+					qua_material_chk_date = SYSDATE,
 					erp_material_order_code = #{erpMaterialOrderCode}
 					
 		WHERE	qua_material_statement = #{quaMaterialStatement}
