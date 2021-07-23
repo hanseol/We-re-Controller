@@ -343,7 +343,7 @@ SELECT * FROM (
 				  , #{proProcessStartTime}
 				  , #{erpEmployeeId}
 				  , #{macCode} 
-				  , #{comProductName});
+				  , #{erpProductName});
 	
 			INSERT INTO PRO_PROCESS 
 				( COM_PROCESS_CODE
@@ -351,7 +351,7 @@ SELECT * FROM (
 				  , ERP_PRODUCT_NAME)
 			VALUES ( 'PROCG002'
 				  , #{proOrderDetailCode}
-				  , #{comProductName});
+				  , #{erpProductName});
 				  
 			INSERT INTO PRO_PROCESS 
 				( COM_PROCESS_CODE
@@ -359,7 +359,7 @@ SELECT * FROM (
 				  , ERP_PRODUCT_NAME)
 			VALUES ( 'PROCG003'
 				  , #{proOrderDetailCode}
-				  , #{comProductName});
+				  , #{erpProductName});
 				  
 			UPDATE PRO_ORDER_DETAIL
 			SET PRO_PROCESS_STATUS = 1

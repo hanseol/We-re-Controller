@@ -270,7 +270,7 @@ td{
 			var erpEmployeeId = $("#erpEmployeeId").val();
 			var macLineNo = $("#macLineNo").val();
 			var macCode = $("#macCode").val();
-			var comProductName = $("#comProductName").val();
+			var erpProductName = $("#erpProductName").val();
 			
 			$.ajax({
 				url:'${pageContext.request.contextPath}/ajax/pro/startProProcess',
@@ -282,7 +282,7 @@ td{
 						, "erpEmployeeId" : erpEmployeeId
 						, "macLineNo" : macLineNo
 						, "macCode" : macCode
-						, "comProductName" : comProductName
+						, "erpProductName" : erpProductName
 				},
 				success: function(result){
 					
