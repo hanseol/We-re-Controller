@@ -319,8 +319,7 @@ var grid;
 			}, {
 				header: '수량',
 				name: 'matInoutQuantity',
-				align: 'right',
-				editor: 'text'
+				align: 'right'
 			}, {
 				header: '금액(원)',
 				name: 'matInoutPrice',
@@ -380,7 +379,7 @@ var grid;
 		
 
 		
- 		// 그리드 테마
+/*  		// 그리드 테마
 		tui.Grid.applyTheme('clean', 
 			{
 				row: {
@@ -398,7 +397,7 @@ var grid;
 					//}
 				},
 				
-		});
+		}); */
 
 		//그리드 로우아이디 지정--------------------------------------
 		//입고탭 자재인풋 로우키

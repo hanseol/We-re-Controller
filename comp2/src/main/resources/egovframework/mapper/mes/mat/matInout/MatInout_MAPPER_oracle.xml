@@ -38,15 +38,14 @@
 		                              	AND
 							        	mi.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
-									  GROUP BY 	  mi.QUA_MATERIAL_STATEMENT
-									        	, mi.mat_inout_date
-									        	, mi.com_material_code
-									        	, mi.mat_inout_unit_price
-									        	, mi.mat_inout_price
-									        	, cm.com_material_unit
-									        	, cm.com_material_name
-									        	, cm.com_material_vendor_code
-									        	, cd.com_code_detail_name
+                        				GROUP BY mi.qua_material_statement
+										        ,TO_CHAR(mat_inout_date,'YYYY-MM-DD')
+        										,mi.com_material_code
+										        ,cm.com_material_name
+										        ,mi.mat_inout_unit_price
+										        ,cm.com_material_unit
+        										,cm.com_material_vendor_code
+										        ,cd.com_code_detail_name
 		                              ORDER BY mi.qua_material_statement DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
@@ -87,7 +86,7 @@
 							        	mi.com_process_code LIKE '%' || #{comProcessCode} || '%'
 		                              </if>
 										GROUP BY mi.QUA_MATERIAL_STATEMENT
-										        , mi.mat_inout_date
+										        , TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD')
 										        , mi.com_material_code
 										        , mi.mat_inout_unit_price
 										        , mi.mat_inout_price

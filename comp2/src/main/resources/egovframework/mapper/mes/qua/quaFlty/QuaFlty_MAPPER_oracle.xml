@@ -49,7 +49,7 @@
 		                              	AND
 							        	q.erp_material_order_code LIKE '%' || #{erpMaterialOrderCode} || '%'
 		                              	</if>
-		                              ORDER BY q.qua_material_chk_date DESC <![CDATA[ ) a
+		                              ORDER BY qua_material_chk_date DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
