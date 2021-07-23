@@ -141,10 +141,20 @@ let mgrid;
 						language: 'ko'
 					} 
 				}
-			},{
+			}, {
 				header : '입/출고구분',
 				name : 'salMatchInout',
-				align : 'center'
+				align : 'center',
+				formatter: 'listItemText',
+	            editor : {
+	               type: 'radio',
+	               options : {
+	               listItems: [
+	                  {text : '정산입고', value : 'INOUT004'},
+	                  {text : '정산출고', value : 'INOUT005'}
+	                  ]
+	               }
+	            }
 			}, {
 				header : '정산 전표번호',
 				name : 'salMatchStatement',
@@ -165,15 +175,18 @@ let mgrid;
 			}, {
 				header : '기존수량',
 				name : 'salNowQuantity',
-				align : 'right'
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '정산수량',
 				name : 'salMatchQty',
-				align : 'right'
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '최종수량',
 				name : 'salInoutQuantity',
-				align : 'right'
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate',

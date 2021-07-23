@@ -17,8 +17,8 @@
 			<div class="panel-body">
 				<div>
 					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" /> <br> <br>
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" class="form-control" />
+					제품코드 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" /> <br> <br>
+					제품명 <input type="text" id="erpProductName" name="erpProductName" placeholder="제품명" class="form-control" />
 					<button id="findRow">검색</button><br>
 					<br>
 				<div id="modalGrid"></div>
@@ -103,16 +103,21 @@ $(document).ready(function() {
 	        rowHeight: 30,
 		columns : [ {
 			header : '완제품 LOT_NO',
-			name : 'proProcessLotNo'
+			name : 'proProcessLotNo',
+			align : 'center'
 		}, {
 			header : '생산지시코드',
-			name : 'proOrderDetailCode'
+			name : 'proOrderDetailCode',
+			align : 'center'
 		}, {
 			header : '제품명',
-			name : 'erpProductName'
+			name : 'erpProductName',
+			align : 'center'
 		}, {
 			header : '입고수량',
-			name : 'proOrderQty'
+			name : 'proOrderQty',
+			align : 'center',
+			formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}, {
 			header : '현재고',
 			name : 'salNowQuantity',

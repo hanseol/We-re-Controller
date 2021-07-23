@@ -89,20 +89,14 @@
 	<div class="panel panel-headline">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-6">
 						일자
 						<input type="date" id="outDateGubun" name="outDateGubun" class="form-control">
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 						제품명
 						<input type="text" id="comProductName" name="comProductName" class="form-control">	
 						<a id="outSearchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">												
-                     	<i class="fa fa-search"></i></a>
-				</div>
-				<div class="col-md-4">
-						완제품 LOT_NO
-						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
-						<a id="outSearchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -381,15 +375,15 @@ var ugrid;
 				editor : 'text'
 			}, {
 				header : '거래처명',
-				name : 'erpCustomerName',
+				name : 'comCustomerName',
 				align : 'center'
 			}, {
 				header : '제품명',
-				name : 'erpProductName',
+				name : 'comProductName',
 				align : 'center'
 			}, {
 				header : '주문량',
-				name : 'erpOrderQty',
+				name : 'salInoutQuantity',
 				align : 'right',
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
@@ -398,7 +392,7 @@ var ugrid;
 				hidden : true
 			}, {
 				header : '제품코드',
-				name : 'erpProductCode',
+				name : 'comProductCode',
 				hidden : true
 			}, {
 				header : '로트넘버',
@@ -526,10 +520,10 @@ var ugrid;
 		//출고 : 체크 -> 정보 출고세부에 뿌려주기
 		ogrid.on('dblclick', ev => {
 		var i = ev.rowKey;
-		if(ev.columnName == 'erpOrderQty') {
-	  		  var comProductCode = ogrid.getValue(i, 'erpProductCode');	  		 	  		  
+		if(ev.columnName == 'salInoutQuantity') {
+	  		  var comProductCode = ogrid.getValue(i, 'comProductCode');	  		 	  		  
 	  		  var readParams = {
-	  				  'erpProductCode' : comProductCode
+	  				  'comProductCode' : comProductCode
 	  		  }
 	  		  ugrid.readData(1, readParams, true);
   	  		}
@@ -572,7 +566,7 @@ var ugrid;
 		  });
 	}
 	
-	//입고 : 완제품 LOT_NO 모달
+	//입고 : 전체 완제품 LOT_NO 모달
 	function productLotNoSearch(c) {
 		  rowId = c;
 		  event.preventDefault();

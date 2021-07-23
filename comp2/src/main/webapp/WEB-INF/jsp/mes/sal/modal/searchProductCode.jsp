@@ -16,8 +16,8 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" />
-					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" class="form-control" />
+					제품코드 <input type="text" id="comProductCode" name="comProductCode" placeholder="제품코드" class="form-control" />
+					제품명 <input type="text" id="comProductName" name="comProductName" placeholder="제품명" class="form-control" />
 					<button id="findRow">검색</button>
 					<br><br>
 				<div id="modalGrid"></div>
@@ -42,8 +42,7 @@ $(document).ready(function() {
 
 		var chkRowKeys = grid.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
-			name = grid.getValue(chkRowKeys[i], 'comProductName');
-			
+			name = grid.getValue(chkRowKeys[i], 'comProductName');			
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
@@ -51,9 +50,9 @@ $(document).ready(function() {
 			$("#comProductName").val(name);
 		} else { //아니면 mgrid에 뿌려준다
 			mgrid.blur();
-			ugrid.blur();
+			ugrid.blur(); //출고 세부
 			mgrid.setValue(rowId, 'comProductCode', name, false);
-			ugrid.setValue(urowId, 'comProductCode', name, false);
+			ugrid.setValue(urowId, 'comProductCode', name, false); //출고 세부
 		}
 		 
 		
@@ -88,12 +87,14 @@ $(document).ready(function() {
 	        scrollY: true,
 	        bodyHeight :300,
 	        rowHeight: 30,
-		columns : [ {
+		columns : [{
 			header : '제품코드',
-			name : 'comProductCode'
+			name : 'comProductCode',
+			align : 'center'
 		}, {
 			header : '제품명',
-			name : 'comProductName'
+			name : 'comProductName',
+			align : 'center'
 		}]
 	});
 });

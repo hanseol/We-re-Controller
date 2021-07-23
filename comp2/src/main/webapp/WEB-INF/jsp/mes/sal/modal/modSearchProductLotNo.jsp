@@ -8,7 +8,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>입고 완제품 LOT_NO 검색</h3>
+		<h3>입고 완제품 LOT_NO</h3>
 	</div>
 </div>
 
@@ -46,24 +46,18 @@ $(document).ready(function() {
 
 		for(var i=0; i<chkRowKeys.length; i++){
 			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
-			erpProductName = grid.getValue(chkRowKeys[i], 'erpProductName')
-			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');
-			comProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
-			
-			
-			console.log(proProcessLotNo);
-			console.log(erpProductName);
-			console.log(salNowQuantity);
-			console.log(comProductCode);
+			comProductCode = grid.getValue(chkRowKeys[i], 'comProductCode');
+			comProductName = grid.getValue(chkRowKeys[i], 'comProductName')
+			salNowQuantity = grid.getValue(chkRowKeys[i], 'salNowQuantity');		
 						
 			if(rowId == -1) {
 				$("#proProcessLotNo").val(proProcessLotNo);
 			} else {
 				mgrid.blur();
 				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
-				mgrid.setValue(rowId, 'comProductName', erpProductName, false);
-				mgrid.setValue(rowId, 'salNowQuantity', salNowQuantity, false);
 				mgrid.setValue(rowId, 'comProductCode', comProductCode, false);
+				mgrid.setValue(rowId, 'comProductName', comProductName, false);
+				mgrid.setValue(rowId, 'salNowQuantity', salNowQuantity, false);	
 			}										
 		}
 	});
@@ -100,16 +94,21 @@ $(document).ready(function() {
 	        rowHeight: 30,
 		columns : [ {
 			header : '완제품 LOT_NO',
-			name : 'proProcessLotNo'
+			name : 'proProcessLotNo',
+			align : 'center'
 		}, {
 			header : '제품코드',
-			name : 'erpProductCode'
+			name : 'comProductCode',
+			align : 'center'
 		}, {
 			header : '제품명',
-			name : 'erpProductName'
+			name : 'comProductName',
+			align : 'center'
 		}, {
 			header : '현재고',
-			name : 'salNowQuantity'
+			name : 'salNowQuantity',
+			align : 'right',
+			formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 		}]
 	});
 });

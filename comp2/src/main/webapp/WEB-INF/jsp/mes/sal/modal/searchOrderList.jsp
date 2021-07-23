@@ -43,6 +43,7 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 
 		for(var i=0; i<chkRowKeys.length; i++){
+			proProcessLotNo = grid.getValue(chkRowKeys[i], 'proProcessLotNo');
 			erpOrderCode = grid.getValue(chkRowKeys[i], 'erpOrderCode');
 			erpCustomerName = grid.getValue(chkRowKeys[i], 'erpCustomerName');
 			erpProductName = grid.getValue(chkRowKeys[i],'erpProductName');
@@ -57,8 +58,6 @@ $(document).ready(function() {
 			moGrid.setValue(orowId, 'erpOrderQty', erpOrderQty, false);
 			moGrid.setValue(orowId, 'erpCustomerCode', customerCode, false);
 			moGrid.setValue(orowId, 'erpProductCode', productCode, false);
-			moGrid.setValue(orowId, 'proProcessLotNo', '0', false);
-			moGrid.setValue(orowId, 'salNowQuantity', '0', false);
 			
 		}
 	});
@@ -115,6 +114,10 @@ $(document).ready(function() {
 		}, {
 			header : '제품코드',
 			name : 'erpProductCode',
+			hidden : true
+		}, {
+			header : 'LOT_NO',
+			name : 'proProcessLotNo',
 			hidden : true
 		}]
 	});
