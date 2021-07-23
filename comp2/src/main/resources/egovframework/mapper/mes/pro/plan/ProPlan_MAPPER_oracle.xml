@@ -261,7 +261,7 @@
 							erp_product_name LIKE '%' || #{erpProductName} || '%'
 						</if>
 						ORDER BY 
-							erp_order_code
+							erp_product_deadline, erp_order_qty
 				<![CDATA[					
 			) A WHERE ROWNUM <= #{lastIndex}
 		)WHERE RNUM >= #{firstIndex}

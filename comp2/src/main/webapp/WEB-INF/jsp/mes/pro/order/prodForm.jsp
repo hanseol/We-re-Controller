@@ -33,14 +33,14 @@
 					
                   <!-- 모달창 -->
                   <a id="showModal" href="${pageContext.request.contextPath}/pro/order/planProductSearch.do" rel="modal:open"></a>
-               </div>
-               <div class="col-md-6" align="right">
+                  </div>
+            </form>
+            	<div class="col-md-6" align="right">
                	      작업지시코드 :<input type="text" id="proOrderCode" name="proOrderCode" style="border:0; width:130px;" readonly> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-primary" id="findRow">조회</button>
                   <button type="reset" class="btn btn-success" id="reset">새자료</button>
                   <!-- <button type="button" class="btn btn-fail" id="deleteOrder">지시삭제</button> -->
                </div> 
-            </form>
          </div>
       </div>
    </div>
@@ -166,7 +166,6 @@ var proOrderRowKey;
 	         proOrdergrid.setRequestParams(params);
 	         proOrdergrid.finishEditing('rowKey', 'columnName');
 	         proOrdergrid.request('modifyData');
-        	
       });
       
       // M 리셋버튼  
@@ -182,6 +181,8 @@ var proOrderRowKey;
              
              $('#comMaterialCode').val("");
              $('#comMaterialName').val("");
+             $('#proOrderCode').val("");
+             
              });
          }); 
       
