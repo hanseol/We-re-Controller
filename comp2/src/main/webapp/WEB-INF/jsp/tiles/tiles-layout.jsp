@@ -124,7 +124,6 @@
 	
 	div {
 		font-family: 'Nanum Gothic Coding', monospace;
-		color: black;
 	}
 </style>
 </head>
