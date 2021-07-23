@@ -164,16 +164,4 @@ public class HomeController {
 		}
 	}
     
-    /*
-     * 로그아웃 시 세션 정보를 삭제하고 로그인 페이지로 이동.
-     * 
-     */
-    @RequestMapping("logout.do")
-    public String logout(HttpSession session) {
-    	
-    	System.out.println("==============="+session.getAttribute("session").toString());
-    	session.invalidate();
-    	
-    	return "mes/member/loginForm";
-    }
 }
