@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -38,7 +39,8 @@ public class ProcMatrExcel {
 	
 	
 	@RequestMapping("/procMatrExcel")
-	public void ExcelCreate(HttpServletResponse response, ProProcessVO vo) throws IOException {
+	public void ExcelCreate(HttpServletRequest request, HttpServletResponse response
+							, ProProcessVO vo) throws IOException {
 		response.setCharacterEncoding("utf-8");
 		Workbook wb = new XSSFWorkbook(); 
 		CellStyle cs = wb.createCellStyle();
@@ -106,9 +108,11 @@ public class ProcMatrExcel {
 				}
 			}
 		}
+		
+		String path = request.getSession().getServletContext().getRealPath("/resources/images/upload");
 
 		// 서버에 엑셀 파일 저장( 경로에 Temp 폴더 있는지 확인)
-		String filename = "c:/Temp/excel_" + System.currentTimeMillis() + ".xlsx";
+		String filename = path + System.currentTimeMillis() + ".xlsx";
 		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(filename);

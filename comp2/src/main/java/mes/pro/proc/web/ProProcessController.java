@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
@@ -212,7 +213,7 @@ public class ProProcessController {
   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
   	//공정이동표 발행
   	@RequestMapping("pro/proc/printProcessMove.do")
-  	    public String printProcessMove(ProProcessVO vo, Model model) {
+  	    public String printProcessMove(ProProcessVO vo, Model model, HttpServletRequest request) {
   	    
   	        //현재 날짜 + 시간으로 변경.
   	        Date time = new Date();
@@ -235,7 +236,8 @@ public class ProProcessController {
   	    	//파일이름을 랜덤으로 생성한다.
   	        UUID uuid = UUID.randomUUID();
   	        
-  	        File file = new File(EgovProperties.getProperty("Globals.fileStorePath"), uuid.toString()+".jpg");
+  	        String path = request.getSession().getServletContext().getRealPath("/resources/images/upload");
+  	        File file = new File(path, uuid.toString()+".jpg");
   	        
   	        //저장된 값으로 바코드를 생성한다.
   	        try{
