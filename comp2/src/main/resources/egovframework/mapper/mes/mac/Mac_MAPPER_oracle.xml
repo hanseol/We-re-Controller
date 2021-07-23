@@ -68,12 +68,12 @@
 				  , #{macModel}
 				  , #{macMachineConstructor}
 				  , #{macPossibleSize}
-				  , #{macMachineDate}
+				  , TO_DATE(#{macMachineDate},'YYYY-MM-DD')
 				  , #{macMachineCost}
 				  , #{macBuha}
 				  , #{macTemp}
-				  , #{macChkDate}
-				  , #{macNextChkDate}
+				  , TO_DATE(#{macChkDate},'YYYY-MM-DD')
+				  , TO_DATE(#{macNextChkDate},'YYYY-MM-DD')
 				  , #{macChkCycle}
 				  , #{macImage} )
 		]]>
@@ -88,8 +88,8 @@
 				, MAC_MACHINE_CONSTRUCTOR=#{macMachineConstructor}
 				, MAC_POSSIBLE_SIZE=#{macPossibleSize}
 				, MAC_BUHA=#{macBuha}
-				, MAC_CHK_DATE=#{macChkDate}
-				, MAC_NEXT_CHK_DATE=#{macNextChkDate}
+				, MAC_CHK_DATE=TO_DATE(#{macChkDate},'YYYY-MM-DD')
+				, MAC_NEXT_CHK_DATE=TO_DATE(#{macNextChkDate},'YYYY-MM-DD')
 				, MAC_CHK_CYCLE=#{macChkCycle}
 				, MAC_CONSTRUCTOR_PHONE=#{macConstructorPhone}
 				WHERE MAC_CODE=#{macCode}

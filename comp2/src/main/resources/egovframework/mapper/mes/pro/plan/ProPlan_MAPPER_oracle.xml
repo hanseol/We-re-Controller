@@ -45,7 +45,7 @@
 								  , #{proPlanCode}
 								  , #{erpOrderCode}
 								  , TO_DATE(#{erpProductDeadline},'YYYY-MM-DD')
-								  , #{proWorkDate}
+								  , TO_DATE(#{proWorkDate},'YYYY-MM-DD')
 								  , #{erpCustomerCode}
 								  , #{proPlanDayQty}
 								  , #{proPlanSeq}
@@ -150,7 +150,7 @@
 									m.pro_plan_date BETWEEN #{startDate} AND #{endDate} 
 								</if>
 								<if test="searchCondition == 2"> AND
-									e.erp_product_deadline BETWEEN #{startDate} AND #{endDate} 
+									e.erp_product_deadline BETWEEN TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD') 
 								</if>
 							</if>
 								<if test="erpProductCode != null and erpProductCode != ''"> AND
