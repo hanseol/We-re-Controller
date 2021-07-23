@@ -50,9 +50,9 @@ public class MaterialVO extends SearchVO{
     private String erpVendorCode;
     
     //날짜 범위 검색 Start
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private String matInoutEndDate;
     //날짜 범위 검색 End
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private String matInoutDate;
 }

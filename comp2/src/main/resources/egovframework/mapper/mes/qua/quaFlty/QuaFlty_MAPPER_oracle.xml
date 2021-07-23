@@ -14,7 +14,7 @@
 										SELECT  DISTINCT q.qua_material_statement,
 												q.com_material_code,
 										        q.erp_material_order_code,
-										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD') as qua_material_chk_date,
+										        TO_CHAR(q.qua_material_chk_date,'YYYY-MM-DD') as qua_material_chk_date,
 										        q.erp_vendor_code,
 										        get_code_detail(q.com_material_code) as material_name,
 										        d.com_code_detail_name,
@@ -49,7 +49,7 @@
 		                              	AND
 							        	q.erp_material_order_code LIKE '%' || #{erpMaterialOrderCode} || '%'
 		                              	</if>
-		                              ORDER BY q.erp_material_order_code DESC <![CDATA[ ) a
+		                              ORDER BY q.qua_material_chk_date DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	

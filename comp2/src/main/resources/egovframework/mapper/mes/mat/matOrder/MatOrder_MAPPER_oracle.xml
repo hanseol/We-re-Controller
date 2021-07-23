@@ -10,7 +10,7 @@
 		              SELECT a.*,
 		                     ROWNUM rnum
 		              FROM   (
-		                              SELECT   TO_CHAR(e.erp_material_order_date,'YY/MM/DD') erp_material_order_date,
+		                              SELECT   TO_CHAR(e.erp_material_order_date,'YYYY-MM-DD') erp_material_order_date,
 		                                       e.erp_material_order_code,
 		                                       e.erp_vendor_code,
 		                                       get_code_detail(e.erp_vendor_code) as vendor_name, 
@@ -63,8 +63,8 @@
 		                                       e.erp_vendor_code,
 		                                       e.erp_material_unit_price,
 		                                       d.com_code_detail_name,
-		                                       TO_CHAR(e.erp_material_order_date, 'YY/MM/DD')as erp_material_order_date,
-		                                       TO_CHAR(e.erp_material_request_date, 'YY/MM/DD')as erp_material_request_date
+		                                       TO_CHAR(e.erp_material_order_date, 'YYYY-MM-DD')as erp_material_order_date,
+		                                       TO_CHAR(e.erp_material_request_date, 'YYYY-MM-DD')as erp_material_request_date
 		                              FROM     erp_material_order e,
 		                              		   com_material c,
 		                              		   com_code_detail d
@@ -100,8 +100,8 @@
 		                                       e.erp_vendor_code,
 		                                       e.erp_material_unit_price,
 		                                       d.com_code_detail_name,
-		                                       TO_CHAR(e.erp_material_order_date, 'YY/MM/DD')as erp_material_order_date,
-		                                       TO_CHAR(e.erp_material_request_date, 'YY/MM/DD')as erp_material_request_date
+		                                       TO_CHAR(e.erp_material_order_date, 'YYYY-MM-DD')as erp_material_order_date,
+		                                       TO_CHAR(e.erp_material_request_date, 'YYYY-MM-DD')as erp_material_request_date
 		                              FROM     erp_material_order e,
 		                              		   com_material c,
 		                              		   com_code_detail d
@@ -138,8 +138,8 @@
 		                                       e.erp_vendor_code,
 		                                       e.erp_material_unit_price,
 		                                       d.com_code_detail_name,
-		                                       TO_CHAR(e.erp_material_order_date, 'YY/MM/DD')as erp_material_order_date,
-		                                       TO_CHAR(e.erp_material_request_date, 'YY/MM/DD')as erp_material_request_date
+		                                       TO_CHAR(e.erp_material_order_date, 'YYYY-MM-DD')as erp_material_order_date,
+		                                       TO_CHAR(e.erp_material_request_date, 'YYYY-MM-DD')as erp_material_request_date
 		                              FROM     erp_material_order e,
 		                              		   com_material c,
 		                              		   com_code_detail d,

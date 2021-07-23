@@ -30,7 +30,7 @@ public class MatInoutVO extends SearchVO{
     private String comMaterialCode;
     
     /** MAT_INOUT_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private java.lang.String matInoutDate;
     
     /** MAT_INOUT_GUBUN 입출고 구분*/

@@ -12,7 +12,7 @@
 		              FROM   (
 										SELECT  mi.qua_material_statement
 										        ,COUNT(mi.mat_inout_quantity) as mat_inout_quantity
-										        ,TO_CHAR(mi.mat_inout_date,'YY/MM/DD') as mat_inout_date
+										        ,TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD') as mat_inout_date
         										,mi.com_material_code
 										        ,cm.com_material_name
 										        ,mi.mat_inout_unit_price
@@ -61,7 +61,7 @@
 		              FROM   (
 										SELECT  mi.qua_material_statement
 										        ,COUNT(mi.mat_inout_quantity) as mat_inout_quantity
-										        ,TO_CHAR(mi.mat_inout_date,'YY/MM/DD') as mat_inout_date
+										        ,TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD') as mat_inout_date
         										,mi.com_material_code
 										        ,cm.com_material_name
 										        ,mi.mat_inout_unit_price

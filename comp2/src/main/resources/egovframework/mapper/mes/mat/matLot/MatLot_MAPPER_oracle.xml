@@ -10,7 +10,7 @@
 		                     ROWNUM rnum
 		              FROM   (
 										SELECT    m.mat_match_statement,
-										          TO_CHAR(m.mat_match_date, 'YY/MM/DD')as mat_match_date,
+										          TO_CHAR(m.mat_match_date, 'YYYY-MM-DD')as mat_match_date,
 										          m.mat_match_inout,
 										          m.mat_lot_no,
 										          m.com_material_code,
@@ -61,7 +61,7 @@
 									mat_past_quantity)
 			VALUES (#{matMatchStatement}
 			, #{matMatchInout}
-			, TO_CHAR(SYSDATE,'YY/MM/DD')
+			, SYSDATE
 			, #{matMatchQty}
 			, #{comMaterialCode}
 			, #{matLotNo}
@@ -79,7 +79,7 @@
 	<!-- 정산입출고 테이블 업데이트 -->
 	<update id="updateMatLot">
 			UPDATE MAT_MATCH SET
-		MAT_MATCH_DATE = TO_CHAR(SYSDATE,'YY/MM/DD')
+		MAT_MATCH_DATE = SYSDATE,
 		, MAT_MATCH_INOUT = #{matMatchInout}
 		, MAT_MATCH_QTY = #{matMatchQty}
 		, COM_MATERIAL_CODE = #{comMaterialCode}

@@ -11,12 +11,11 @@
 <div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-body">
-			<form id="option">
 			<div>
 				검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaMaterialChkDate" name="quaMaterialChkDate" class="form-control">&nbsp;~&nbsp;<input type="date" id="quaMaterialChkEndDate" name="quaMaterialChkEndDate" class="form-control">	
-			</div>
-			<br/>
+			</div><br/>
 			<div class="row">
+				<form id="option">
 					<div class="col-md-10">
 						발주검색&nbsp;&nbsp;&nbsp;<input type="text" id="orderCode" name="orderCode" class="form-control">	
 						<a id="searchMatOrderCodeFlty" href="${pageContext.request.contextPath}/mat/order/searchMatOrderCodeFlty.do">
@@ -30,12 +29,12 @@
 						<a id="searchVendorCode" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>&nbsp;&nbsp;
 					</div>
-					<div class="col-md-2" align="right">
-						<button type="button" class="btn btn-primary" id="search">조회</button>
-						<button type="button" class="btn btn-success" id="reset">새자료</button>
-					</div>
+				</form>
+				<div class="col-md-2" align="right">
+					<button type="button" class="btn btn-primary" id="search">조회</button>
+					<button type="button" class="btn btn-success" id="reset">새자료</button>
+				</div>
 			</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -90,19 +89,20 @@ let vendorGrid;
 		$('.5030000').addClass('active');
 		
 		
-		// 옵션 폼 리셋버튼  
+		// 옵션 폼 리셋버튼  1
 		$("#reset").click(function() { 
 			$("form").each(function() {  
 		    	if(this.id == "option") this.reset();
+
 		    	grid.clear();
 		    	fltyGrid.clear();
 		    	
 		    	$('#materialCode').val("");
 		    	$('#vendorCode').val("");
 		    	$('#orderCode').val("");
+		    	
 		    	});
 			}); 
-
 		
 		//검색데이터 전송
 		$("#search").on("click", function () {
@@ -298,6 +298,7 @@ let vendorGrid;
 		$('#searchMaterialCode').click(function(event) {
 			materialCodeSearch(-1);
 		});
+	
 }); //end of document ready
 
 //그리드모달 :모달페이지로 값 넘기기----------------------------------------

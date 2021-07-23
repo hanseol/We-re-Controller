@@ -380,7 +380,7 @@ var grid;
 		
 
 		
-/* 		// 그리드 테마
+ 		// 그리드 테마
 		tui.Grid.applyTheme('clean', 
 			{
 				row: {
@@ -390,13 +390,14 @@ var grid;
 				},
 				cell: {
 					header: {
-						background: "#D5ECED"
+						background: "#ececec"
 					},
-					currentRow : {
-						background: "#d5dae1"
+					currentRow: {
+						background: "red"
 					}
-				}
-		}); */
+				},
+				
+		});
 
 		//그리드 로우아이디 지정--------------------------------------
 		//입고탭 자재인풋 로우키

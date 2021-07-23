@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
-
 <div class="content-fluid">
 	<div>
 		<h2>자재재고조회</h2>
@@ -198,11 +196,11 @@ function rowColor(){
 		var materialStock = $(this).find('td').eq(4).text();
 		var comMaterialSafetyStock = $(this).find('td').eq(5).text();
 		
-		if(parseInt(materialStock)< parseInt(comMaterialSafetyStock)){
+		if(parseInt(materialStock) < parseInt(comMaterialSafetyStock)){
 			/* $(this).find('td').css('backgroundColor',"lightgray"); */
-			$(this).find('td').css('color',"red");
+			$(this).find('td').css('color','red');
 		}
-	})
+	});
 	
 }
 

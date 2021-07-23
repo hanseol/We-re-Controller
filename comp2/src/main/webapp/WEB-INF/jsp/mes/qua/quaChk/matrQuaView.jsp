@@ -72,6 +72,18 @@ let vendorTwoGrid;
 		$('#subPages5000000').attr('style','');
 		$('.5020000').addClass('active');
 		
+		// 옵션 폼 리셋버튼  
+		$("#reset").click(function() { 
+			$("form").each(function() {  
+		    	if(this.id == "option") this.reset();
+		    	passGrid.clear();
+		    	
+		    	$('#materialCodeTwo').val("");
+		    	$('#vendorCodeTwo').val("");
+		    	
+		    	});
+			}); 
+		
 		//그리드 [조회]버튼
 		$("#searchPass").on("click", function () {
 

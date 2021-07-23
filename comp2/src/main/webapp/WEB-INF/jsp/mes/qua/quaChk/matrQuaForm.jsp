@@ -29,7 +29,7 @@
 					</div>
 				</form>
 				<div class="col-md-4" align="right">
-					<button type="button" class="btn btn-primary" id="searchPass">조회</button>
+					<button type="button" class="btn btn-primary" id="search">조회</button>
 					<button type="button" class="btn btn-success" id="reset">새자료</button>
 				</div>
 			</div>
@@ -63,16 +63,16 @@
 			<div class="row">
 				<form id="option2">
 					<div class="col-md-12">
-						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaChkDate" name="quaChkDate"> ~ <input type="date" id="quaChkEndDate" name="quaChkEndDate">
+						검사일자&nbsp;&nbsp;&nbsp;<input type="date" id="quaChkDate" name="quaChkDate" class="form-control"> ~ <input type="date" id="quaChkEndDate" name="quaChkEndDate" class="form-control">
 					</div>
 					<div class="col-md-12"><br/></div>
 					<div class="col-md-4">
-						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCodeTwo" name="materialCodeTwo">
+						자재검색&nbsp;&nbsp;&nbsp;<input type="text" id="materialCodeTwo" name="materialCodeTwo" class="form-control">
 						<a id="searchMaterialCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchMaterialCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
 					<div class="col-md-4">
-						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCodeTwo" name="vendorCodeTwo">
+						업체검색&nbsp;&nbsp;&nbsp;<input type="text" id="vendorCodeTwo" name="vendorCodeTwo" class="form-control">
 						<a id="searchVendorCodeTwo" href="${pageContext.request.contextPath}/mat/inout/searchVendorCode.do">
 						<i class="fa fa-search"></i></a>
 					</div>
@@ -213,7 +213,7 @@ let erpMaterialOrderCode;
 		//그리드1 [삭제] 버튼(체크된 행 삭제)
 		$("#deleteRow").on("click", function () {
 			grid.removeCheckedRows(false);
-				
+
 			});
 		
 //=======================================그리드2 버튼설정===========================================		
@@ -642,6 +642,11 @@ let erpMaterialOrderCode;
 		$('#searchMatFltyCode').click(function(event) {
 			matFltyCodeSearch(-1);
 		});
+		//업체
+		$('#searchVendorCode').click(function(event) {
+			vendorCodeSearch(-1);
+		});
+ 		
  		//---------------------------그리드2
 		//그리드2 자재
 		$('#searchMaterialCodeTwo').click(function(event) {
@@ -651,6 +656,58 @@ let erpMaterialOrderCode;
 		$('#searchVendorCodeTwo').click(function(event) {
 			vendorCodeSearch(-2);
 		});
+		
+ 		// 그리드 테마
+		/* tui.Grid.applyTheme('clean', 
+			{	//행 기본색.
+				row: {
+		       		hover: {  //마우스를 올렸을 때 배경색
+		       			background: "#C6E9FB"
+		       		}
+				},
+				//셀 기본색.
+				cell: {
+					//전체적인 색
+					normal: {
+						border: "#FDFEFF", //전체 그리드의 테두리색(내부 경계선 포함).
+						background: "#FDFEFF"
+					},
+					//헤더 색
+					header: { //기본 헤더 배경색
+						background: "#e8e8e8"
+					},
+					
+					selectedHeader:{ //드래그 했을 때 헤더 배경색.
+						background: "#A7ACB5"
+					},
+					//행 헤더 색
+					rowHeader:{ // 행 헤더의 체크박스 부분 배경색.
+						background: "#FDFEFF" 
+					},
+					//currentRow: {
+					//	background: "black"
+					//},
+					//필수항목 셀
+					required: { //필수항목 지정한 셀의 배경색
+						background: "#F9BCA9"  
+					},
+					
+					//클릭한 셀
+					focused: {
+						border: "#586172"  //클릭한 셀 테두리색.
+					},
+					
+					
+				},
+				//드래그 셀 기본색
+				selection: {
+					background: "#DCF0F8",  //드래그한 범위만큼의 셀 배경색
+					border: "#FDFDFD"  //드래그한 범위만큼의 테두리 색.
+				}
+				
+				
+		}); */
+		
  		
 		
 });//end of document ready

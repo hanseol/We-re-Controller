@@ -44,7 +44,7 @@ public class QuaFltyVO extends SearchVO{
     
     //입고검사테이블------------------------------------
     /** QUA_MATERIAL_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private String quaMaterialDate;
     
     /** ERP_VENDOR_CODE */
@@ -55,13 +55,13 @@ public class QuaFltyVO extends SearchVO{
     private String quaMaterialChk;
     
     //검사완료일자
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private String quaMaterialChkDate;
 
 
     //자재발주테이블------------------------------
     //납품요청일
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private String erpMaterialRequestDate;
     
     //발주량
@@ -86,7 +86,7 @@ public class QuaFltyVO extends SearchVO{
     private String comMaterialFName;
     
     //날짜 범위 검색 End날짜 추가
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private String quaMaterialChkEndDate;
     
 }

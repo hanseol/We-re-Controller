@@ -13,7 +13,7 @@
 		              FROM   (
 										SELECT  q.erp_material_order_code,
 										        q.qua_material_statement,
-										        TO_CHAR(q.qua_material_date,'YY/MM/DD')as qua_material_date,
+										        TO_CHAR(q.qua_material_date,'YYYY-MM-DD')as qua_material_date,
 										        q.erp_vendor_code,
 										        d.com_code_detail_name,
                             					q.com_material_code,                            
@@ -21,14 +21,14 @@
 										        c.com_material_size,
 										        c.com_material_unit,
 										        e.erp_material_order_qty,
-										        TO_CHAR(e.erp_material_request_date,'YY/MM/DD')as erp_material_request_date,
+										        TO_CHAR(e.erp_material_request_date,'YYYY-MM-DD')as erp_material_request_date,
 										        q.qua_material_p_qty,
 										        q.qua_material_f_qty,
 										        q.qua_material_chk,
 										        e.erp_material_unit_price,
 										        e.erp_material_order_qty * e.erp_material_unit_price as erp_material_price,
-										        TO_CHAR(e.erp_material_order_date,'YY/MM/DD')AS erp_material_order_date,
-										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD')as qua_material_chk_date
+										        TO_CHAR(e.erp_material_order_date,'YYYY-MM-DD')AS erp_material_order_date,
+										        TO_CHAR(q.qua_material_chk_date,'YYYY-MM-DD')as qua_material_chk_date
 										        
 										FROM    com_material c,
 										        erp_material_order e,
@@ -53,7 +53,7 @@
 		                              	AND
 							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
-		                              ORDER BY q.erp_material_order_code DESC<![CDATA[ ) a
+		                              ORDER BY q.qua_material_date DESC<![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
@@ -69,7 +69,7 @@
 		              FROM   (
 										SELECT  q.erp_material_order_code,
 										        q.qua_material_statement,
-										        TO_CHAR(q.qua_material_date,'YY/MM/DD')as qua_material_date,
+										        TO_CHAR(q.qua_material_date,'YYYY-MM-DD')as qua_material_date,
 										        q.erp_vendor_code,
 										        d.com_code_detail_name,
                             					q.com_material_code,
@@ -77,14 +77,14 @@
 										        c.com_material_size,
 										        c.com_material_unit,
 										        e.erp_material_order_qty,
-										        TO_CHAR(e.erp_material_request_date,'YY/MM/DD')as erp_material_request_date,
+										        TO_CHAR(e.erp_material_request_date,'YYYY-MM-DD')as erp_material_request_date,
 										        q.qua_material_p_qty,
 										        q.qua_material_f_qty,
 										        q.qua_material_chk,
 										        e.erp_material_unit_price,
 										        e.erp_material_order_qty * e.erp_material_unit_price as erp_material_price,
-										        TO_CHAR(e.erp_material_order_date,'YY/MM/DD')AS erp_material_order_date,
-										        TO_CHAR(q.qua_material_chk_date,'YY/MM/DD')as qua_material_chk_date
+										        TO_CHAR(e.erp_material_order_date,'YYYY-MM-DD')AS erp_material_order_date,
+										        TO_CHAR(q.qua_material_chk_date,'YYYY-MM-DD')as qua_material_chk_date
 										        
 										FROM    com_material c,
 										        erp_material_order e,
@@ -109,7 +109,7 @@
 		                              	AND
 							        	q.qua_material_chk_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
 		                              	</if>
-		                              ORDER BY q.qua_material_statement DESC <![CDATA[ ) a
+		                              ORDER BY q.qua_material_chk_date DESC, q.erp_material_order_code DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>	
@@ -178,7 +178,7 @@
 									   qua_material_chk)
 							VALUES  	(#{quaMaterialStatement},
 										#{erpMaterialOrderCode},
-										#{quaMaterialDate},
+										TO_DATE(#{quaMaterialDate},'YYYY-MM-DD'),
 								   		#{erpVendorCode},
 								   		#{comMaterialCode},
 								   		#{quaMaterialPQty},
@@ -199,7 +199,7 @@
 							VALUES  	(#{matInoutStatement},
 										 #{quaMaterialStatement},
 										#{comMaterialCode},
-								   		TO_CHAR(SYSDATE, 'YY/MM/DD'),
+								   		SYSDATE,
 								   		'INOUT002',
 								   		#{quaMaterialPQty},
 								   		#{matLotNo},
