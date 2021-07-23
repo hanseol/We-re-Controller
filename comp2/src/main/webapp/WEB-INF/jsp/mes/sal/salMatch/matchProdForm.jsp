@@ -90,8 +90,7 @@ let mgrid;
 					var inMatch = $("#inMatch").val();
 					var outMatch = $("#outMatch").val();
 					var gubun;
-					var productCode = $("#productCode").val();
-					var productLotNo = $("#productLotNo").val();
+					var proProcessLotNo = $("#proProcessLotNo").val();
 					
 					//체크박스 옵션
 					if ($('input:checkbox[id="inMatch"]').is(":checked") && $('input:checkbox[id="outMatch"]').is(":checked") == true) {
@@ -107,8 +106,7 @@ let mgrid;
 					var readParams = {
 						'salMatchDate' : date,
 						'salMatchInout' : gubun,
-						'comProductCode' : productCode,
-						'proProcessLotNo' : productLotNo
+						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
