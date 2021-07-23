@@ -385,16 +385,17 @@ var grid;
 			{
 				row: {
 		       		hover: {
-		       			background: "#DFEFF7"
+		       			background: "#f0f6fa"
 		       		}
 				},
 				cell: {
 					header: {
-						background: "#ececec"
+						background: "#b9d9eb"
+						
 					},
-					currentRow: {
-						background: "red"
-					}
+					//currentRow: {
+					//	background: "red"
+					//}
 				},
 				
 		});
