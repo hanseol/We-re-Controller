@@ -168,6 +168,7 @@
     	I.SAL_INOUT_GUBUN = 'INOUT002'
     	AND O.SAL_INOUT_GUBUN = 'INOUT003'
 		AND I.SAL_NOW_QUANTITY NOT IN('0')
+		AND O.PRO_PROCESS_LOT_NO = '0'
 		AND I.COM_PRODUCT_CODE = #{comProductCode}
     	AND O.COM_PRODUCT_CODE = #{comProductCode}
 		ORDER BY I.PRO_PROCESS_LOT_NO
@@ -390,7 +391,8 @@
             TO_CHAR(SAL_INOUT_DATE, 'YYYY-MM-dd') as SAL_INOUT_DATE,
 		    GET_CODE_DETAIL(SAL_INOUT_CODE) as COM_CUSTOMER_NAME,
 		    GET_CODE_DETAIL(COM_PRODUCT_CODE) as COM_PRODUCT_NAME,
-		    PRO_PROCESS_LOT_NO, SAL_INOUT_QUANTITY
+		    PRO_PROCESS_LOT_NO, SAL_INOUT_QUANTITY,
+		    SAL_INOUT_CODE, COM_PRODUCT_CODE
 			FROM SAL_INOUT
 			WHERE SAL_INOUT_GUBUN = 'INOUT003'
 		<if test="salInoutDate != null and salInoutDate != ''"> AND
@@ -404,33 +406,40 @@
 	
 	<!-- 모달 : 제품주문서 목록 -->
 	<select id="searchOrderList" parameterType="mes.sal.inout.service.SalInoutVO" resultType="egovMap">
-			SELECT
-		     (SELECT TO_CHAR(SAL_INOUT_DATE, 'YYYY/MM/dd') as SAL_INOUT_DATE
-		      FROM   sal_inout l
-		      WHERE  e.erp_product_code = l.com_product_code
-		      AND SAL_INOUT_GUBUN = 'INOUT002'
-		      AND ROWNUM = 1) as sal_inout_date
-		      , e.erp_order_code
-		      , e.erp_product_name
-		      , e.erp_order_qty
-		      , e.erp_product_code
-		      , GET_CODE_DETAIL(e.erp_customer_code) as ERP_CUSTOMER_NAME
-		      , e.erp_customer_code
-		      , (SELECT SAL_INOUT_STATEMENT
-		      	FROM   sal_inout l
-		      	WHERE  e.erp_product_code = l.com_product_code
-		      	AND SAL_INOUT_GUBUN = 'INOUT002'
-		      	AND ROWNUM = 1) as SAL_INOUT_STATEMENT
-			  FROM  erp_product_order e
-			  WHERE 
-		      (SELECT sal_inout_date
-		       FROM   sal_inout l
-		       WHERE  e.erp_product_code = l.com_product_code
-		       AND ROWNUM = 1) IS NOT NULL 
-		       AND erp_order_code IN (SELECT erp_order_code
-		                              FROM pro_plan_detail
-		                              WHERE pro_plan_detail_code IN (SELECT pro_plan_detail_code
-									WHERE SAL_INOUT_GUBUN = 'INOUT002')))	                 					
+					SELECT
+						(SELECT
+						TO_CHAR(SAL_INOUT_DATE, 'YYYY-MM-dd') as SAL_INOUT_DATE
+						FROM SAL_INOUT I
+						WHERE E.ERP_PRODUCT_CODE = I.COM_PRODUCT_CODE
+						AND SAL_INOUT_GUBUN = 'INOUT002'
+						AND ROWNUM = 1) as
+					SAL_INOUT_DATE,
+					E.ERP_ORDER_CODE,
+					E.ERP_PRODUCT_NAME,
+					E.ERP_ORDER_QTY,
+					E.ERP_PRODUCT_CODE,
+					GET_CODE_DETAIL(E.ERP_CUSTOMER_CODE) as ERP_CUSTOMER_NAME,
+					E.ERP_CUSTOMER_CODE,
+						(SELECT SAL_INOUT_STATEMENT
+						FROM SAL_INOUT I
+						WHERE E.ERP_PRODUCT_CODE = I.COM_PRODUCT_CODE
+						AND SAL_INOUT_GUBUN = 'INOUT002'
+						AND ROWNUM = 1) as
+					SAL_INOUT_STATEMENT
+					FROM ERP_PRODUCT_ORDER E
+					WHERE
+						(SELECT SAL_INOUT_DATE
+						FROM SAL_INOUT I
+						WHERE E.ERP_PRODUCT_CODE = I.COM_PRODUCT_CODE
+						AND ROWNUM = 1)
+					IS NOT NULL
+					AND ERP_ORDER_CODE IN
+								(SELECT ERP_ORDER_CODE
+								FROM PRO_PLAN_DETAIL
+								WHERE PRO_PLAN_DETAIL_CODE IN
+												(SELECT PRO_PLAN_DETAIL_CODE
+												FROM SAL_INOUT
+												WHERE SAL_INOUT_GUBUN = 'INOUT002'))            					
 			<if test="erpCustomerName != null and erpCustomerName != ''"> AND
 				ERP_CUSTOMER_NAME LIKE '%' || #{erpCustomerName} || '%'
 			</if>

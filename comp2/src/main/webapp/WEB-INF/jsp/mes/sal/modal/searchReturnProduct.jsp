@@ -51,6 +51,9 @@ $(document).ready(function() {
 			
 			salInoutCode = grid.getValue(chkRowKeys[i], 'salInoutCode');
 			comProductCode = grid.getValue(chkRowKeys[i], 'comProductCode');
+			
+			console.log(salInoutCode);
+			console.log(comProductCode);
 						
 			//view 페이지에 뿌려줄 부분 아이디값
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
