@@ -120,7 +120,7 @@ public class EgovMenuCreateManageController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("resultMsg", resultMsg);
-		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatManage";
+		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatManage.page";
 	}
 
 	/* 메뉴생성 세부조회 */

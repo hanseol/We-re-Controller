@@ -136,7 +136,7 @@ public class EgovProgrmManageController {
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-      	return "egovframework/com/sym/prm/EgovProgramListManage";
+      	return "egovframework/com/sym/prm/EgovProgramListManage.page";
 
     }
 

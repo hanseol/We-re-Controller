@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<!-- 2021-07-24 안전재고관리 수정만 급하게 넣음 (김한설) -->
 <div class="content-fluid">
 	<div>
 		<h2>자재정보관리/안전재고관리</h2>
@@ -15,8 +16,8 @@
 				<div class="row">
 					<div class="col-md-7"></div>
 					<div class="col-md-5" align="right">
-						<button type="button" id=appendRow>추가</button>
-						<button type="button" id="deleteRow">삭제</button>
+						<!-- <button type="button" id=appendRow>추가</button>
+						<button type="button" id="deleteRow">삭제</button> -->
 						<button type="button" id="modifyRow">저장</button>
 					</div>
 				</div>

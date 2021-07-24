@@ -159,7 +159,7 @@ public class EgovMenuManageController {
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-      	return "egovframework/com/sym/mnu/mpm/EgovMenuManage";
+      	return "egovframework/com/sym/mnu/mpm/EgovMenuManage.page";
     }
 
     /**
@@ -347,7 +347,7 @@ public class EgovMenuManageController {
     	resultMsg = egovMessageSource.getMessage("success.common.select");
         model.addAttribute("list_menulist", list_menulist);
 //        model.addAttribute("resultMsg", resultMsg);
-      	return  "egovframework/com/sym/mnu/mpm/EgovMenuList";
+      	return  "egovframework/com/sym/mnu/mpm/EgovMenuList.page";
     }
 
     /**

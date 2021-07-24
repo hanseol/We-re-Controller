@@ -167,6 +167,10 @@ let procGrid;
 		            required:true
 		        }
 			},{
+				header : '제품코드',
+				name : 'comProductCode',
+				hidden : true
+			},{
 				header : '자재코드',
 				name : 'comMaterialCode',
 				align : 'center',
@@ -176,10 +180,9 @@ let procGrid;
 		            required:true
 		        }
 			}, {
-				header : '자재명',
-				name : 'comBomEtc',
-				align : 'center',
-				width : 300
+				header : '제품명',
+				name : 'comProductName',
+				hidden : true
 			}, {
 				header : '사용량',
 				name : 'comBomUnit',
@@ -198,8 +201,15 @@ let procGrid;
 			}, {
 				header : '사용공정명',
 				name : 'comProcessName',
-				align : 'center'
+				editor : 'text',
+				validation: {
+		               required:true
+		        } 
 			}, {
+				header : '비고',
+				name : 'comBomEtc',
+				editor : 'text'
+			},{
 				header : '발주',
 				name : 'comBomOrder',
 				editor : 'text',
@@ -213,7 +223,8 @@ let procGrid;
 				renderer: { type: CustomCheckboxRenderer},
 				align : 'center',
 				width : 100
-			}]
+			}
+			]
 		}); 
 		
 		//Insert
@@ -245,7 +256,6 @@ let procGrid;
 		$(document).on("click", "button[id=deleteRow]", function() {
 			grid.finishEditing('rowKey','columnName');
 			grid.removeCheckedRows(false);
-			console.log(finishEditing);
 		});
 		
 		//CRUD
