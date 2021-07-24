@@ -44,17 +44,12 @@
 		]]>
 	</select>	
 
-	<!-- 디테일코드 업데이트 -->
+	<!-- 안전재고 업데이트 -->
 	<update id="updateMatrDtaListDetail">
+		UPDATE COM_MATERIAL
+		SET COM_MATERIAL_SAFETY_STOCK = #{comMaterialSafetyStock}
+		WHERE  COM_MATERIAL_CODE = #{comCodeDetailId}
 	</update>
-	
-	<!-- 디테일코드 삽입 -->
-	<insert id="insertMatrDtaListDetail">
-	</insert>
-	
-	<!-- 디테일코드 삭제 -->
-	<delete id="deleteMatrDtaListDetail" parameterType="mes.com.matrDtaList.service.MatrDtaListVO">
-	</delete>
 
 
 </mapper>

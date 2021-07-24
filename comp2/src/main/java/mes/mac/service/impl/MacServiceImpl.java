@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import mes.mac.service.MacDateResultVO;
 import mes.mac.service.MacService;
 import mes.mac.service.MacVO;
-import mes.main.service.MacDateResultVO;
 import mes.pro.proc.service.ProProcessVO;
 /**
  * @Class Name : MacServiceImpl.java

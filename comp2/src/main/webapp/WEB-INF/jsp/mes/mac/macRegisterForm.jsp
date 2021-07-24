@@ -79,47 +79,48 @@ th {
 	<div class="panel">
 		<div align="center" id="headline"><h2>설비 등록</h2></div>
 		<div class="panel-body">
-		<form name="frm" id="frm" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+		<form name="frm" method="post" enctype="multipart/form-data" accept-charset="UTF-8"
+				action="${pageContext.request.contextPath}/mac/mim/registerMac.do">
 			<input type="hidden" id="erpEmployeeId" name="erpEmployeeId" value="${loginVO.id }">
 			<table class="table table-bordered">
 				<thead>
 				</thead>
 				<tbody>
 					<tr>
-						<th>설비코드</th>
-						<td><input class="form-control" id="macCode" name="macCode"></td>
-						<th>설비규격</th>
-						<td><select class="form-control" name="macSize" id="macSize"></select></td>
-						<th>모델명</th>
-						<td><select class="form-control" name="macModel" id="macModel"></select></td>
+						<th>* 설비코드</th>
+						<td><input class="form-control" id="macCode" name="macCode" required></td>
+						<th>* 설비규격</th>
+						<td><select class="form-control" name="macSize" id="macSize" required></select></td>
+						<th>* 모델명</th>
+						<td><select class="form-control" name="macModel" id="macModel" required></select></td>
 					</tr>
 					<tr>
-						<th>설비구분</th>
-						<td><select class="form-control" name="macGubun" id="macGubun"></select></td>
-						<th>사용여부</th>
-						<td><input class="form-control" id="macUnused" name="macUnused" value="1"></td>
-						<th>구매일자</th>
-						<td><input class="form-control" type="date" id="macMachineDate" name="macMachineDate"></td>
+						<th>* 설비구분</th>
+						<td><select class="form-control" name="macGubun" id="macGubun" required></select></td>
+						<th>* 사용여부</th>
+						<td><input class="form-control" id="macUnused" name="macUnused" value="1" required></td>
+						<th>* 구매일자</th>
+						<td><input class="form-control" type="date" id="macMachineDate" name="macMachineDate" required></td>
 					</tr>
 					<tr>
-						<th>라인번호</th>
-						<td><input class="form-control" id="macLineNo" name="macLineNo"></td>
-						<th>공정코드</th>
-						<td><input class="form-control" id="macProcessCode" name="macProcessCode"></td>
-						<th>점검일</th>
-						<td><input class="form-control" type="date" id="macChkDate" name="macChkDate"></td>
+						<th>* 라인번호</th>
+						<td><input class="form-control" id="macLineNo" name="macLineNo" required></td>
+						<th>* 공정코드</th>
+						<td><input class="form-control" id="macProcessCode" name="macProcessCode" required></td>
+						<th>* 점검일</th>
+						<td><input class="form-control" type="date" id="macChkDate" name="macChkDate" required></td>
 					</tr>
 					<tr>
-						<th>용도</th>
-						<td><input class="form-control" id="macUsePurpose" name="macUsePurpose"></td>
-						<th>점검주기</th>
-						<td><input class="form-control" id="macChkCycle" name="macChkCycle"></td>
-						<th>차기점검일</th>
-						<td><input class="form-control" type="date" id="macNextChkDate" name="macNextChkDate"></td>
+						<th>* 용도</th>
+						<td><input class="form-control" id="macUsePurpose" name="macUsePurpose" required></td>
+						<th>* 점검주기</th>
+						<td><input class="form-control" id="macChkCycle" name="macChkCycle" required></td>
+						<th>* 차기점검일</th>
+						<td><input class="form-control" type="date" id="macNextChkDate" name="macNextChkDate" required></td>
 					</tr>
 					<tr>
-						<th>1H생산량</th>
-						<td><input class="form-control" id="macHourQty" name="macHourQty"></td>
+						<th>* 1H생산량</th>
+						<td><input class="form-control" id="macHourQty" name="macHourQty" required></td>
 						<th>생산량</th>
 						<td><input class="form-control" id="macPossibleSize" name="macPossibleSize"></td>
 						<th>기준부하율</th>
@@ -127,20 +128,20 @@ th {
 					</tr>
 					<tr>
 						<th>제작업체</th>
-						<td><input class="form-control" id="macMachineConstructor" name="macMachineConstructor"></td>
-						<th>비상연락망</th>
-						<td><input class="form-control" id="macConstructorPhone" name="macConstructorPhone"></td>
-						<th>구매가격</th>
-						<td><input class="form-control" id="macMachineCost" name="macMachineCost"></td>
+						<td><input class="form-control" id="macMachineConstructor" name="macMachineConstructor" required></td>
+						<th>* 비상연락망</th>
+						<td><input class="form-control" id="macConstructorPhone" name="macConstructorPhone" required></td>
+						<th>* 구매가격</th>
+						<td><input class="form-control" id="macMachineCost" name="macMachineCost" required></td>
 					</tr>
 					<tr>
-						<th>이미지</th>
-						<td colspan="5"><input class="form-control" type="file" id="uploadFile" name="uploadFile"/></td>
+						<th>* 이미지</th>
+						<td colspan="5"><input class="form-control" type="file" id="uploadFile" name="uploadFile" required/></td>
 					</tr>
 				</tbody>
 			</table>
 			<div align="center">
-				<button type="button" id="registerMac" class="btn btn-primary">등록</button>
+				<button type="submit" id="registerMac" class="btn btn-primary">등록</button>
 				<button type="reset" id="resetBtn" class="btn btn-success">새자료</button>
 			</div>
 			</form>
@@ -168,17 +169,17 @@ th {
 		$('#subPages8000000').attr('style','');
 		$('.8030000').addClass('active');
 		
-		$("#registerMac").on("click",function(){
+		/* $("#registerMac").on("click",function(){
 
-			$("#frm").ajaxForm({
+			 $("#frm").ajaxForm({
 				url: '${pageContext.request.contextPath}/ajax/mac/registerMac',
 				type: 'POST',
 				enctype: "multipart/form-data",
 				success: function(response){
 					alert("등록 완료");
 				}
-			}).submit();
-		});
+			}).submit(); 
+		}); */
 		
 		$("#uploadFile").on("change", handleImgFileSelect);
 		

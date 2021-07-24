@@ -10,9 +10,8 @@
 <div class="content-fluid">
 	<div>
 		<div class="my-panel">
-			<button type="button" class="btn btn-success" id="search">조회</button>
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
+			<button type="button" class="btn btn-primary" id="search">조회</button>
+			<button type="button" class="btn btn-success" id="reset">새자료</button>
 		</div>
 	</div>
 </div>
@@ -45,6 +44,7 @@
 				<div class="col-md-5" align="right">
 					<button type="button" id=appendRow>추가</button>
 					<button type="button" id="deleteRow">삭제</button>
+					<button type="button" id="modifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -160,53 +160,59 @@ let procGrid;
 			columns : [{
 				header : '번호',
 				name : 'comBomNum',
-				editor : 'text'
-			},{
-				header : '제품코드',
-				name : 'comProductCode',
-				//hidden : true
+				editor : 'text',
+				align : 'center',
+				width : 100,
+				validation: {
+		            required:true
+		        }
 			},{
 				header : '자재코드',
 				name : 'comMaterialCode',
-/* 				validation: {
-		               required:true
-		            } */
-				editor : 'text'
+				align : 'center',
+				editor : 'text',
+				width : 200,
+				validation: {
+		            required:true
+		        }
 			}, {
 				header : '자재명',
-				name : 'comProductName',
+				name : 'comBomEtc',
+				align : 'center',
+				width : 300
 			}, {
 				header : '사용량',
 				name : 'comBomUnit',
-				editor : 'text'
+				editor : 'text',
+				align : 'center',
+				width : 100,
+				validation: {
+		            required:true
+		        }
+			},{
+				header : '공정코드',
+				name : 'comProcessCode',
+				editor : 'text',
+				hidden : true,
+				align : 'center'
+			}, {
+				header : '사용공정명',
+				name : 'comProcessName',
+				align : 'center'
 			}, {
 				header : '발주',
 				name : 'comBomOrder',
 				editor : 'text',
 				renderer: { type: CustomCheckboxRenderer},
-				align : 'center'
+				align : 'center',
+				width : 100
 			}, {
 				header : '생산',
 				name : 'comBomProduce',
 				editor : 'text',
 				renderer: { type: CustomCheckboxRenderer},
-				align : 'center'
-			},{
-				header : '공정코드',
-				name : 'comProcessCode',
-				editor : 'text',
-				hidden : true
-			}, {
-				header : '사용공정명',
-				name : 'comProcessName',
-				editor : 'text',
-				validation: {
-		               required:true
-		            } 
-			}, {
-				header : '비고',
-				name : 'comBomEtc',
-				editor : 'text'
+				align : 'center',
+				width : 100
 			}]
 		}); 
 		

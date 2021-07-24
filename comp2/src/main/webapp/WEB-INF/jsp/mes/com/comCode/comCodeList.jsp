@@ -7,19 +7,6 @@
 	</div>
 </div>
 
-<div class="search-area search-area-border grid-option-area">
-	<!--  -->
-	<div class="content-fluid">
-		<div>
-			<div class="my-panel">
-				<!-- 				<button type="button" class="btn btn-danger" id="reset">새자료</button> -->
-				<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!--  -->
 <div>
 	<form id="option">
 		<div class="content-fluid">
@@ -29,6 +16,7 @@
 						<div class="col-md-12" align="right">
 							<button type="button" id=appendRow>추가</button>
 							<button type="button" id="deleteRow">삭제</button>
+							<button type="button" id="modifyRow">저장</button>
 						</div>
 					</div>
 					
@@ -148,15 +136,12 @@
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
-								validation: {
-								required:true
-								},
+								align : 'center',
 								filter : 'text'
 							}, {
 								header : '공통코드명',
-								name : 'comCodeName',validation: {
-								required:true
-								},
+								name : 'comCodeName',
+								align : 'center',
 								filter : 'text'
 							} ]
 						});
@@ -199,13 +184,15 @@
 							data : dataSourceDetail,
 						    scrollX: true,
 						    scrollY: true,
-						     bodyHeight : 480,
-						     rowHeight: 30,
+						    bodyHeight : 480,
+						    rowHeight: 30,
+							columnOptions: {
+						        resizable: true
+						    },
 							columns : [ {
 								header : '공통코드',
 								name : 'comCodeId',
 								hidden : true
-								
 							},{
 								header : '코드',
 								name : 'comCodeDetailId',
@@ -229,11 +216,15 @@
 								header : '표시순번',
 								name : 'comCodeDetailSeq',
 								editor : 'text',
-									align : 'center'
+								align : 'center',
+								width : 'auto',
+								minWidth : 100
 							}, {
 								header : '사용여부',
 								name : 'comCodeDetailUsedchk',
 								editor : 'text',
+								width : 'auto',
+								minWidth : 100,
 								renderer: { type: CustomCheckboxRenderer},
 								align : 'center'
 								} ]

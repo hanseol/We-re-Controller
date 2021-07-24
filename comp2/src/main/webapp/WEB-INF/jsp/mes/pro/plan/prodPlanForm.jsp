@@ -277,25 +277,6 @@
 			
 		}
 	});
-
-	// 그리드 테마
-	tui.Grid.applyTheme('clean', 
-		{
-			row: {
-	       		hover: {
-	       			background: "#d5dae1"
-	       		}
-			},
-			cell: {
-				header: {
-					background: "#003458",
-					text: "white"
-				},
-				currentRow : {
-					background: "#d5dae1"
-				}
-			}
-	});
 	
 	/* 	
 	proPlanGrid.on('response', ev => {

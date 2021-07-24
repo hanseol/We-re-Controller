@@ -153,15 +153,6 @@ public class MacController {
 		return "mes/mac/macRegisterForm.page";
 	}
 	
-	//등록 페이지에 필요한 정보 가져오기.
-//	@RequestMapping("ajax/mac/getNextMacCode")
-//	@ResponseBody 
-//	public String getNextMacCode() throws Exception{
-//		
-//		String code = macService.selectNextMacCode();
-//		return code;
-//	}
-	
 	//등록 페이지에 필요한 정보 여러개 넘기기.
 	@RequestMapping("ajax/mac/getInfo")
 	@ResponseBody
@@ -182,16 +173,11 @@ public class MacController {
 		return map;
 	}
 
-	@RequestMapping(value="ajax/mac/registerMac", method=RequestMethod.POST)
+	@RequestMapping("mac/mim/registerMac.do")
 	@ResponseBody
-	public Map<String, Object> macInsert(MacVO vo, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		Map<String, Object> map = new HashMap<String, Object>();
+	public String macInsert(@ModelAttribute("vo") MacVO vo, HttpServletRequest request) throws Exception {
 		
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=UTF-8");
-		
-		String pdfPath = request.getSession().getServletContext().getRealPath("/resources/images/upload");
+		String path = request.getSession().getServletContext().getRealPath("/resources/images/upload");
 		 // 파일 업로드 처리
 		String fileName = null; 
 		MultipartFile uploadFile = vo.getUploadFile(); 
@@ -203,16 +189,14 @@ public class MacController {
 			System.out.println("UUID: "+ uuid);
 			fileName = uuid + "." + ext;
 			
-			uploadFile.transferTo(new File(pdfPath, fileName));
+			uploadFile.transferTo(new File(path, fileName));
 		 }
 		
 		 vo.setMacImage(fileName);
 		
 		 macService.insertMac(vo);
-		
-		 map.put("result", true);
 
-		 return map;
+		 return "redirect:mac/mim/macRegisterForm.do";
 	}
 	
 	
@@ -291,19 +275,4 @@ public class MacController {
 //		return null;
 //	}
 	
-	
-	/**
-	 * 설비 점검일 알림 
-	 * @throws Exception 
-	 * 
-	 * */
-//	@RequestMapping("ajax/mac/macChkLeftday")
-//	@ResponseBody
-//	public Map<String, Object> macChkLeftday (MacVO searchVO) throws Exception{
-//		
-//		//설비코드와 설비구분, 라인번호, d-day를 select (asc)
-//		List<MacVO> list = macService.selectLeftDate(searchVO);
-//		
-//		return comFunc.sendResult(list);
-//	}
 }

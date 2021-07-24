@@ -30,8 +30,8 @@ import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
+import mes.mac.service.MacDateResultVO;
 import mes.mac.service.MacService;
-import mes.main.service.MacDateResultVO;
 
 /*
 import com.gpki.gpkiapi.cert.X509Certificate;

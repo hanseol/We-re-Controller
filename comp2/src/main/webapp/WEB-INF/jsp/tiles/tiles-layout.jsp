@@ -143,4 +143,54 @@
 	<!-- END WRAPPER -->
 	
 </body>
+
+<script>
+
+//그리드 테마 (2021-07-24 주성원 )
+tui.Grid.applyTheme('default', 
+   {   //행 기본색.
+      row: {
+             hover: {  //마우스를 올렸을 때 배경색
+                background: "#cedeff"
+             }
+      },
+      //셀 기본색.
+      cell: {
+         //전체적인 색
+         normal: {
+            border: "white", //전체 그리드의 테두리색(내부 경계선 포함).
+            text: "black"
+         },
+         //헤더 색
+         header: { //기본 헤더 배경색
+            background: "#e0e0e0"
+         },
+         
+         selectedHeader:{ //드래그 했을 때 헤더 배경색.
+            background: "#e0e0e0"
+         },
+         //행 헤더 색
+         rowHeader:{ // 행 헤더의 체크박스 부분 배경색.
+            background: "white" 
+         },
+         //필수항목 셀
+         required: { //필수항목 지정한 셀의 배경색
+            background: "#fffaca"  
+         },
+         
+         //클릭한 셀
+         focused: {
+            border: "#ffb8b8"  //클릭한 셀 테두리색.
+         },
+         
+         
+      },
+      //드래그 셀 기본색
+      selection: {
+         background: "gray",  //드래그한 범위만큼의 셀 배경색(참고로 입력한 색에 투명도 더 입혀지는듯.)
+         border: "black"  //드래그한 범위만큼의 테두리 색.
+      }
+ 
+});
+</script>
 </html>

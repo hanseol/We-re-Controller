@@ -32,8 +32,8 @@ import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import mes.mac.service.MacDateResultVO;
 import mes.mac.service.MacService;
-import mes.main.service.MacDateResultVO;
 import mes.pro.plan.service.ProPlanService;
 
 /*

@@ -390,28 +390,6 @@ var grid;
 				outDateStart.val(outDateEnd.val());
 			}
 		});
-		
-
-		
-/*  		// 그리드 테마
-		tui.Grid.applyTheme('clean', 
-			{
-				row: {
-		       		hover: {
-		       			background: "#f0f6fa"
-		       		}
-				},
-				cell: {
-					header: {
-						background: "#b9d9eb"
-						
-					},
-					//currentRow: {
-					//	background: "red"
-					//}
-				},
-				
-		}); */
 
 		//그리드 로우아이디 지정--------------------------------------
 		//입고탭 자재인풋 로우키

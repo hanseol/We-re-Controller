@@ -95,8 +95,8 @@ td{
 				</tbody>
 				</table>
 				<div class="panel-body" id="chart">
-					<div id="system-load" class="easy-pie-chart" data-percent="">
-						<span class="percent"></span>
+					<div id="system-load" class="easy-pie-chart" data-percent="0">
+						<span class="percent">0</span>
 					</div>
 					<ul class="list-unstyled list-justify">
 						<li>지시량: <span id="qty"></span></li>
@@ -120,6 +120,8 @@ td{
 
 
 <script>
+let realPct = 0;
+
 	$(document).ready(function(){
 		let erpOrderCode; //주문코드
 		let erpCustomerName; //고객사명
@@ -128,7 +130,7 @@ td{
 		let proProcessQuantity; //주문량
 		let proProcessEndTime; //종료시간
 		let comProcessCode; //공정코드
-		let qty;
+		let qty; //지시량
 		
 		//네비게이션 바 고정.
 		$('#n7000000').addClass('active');
@@ -144,6 +146,9 @@ td{
 			$("#proProcessStartTime").val("");
 			$("#proProcessEndTime").val("");
 			$("#proProcessQuantity").val("");
+			
+			//실시간 차트 숨김.
+			$("#chart").css("display","none");
 			
 			var comProcGubunCode = $("#comProcessCode option:selected").val();
 			// 생산지시코드 리스트 가져오는 아작스
@@ -289,7 +294,9 @@ td{
 				}
 			});
 			
-			$("#chart").css("display","block");
+			$("#qty").html(qty+"개")//지시량
+			realPct = 0; // 초기화.
+			$("#chart").css("display","block"); //실시간 차트 보이기.
 			// real-time pie chart
 			var sysLoad = $('#system-load').easyPieChart({
 				size: 130,
@@ -303,27 +310,28 @@ td{
 				animate: 800
 			});
 
-			var updateInterval = 1000; // in milliseconds
-			var pct = 0;
-			var goal = 100;
+			var updateInterval = 500; // in milliseconds
 			
 			setInterval(function() {
 				
-				var randomVal;
-				randomVal = getRandomInt(pct, goal);
-
-				sysLoad.data('easyPieChart').update(randomVal);
-				sysLoad.find('.percent').text(randomVal);
-				$("#qty").html(qty+"개")
-				$("#goal").html(randomVal+"%");
-			}, updateInterval);
-
-			function getRandomInt(pct, goal) {
-				if(pct<goal){
-					pct = pct+10;
+				var currentVal;
+				if(realPct<100){
+					currentVal = getCurrent(realPct, 100);
+					$("#goal").html(currentVal+"%");
+					sysLoad.data('easyPieChart').update(currentVal);
+					sysLoad.find('.percent').text(currentVal);
+				}else{
+					return;
 				}
 				
-				return pct;
+			}, updateInterval);
+
+			function getCurrent(pct, goal) {
+				if(pct<goal){
+					realPct = pct+10;
+				}
+				
+				return realPct;
 			}
 
 		});//end 3.

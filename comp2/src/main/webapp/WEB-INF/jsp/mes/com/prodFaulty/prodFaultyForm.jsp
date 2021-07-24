@@ -8,14 +8,6 @@
 </div>
 
 <div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-		</div>
-	</div>
-</div>
-
-<div class="content-fluid">
 	<div class="panel panel-headline">
 		<div class="panel-heading">
 			<div class="row">
@@ -25,6 +17,7 @@
 				<div class="col-md-5" align="right">
 					<button type="button" id=appendRow>추가</button>
 					<button type="button" id="deleteRow">삭제</button>
+					<button type="button" id="modifyRow">저장</button>
 				</div>
 			</div>
 			<div class="panel-body">

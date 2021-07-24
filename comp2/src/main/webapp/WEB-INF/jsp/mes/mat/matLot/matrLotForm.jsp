@@ -225,30 +225,6 @@ let matLotGrid;
 //-----------------------------------------------------------------
 
 		
- 		// 그리드 테마
-		tui.Grid.applyTheme('clean', 
-			{
-				area: {
-					body: {
-						background: "#FBFBFB"
-					}
-				},
-				row: {
-		       		hover: {
-		       			background: "#9DA5A2"
-		       		}
-				},
-				cell: {
-					header: {
-						background: "#FBFBFB"
-					},
-					text : {
-						background: "#444444"
-					}
-				}
-		});
-
-		
 		//날짜 범위 검색 옵션
 		var start = $("#inoutDate");
 		var end = $("inoutEndDate");

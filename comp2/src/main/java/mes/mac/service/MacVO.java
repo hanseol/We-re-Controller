@@ -1,6 +1,5 @@
 package mes.mac.service;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -76,7 +75,6 @@ public class MacVO extends SearchVO{
     private java.lang.String macPossibleSize="";
     
     /** MAC_MACHINE_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
     private java.lang.String macMachineDate;
     
     /** MAC_MACHINE_COST */
@@ -89,15 +87,13 @@ public class MacVO extends SearchVO{
     private java.lang.String macTemp="";
     
     /** MAC_CHK_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
     private java.lang.String macChkDate;
     
     /** MAC_NEXT_CHK_DATE */
-    @DateTimeFormat(pattern ="yyyy/MM/dd")
     private java.lang.String macNextChkDate;
     
     /** MAC_CHK_CYCLE */
-    private java.math.BigDecimal macChkCycle;
+    private java.lang.String macChkCycle;
     
     /** MAC_CONSTRUCTOR_PHONE */
     private java.lang.String macConstructorPhone;

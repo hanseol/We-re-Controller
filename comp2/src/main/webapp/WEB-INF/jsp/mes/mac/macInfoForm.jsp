@@ -18,8 +18,6 @@
   */
 %>
 
-
-
 <div>
 	<!-- 조회, 수정/삭제, 등록 탭 이동 -->
 	<div id="tabs">
@@ -77,6 +75,57 @@
 </div>
 
 <script>
+/* 체크박스 */
+class CustomCheckboxRenderer {
+   constructor(props) {
+       const { grid, rowKey,columnInfo, value } = props;
+       const label = document.createElement('checkbox');
+/*         const { disabled } = props.columnInfo.renderer.options; */
+       label.className = 'checkbox';
+       //label.setAttribute('for', String(rowKey));
+
+       const hiddenInput = document.createElement('input');
+       hiddenInput.className = 'hidden-input';
+       hiddenInput.id = String(rowKey);
+
+       hiddenInput.setAttribute( 'data-check-val', '0' );
+       
+       label.appendChild(hiddenInput);
+
+       hiddenInput.type = 'checkbox';
+       hiddenInput.addEventListener('change', () => {
+           if (hiddenInput.checked) {
+               hiddenInput.setAttribute( 'data-check-val', '1' );
+               grid.setValue(rowKey, columnInfo.name, "1");
+           } else {
+               hiddenInput.setAttribute( 'data-check-val', '0' );
+               grid.setValue(rowKey, columnInfo.name, "0");
+           }
+           try {
+               fnCustomChkboxChange();
+           } catch(e) {
+               
+           }
+           
+       });
+
+       this.el = label;
+
+       this.render(props);
+   }
+
+   getElement() {
+       return this.el;
+   }
+
+   render(props) {
+   const hiddenInput = this.el.querySelector('.hidden-input');
+   const checked = Boolean(props.value == '1');
+   hiddenInput.checked = checked;
+  const disabled = props.columnInfo.renderer.disabled;
+   hiddenInput.disabled = disabled; 
+   }
+};
 
 var macInfoGrid;
 var macInfoRowKey;
@@ -134,12 +183,17 @@ $(document).ready(function() {
         scrollY: true,
         bodyHeight :300, 
         rowHeight: 30,
+		columnOptions: {
+	        resizable: true
+	    },
 		columns : [ {
 			header : '설비코드',
 			name : 'macCode',
 			validation: {
 	           required:true
 	        },
+	        width :'auto',
+	        minWidth : 70,
 			align : 'center'
 		}, {
 			header : '점검일',
@@ -174,7 +228,10 @@ $(document).ready(function() {
 			header : '사용여부',
 			name : 'macUnused',
 			editor : 'text',
-			align : 'center'
+			align : 'center',
+			width : 'auto',
+			renderer: { type: CustomCheckboxRenderer},
+        	minWidth : 70
 		}, {
 			header : '부하율',
 			name : 'macBuha',
@@ -195,46 +252,8 @@ $(document).ready(function() {
 			name : 'macConstructorPhone',
 			editor : 'text',
 			align : 'center'
-		}],
-		columnOptions: {
-	        resizable: true
-	    }
+		}]
 	});
-	
-// 그리드 테마
-tui.Grid.applyTheme('clean', 
-	{
-		row: {
-       		hover: {
-       			background: "#d5dae1"
-       		}
-		},
-		cell: {
-			header: {
-				background: "#003458",
-				text: "white"
-			},
-			currentRow : {
-				background: "#d5dae1"
-			}
-		}
-});
-
-
-/* 	
-proPlanGrid.on('response', ev => {
-	  const {response} = ev.xhr;
-	  const responseObj = JSON.parse(response);
-
-	  console.log('result : ', responseObj.result);
-	  console.log('data : ', responseObj.data);
-	});
- */
- 
- //체크박스 클릭시 alert 띄우기
-/* proPlanGrid.on('check', (ev) => {
-	  alert(`check: ${ev.rowKey}`);
-}); */
 
 }); //end of document ready
 </script>

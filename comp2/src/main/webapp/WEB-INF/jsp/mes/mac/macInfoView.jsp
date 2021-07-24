@@ -187,11 +187,20 @@ th {
 					$('body').find("h3[id=macModel]").html(item.macModel);
 					
 					$("tbody").empty();
-					$('<tr>')
-					.append($('<th>').html("사용여부"))
-					.append($('<td colspan="3">').html(item.macUnused))
-					.append($('<th>').html("설비구분"))
-					.append($('<td colspan="3">').html(item.macGubun)).appendTo('tbody');
+					
+					if(item.macUnused=='1'){
+						$('<tr>')
+						.append($('<th>').html("사용여부"))
+						.append($('<td colspan="3">').html('사용'))
+						.append($('<th>').html("설비구분"))
+						.append($('<td colspan="3">').html(item.macGubun)).appendTo('tbody');
+					}else{
+						$('<tr>')
+						.append($('<th>').html("사용여부"))
+						.append($('<td colspan="3">').html('미사용'))
+						.append($('<th>').html("설비구분"))
+						.append($('<td colspan="3">').html(item.macGubun)).appendTo('tbody');
+					}
 					
 					$('<tr>')
 					.append($('<th>').html("설비코드"))
@@ -201,7 +210,7 @@ th {
 					
 					$('<tr>')
 					.append($('<th>').html("용도"))
-					.append($('<td colspan="3">').html(item.macUsePurPose))
+					.append($('<td colspan="3">').html(item.macUsePurpose))
 					.append($('<th>').html("공정코드"))
 					.append($('<td colspan="3">').html(item.comProcessCode)).appendTo('tbody');
 					
@@ -217,7 +226,7 @@ th {
 					.append($('<th>').html("차기점검일"))
 					.append($('<td>').html(item.macNextChkDate))
 					.append($('<th>').html("점검주기"))
-					.append($('<td>').html(item.macChkCycle+"개월")).appendTo('tbody');
+					.append($('<td>').html(item.macChkCycle)).appendTo('tbody');
 					
 					$('<tr>')
 					.append($('<th>').html("설비규격"))

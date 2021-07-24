@@ -8,15 +8,6 @@
 	</div>
 </div>
 
-<!--  -->
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-		</div>
-	</div>
-</div>
 
 <!--  -->
 <form id="option">
@@ -37,7 +28,7 @@
 								<div align="right">
 									<button type="button" id=appendRow>추가</button>
 									<button type="button" id="deleteRow">삭제</button>
-
+									<button type="button" id="modifyRow">저장</button>
 									<div id="gridFlow"></div>
 								</div>
 							</div>
@@ -88,9 +79,11 @@ let procGrid;
 			columns : [ {
 				header : '제품코드',
 				name : 'comProductCode',
+				align : 'center'
 			}, {
 				header : '제품명',
 				name : 'comProductName',
+				align : 'center'
 			} ]
 		});
 
@@ -119,22 +112,27 @@ let procGrid;
 			columns : [ {
 				header : '제품코드',
 				name : 'comProductCode',
+				align : 'center'
 			},{
 				header : '제품명',
 				name : 'comProductName',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			}, {
 				header : '규격',
 				name : 'comProductSize',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			}, {
 				header : '관리단위',
 				name : 'comProductUnit',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			}, {
 				header : '사용여부',
 				name : 'comProductUse',
-				editor : 'text'
+				editor : 'text',
+				align : 'center'
 			} ]
 		}); 
 		
@@ -167,36 +165,35 @@ let procGrid;
 			columns : [ {
 				header : '제품코드',
 				name : 'comProductCode',
-				
+				align : 'center'
 			},{
 				header : '순서',
 				name : 'comProcessSeq',
-				editor : 'text'
+				editor : 'text',
+				align : 'center',
+				width : 50
 			},{
 				header : '공정코드',
 				name : 'comProcessCode',
+				align : 'center'
 			},{
 				header : '공정명',
 				name : 'comProcessName',
 				editor : 'text',
 				validation: {
 		               required:true
-		            } 
+		        },
+		        align : 'center'
 			}, {
 				header : '공정설명',
 				name : 'comProcessDesc',
-			}, {
-				header : '관리단위',
-				name : 'comProcessUnit',
-				editor : 'text'
-			}, {
-				header : '부하',
-				name : 'comProcessBuha',
-				editor : 'text'
-			}, {
+				align : 'center'
+			},{
 				header : 'LEAD타임(M)',
 				name : 'comProcessLeadtime',
-				editor : 'text'
+				editor : 'text',
+				align : 'center',
+				width : 100
 			}]
 		}); 
 		

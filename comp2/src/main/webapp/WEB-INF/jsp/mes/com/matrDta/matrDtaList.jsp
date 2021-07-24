@@ -1,20 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <div class="content-fluid">
 	<div>
 		<h2>자재정보관리/안전재고관리</h2>
-	</div>
-</div>
-
-<!--  -->
-<div class="content-fluid">
-	<div>
-		<div class="my-panel">
-			<button type="button" class="btn btn-danger" id="reset">새자료</button>
-			<button type="button" class="btn btn-info" id="modifyRow">저장</button>
-		</div>
 	</div>
 </div>
 
@@ -28,6 +17,7 @@
 					<div class="col-md-5" align="right">
 						<button type="button" id=appendRow>추가</button>
 						<button type="button" id="deleteRow">삭제</button>
+						<button type="button" id="modifyRow">저장</button>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -44,7 +34,7 @@
 	</div>
 </form>
 
-<!-- 마스터데이터 -->
+
 <script>
 
 	$(document)
@@ -63,10 +53,7 @@
 						//마스터테이블 controller 연결
 						const ComMatrdataSource = {
 							api : {
-								readData : {
-									url : '${pageContext.request.contextPath}/matrDta/MatrDtaList',
-									method : 'GET'
-								},
+								readData : { url : '${pageContext.request.contextPath}/matrDta/MatrDtaList', method : 'GET'}
 							},
 							contentType : "application/json"
 						};
@@ -82,113 +69,86 @@
 							columns : [ {
 								header : '자재코드',
 								name : 'comCodeDetailId',
+								align : 'center'
 							}, {
 								header : '자재명',
 								name : 'comCodeDetailName',
+								align : 'center'
 							}, {
 								header : '규격',
 								name : 'comMaterialSize',
+								align : 'center'
 							} ]
 						});
+						
+						//마스터테이블 클릭시 데이터 전달
+						grid.on('click', (ev) => {
+							comMatrClick = grid.getValue(ev.rowKey, "comCodeDetailId");
+							console.log(comMatrClick);
+					   	var readParams = {
+								'comCodeDetailId' : comMatrClick
+							};
+					   	gridDetail.readData(1, readParams, true);
+					   });
 
 						/* 디테일코드 */
-
-						/* 	//CRUD
-							$(document).on("click", "button[id=modifyRow]", function() {
-								gridDetail.finishEditing('rowKey','columnName');
-								gridDetail.request('modifyData');
-							});
+	
+						//디테일코드 controller 연결
+						const dataSourceDetail = {
+							api : {
+								readData : {url : '${pageContext.request.contextPath}/matrDta/MatrDtaDetailList', method : 'GET'}, 
+								modifyData : { url: '${pageContext.request.contextPath}/ajax/matrDat/UpdateMaterialInfo', method: 'PUT' }
+							},
+							// 바로 값 나오지않게함
+							initialRequest : false,
+							contentType : "application/json"
+						};
 							
-							//행삭제
-							$(document).on("click", "button[id=deleteRow]", function() {
-								gridDetail.removeCheckedRows(false);
-							});
-							*/
-							//디테일코드 controller 연결
-							const dataSourceDetail = {
-								api : {
-									readData : {
-										url : '${pageContext.request.contextPath}/matrDta/MatrDtaDetailList',
-										method : 'GET'
-									}, 
-								},
-								// 바로 값 나오지않게함
-								initialRequest : false,
-								contentType : "application/json"
-							};
-							
-							//디테일코드 그리드 설정
-							const gridDetail = new tui.Grid({
-								el : document.getElementById('gridDetail'),
-								rowHeaders : [ 'checkbox' ],
-								data : dataSourceDetail,
-							    scrollX: true,
-							    scrollY: true,
-							     bodyHeight : 480,
-							     rowHeight: 30,
-								columns : [ {
-									header : '자재코드',
-									name : 'comCodeDetailId',
-								},{
-									header : '자재명',
-									name : 'comMaterialName',
-									editor : 'text'
-								}, {
-									header : '관리단위',
-									name : 'comMaterialUnit',
-									editor : 'text'
-								}, {
-									header : '공급자코드',
-									name : 'comMaterialVendorCode',
-									editor : 'text'
-								}, {
-									header : '코드상세명',
-									name : 'comCodeDetailName',
-									editor : 'text'
-								}, {
-									header : '안전재고',
-									name : 'comMaterialSafetyStock',
-									editor : 'text'
-								} ]
-							}); 
-							
-							//마스터테이블 클릭시 데이터 전달
-							grid.on('click', (ev) => {
-								comMatrClick = grid.getValue(ev.rowKey, "comCodeDetailId");
-								console.log(comMatrClick);
-						   	var readParams = {
-									'comCodeDetailId' : comMatrClick
-								};
-						   	gridDetail.readData(1, readParams, true);
-						   });
-							
-							/*
-							//행추가
-							$(document).on("click", "button[id=appendRow]", function() {
-								console.log(comCodeIdclick);
-								var rowData =  {
-										comCodeId : comCodeIdclick,
-										comCodeDetailId : "",
-										comCodeDetailName : "",
-										comCodeDetailDesc : "",
-										comCodeDetailSeq : "",
-										comCodeDetailUsedchk : "",
-									} ;
-									gridDetail.appendRow(rowData, {
-										at : gridDetail.getRowCount(),
-										focus : true
-									});
-									gridDetail.enable();
-							});
-							
-							// option form reset  
-							 $(document).ready(function() {  
-							    $("#reset").click(function() {  
-							         $("form").each(function() {  
-							                if(this.id == "option") this.reset();  
-							             });  
-							    });  
-							 });   */
-
+						//디테일코드 그리드 설정
+						const gridDetail = new tui.Grid({
+							el : document.getElementById('gridDetail'),
+							data : dataSourceDetail,
+						    scrollX: true,
+						    scrollY: true,
+						    bodyHeight : 480,
+						    rowHeight: 30,
+							columns : [ {
+								header : '자재코드',
+								name : 'comCodeDetailId',
+								align: 'center'
+							},{
+								header : '자재명',
+								name : 'comMaterialName',
+								editor : 'text',
+								align : 'center'
+							}, {
+								header : '관리단위',
+								name : 'comMaterialUnit',
+								editor : 'text',
+								align : 'center'
+							}, {
+								header : '공급자코드',
+								name : 'comMaterialVendorCode',
+								editor : 'text',
+								align : 'center'
+							}, {
+								header : '코드상세명',
+								name : 'comCodeDetailName',
+								editor : 'text',
+								align : 'center'
+							}, {
+								header : '안전재고',
+								name : 'comMaterialSafetyStock',
+								editor : 'text',
+								align : 'center'
+							} ]
+						}); 
+						
+						//변경사항 저장
+						$(document).on("click", "button[id=modifyRow]", function() {
+							gridDetail.finishEditing('rowKey','columnName');
+							gridDetail.request('modifyData');
+						});
+						
 					});//end of ready
 </script>

@@ -1,5 +1,6 @@
 package mes.com.matrDtaList.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface MatrDtaListService {
@@ -9,4 +10,6 @@ public interface MatrDtaListService {
 
 		// 디테일 코드 조회
 		List selectMatrDtaListDetailList(MatrDtaListVO searchVO) throws Exception;
+
+		void updateMatrDtaListDetail(LinkedHashMap linkedHashMap);
 }

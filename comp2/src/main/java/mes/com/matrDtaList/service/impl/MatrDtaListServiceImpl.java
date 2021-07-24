@@ -1,5 +1,6 @@
 package mes.com.matrDtaList.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -41,6 +42,12 @@ public class MatrDtaListServiceImpl extends EgovAbstractServiceImpl implements M
 	// 디테일 코드 조회
 	public List<?> selectMatrDtaListDetailList(MatrDtaListVO searchVO) throws Exception {
 		return matrDtaListDAO.selectMatrDtaListDetailList(searchVO);
+	}
+
+	// 안전재고 수정 (김한설)
+	@Override
+	public void updateMatrDtaListDetail(LinkedHashMap linkedHashMap) {
+		matrDtaListDAO.updateMatrDtaListDetail(linkedHashMap);
 	}
 
 }

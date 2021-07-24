@@ -1,5 +1,6 @@
 package mes.com.matrDtaList.service.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -26,6 +27,8 @@ public interface MatrDtaListMapper {
 
     //디테일 코드 조회
     public List<?> selectMatrDtaListDetailList(MatrDtaListVO searchVO) throws Exception;
+
+	public void updateMatrDtaListDetail(LinkedHashMap linkedHashMap);
 
 
 }

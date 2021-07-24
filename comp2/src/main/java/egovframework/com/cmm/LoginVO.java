@@ -3,7 +3,7 @@ package egovframework.com.cmm;
 import java.io.Serializable;
 import java.util.List;
 
-import mes.main.service.MacDateResultVO;
+import mes.mac.service.MacDateResultVO;
 
 /**
  * @Class Name : LoginVO.java
