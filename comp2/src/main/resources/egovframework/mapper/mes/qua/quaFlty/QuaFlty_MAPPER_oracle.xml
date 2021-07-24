@@ -39,7 +39,7 @@
 		                              	</if>
 		                              	<if test="quaMaterialChkDate != null and quaMaterialChkDate != ''">
 		                              	AND
-							        	q.qua_material_chk_date BETWEEN #{quaMaterialChkDate} AND #{quaMaterialChkEndDate}
+							        	q.qua_material_chk_date BETWEEN TO_DATE(#{quaMaterialChkDate},'YYYY-MM-DD') AND TO_DATE(#{quaMaterialChkEndDate},'YYYY-MM-DD')
 		                              	</if>
 		                              	<if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND

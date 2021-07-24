@@ -161,6 +161,7 @@ $(document).ready(function () {
 					]
 				}
 			},
+			
 		}, {
 			header: '자재LOT_NO',
 			name: 'matLotNo'
@@ -213,8 +214,8 @@ $(document).ready(function () {
 		});
 	
 	//날짜 범위 검색 옵션
-	var start = $("#inoutDate");
-	var end = $("inoutEndDate");
+	var start = $("#matchDate");
+	var end = $("#matchEndDate");
 	start.change(function(){
 		if(end.val() == ""){
 			end.val(start.val());

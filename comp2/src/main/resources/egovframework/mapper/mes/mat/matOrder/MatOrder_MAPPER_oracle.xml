@@ -35,7 +35,7 @@
 		                              </if>
 		                              <if test="erpMaterialOrderDate != null and erpMaterialOrderDate != ''">
 		                              	AND
-							        	e.erp_material_order_date BETWEEN #{erpMaterialOrderDate} AND #{erpMaterialOrderEndDate}
+							        	e.erp_material_order_date BETWEEN TO_DATE(#{erpMaterialOrderDate},'YYYY-MM-DD') AND TO_DATE(#{erpMaterialOrderEndDate},'YYYY-MM-DD')
 		                              </if>
 		                              <if test="erpMaterialOrderCode != null and erpMaterialOrderCode != ''">
 		                              	AND

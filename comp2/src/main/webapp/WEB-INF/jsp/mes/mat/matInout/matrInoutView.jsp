@@ -363,17 +363,31 @@ var grid;
 			
 		});
 		
-		//날짜 범위 검색 옵션
-		var start = $("#inoutDate");
-		var end = $("#inoutEndDate");
-		start.change(function(){
-			if(end.val() == ""){
-				end.val(start.val());
+		//날짜 범위 검색 옵션(위)
+		var inDateStart = $("#inDate");
+		var inDateEnd = $("#inEndDate");
+		inDateStart.change(function(){
+			if(inDateEnd.val() == ""){
+				inDateEnd.val(inDateStart.val());
 			}
 		});
-		end.change(function(){
-			if(start.val() == ""){
-				start.val(end.val());
+		inDateEnd.change(function(){
+			if(inDateStart.val() == ""){
+				inDateStart.val(inDateEnd.val());
+			}
+		});
+		
+		//날짜 범위 검색 옵션(아래)
+		var outDateStart = $("#outDate");
+		var outDateEnd = $("#outEndDate");
+		outDateStart.change(function(){
+			if(outDateEnd.val() == ""){
+				outDateEnd.val(outDateStart.val());
+			}
+		});
+		outDateEnd.change(function(){
+			if(outDateStart.val() == ""){
+				outDateStart.val(outDateEnd.val());
 			}
 		});
 		

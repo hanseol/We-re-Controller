@@ -28,7 +28,7 @@
 
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
-							        	mi.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
+							        	mi.mat_inout_date BETWEEN TO_DATE(#{matInoutDate},'YYYY-MM-DD') AND TO_DATE(#{matInoutEndDate},'YYYY-MM-DD')
 		                              </if>
 		                              <if test="erpVendorCode != null and erpVendorCode != ''">
 		                                AND
@@ -39,7 +39,7 @@
 							        	mi.com_material_code LIKE '%' || #{comMaterialCode} || '%'
 		                              </if>
                         				GROUP BY mi.qua_material_statement
-										        ,TO_CHAR(mat_inout_date,'YYYY-MM-DD')
+										        ,TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD')
         										,mi.com_material_code
 										        ,cm.com_material_name
 										        ,mi.mat_inout_unit_price
@@ -75,7 +75,7 @@
 
 		                              <if test="matInoutDate != null and matInoutDate != ''">
 		                              	AND
-							        	mi.mat_inout_date BETWEEN #{matInoutDate} AND #{matInoutEndDate}
+							        	mi.mat_inout_date BETWEEN TO_DATE(#{matInoutDate},'YYYY-MM-DD') AND TO_DATE(#{matInoutEndDate},'YYYY-MM-DD')
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND

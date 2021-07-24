@@ -39,17 +39,17 @@ public class MatOrderVO extends SearchVO{
     private java.math.BigDecimal erpMaterialUnitPrice;
     
     /** ERP_MATERIAL_ORDER_DATE */
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private java.lang.String erpMaterialOrderDate;
     
     /** ERP_MATERIAL_REQUEST_DATE */
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private java.lang.String erpMaterialRequestDate;
 
     //자재명 추가
     private String comMaterialName;
     
     //날짜 범위 검색 end날짜 추가
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private String erpMaterialOrderEndDate;
 }

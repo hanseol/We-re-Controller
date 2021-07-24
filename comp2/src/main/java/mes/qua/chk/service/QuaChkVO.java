@@ -29,7 +29,7 @@ public class QuaChkVO extends SearchVO{
     private java.lang.String quaMaterialStatement;
     
     /** QUA_MATERIAL_DATE */
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private java.lang.String quaMaterialDate;
     
     /** ERP_VENDOR_CODE */
@@ -48,7 +48,7 @@ public class QuaChkVO extends SearchVO{
     private java.math.BigDecimal quaMaterialFQty;
     
     /** QUA_MATERIAL_CHK_DATE */
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private java.lang.String quaMaterialChkDate;
     
     /** ERP_MATERIAL_ORDER_CODE */
@@ -65,14 +65,14 @@ public class QuaChkVO extends SearchVO{
     //업체명(공통코드) 추가
     private String comCodeDetailName;
     //자재납품요청일(입고일)
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private String erpMaterialRequestDate;
 
     //입출고데이터--------------------------------------
     //입출고전표번호 추가
     private String matInoutStatement;
     //입출고일자 추가
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private String matInoutDate;
     //입출고구분 추가
     private String matInoutGubun;
@@ -92,6 +92,6 @@ public class QuaChkVO extends SearchVO{
     
     
     //날짜 범위검색 End 날짜 추가
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern ="YYYY-MM-DD")
     private String quaMaterialEndDate;
 }

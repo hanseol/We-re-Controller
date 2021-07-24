@@ -600,30 +600,31 @@ let erpMaterialOrderCode;
 
 		
 		//날짜 범위 검색 옵션(그리드1)
-		var start = $("#materialDate");
-		var end = $("#materialEndDate");
-		start.change(function(){
-			if(end.val() == ""){
-				end.val(start.val());
+		var matDateStart = $("#materialDate");
+		var matDateEnd = $("#materialEndDate");
+		matDateStart.change(function(){
+			if(matDateEnd.val() == ""){
+				matDateEnd.val(matDateStart.val());
 			}
 		});
-		end.change(function(){
-			if(start.val() == ""){
-				start.val(end.val());
+		matDateEnd.change(function(){
+			if(matDateStart.val() == ""){
+				stmatDateStartart.val(matDateEnd.val());
 			}
 		});
 		
 		//날짜 범위 검색 옵션(그리드2)
-		var start = $("#quaChkDate");
-		var end = $("#quaChkEndDate");
-		start.change(function(){
-			if(end.val() == ""){
-				end.val(start.val());
+		var chkDateStart = $("#quaChkDate");
+		var chkDateEnd = $("#quaChkEndDate");
+		chkDateStart.change(function(){
+			if(chkDateEnd.val() == ""){
+				chkDateEnd.val(chkDateStart.val());
 			}
 		});
-		end.change(function(){
-			if(start.val() == ""){
-				start.val(end.val());
+		
+		chkDateEnd.change(function(){
+			if(chkDateStart.val() == ""){
+				chkDateStart.val(chkDateEnd.val());
 			}
 		});
 

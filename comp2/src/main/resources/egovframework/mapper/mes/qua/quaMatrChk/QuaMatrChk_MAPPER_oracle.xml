@@ -51,7 +51,7 @@
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	q.qua_material_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
+							        	q.qua_material_date BETWEEN TO_DATE(#{quaMaterialDate},'YYYY-MM-DD') AND TO_DATE(#{quaMaterialEndDate},'YYYY-MM-DD')
 		                              	</if>
 		                              ORDER BY q.qua_material_date DESC, q.erp_material_order_code DESC<![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
@@ -107,7 +107,7 @@
 		                              	</if>
 		                              	<if test="quaMaterialDate != null and quaMaterialDate != ''">
 		                              	AND
-							        	q.qua_material_chk_date BETWEEN #{quaMaterialDate} AND #{quaMaterialEndDate}
+							        	q.qua_material_chk_date BETWEEN TO_DATE(#{quaMaterialDate},'YYYY-MM-DD') AND TO_DATE(#{quaMaterialEndDate},'YYYY-MM-DD')
 		                              	</if>
 		                              ORDER BY q.qua_material_chk_date DESC, q.erp_material_order_code DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
@@ -227,7 +227,7 @@
 	<update id="updateQuaChk">
 		UPDATE 		qua_material_chk
 		
-		SET			qua_material_date = #{erpMaterialRequestDate},
+		SET			qua_material_date = TO_DATE(#{erpMaterialRequestDate},'YYYY-MM-DD'),
 					erp_vendor_code = #{erpVendorCode},
 					com_material_code = #{comMaterialCode},
 					qua_material_p_qty = #{quaMaterialPQty},

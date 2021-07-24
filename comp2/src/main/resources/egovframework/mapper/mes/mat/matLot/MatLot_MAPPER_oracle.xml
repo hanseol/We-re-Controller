@@ -30,7 +30,7 @@
 										AND       i.MAT_INOUT_GUBUN = 'INOUT002'
 		                              <if test="matMatchDate != null and matMatchDate != ''">
 		                              	AND
-							        	m.mat_match_date BETWEEN #{matMatchDate} AND #{matMatchEndDate}
+							        	m.mat_match_date BETWEEN TO_DATE(#{matMatchDate},'YYYY-MM-DD') AND TO_DATE(#{matMatchEndDate},'YYYY-MM-DD')
 		                              </if>
 		                              <if test="comMaterialCode != null and comMaterialCode != ''">
 		                              	AND
