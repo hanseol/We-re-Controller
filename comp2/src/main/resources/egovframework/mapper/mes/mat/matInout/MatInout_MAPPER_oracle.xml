@@ -46,7 +46,7 @@
 										        ,cm.com_material_unit
         										,cm.com_material_vendor_code
 										        ,cd.com_code_detail_name
-		                              ORDER BY mi.qua_material_statement DESC <![CDATA[ ) a
+		                              ORDER BY  mi.qua_material_statement DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>
@@ -94,7 +94,7 @@
 										        , cm.com_material_name
 										        , mi.com_process_code
 										        , cd.com_code_detail_name
-		                              ORDER BY mi.qua_material_statement DESC  <![CDATA[ ) a
+		                              ORDER BY mi.qua_material_statement DESC <![CDATA[ ) a
 		              WHERE  ROWNUM <= #{lastIndex} )
 		WHERE  rnum >= #{firstIndex}
 		]]>

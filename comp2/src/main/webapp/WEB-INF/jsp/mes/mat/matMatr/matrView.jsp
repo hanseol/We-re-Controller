@@ -3,7 +3,7 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>자재재고조회</h2>
+		<h2>자재 재고 현황</h2>
 	</div>
 </div>
 
@@ -147,15 +147,7 @@ $(document).ready(function () {
 //--------------------------------------------------
 		
 		
-/* 		grid.on('response', ev => {
-			const {response} = ev.xhr;
-			const responseObj = JSON.parse(response);
 
-			console.log('result : ', responseObj.result);
-			console.log('data : ', responseObj.data);
-		}); */
-		
-			
 		
 		
 		
@@ -173,7 +165,7 @@ $(document).ready(function () {
 		});
 
 	});
-//그리드모달 :모달페이지로 값 넘기기----------------------------------------
+//그리드모달 :모달페이지로 값 넘기기---------------------------------------- 
 //자재
 var materialRowId;
 function materialCodeSearch(c) {

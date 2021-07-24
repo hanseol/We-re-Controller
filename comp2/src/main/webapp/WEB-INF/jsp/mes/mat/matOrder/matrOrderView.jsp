@@ -4,7 +4,7 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>자재발주조회</h2>
+		<h2>자재발주 리스트</h2>
 	</div>
 </div>
 

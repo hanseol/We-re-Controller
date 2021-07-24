@@ -3,7 +3,7 @@
 
 <div class="content-fluid">
 	<div>
-		<h2>자재검사결과 조회</h2>
+		<h2>자재 검사결과 조회</h2>
 	</div>
 </div>
 
