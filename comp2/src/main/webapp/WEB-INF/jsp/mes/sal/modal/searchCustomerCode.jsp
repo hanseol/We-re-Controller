@@ -45,7 +45,7 @@ $(document).ready(function() {
 			name = grid.getValue(chkRowKeys[i], 'comCodeDetailName');
 			
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
-				$("#customerCode").val(name);
+				$("#erpCustomerName").val(name);
 				code = [];
 			} else { //아니면 mgrid(모달그리드)에 뿌려준다
 				mgrid.blur();
@@ -79,7 +79,7 @@ $(document).ready(function() {
 		contentType : "application/json"
 	};
 
-	const grid = new tui.Grid({
+	const grid = new tui.Grid	({
 		el : document.getElementById('modalGrid'),
 		rowHeaders : [ 'checkbox' ],
 		data : dataSource,
@@ -89,10 +89,12 @@ $(document).ready(function() {
          rowHeight: 30,
 		columns : [ {
 			header : '고객사코드',
-			name : 'comCodeDetailId'
+			name : 'comCodeDetailId',
+			align : 'center'
 		}, {
 			header : '고객사명',
-			name : 'comCodeDetailName'
+			name : 'comCodeDetailName',
+			align : 'center'
 		}]
 	});
 });

@@ -17,8 +17,7 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" /> <br> <br>
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" />
 					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" class="form-control" />
 					<button id="findRow">검색</button><br>
 					<br>
@@ -99,7 +98,8 @@ $(document).ready(function() {
 		}, {
 			header : '제품코드',
 			name : 'comProductCode',
-			align : 'center'
+			align : 'center',
+			hidden : true
 		}, {
 			header : '제품명',
 			name : 'comProductName',

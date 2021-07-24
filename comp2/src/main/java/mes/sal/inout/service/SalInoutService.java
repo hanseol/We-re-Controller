@@ -86,15 +86,11 @@ public interface SalInoutService {
 	List<?> searchProductCodeList(SalInoutVO searchVO) throws Exception;
 	int searchProductCodeListTotCnt(SalInoutVO searchVO);
 	
-	//모달 : 전표번호 조회(반품페이지)
+	//모달 : 반품용(출고된) 제품 조회
+	List<?> searchReturnList(SalInoutVO searchVO) throws Exception;
+	
+	//모달 : 전표번호 조회(반품페이지 x)
 	List<?> searchInoutStatement(SalInoutVO searchVO) throws Exception;
 	int searchInoutStatementListTotCnt(SalInoutVO searchVO);
-
-	
-
-
-	
-
-    
     
 }

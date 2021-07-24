@@ -33,12 +33,12 @@
 			<div class="row">
 				<div class="col-md-6">
 						반품일자
-						<input type="date" id="returnDate" name="returnDate" class="form-control">			
+						<input type="date" id="salInoutDate" name="salInoutDate" class="form-control">			
 				</div>
 				<div class="col-md-6">
 						완제품 LOT_NO
-						<input type="text" id="productLotNo" name="productLotNo" class="form-control">	
-						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
+						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
+						<a id="searchReturnProduct" href="${pageContext.request.contextPath}/searchReturnList.do">						
                      	<i class="fa fa-search"></i></a>		
 				</div>
 			</div>
@@ -75,16 +75,11 @@ let mgrid; //모달 그리드
 		$('.9040000').addClass('active');
 		
 		$("#search").on("click", function() {
-					var returnDate = $("#returnDate").val();
-					var productCode = $("#productCode").val();
-					var customerCode = $("#customerCode").val();
-					var productLotNo = $("#productLotNo").val();
-					console.log(returnDate, productLotNo);
+					var salInoutDate = $("#salInoutDate").val();
+					var proProcessLotNo = $("#proProcessLotNo").val();
 					var readParams = {
-						'salInoutDate' : returnDate,
-						'comProductCode' : productCode,
-						'salInoutCode' : customerCode,
-						'proProcessLotNo' : productLotNo
+						'salInoutDate' : salInoutDate,
+						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -111,6 +106,7 @@ let mgrid; //모달 그리드
 			columns : [{
 				header : '반품일자',
 				name : 'salInoutDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -121,35 +117,46 @@ let mgrid; //모달 그리드
 			}, {
 				header : '반품 전표번호',
 				name : 'salInoutStatement',
+				align : 'center'
 			}, {
 				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
+				align : 'center'
 			}, {
-				header : '업체코드',
-				name : 'salInoutCode',
+				header : '고객사명',
+				name : 'comCustomerName',
+				align : 'center'
 			}, {
-				header : '제품코드',
-				name : 'comProductCode',
+				header : '제품명',
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '주문량',
 				name : 'salInoutQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '반품량',
-				name : 'returnQuantity',
+				name : 'salNowQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '최종 출고량',
 				name : 'finalQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '작성일자',
 				name : 'salWriteDate',
+				align : 'center'
 			}]
 		}); 
 	
 		mgrid = grid;
 		
 		
-		$('#searchProductLotNo').click(function(event) {
-		 	productLotNoSearch(-1);
+		$('#searchReturnProduct').click(function(event) {
+			returnProductLotNo(-1);
 		});
 	
 	// option form reset  
@@ -164,13 +171,13 @@ let mgrid; //모달 그리드
 var rowId;
 
 //완제품 LOT_NO 모달
-function productLotNoSearch(c) {
+function returnProductLotNo(c) {
 	  rowId = c;
 	  event.preventDefault();
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchProductLotNo.do", function(html) {
+	  $.get("searchReturnList.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

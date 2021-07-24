@@ -7,7 +7,7 @@
 
 <div class="content-fluid">
 	<div class="panel panel-headline">
-		<h3>입고 완제품 LOT_NO</h3>
+		<h3>출고 완제품 LOT_NO</h3>
 	</div>
 </div>
 
@@ -16,8 +16,7 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" /> &nbsp;
-					제품코드 <input type="text" id="comProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" /> <br> <br>
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" />
 					제품명 <input type="text" id="comProductName" name="erpProductName" placeholder="제품명" class="form-control" />
 					<button id="findRow">검색</button><br>
 					<br>
@@ -44,38 +43,38 @@ $(document).ready(function() {
 		var chkRowKeys = grid.getCheckedRowKeys();
 
 		for(var i=0; i<chkRowKeys.length; i++){
+			salInoutDate = grid.getValue(chkRowKeys[i], 'salInoutDate');
+			comCustomerName = grid.getValue(chkRowKeys[i], 'comCustomerName');
+			comProductName = grid.getValue(chkRowKeys[i], 'comProductName');
 			proProcessLotNo = grid.getValue(chkRowKeys[i],'proProcessLotNo');
-			erpProductCode = grid.getValue(chkRowKeys[i], 'erpProductCode');
-			erpCustomerCode = grid.getValue(chkRowKeys[i], 'erpCustomerCode');
-			salInoutCode = grid.getValue(chkRowKeys[i], 'proOrderDetailCode');
-			proOrderQty = grid.getValue(chkRowKeys[i], 'proOrderQty');
-			erpProductName = grid.getValue(chkRowKeys[i], 'erpProductName');
+			salInoutQuantity = grid.getValue(chkRowKeys[i], 'salInoutQuantity');
+			
+			salInoutCode = grid.getValue(chkRowKeys[i], 'salInoutCode');
+			comProductCode = grid.getValue(chkRowKeys[i], 'comProductCode');
 						
 			//view 페이지에 뿌려줄 부분 아이디값
 			if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
 				$("#proProcessLotNo").val(proProcessLotNo);
 			} else { //아니면 mgrid(모달그리드)에 뿌려준다
 				mgrid.blur();
-				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false);
-				mgrid.setValue(rowId, 'comProductName', erpProductName, false);
-				mgrid.setValue(rowId, 'comProductCode', erpProductCode, false);
-				mgrid.setValue(rowId, 'salPastQuantity', proProcessQuantity, false); //기존수량
-				mgrid.setValue(rowId, 'salInoutCode', salInoutCode, false); //지시코드
-					mgrid.setValue(rowId, 'salInoutQuantity', proOrderQty, false); //수량
-					mgrid.setValue(rowId, 'salNowQuantity', proOrderQty, false); //현재고		
+				mgrid.setValue(rowId, 'salInoutDate', salInoutDate, false);
+				mgrid.setValue(rowId, 'comCustomerName', comCustomerName, false);
+				mgrid.setValue(rowId, 'comProductName', comProductName, false);
+				mgrid.setValue(rowId, 'proProcessLotNo', proProcessLotNo, false); //기존수량
+				mgrid.setValue(rowId, 'salInoutQuantity', salInoutQuantity, false); //지시코드
+				
+				mgrid.setValue(rowId, 'salInoutCode', salInoutCode, false);
+				mgrid.setValue(rowId, 'comProductCode', comProductCode, false);
 				}
 			}
-		}
-	});
+		});
 	
 	$("#findRow").on("click", function() {
 		var no = $("#proProcessLotNo").val();
-		var code = $("#erpProductCode").val();
-		var name = $("#erpProductName").val();
+		var name = $("#comProductName").val();
 		var readParams = {
 				'proProcessLotNo' : no,
-				'erpProductCode' : code,
-				'erpProductName' : name
+				'comProductName' : name
 			};
 		grid.readData(1, readParams, true);
 	});
@@ -99,24 +98,29 @@ $(document).ready(function() {
 	        bodyHeight :300,
 	        rowHeight: 30,
 		columns : [ {
-			header : '완제품 LOT_NO',
-			name : 'proProcessLotNo'
-		}, {
-			header : '생산지시코드',
-			name : 'proOrderDetailCode'
+			header : '출고일자',
+			name : 'salInoutDate',
+			align : 'center'
 		}, {
 			header : '제품명',
-			name : 'erpProductName'
+			name : 'comProductName',
+			align : 'center'
 		}, {
-			header : '입고수량',
-			name : 'proOrderQty'
+			header : '완제품 LOT_NO',
+			name : 'proProcessLotNo',
+			align : 'center'
 		}, {
-			header : '현재고',
-			name : 'salNowQuantity',
+			header : '출고수량',
+			name : 'salInoutQuantity',
+			align : 'right',
+			formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+		}, {
+			header : '고객사코드',
+			name : 'salInoutCode',
 			hidden : true
 		}, {
 			header : '제품코드',
-			name : 'erpProductCode',
+			name : 'comProductCode',
 			hidden : true
 		}]
 	});

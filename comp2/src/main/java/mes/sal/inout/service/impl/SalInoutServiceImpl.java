@@ -228,6 +228,12 @@ public class SalInoutServiceImpl extends EgovAbstractServiceImpl implements
 		return salInoutDAO.searchOrderList(searchVO);
 	}
 
+	//모달 : 반품 가능한 출고 목록 조회
+	@Override
+	public List<?> searchReturnList(SalInoutVO searchVO) throws Exception {
+		return salInoutDAO.searchReturnList(searchVO);
+	}
+
 
 	
 

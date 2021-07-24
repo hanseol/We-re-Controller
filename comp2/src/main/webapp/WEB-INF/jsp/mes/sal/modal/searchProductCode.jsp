@@ -42,30 +42,32 @@ $(document).ready(function() {
 
 		var chkRowKeys = grid.getCheckedRowKeys();
 		for(var i=0; i<chkRowKeys.length; i++){
-			name = grid.getValue(chkRowKeys[i], 'comProductName');			
+			name = grid.getValue(chkRowKeys[i], 'comProductName');
 		}
 		
 		//view 페이지에 뿌려줄 부분 아이디값
 		if (rowId == -1) { //rowId(rowKey)가 -1이면 input에 뿌려주고
 			$("#comProductName").val(name);
+			$("#erpProductName").val(name);
 		} else { //아니면 mgrid에 뿌려준다
 			mgrid.blur();
 			ugrid.blur(); //출고 세부
 			mgrid.setValue(rowId, 'comProductCode', name, false);
 			ugrid.setValue(urowId, 'comProductCode', name, false); //출고 세부
-		}
-		 
-		
+		}	
 	});
 	
 	$("#findRow").on("click", function() {
 		var code = $("#comProductCode").val();
 		var name = $("#comProductName").val();
 
+		console.log(code);
+		console.log(name);
+		
 		var readParams = {
 				'comProductCode' : code,
-				'comProductName' : name
-			};
+				'comProductName' : name		
+		};
 		grid.readData(1, readParams, true);
 	});
 	

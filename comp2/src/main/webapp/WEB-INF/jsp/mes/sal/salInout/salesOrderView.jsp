@@ -28,14 +28,14 @@
 				</div>
 				<div class="col-md-4">			
 						제품명
-						<input type="text" id="productCode" name="productCode" class="form-control">	
+						<input type="text" id="erpProductName" name="erpProductName" class="form-control">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
                   </a>											
 				</div>
 				<div class="col-md-4">
 						고객사명
-						<input type="text" id="customerCode" name="customerCode" class="form-control">
+						<input type="text" id="erpCustomerName" name="erpCustomerName" class="form-control">
 						<a id="searchCustomerCode" href="${pageContext.request.contextPath}/searchCustomerCode.do">					
 						<i class="fa fa-search"></i></a>
 				</div>
@@ -75,8 +75,8 @@ let mgrid; //모달 그리드
 		
 		$("#search").on("click", function() {
 					var orderDate = $("#orderDate").val();
-					var product = $("#productCode").val();
-					var customer = $("#customerCode").val();
+					var product = $("#erpProductName").val();
+					var customer = $("#erpCustomerName").val();
 					var readParams = {
 						'erpProductOrderDate' : orderDate,
 						'erpProductName' : product,
@@ -120,12 +120,12 @@ let mgrid; //모달 그리드
 				name : 'erpOrderCode',
 				align : 'center'
 			}, {
-				header : '고객사명',
-				name : 'erpCustomerName',
-				align : 'center'
-			}, {
 				header : '제품명',
 				name : 'erpProductName',
+				align : 'center'
+			}, {
+				header : '고객사명',
+				name : 'erpCustomerName',
 				align : 'center'
 			}, {
 				header : '주문량',

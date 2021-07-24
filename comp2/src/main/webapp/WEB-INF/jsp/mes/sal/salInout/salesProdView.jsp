@@ -33,7 +33,6 @@
 						<input type="text" id="comProductName" name="comProductName" class="form-control">	
 						<a id="searchProductCode" href="${pageContext.request.contextPath}/searchProductCode.do">						
                      	<i class="fa fa-search"></i></a>
-						&nbsp;
 						완제품 LOT_NO
 						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
 						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
@@ -78,8 +77,8 @@ let mgrid;
 					var inGubun = $("#inGubun").val();
 					var outGubun = $("#outGubun").val();
 					var gubun;
-					var productCode = $("#comProductName").val();
-					var productLotNo = $("#proProcessLotNo").val();
+					var comProductName = $("#comProductName").val();
+					var proProcessLotNo = $("#proProcessLotNo").val();
 					
 					//체크박스 옵션
 					if ($('input:checkbox[id="inGubun"]').is(":checked") && $('input:checkbox[id="outGubun"]').is(":checked") == true) {
@@ -95,8 +94,8 @@ let mgrid;
 					var readParams = {
 						'salInoutDate' : date,
 						'salInoutGubun' : gubun,
-						'comProductName' : productCode,
-						'proProcessLotNo' : productLotNo
+						'comProductName' : comProductName,
+						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
 				});

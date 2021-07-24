@@ -88,4 +88,6 @@ public interface SalInoutMapper {
 	//모달 : 제품주문서 목록 조회
 	public List<?> searchOrderList(SalInoutVO searchVO) throws Exception;
 
+	//모달 : 반품가능한 출고 목록 조회
+	public List<?> searchReturnList(SalInoutVO searchVO) throws Exception;
 }

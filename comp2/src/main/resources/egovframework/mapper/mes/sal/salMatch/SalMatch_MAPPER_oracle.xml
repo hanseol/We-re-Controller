@@ -100,21 +100,6 @@
 		WHERE SAL_MATCH_STATEMENT = #{salMatchStatement}
 	</delete>
 	
-	<!-- 페이지 -->
-	<select id="selectSalMatchListTotCnt" parameterType="mes.sal.match.service.SalMatchVO" resultType="int">
-			SELECT COUNT(*) totcnt
-			FROM SAL_MATCH
-			WHERE 1=1
-			<if test="searchKeyword != null and searchKeyword != ''">
-				<if test="searchCondition == 0">AND
-					SAL_MATCH_STATEMENT = #{searchKeyword}
-				</if>
-				<if test="searchCondition == 1">AND
-					SAL_MATCH_INOUT LIKE '%' || #{searchKeyword} || '%'
-				</if>
-			</if>
-	</select>
-	
 	<!-- 모달 : 입고된 완제품 LOT_NO 조회 -->
 	<select id="searchProductMatchList"
 	parameterType="mes.sal.match.service.SalMatchVO" resultType="egovMap">
@@ -123,6 +108,7 @@
 		GET_CODE_DETAIL(COM_PRODUCT_CODE) as COM_PRODUCT_NAME
 		FROM SAL_INOUT
 		WHERE SAL_INOUT_GUBUN = 'INOUT002'
+    	AND SAL_NOW_QUANTITY NOT IN ('0')
 		<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
 			PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
 		</if>

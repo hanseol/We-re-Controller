@@ -43,7 +43,7 @@
 				<div class="col-md-4">
 						완제품 LOT_NO
 						<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
-						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
+						<a id="searchProductLotNo" href="${pageContext.request.contextPath}/modSearchProductLotNo.do">						
                      	<i class="fa fa-search"></i></a>
 				</div>
 			</div>
@@ -100,7 +100,6 @@ let mgrid;
 					var readParams = {
 						'salMatchDate' : date,
 						'salMatchInout' : gubun,
-						'comProductCode' : productCode,
 						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
@@ -212,18 +211,6 @@ let mgrid;
 //모달 실행 함수
 var rowId;
 
-//제품코드 모달
-function productCodeSearch(c) {
-	  rowId = c;
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchProductCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
-
 //완제품 LOT_NO 모달
 function productLotNoSearch(c) {
 	  rowId = c;
@@ -231,7 +218,7 @@ function productLotNoSearch(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchProductLotNo.do", function(html) {
+	  $.get("modSearchProductLotNo.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }

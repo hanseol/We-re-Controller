@@ -33,12 +33,12 @@
 			<div class="row">
 				<div class="col-md-6">
 					반품일자
-					<input type="date" id="returnDate" name="returnDate" class="form-control">			
+					<input type="date" id="salInoutDate" name="salInoutDate" class="form-control">			
 				</div>
 				<div class="col-md-6">
 					완제품 LOT_NO
-					<input type="text" id="productLotNo" name="productLotNo" class="form-control">	
-					<a id="searchProductLotNo" href="${pageContext.request.contextPath}/searchProductLotNo.do">						
+					<input type="text" id="proProcessLotNo" name="proProcessLotNo" class="form-control">	
+					<a id="searchReturnProduct" href="${pageContext.request.contextPath}/searchReturnList.do">						
                     <i class="fa fa-search"></i></a>			
 				</div>
 			</div>
@@ -80,12 +80,11 @@ let mgrid; //모달 그리드
 		
 		//Read
 		$("#search").on("click", function() {
-					var returnDate = $("#returnDate").val();
-					var productLotNo = $("#productLotNo").val();
-					console.log(returnDate, productLotNo);
+					var salInoutDate = $("#salInoutDate").val();
+					var proProcessLotNo = $("#proProcessLotNo").val();
 					var readParams = {
-						'salInoutDate' : returnDate,
-						'proProcessLotNo' : productLotNo
+						'salInoutDate' : salInoutDate,
+						'proProcessLotNo' : proProcessLotNo
 					};
 					grid.readData(1, readParams, true);
 				});
@@ -144,6 +143,7 @@ let mgrid; //모달 그리드
 			columns : [ {
 				header : '반품일자',
 				name : 'salInoutDate',
+				align : 'center',
 				editor : {
 					type : 'datePicker',
 					options : {
@@ -154,26 +154,43 @@ let mgrid; //모달 그리드
 			}, {
 				header : '완제품 LOT_NO',
 				name : 'proProcessLotNo',
+				align : 'center',
 				editor : 'text'
 			}, {
-				header : '업체코드',
-				name : 'salInoutCode'
+				header : '고객사명',
+				name : 'comCustomerName',
+				align : 'center'
 			}, {
-				header : '제품코드',
-				name : 'comProductCode'
+				header : '제품명',
+				name : 'comProductName',
+				align : 'center'
 			}, {
 				header : '주문량',
-				name : 'salInoutQuantity'
+				name : 'salInoutQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '반품량',
-				name : 'returnQuantity',
-				editor : 'text'
+				name : 'salNowQuantity',
+				align : 'right',
+				editor : 'text',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '최종 출고량',
-				name : 'finalQuantity'
+				name : 'finalQuantity',
+				align : 'right',
+				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '전표번호',
 				name : 'salInoutStatement',
+				hidden : true
+			}, {
+				header : '고객사코드',
+				name : 'salInoutCode',
+				hidden : true
+			}, {
+				header : '제품코드',
+				name : 'comProductCode',
 				hidden : true
 			}]
 		}); 
@@ -182,8 +199,8 @@ let mgrid; //모달 그리드
 		
 		//수량 계산
   		mgrid.on('afterChange', ev => { 			
-  			if (ev.changes[0].columnName == 'returnQuantity') {
-  				var ret = mgrid.getValue(ev.changes[0].rowKey, 'returnQuantity');
+  			if (ev.changes[0].columnName == 'salNowQuantity') {
+  				var ret = mgrid.getValue(ev.changes[0].rowKey, 'salNowQuantity');
   				var order = mgrid.getValue(ev.changes[0].rowKey, 'salInoutQuantity');	
   				
 				mgrid.setValue(ev.changes[0].rowKey, 'finalQuantity', parseInt(order) - parseInt(ret));
@@ -198,7 +215,7 @@ let mgrid; //모달 그리드
 		      }
 		   });
 		 
-			$('#searchProductLotNo').click(function(event) {
+			$('#searchReturnProduct').click(function(event) {
 				returnProductLotNo(-1);
 			});
 		
@@ -214,18 +231,6 @@ let mgrid; //모달 그리드
 
 var rowId;
 
-//제품코드 모달
-function productCodeSearch(c) {
-	  rowId = c;
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchProductCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
-
 //완제품 LOT_NO 모달
 function returnProductLotNo(c) {
 	  rowId = c;
@@ -233,21 +238,10 @@ function returnProductLotNo(c) {
 	  $(".modal").remove();
 	  this.blur(); // Manually remove focus from clicked link.
 	  console.log(this.href);
-	  $.get("searchProductLotNo.do", function(html) {
+	  $.get("searchReturnList.do", function(html) {
 	    $(html).appendTo('body').modal();
 	  });
 }
 
-//업체코드 모달
-function customerCodeSearch(c) {
-	  rowId = c;
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchCustomerCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
 
 </script>

@@ -57,6 +57,8 @@ public class SalInoutVO extends SearchVO {
     //제품명
     private java.lang.String comProductName;
     
+    private String comCustomerName;
+    
     //고객사코드
     private java.lang.String comCodeDetailId;
     

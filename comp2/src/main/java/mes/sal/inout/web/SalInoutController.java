@@ -399,6 +399,23 @@ public class SalInoutController {
 			return comFunc.sendResult(list);
 		}
 		
+		//모달 : 반품 가능한 출고된 목록 조회
+		@GetMapping("sal/salInout/searchReturnList.do")
+		public String searchReturnList() {
+			return "mes/sal/modal/searchReturnProduct";
+		}
+		
+		//모달 : 반품 가능한 출고된 목록 조회
+		@RequestMapping("/ajax/searchReturnProduct")
+		@ResponseBody
+		public Map<String, Object> searchReturnProduct(@ModelAttribute("searchVO") SalInoutVO searchVO)
+			throws Exception {
+			
+			List<?> list = salInoutService.searchReturnList(searchVO);
+			
+			return comFunc.sendResult(list);
+		}
+		
 		//모달 : 제품주문서 목록 조회
 		@GetMapping("sal/salInout/searchOrderList.do")
 		public String searchOrderListView() {

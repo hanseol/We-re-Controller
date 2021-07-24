@@ -265,18 +265,6 @@ let mgrid;
 //모달 실행 함수
 var rowId;
 
-//제품코드 모달
-function productCodeSearch(c) {
-	  rowId = c;
-	  event.preventDefault();
-	  $(".modal").remove();
-	  this.blur(); // Manually remove focus from clicked link.
-	  console.log(this.href);
-	  $.get("searchProductCode.do", function(html) {
-	    $(html).appendTo('body').modal();
-	  });
-}
-
 //완제품 LOT_NO 모달
 function productLotNoSearch(c) {
 	  rowId = c;

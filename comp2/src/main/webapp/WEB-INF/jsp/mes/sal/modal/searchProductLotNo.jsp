@@ -16,8 +16,7 @@
 		<div class="panel-heading">
 			<div class="panel-body">
 				<div>
-					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" /> &nbsp;
-					제품코드 <input type="text" id="erpProductCode" name="erpProductCode" placeholder="제품코드" class="form-control" /> <br> <br>
+					완제품 LOT_NO <input type="text" id="proProcessLotNo" name="proProcessLotNo" placeholder="완제품 LOT_NO" class="form-control" />
 					제품명 <input type="text" id="erpProductName" name="erpProductName" placeholder="제품명" class="form-control" />
 					<button id="findRow">검색</button><br>
 					<br>
