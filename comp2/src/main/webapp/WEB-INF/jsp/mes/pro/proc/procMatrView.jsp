@@ -338,8 +338,7 @@ var grid;
 			}, {
 				header : '생산여부',
 				name : 'proProcessStatus',
-				align: 'center',
-				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+				align: 'center'
 			} ]
 		});
 

@@ -151,7 +151,7 @@ SELECT * FROM (
 	          	 FROM pro_process pp 
 	          	 WHERE pp.pro_order_detail_code = od.pro_order_detail_code 
 	          	 AND ROWNUM = 1) as pro_process_quantity -->
-	          ,CASE od.pro_process_status  WHEN 6 THEN '완료'
+	          , CASE od.pro_process_status  WHEN 6 THEN '완료'
 		                                   WHEN 5 THEN '생산중'
 		                                   WHEN 4 THEN '생산중'
 		                                   WHEN 3 THEN '생산중'
@@ -192,7 +192,7 @@ SELECT * FROM (
 			 , erp_product_name
 		FROM   pro_order_detail
 		WHERE  pro_process_status = '6'
-		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >AND
 			pro_work_date BETWEEN #{startDate} AND #{endDate} 
 		</if>	
 	</select>
@@ -203,8 +203,16 @@ SELECT * FROM (
 		SELECT pro_order_detail_code
 			 , TO_CHAR(pro_work_date, 'yyyy-MM-dd') as pro_work_date
 			 , erp_product_name
+			 , CASE pro_process_status  WHEN 6 THEN '완료'
+	                                    WHEN 5 THEN '생산중'
+	                                    WHEN 4 THEN '생산중'
+	                                    WHEN 3 THEN '생산중'
+	                                    WHEN 2 THEN '생산중'
+	                                    WHEN 1 THEN '생산중'
+      		  ELSE '미완료' END AS pro_process_status
 		FROM   pro_order_detail
-		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+		WHERE 1=1
+		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
 			pro_work_date BETWEEN #{startDate} AND #{endDate} 
 		</if>
 	

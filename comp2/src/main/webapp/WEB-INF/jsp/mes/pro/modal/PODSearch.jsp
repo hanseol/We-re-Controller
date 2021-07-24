@@ -95,6 +95,10 @@ $(document).ready(function() {
 		}, {
 			header : '제품명',
 			name : 'erpProductName'
+		}, {
+			header : '생산여부',
+			name : 'proProcessStatus',
+			align: 'center'
 		} ]
 	});
 	
