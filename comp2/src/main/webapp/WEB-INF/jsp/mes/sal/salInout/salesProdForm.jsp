@@ -375,7 +375,7 @@ var ugrid;
 				align : 'center',
 				editor : 'text'
 			}, {
-				header : '거래처명',
+				header : '고객사명',
 				name : 'comCustomerName',
 				align : 'center'
 			}, {
@@ -388,7 +388,7 @@ var ugrid;
 				align : 'right',
 				formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
-				header : '거래처코드',
+				header : '고객사코드',
 				name : 'erpCustomerCode',
 				hidden : true
 			}, {
