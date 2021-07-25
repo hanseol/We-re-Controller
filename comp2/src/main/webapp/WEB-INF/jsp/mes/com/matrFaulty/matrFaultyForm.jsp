@@ -72,18 +72,22 @@
 			columns : [ {
 				header : '불량번호',
 				name : 'comMaterialFNo',
+				hidden : true
 			},{
 				header : '자재불량코드',
 				name : 'comMaterialFCode',
 				editor : 'text',
+				align : 'center'
 			}, {
 				header : '자재불량명',
 				name : 'comMaterialFName',
 				editor : 'text',
+				align :'center'
 			}, {
 				header : '자재불량내역',
 				name : 'comMaterialFDesc',
-				editor : 'text'
+				editor : 'text',
+				align :'center'
 			}]
 		}); 
 		
