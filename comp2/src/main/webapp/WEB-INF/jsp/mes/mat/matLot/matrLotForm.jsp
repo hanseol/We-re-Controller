@@ -41,7 +41,7 @@ let matLotGrid;
 		$('#subPages6000000').addClass('in');
 		$('#subPages6000000').attr('aria-expanded','true');
 		$('#subPages6000000').attr('style','');
-		$('.6040000').addClass('active');
+		$('.6050000').addClass('active');
 		
 		// 옵션 폼 리셋버튼  
 		$("#reset").click(function() { 

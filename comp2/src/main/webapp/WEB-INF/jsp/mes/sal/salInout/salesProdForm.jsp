@@ -165,7 +165,7 @@ var ugrid;
 		$('#subPages9000000').addClass('in');
 		$('#subPages9000000').attr('aria-expanded','true');
 		$('#subPages9000000').attr('style','');
-		$('.9030000').addClass('active');
+		$('.9020000').addClass('active');
 		
 		//Read
 		$("#inSearch").on("click", function() {
@@ -330,7 +330,11 @@ var ugrid;
 		//Modify
 		$(document).on("click", "button[id=outModifyRow]", function() {
 			ogrid.finishEditing('rowKey','columnName');
-			ogrid.request('modifyData');
+			//저장 시 알림 메시지 안뜨게 하는거.
+			var options = {
+				showConfirm : false
+			} 
+			ogrid.request('modifyData',options);
 		});
 		
 		

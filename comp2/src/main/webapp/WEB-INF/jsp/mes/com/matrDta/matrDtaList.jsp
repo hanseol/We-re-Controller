@@ -136,7 +136,8 @@
 								header : '코드상세명',
 								name : 'comCodeDetailName',
 								editor : 'text',
-								align : 'center'
+								align : 'center',
+								hidden : true
 							}, {
 								header : '안전재고',
 								name : 'comMaterialSafetyStock',

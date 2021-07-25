@@ -101,6 +101,8 @@ public class QuaChkController {
 	@ResponseBody
 	public Map<String, Object> modifyQuaChk(@RequestBody GridDataVO gd) throws Exception {
     	Map<String, Object> map = new HashMap<String, Object>();
+    	
+    	
 		service.insertQuaChk(gd);
 		
 		map.put("result", true);
