@@ -99,32 +99,6 @@
 		WHERE  rnum >= #{firstIndex}
 		]]>
 	</select>
-	<!-- 자재입출고 관리페이지 등록(일단 현재 필요없음) -->
-<!-- 	<insert id="insertMatInout">
-		INSERT INTO mat_inout (mat_inout_statement,
-							   com_material_code,
-							   com_process_code,
-							   qua_material_statement,
-							   mat_inout_gubun,
-							   mat_inout_date,
-							   mat_lot_no,
-							   mat_inout_quantity,
-							   mat_inout_unit_price,
-							   mat_inout_price)
-					VALUES  	(#{matInoutStatement},
-								#{comMaterialCode},
-						   		(select	DISTINCT(com_process_code)
-							 	from	com_bom
-							 	where	com_material_code = #{comMaterialCode}),
-						   		#{quaMaterialStatement},
-						   		#{matInoutGubun},
-						   		#{matInoutDate},
-						   		#{matLotNo},
-						   		#{matInoutQuantity},
-						   		#{matInoutUnitPrice},
-						   		(#{matInoutQuantity}*#{matInoutUnitPrice}))
-
-	</insert> -->
 	
 	<!-- 자재입출고 관리페이지 수정 -->
 	<update id="updateMatInout">

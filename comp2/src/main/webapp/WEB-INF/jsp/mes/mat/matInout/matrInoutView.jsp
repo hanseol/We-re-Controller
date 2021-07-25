@@ -190,9 +190,14 @@ var grid;
 	        bodyHeight: 400, 
 	        rowHeight: 30,
 			columns: [ {
+				header: '입고일자',
+				name: 'matInoutDate',
+				align: 'center'
+			}, {
 				header: '전표번호',
 				name: 'quaMaterialStatement',
-				align: 'center'
+				align: 'center',
+				hidden: true
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
@@ -220,10 +225,6 @@ var grid;
 			}, {
 				header: '관리단위',
 				name: 'comMaterialUnit',
-				align: 'center'
-			}, {
-				header: '입고일자',
-				name: 'matInoutDate',
 				align: 'center'
 			}, {
 				header: '업체코드',
@@ -299,9 +300,14 @@ var grid;
 	        bodyHeight: 400,
 	        rowHeight: 30,
 			columns: [{
+				header: '출고일자',
+				name: 'matInoutDate',
+				align: 'center'
+			}, {
 				header: '전표번호',
 				name: 'quaMaterialStatement',
-				align: 'center'
+				align: 'center',
+				hidden: true
 			}, {
 				header: '자재코드',
 				name: 'comMaterialCode',
@@ -329,10 +335,6 @@ var grid;
 			}, {
 				header: '관리단위',
 				name: 'comMaterialUnit',
-				align: 'center'
-			}, {
-				header: '출고일자',
-				name: 'matInoutDate',
 				align: 'center'
 			}, {
 				header: '공정코드',
