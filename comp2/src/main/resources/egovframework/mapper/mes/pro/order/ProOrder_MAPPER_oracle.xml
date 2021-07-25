@@ -160,7 +160,7 @@
 				, PRO_ORDER_GUBUN
 				, PRO_ORDER_QTY
 				, PRO_ORDER_RANK
-				, PRO_ORDER_DATE
+				, TO_CHAR(PRO_ORDER_DATE, 'yyyy-MM-dd')
 			FROM PRO_ORDER
 						WHERE PRO_ORDER_CODE=#{proOrderCode}
 				]]>
@@ -266,7 +266,7 @@ FROM  pro_order m
 						         , od.erp_product_name
 						         , om.pro_order_gubun
 						         , p.erp_order_code
-						         , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+						         , TO_CHAR(od.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
 						         , p.pro_plan_qty
 						         , od.pro_order_qty
                      			 , (SELECT mac_hour_qty FROM mac WHERE mac.com_product_code = od.erp_product_code and rownum = 1) as mac_hour_qty
@@ -275,7 +275,7 @@ FROM  pro_order m
 						         , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
 						         , od.pro_order_seq
 						         , od.pro_order_code
-						         , om.pro_order_date
+						         , TO_CHAR(om.pro_order_date, 'yyyy-MM-dd') as pro_order_date
 						         , od.erp_customer_code
 						         , p.erp_order_qty
 						         , od.pro_order_detail_code
