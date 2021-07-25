@@ -75,8 +75,7 @@
 	<update id="updateSalInout">		
 			UPDATE SAL_INOUT
 			SET
-			SAL_INOUT_QUANTITY = #{salInoutQuantity}
-			ㅁ
+			SAL_NOW_QUANTITY = #{salInoutQuantity}
 			WHERE PRO_PROCESS_LOT_NO = #{proProcessLotNo}
 			AND SAL_INOUT_GUBUN = 'INOUT002'
 	</update> 
