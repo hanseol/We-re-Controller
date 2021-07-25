@@ -192,5 +192,9 @@ tui.Grid.applyTheme('default',
       }
  
 });
+
+//그리드 한글 설정
+tui.Grid.setLanguage('ko');
+
 </script>
 </html>

@@ -114,7 +114,11 @@
 	                  'proPlanName' : proPlanName,
 	               };
 			proPlanGrid.setRequestParams(requestParams);
-			 
+			/* 
+				//저장 시 알림 메시지 안뜨게 하는거.
+				var test = {
+				showConfirm : false
+			} */
 			proPlanGrid.request('modifyData');
 		});
 		 
@@ -122,6 +126,7 @@
 		//M 삭제버튼 (계획을 삭제)
 		$("#deletePlan").on("click", function() {
 			proPlanGrid.checkAll(true);
+		
 			proPlanGrid.request('modifyData');
 			$("#reset").click();
 		})

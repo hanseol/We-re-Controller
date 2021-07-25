@@ -41,6 +41,7 @@
     		contentType : "application/json",
     		success : function(result){
     			var arr = result.menuList;
+    			console.log(arr);
     			$.each(arr, function(index, item){
     				if(item.chkURL == "dir"){
     					$("#leftMenu").append('<li><a href="#subPages' + item.menuNo + '" data-toggle="collapse" class="collapsed" id="n' 
