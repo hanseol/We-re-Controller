@@ -136,6 +136,9 @@
 	        scrollY: true,
 	        bodyHeight :300, 
 	        rowHeight: 30,
+	        columnOptions: {
+		        resizable: true
+		    },
 			columns : [ {
 				header : '작업일자',
 				name : 'proWorkDate',
@@ -147,11 +150,13 @@
 			}, {
 				header : '고객사명',
 				name : 'comCodeDetailName',
-				align: 'center'
+				align: 'center',
+				width: 80
 			}, {
 				header : '제품코드',
 				name : 'erpProductCode',
-				align: 'center'
+				align: 'center',
+				hidden : true
 			}, {
 				header : '제품명',
 				name : 'erpProductName',
@@ -168,11 +173,13 @@
 				header : '주문량',
 				name : 'erpOrderQty',
 				align: 'right',
+				width: 80,
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			},  {
 				header : '지시량',
 				name : 'proOrderQty',
 				align: 'right',
+				width: 80,
 	            formatter: (ev)=>{return (ev.value == null) ? null : String(ev.value).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 			}, {
 				header : '작업구분',
@@ -185,7 +192,8 @@
 			}, {
 				header : '작업순서',
 				name : 'proOrderSeq',
-				align: 'center'
+				align: 'center',
+				width: 80
 			}, {
 				header : '지시일자',
 				name : 'proOrderDate',

@@ -518,26 +518,6 @@ var proOrderRowKey;
 	  $("#total").val(chk*1900);
    });
 
-   
-   
-   // 그리드 테마    
-/*    tui.proOrdergrid.applyTheme('clean', 
-      {
-         row: {
-                hover: {
-                   background: "#d5dae1"
-                }
-         },
-         cell: {
-            header: {
-               background: "#003458",
-               text: "white"
-            },
-            currentRow : {
-               background: "#d5dae1"
-            }
-         }
-   });  */
 
    
 }); //end of document ready
