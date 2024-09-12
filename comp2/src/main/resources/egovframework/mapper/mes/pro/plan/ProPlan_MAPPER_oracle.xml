@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.plan.service.impl.ProPlanMapper">
+	
+
+	<resultMap id="proPlan" type="mes.pro.plan.service.ProPlanVO">
+		<result property="proPlanCode" column="PRO_PLAN_CODE" />
+		<result property="proPlanName" column="PRO_PLAN_NAME" />
+		<result property="proPlanDate" column="PRO_PLAN_DATE" />
+		<result property="erpCustomerCode" column="ERP_CUSTOMER_CODE" />
+	</resultMap>
+	
+	
+	
+	<!-- INSERT pro_plan (prodPlanForm.jsp에서 작성한 내용) --> 
+	<insert id="insertProPlanM">
+		<![CDATA[
+			INSERT INTO pro_plan (  PRO_PLAN_CODE
+								  , PRO_PLAN_NAME
+								  , PRO_PLAN_DATE
+								  , ERP_CUSTOMER_CODE )
+			       		VALUES ( #{proPlanCode}
+							   , #{proPlanName}
+							   , TO_DATE(#{proPlanDate},'YYYY-MM-DD')
+							   , #{erpCustomerCode} )
+		]]>
+	</insert>
+	
+	<!-- INSERT pro_plan_detail (prodPlanForm.jsp에서 작성한 내용) --> 
+	<insert id="insertProPlan">
+		INSERT INTO pro_plan_detail (  PRO_PLAN_DETAIL_CODE
+								     , PRO_PLAN_CODE
+								     , ERP_ORDER_CODE
+								     , ERP_PRODUCT_DEADLINE
+								     , PRO_WORK_DATE
+								     , ERP_CUSTOMER_CODE
+								     , PRO_PLAN_DAY_QTY
+								     , PRO_PLAN_SEQ
+								     , ERP_ORDER_QTY
+								     , PRO_PLAN_QTY
+								     , ERP_PRODUCT_NAME
+								     , ERP_PRODUCT_CODE )
+				        	VALUES(	#{proPlanDetailCode}
+								  , #{proPlanCode}
+								  , #{erpOrderCode}
+								  , TO_DATE(#{erpProductDeadline},'YYYY-MM-DD')
+								  , TO_DATE(#{proWorkDate},'YYYY-MM-DD')
+								  , #{erpCustomerCode}
+								  , #{proPlanDayQty}
+								  , #{proPlanSeq}
+								  , #{erpOrderQty}
+								  , #{proPlanQty}
+								  , #{erpProductName}
+								  , #{erpProductCode})
+	</insert>
+	
+	<!-- UPDATE pro_plan 테이블  -->
+	<update id="updateProPlan">
+		<![CDATA[
+		UPDATE PRO_PLAN
+		    SET PRO_PLAN_NAME = #{proPlanName}
+		      , PRO_PLAN_DATE = TO_DATE(#{proPlanDate},'YYYY-MM-DD')
+		WHERE PRO_PLAN_CODE = #{proPlanCode}
+
+				]]>
+	</update>
+
+	<!-- UPDATE pro_plan_detail 테이블  -->
+	<update id="updateProPlanD">
+		<![CDATA[
+			UPDATE PRO_PLAN_DETAIL
+			    SET PRO_PLAN_QTY = #{proPlanQty}
+			      , PRO_WORK_DATE = TO_DATE(#{proWorkDate},'YYYY-MM-DD')
+			      , PRO_PLAN_SEQ = #{proPlanSeq}
+			WHERE PRO_PLAN_DETAIL_CODE = #{proPlanDetailCode}
+				]]>
+	</update>
+
+	<!-- DELETE pro_plan 테이블 -->
+	<delete id="deleteProPlan">
+		<![CDATA[
+			DELETE 
+				FROM  pro_plan
+				WHERE pro_plan_code = #{proPlanCode}
+				]]>
+	</delete>
+	
+	<!-- DELETE pro_plan_detail 테이블 -->
+	<delete id="deleteProPlanD">
+		<![CDATA[
+			DELETE 
+				FROM  pro_plan_detail
+				WHERE pro_plan_code = #{proPlanCode}
+				]]>
+	</delete>
+	
+	<!-- DELETE 한개 행 삭제 -->
+	<delete id="">
+		DELETE 
+			FROM pro_plan_detail
+			WHERE 
+	
+	</delete>
+	
+	
+	
+	<select id="selectProPlan" resultMap="proPlan">
+		<![CDATA[
+			SELECT
+				PRO_PLAN_CODE
+				, PRO_PLAN_NAME
+				, TO_CHAR(PRO_PLAN_DATE,'YYYY-MM-DD')
+				, ERP_CUSTOMER_CODE
+			FROM PRO_PLAN
+						WHERE PRO_PLAN_CODE=#{proPlanCode}
+				]]>
+	</select>
+	
+	
+	
+	<!-- 전체리스트 조회 (proPlanView) -->
+	<select id="selectProPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy-MM-dd') as pro_plan_date
+								       , e.erp_customer_code
+								       , m.pro_plan_code
+								       , e.erp_product_code
+								       , e.erp_product_name 
+								       , e.erp_order_code
+								       , TO_CHAR(e.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
+								       , e.erp_order_qty
+								       , d.pro_plan_qty
+								       , TO_CHAR(d.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+								       , d.pro_plan_seq
+								       , m.pro_plan_name
+								       , d.pro_order_detail_code
+								       , cd.com_code_detail_name
+							FROM     pro_plan_detail d
+							       , erp_product_order e
+							       , pro_plan m
+							       , com_code_detail cd
+							WHERE    d.erp_order_code = e.erp_order_code
+							  AND    m.pro_plan_code = d.pro_plan_code
+							  AND    e.erp_customer_code = cd.com_code_detail_id
+							  AND    cd.com_code_detail_id LIKE 'CUSTOMER' || '%'
+							<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+								<if test="searchCondition == 1"> AND
+									m.pro_plan_date BETWEEN TO_CHAR(#{startDate}, 'YYYY-MM-DD') AND TO_CHAR#{endDate},'YYYY-MM-DD') 
+								</if>
+								<if test="searchCondition == 2"> AND
+									e.erp_product_deadline BETWEEN TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD') 
+								</if>
+							</if>
+								<if test="erpProductCode != null and erpProductCode != ''"> AND
+									e.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+								</if>
+								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
+									e.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
+								</if>
+						ORDER BY 
+							m.PRO_PLAN_CODE DESC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>	
+	<select id="selectProPlanListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM pro_plan m
+			   , pro_plan_detail d
+			   , erp_product_order e
+			WHERE m.pro_plan_code = d.pro_plan_code
+			  AND d.erp_order_code = e.erp_order_code
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_PLAN_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+	
+	
+	<!-- 전체리스트 조회 (proPlanForm) -->
+	<select id="selectProPlanFormList" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT  TO_CHAR(m.pro_plan_date, 'yyyy-MM-dd') as pro_plan_date
+							 , e.erp_customer_code
+							 , m.pro_plan_code
+						     , e.erp_product_code
+						     , e.erp_product_name 
+						     , e.erp_order_code
+						     , TO_CHAR(e.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
+						     , e.erp_order_qty
+						     , d.pro_plan_qty
+						     , TO_CHAR(d.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+						     , d.pro_plan_seq
+						     , m.pro_plan_name
+						     , d.pro_plan_detail_code
+						FROM pro_plan_detail d
+						   , erp_product_order e
+						   , pro_plan m
+						WHERE d.erp_order_code = e.erp_order_code
+						  AND m.pro_plan_code = d.pro_plan_code
+							<if test="proPlanCode != null and proPlanCode != ''"> AND
+								m.pro_plan_code LIKE #{proPlanCode}
+							</if> 
+							<if test="date != null and date != ''"> AND
+								m.pro_plan_date LIKE '%' || TO_DATE(#{date}) || '%'
+							</if>
+						ORDER BY 
+							m.PRO_PLAN_CODE DESC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>	
+<!-- 	<select id="selectProPlanFormListTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM pro_plan m
+			   , pro_plan_detail d
+			   , erp_product_order e
+			WHERE m.pro_plan_code = d.pro_plan_code
+			  AND d.erp_order_code = e.erp_order_code
+			  AND 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_PLAN_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_PLAN_NAME LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select> -->
+	
+	
+	<!-- erp_order테이블에서 제품리스트 가져오기 -->
+	<select id="selectErpPordList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT erp_product_code
+						     , erp_product_name
+						     , erp_order_code
+						     , TO_CHAR(erp_product_deadline, 'yyyy-MM-dd' ) as erp_product_deadline
+						     , erp_order_qty
+						     , erp_customer_code
+						FROM erp_product_order
+						WHERE erp_order_code NOT IN(SELECT e.erp_order_code            
+                           FROM erp_product_order e
+                              , pro_plan_detail d
+                           WHERE e.erp_order_code = d.erp_order_code)
+						 <if test="erpProductCode != null and erpProductCode!=''"> AND
+							erp_product_code LIKE '%' || #{erpProductCode} || '%'
+						</if>
+						<if test="erpProductName != null and erpProductName !=''">AND
+							erp_product_name LIKE '%' || #{erpProductName} || '%'
+						</if>
+						ORDER BY 
+							erp_product_deadline, erp_order_qty
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	<select id="selectErpProdCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM erp_product_order
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				erp_product_code = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1">AND
+				erp_product_name LIKE '%' || #{searchKeyword} || '%'
+			</if>
+		</if>
+	</select>
+	
+
+	 <!-- pro_plan테이블에서 계획리스트 가져오기 -->
+	<select id="selectPlanList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT TO_CHAR(pro_plan_date, 'yyyy-MM-dd') as pro_plan_date
+						     , pro_plan_code
+						     , pro_plan_name     
+						FROM pro_plan
+						WHERE 1=1
+					 	<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+							<if test="searchCondition == 1"> AND
+								pro_plan_date BETWEEN TO_CHAR(#{startDate},'YYYY-MM-DD') AND TO_CHAR#{endDate},'YYYY-MM-DD') 
+							</if>
+						</if>
+						ORDER BY 
+							pro_plan_code
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+
+	</select> 
+	 <select id="selectPlanListCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM pro_plan
+		WHERE 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 0">AND
+				pro_plan_date = TO_DATE(#{searchKeyword},'YYYY-MM-DD')
+			</if>
+		</if>
+	</select>
+
+
+	
+	
+	<!-- erp_order테이블에서 가져온 제품리스트 중 하나 선택 -->
+	<select id="selectOneErpProd" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT erp_product_code
+		     , erp_product_name
+		     , erp_order_code
+		     , TO_CHAR(erp_product_deadline, 'yyyy-MM-dd' ) as erp_product_deadline
+		     ,erp_order_qty
+		FROM erp_product_order
+		WHERE erp_order_code = 'EO-0627-001';
+	</select>
+	
+	
+	
+	
+	
+	<!-- 제품명, 제품코드로 검색(한설) -->
+	<select id="selectProductList" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT COM_PRODUCT_CODE,
+								COM_PRODUCT_NAME,
+								COM_PRODUCT_SIZE
+						FROM COM_PRODUCT
+						WHERE 1=1
+						<if test="comProductCode != null and comProductCode!=''"> AND
+							COM_PRODUCT_CODE = #{comProductCode}
+						</if>
+						<if test="comProductName != null and comProductCode!=''">AND
+							COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+						</if>
+						ORDER BY 
+								COM_PRODUCT_NAME
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	<select id="selectProductTotCnt" parameterType="mes.pro.plan.service.ProPlanVO" resultType="int">
+		SELECT COUNT(*)
+		FROM COM_PRODUCT
+		<if test="(comProductCode != null and comProductCode != '')
+					|| (comProductName !=null and comProductName != '')">
+			<if test="searchCondition == 0">WHERE
+				COM_PRODUCT_CODE = #{comProductCode}
+			</if>
+			<if test="searchCondition == 1">WHERE
+				COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+			</if>
+			<if test="searchCondition == 2">WHERE
+				COM_PRODUCT_CODE = #{comProductCode} AND
+				COM_PRODUCT_NAME LIKE '%' || #{comProductName} || '%'
+			</if>
+		</if>
+	</select>
+	
+	
+	<!-- 공통으로 사용하는 제품조회 (모달용) -->
+	<select id="selectProdCode" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+	SELECT com_product_code
+	     , com_product_name
+	FROM com_product
+		<if test="comProductCode != null and comProductCode!=''"> AND
+			com_product_code LIKE '%' || #{comProductCode} || '%'
+		</if>
+		<if test="comProductName != null and comProductName !=''">AND
+			com_product_name LIKE '%' || #{comProductName} || '%'
+		</if>
+	</select>
+	
+	<!-- 공통으로 사용하는 고객조회 (모달용) -->
+	<select id="selectCustomerCode" parameterType="mes.pro.plan.service.ProPlanVO" resultType="egovMap">
+	SELECT com_code_detail_id
+	     , com_code_detail_name
+	FROM   com_code_detail
+	WHERE  com_code_detail_id LIKE  '%' || 'CUSTOMER' || '%'
+	</select>
+	
+</mapper>

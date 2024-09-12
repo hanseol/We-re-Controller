@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.mat.inout.service.impl.MatInoutMapper">
+	
+	<!-- 자재입출고 입고리스트 -->
+	<select id="selectMatInoutList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+										SELECT  mi.qua_material_statement
+										        ,COUNT(mi.mat_inout_quantity) as mat_inout_quantity
+										        ,TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD') as mat_inout_date
+        										,mi.com_material_code
+										        ,cm.com_material_name
+										        ,mi.mat_inout_unit_price
+										        ,SUM(mi.mat_inout_price) as mat_inout_price
+										        ,cm.com_material_unit
+        										,cm.com_material_vendor_code
+										        ,cd.com_code_detail_name
+										FROM    mat_inout mi, com_material cm, com_code_detail cd
+										WHERE 	mi.mat_inout_gubun = 'INOUT002'
+								        AND 	mi.com_material_code = cm.com_material_code
+								        AND 	cm.com_material_vendor_code = cd.com_code_detail_id
+
+
+		                              <if test="matInoutDate != null and matInoutDate != ''">
+		                              	AND
+							        	mi.mat_inout_date BETWEEN TO_DATE(#{matInoutDate},'YYYY-MM-DD') AND TO_DATE(#{matInoutEndDate},'YYYY-MM-DD')
+		                              </if>
+		                              <if test="erpVendorCode != null and erpVendorCode != ''">
+		                                AND
+							        	cm.com_material_vendor_code LIKE '%' || #{erpVendorCode} || '%'
+		                              </if>
+		                              <if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	mi.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+		                              </if>
+                        				GROUP BY mi.qua_material_statement
+										        ,TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD')
+        										,mi.com_material_code
+										        ,cm.com_material_name
+										        ,mi.mat_inout_unit_price
+										        ,cm.com_material_unit
+        										,cm.com_material_vendor_code
+										        ,cd.com_code_detail_name
+		                              ORDER BY  mi.qua_material_statement DESC <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>
+	</select>
+		<!-- 자재입출고 출고리스트  /////////////////////////다희씨 인서트 업데이트 완료되면 변경필요/////////////////////////////////-->
+	<select id="selectMatInoutPassList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+										SELECT  mi.qua_material_statement
+										        ,COUNT(mi.mat_inout_quantity) as mat_inout_quantity
+										        ,TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD') as mat_inout_date
+        										,mi.com_material_code
+										        ,cm.com_material_name
+										        ,mi.mat_inout_unit_price
+										        ,SUM(mi.mat_inout_price) as mat_inout_price
+										        ,cm.com_material_unit
+        										,mi.com_process_code
+										        ,cd.com_code_detail_name
+										FROM    mat_inout mi, com_material cm, com_code_detail cd
+										WHERE 	mi.mat_inout_gubun = 'INOUT003'
+										AND 	mi.com_material_code = cm.com_material_code
+										AND 	mi.com_process_code = cd.com_code_detail_id
+
+		                              <if test="matInoutDate != null and matInoutDate != ''">
+		                              	AND
+							        	mi.mat_inout_date BETWEEN TO_DATE(#{matInoutDate},'YYYY-MM-DD') AND TO_DATE(#{matInoutEndDate},'YYYY-MM-DD')
+		                              </if>
+		                              <if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	mi.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+		                              </if>
+		                              <if test="comProcessCode != null and comProcessCode != ''">
+		                              	AND
+							        	mi.com_process_code LIKE '%' || #{comProcessCode} || '%'
+		                              </if>
+										GROUP BY mi.QUA_MATERIAL_STATEMENT
+										        , TO_CHAR(mi.mat_inout_date,'YYYY-MM-DD')
+										        , mi.com_material_code
+										        , mi.mat_inout_unit_price
+										        , mi.mat_inout_price
+										        , cm.com_material_unit
+										        , cm.com_material_name
+										        , mi.com_process_code
+										        , cd.com_code_detail_name
+		                              ORDER BY mi.qua_material_statement DESC <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 자재입출고 관리페이지 수정 -->
+	<update id="updateMatInout">
+		UPDATE mat_inout
+		SET			mat_inout_quantity = #{matInoutQuantity},
+		            mat_inout_price = #{matInoutPrice}
+		       
+		WHERE	qua_material_statement = #{quaMaterialStatement}
+	</update>
+	
+	<!-- 자재입출고 관리 삭제 -->
+	<delete id="deleteMatInout">
+		DELETE FROM	mat_inout
+		WHERE		qua_material_statement = #{quaMaterialStatement}
+	</delete>
+	
+
+	
+	<!-- 모달 자재검색 리스트  -->
+	<select id="searchMaterialCodeList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+		                              SELECT   com_material_code,
+		                                       com_material_name,
+		                                       com_material_size,
+		                                       com_material_unit
+		                              FROM     com_material
+		                              WHERE	   1=1
+					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
+					                     com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                  </if>
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     com_material_name LIKE '%' || #{comMaterialName} || '%'
+					                  </if>
+                  					  ORDER BY com_material_code <![CDATA[ ) A
+					  WHERE ROWNUM <= #{lastIndex} )
+		WHERE RNUM >= #{firstIndex}]]>
+	</select>
+	
+	<!-- 모달 업체검색 리스트 -->
+	<select id="searchVendorCodeList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		SELECT *
+		FROM   (
+		          	SELECT a.*,
+		                     ROWNUM rnum
+		            FROM   (
+		                              SELECT   com_code_detail_id,
+		                                       com_code_detail_name,
+		                                       com_code_detail_desc
+		                              FROM     com_code_detail
+		                              WHERE    com_code_id = 'MES009'
+					                  <if test="comCodeDetailId != null and comCodeDetailId !=''"> AND
+					                     com_code_detail_id LIKE '%' || #{comCodeDetailId} || '%'
+					                  </if>
+					                  <if test="comCodeDetailName != null and comCodeDetailName !=''">AND
+					                     com_code_detail_name LIKE '%' || #{comCodeDetailName} || '%'
+					                  </if>
+									  ORDER BY com_code_detail_id <![CDATA[ ) A
+         			WHERE ROWNUM <= #{lastIndex})
+		WHERE RNUM >= #{firstIndex}]]>
+	</select>
+	
+		<!-- 모달 자재LOT_NO 리스트 -->
+	<select id="searchMaterialLotList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		                              SELECT    DISTINCT i.mat_lot_no,
+                                            	i.mat_inout_gubun,
+                                            	i.qua_material_statement,
+                                            	i.com_material_code,
+                                            	get_code_detail(i.com_material_code) as com_material_name,
+                                            	i.mat_inout_quantity
+		                              FROM      mat_inout i,
+                                            	mat_inout o
+                                            
+		                              WHERE	    i.mat_inout_gubun = 'INOUT002'
+		                              AND	    o.mat_inout_gubun NOT IN ('INOUT003')
+                                  	  AND       i.mat_inout_quantity NOT IN('0')
+					                  <if test="matLotNo != null and matLotNo !=''"> AND
+					                     i.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+					                  </if>
+					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
+					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                  </if>
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     com_material_name LIKE '%' || #{comMaterialName} || '%'
+					                  </if>
+									  ORDER BY i.mat_lot_no DESC
+	</select>	
+	
+	<!-- 모달 자재LOT_NO 더블클릭 리스트 -->
+	<select id="searchMaterialLotSecondList" parameterType="mes.mat.inout.service.MatInoutVO" resultType="egovMap">
+		
+		                              SELECT    DISTINCT i.mat_lot_no,
+                                            	i.mat_inout_gubun,
+                                            	i.qua_material_statement,
+                                            	i.com_material_code,
+                                            	get_code_detail(i.com_material_code) as com_material_name,
+                                            	i.mat_inout_quantity
+		                              FROM      mat_inout i,
+                                            	mat_inout o
+                                            
+		                              WHERE	    i.mat_inout_gubun = 'INOUT002'
+		                              AND	    o.mat_inout_gubun NOT IN ('INOUT003')
+                                  	  AND       i.mat_inout_quantity NOT IN('0')
+					                  <if test="matLotNo != null and matLotNo !=''"> AND
+					                     i.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+					                  </if>
+					                  <if test="comMaterialCode != null and comMaterialCode !=''">AND
+					                     i.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+					                  </if>
+					                  <if test="comMaterialName != null and comMaterialName !=''">AND
+					                     com_material_name LIKE '%' || #{comMaterialName} || '%'
+					                  </if>
+									  ORDER BY i.mat_lot_no DESC
+	</select>
+</mapper>

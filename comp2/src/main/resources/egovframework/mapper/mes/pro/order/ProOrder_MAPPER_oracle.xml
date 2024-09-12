@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.order.service.impl.ProOrderMapper">
+	
+
+	<resultMap id="proOrder" type="mes.pro.order.service.ProOrderVO">
+		<result property="proOrderCode" column="PRO_ORDER_CODE" />
+		<result property="proOrderGubun" column="PRO_ORDER_GUBUN" />
+		<result property="proOrderQty" column="PRO_ORDER_QTY" />
+		<result property="proOrderRank" column="PRO_ORDER_RANK" />
+		<result property="proOrderDate" column="PRO_ORDER_DATE" />
+	</resultMap>
+	
+	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 M + UPDATE: 생산계획 D -->
+	<insert id="insertProOrder">
+				INSERT INTO pro_order 
+									( pro_order_code
+		                      		, pro_order_gubun
+		                    		, pro_order_qty
+		                     		, pro_order_rank
+		                     		, pro_order_date)
+		  		  VALUES(  #{proOrderCode}
+		  		  		 , #{proOrderGubun}
+		  		  		 , #{proOrderQty}
+		  		  		 , #{proOrderSeq}
+		  		  		 , TO_DATE(#{proOrderDate},'YYYY-MM-DD')  )
+	</insert>
+	
+	<!-- 1번 그리드 저장버튼 > INSERT: 생산지시 D -->
+	<insert id="insertProOrderDetail">
+			DECLARE
+			BEGIN
+				INSERT INTO pro_order_detail
+							 (pro_order_detail_code
+		                       	 	, pro_order_code
+		                       		, pro_plan_detail_code
+		                       		, erp_product_deadline
+		                       		, pro_work_date
+		                       		, erp_customer_code
+		                       		, pro_order_expect_qty
+		                       		, pro_order_day_qty
+		                       		, pro_order_seq
+		                     		, pro_order_qty
+		                       		, erp_product_name
+		                     		, erp_product_code
+		                       		, pro_process_lot_no)
+		   		  VALUES(  #{proOrderDetailCode}
+				  		 , #{proOrderCode}
+				  		 , #{proPlanDetailCode}
+				  		 , TO_DATE(#{erpProductDeadline},'YYYY-MM-DD')
+				  		 , TO_DATE(#{proWorkDate},'YYYY-MM-DD')
+				  		 , #{erpCustomerCode} 
+				  		 , #{proOrderExpectQty}
+				  		 , #{proOrderDayQty}
+				  		 , #{proOrderSeq}
+				  		 , #{proOrderQty}
+				  		 , #{erpProductName}
+				  		 , #{erpProductCode}
+				  		 , #{proProcessLotNo}  );
+				  	
+				  		 UPDATE   pro_plan_detail
+							 SET     pro_order_detail_code = #{proOrderDetailCode}
+							 WHERE   pro_plan_detail_code = #{proPlanDetailCode};
+  		END; 	
+
+	</insert>
+	
+	
+	<!-- 1번 그리드 저장버튼 > UPDATE: pro_order + pro_order_detail -->	
+	<update id="updateProOrder">
+		DECLARE
+			BEGIN
+				UPDATE  PRO_ORDER
+				    SET PRO_ORDER_GUBUN = #{proOrderGubun}
+				      , PRO_ORDER_QTY = #{proOrderQty}
+				      , PRO_ORDER_RANK = #{proOrderSeq}
+				WHERE   PRO_ORDER_CODE = #{proOrderCode};
+				
+				UPDATE  PRO_ORDER_DETAIL
+				    SET PRO_ORDER_QTY = #{proOrderQty}
+				      , PRO_ORDER_EXPECT_QTY = #{proOrderExpectQty}
+				      , PRO_WORK_DATE = TO_DATE(#{proWorkDate}, 'yyyy-MM-dd')
+				      , PRO_ORDER_SEQ = #{proOrderSeq}
+				WHERE   PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+		END;
+	</update>
+	
+	
+	<!-- 3번 그리드 저장버튼 > INSERT: mat_inout  +  pro_material_lot -->
+	<insert id="insertMat">
+	  DECLARE
+         BEGIN
+            INSERT INTO MAT_INOUT 
+                           (  mat_inout_statement
+                            , com_material_code
+                            , mat_inout_date
+                            , mat_inout_gubun
+                            , mat_inout_quantity
+                            , mat_lot_no
+                            , mat_inout_unit_price
+					        , mat_inout_price
+					        , qua_material_statement 
+                            , com_process_code )
+                VALUES(  #{matInoutStatement}
+                       , #{comMaterialCode}
+                       , #{proOrderDate}
+                       , 'INOUT003'
+                       , #{matInoutQuantity}
+                       , #{matLotNo}
+                       , #{matInoutUnitPrice}
+                       , #{matInoutPrice}
+                       , #{quaMaterialStatement}
+                       <choose>
+	                       <when test="comMaterialCode == 'MAT011' or comMaterialCode == 'MAT012' 
+	                       				or comMaterialCode == 'MAT013' or comMaterialCode == 'MAT014'">
+	                       		, 'PROCG003'
+	                       </when>
+	                       <otherwise>
+	                       		, 'PROCG001'
+	                       </otherwise>
+                       </choose>
+                        );
+			
+    		 INSERT INTO pro_material_lot
+                            ( pro_material_number
+                            , pro_order_detail_code
+                            , mat_lot_no )
+                    VALUES(  #{proMaterialNumber}
+                           , #{proOrderDetailCode}
+                           , #{matLotNo} );
+         END;
+
+	</insert>
+
+	<!-- 3번 그리드 저장버튼 > UPDATE: ?? -->	
+	<update id="">
+		<![CDATA[
+			UPDATE PRO_ORDER
+			SET PRO_ORDER_CODE=#{proOrderCode}
+				, PRO_ORDER_GUBUN=#{proOrderGubun}
+				, PRO_ORDER_QTY=#{proOrderQty}
+				, PRO_ORDER_RANK=#{proOrderRank}
+				, PRO_ORDER_DATE=#{proOrderDate}
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</update>
+	
+	<delete id="deleteProOrder">
+		<![CDATA[
+			DELETE FROM PRO_ORDER 
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</delete>
+	
+	<select id="selectProOrder" resultMap="proOrder">
+		<![CDATA[
+			SELECT
+				PRO_ORDER_CODE
+				, PRO_ORDER_GUBUN
+				, PRO_ORDER_QTY
+				, PRO_ORDER_RANK
+				, TO_CHAR(PRO_ORDER_DATE, 'yyyy-MM-dd')
+			FROM PRO_ORDER
+						WHERE PRO_ORDER_CODE=#{proOrderCode}
+				]]>
+	</select>
+	
+	<!-- 3번째 그리드에 자재로트 정보 뿌리기 -->
+	<select id="selectmatLotList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT m.com_material_code
+		     , m.com_material_name
+		     , i.mat_lot_no
+		     , TO_CHAR(i.mat_inout_date, 'yyyy-MM-dd') as mat_inout_date
+		     , i.mat_inout_quantity
+		     , i.mat_inout_gubun
+		     , i.com_process_code
+		     , i.mat_inout_unit_price
+		     , i.mat_inout_price
+		     , i.qua_material_statement
+		FROM mat_inout i
+		   , com_material m
+		WHERE 	m.com_material_code = i.com_material_code
+		  AND   i.mat_inout_gubun = 'INOUT002'
+		  AND   m.com_material_code = #{comMaterialCode}
+		  AND   i.mat_lot_no NOT IN ( SELECT mat_lot_no
+		                              FROM   pro_material_lot)
+		ORDER BY i.mat_inout_date
+	</select>
+	
+	
+	<!-- 2번째 그리드의 제품BOM 정보 -->
+	<select id="selectmatBomList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT b.com_product_code
+		     , p.com_product_name
+		     , b.com_material_code
+		     , m.com_material_name
+		     , b.com_process_code
+		FROM  com_bom b
+		    , com_product p
+		    , com_material m
+		WHERE  b.com_product_code = p.com_product_code 
+		   AND b.com_material_code = m.com_material_code
+		   AND b.com_product_code = #{comProductCode}
+		ORDER BY b.com_material_code
+	</select>
+	
+	
+	
+	<!-- 생산지시: 생산지시관리에서 입력한 지시 조회(모달) -->
+	<select id="selectOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT m.pro_order_code
+		     , TO_CHAR(m.pro_order_date, 'yyyy-MM-dd') as pro_order_date
+		     , m.pro_order_gubun
+		     , (SELECT pro_order_detail_code 
+		        FROM pro_order_detail d
+		        WHERE m.pro_order_code = d.pro_order_code 
+		          AND d.pro_process_status IS NULL
+		          AND ROWNUM = 1) as pro_order_detail_code 
+		     , CASE (SELECT pro_process_status
+	                 FROM   pro_order_detail od
+	                 WHERE  od.pro_order_code = m.pro_order_code
+	                  AND   ROWNUM = 1) 
+	             WHEN 6 THEN '완료'
+	             WHEN 5 THEN '생산중'
+	             WHEN 4 THEN '생산중'
+	             WHEN 3 THEN '생산중'
+	             WHEN 2 THEN '생산중'
+	             WHEN 1 THEN '생산중'
+	           ELSE '미완료' END AS pro_process_status
+FROM  pro_order m 
+			<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
+				pro_order_date BETWEEN #{startDate} AND #{endDate} 
+			</if>	
+	</select>
+	
+	
+	<!-- 생산지시: 생산계획에 작성된 제품 조회(모달) -->	
+	<select id="selectPlanProductList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT	   pd.pro_plan_detail_code
+			     , pd.erp_product_code
+			     , pd.erp_product_name
+			     , pd.erp_order_code
+			     , TO_CHAR(pd.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
+			     , pd.erp_order_qty
+          		 , (SELECT mac_hour_qty FROM mac WHERE mac.com_product_code =  pd.erp_product_code and rownum = 1) as mac_hour_qty
+           		 , (((SELECT mac_hour_qty FROM mac WHERE mac.com_product_code =  pd.erp_product_code and rownum = 1))*24) as pro_order_day_qty
+			     , pd.pro_plan_qty
+			     , pd.erp_customer_code
+		FROM 	  pro_plan_detail pd
+		WHERE     pd.pro_order_detail_code IS NULL
+			<if test="erpProductCode != null and erpProductCode != ''"> AND
+				pd.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+			</if>
+			<if test="erpProductName != null and erpProductName != ''"> AND
+				pd.erp_product_name LIKE '%' || #{erpProductName} || '%'
+			</if>
+		ORDER BY  pd.erp_product_deadline
+	</select>
+	
+	<!-- proForm 전체조회 -->
+	<select id="selectOrderForm" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT  od.erp_product_code
+						         , od.erp_product_name
+						         , om.pro_order_gubun
+						         , p.erp_order_code
+						         , TO_CHAR(od.erp_product_deadline, 'yyyy-MM-dd') as erp_product_deadline
+						         , p.pro_plan_qty
+						         , od.pro_order_qty
+                     			 , (SELECT mac_hour_qty FROM mac WHERE mac.com_product_code = od.erp_product_code and rownum = 1) as mac_hour_qty
+						         , od.pro_order_day_qty
+						         , od.pro_order_expect_qty
+						         , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+						         , od.pro_order_seq
+						         , od.pro_order_code
+						         , TO_CHAR(om.pro_order_date, 'yyyy-MM-dd') as pro_order_date
+						         , od.erp_customer_code
+						         , p.erp_order_qty
+						         , od.pro_order_detail_code
+						FROM     pro_order_detail od
+						       , pro_order om
+						       , pro_plan_detail p
+						WHERE  od.pro_order_code = om.pro_order_code
+						  AND  od.pro_plan_detail_code = p.pro_plan_detail_code
+			              AND  om.pro_order_date LIKE '%' || TO_DATE(#{proOrderDate}) || '%'
+			              AND 	od.pro_order_detail_code LIKE '%' || #{proOrderDetailCode} || '%'				  
+							<if test="proOrderDate != null and proOrderDate != ''"> AND
+								om.pro_order_date LIKE '%' || TO_DATE(#{proOrderDate}) || '%'
+							</if>
+							<if test="proOrderCode != null and proOrderCode != ''"> AND
+								od.pro_order_code LIKE '%' || #{proOrderCode} || '%'
+							</if>
+						ORDER BY 
+							od.pro_plan_detail_code DESC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+
+	
+	
+	<!-- prodView 전체조회 -->
+	<select id="selectProOrderList" parameterType="mes.pro.order.service.ProOrderVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+						SELECT TO_CHAR(od.pro_work_date, 'yyyy/MM/dd') as pro_work_date
+							         , od.pro_order_detail_code
+							         , od.erp_customer_code
+							         , od.erp_product_code
+							         , od.erp_product_name
+							         , pd.erp_order_code
+							         , TO_CHAR(od.erp_product_deadline, 'yyyy/MM/dd') as erp_product_deadline
+							         , pd.erp_order_qty
+							         , od.pro_order_qty
+							         , om.pro_order_gubun
+							         , od.pro_process_lot_no
+							         , od.pro_order_seq
+							         , TO_CHAR(om.pro_order_date, 'yyyy/MM/dd') as pro_order_date
+							         , cd.com_code_detail_name
+							         , CASE od.pro_process_status WHEN 6 THEN '생산완료'
+							         							  WHEN 5 THEN '생산중'
+							         							  WHEN 4 THEN '생산중'
+							         							  WHEN 3 THEN '생산중'
+							         							  WHEN 2 THEN '생산중'
+							         							  WHEN 1 THEN '생산중'
+                                      							  ELSE ' ' END AS pro_process_status
+							FROM pro_order_detail od
+							   , pro_order om
+							   , pro_plan_detail pd
+							   , com_code_detail cd
+							WHERE od.pro_order_code = om.pro_order_code
+							  AND od.pro_plan_detail_code = pd.pro_plan_detail_code
+							  AND od.erp_customer_code = cd.com_code_detail_id
+							  AND cd.com_code_detail_id LIKE 'CUSTOMER' || '%'						  
+								<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >
+									<if test="searchCondition == 1"> AND
+										od.pro_work_date BETWEEN #{startDate} AND #{endDate} 
+									</if>
+									<if test="searchCondition == 2"> AND
+										od.erp_product_deadline BETWEEN TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD') 
+									</if>
+								</if>
+								<if test="erpProductCode != null and erpProductCode != ''"> AND
+									od.erp_product_code LIKE '%' || #{erpProductCode} || '%'
+								</if>
+								<if test="erpCustomerCode != null and erpCustomerCode != ''"> AND
+									od.erp_customer_code LIKE '%' || #{erpCustomerCode} || '%'
+								</if>
+							ORDER BY 
+								om.PRO_ORDER_CODE DESC
+				
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>	
+	<select id="selectProOrderListTotCnt" parameterType="mes.pro.order.service.ProOrderVO" resultType="int">
+			SELECT COUNT(*) totcnt
+				FROM pro_order_detail o
+						   , pro_plan_detail p
+						   , mac m
+						WHERE p.erp_product_code = o.erp_product_code
+						  AND m.com_product_code = o.erp_product_code
+					  <!-- AND 1=1 -->
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					PRO_ORDER_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_ORDER_GUBUN LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+
+</mapper>

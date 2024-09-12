@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.prodProcFlow.service.impl.ProdProcFlowMapper">
+	
+	<!-- 마스터코드 조회 -->
+	<select id="selectComProdList" parameterType="mes.com.prodProcFlow.service.ProdProcFlowVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT COM_PRODUCT_CODE
+							, COM_PRODUCT_NAME
+					FROM COM_PRODUCT
+					WHERE 1=1
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+		
+	<!-- 디테일코드 조회 -->
+	<select id="selectProdProcList" parameterType="mes.com.prodProcFlow.service.ProdProcFlowVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT COM_PRODUCT_CODE
+							, COM_PRODUCT_NAME
+							, COM_PRODUCT_SIZE
+							, COM_PRODUCT_UNIT
+							, COM_PRODUCT_USE
+					FROM 
+							COM_PRODUCT 
+					WHERE 
+							1=1
+					<if test="comProductCode != null and comProductCode != '' ">
+					AND COM_PRODUCT_CODE = UPPER(#{comProductCode})
+					</if>
+					
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 공정전개 -->
+	<select id="selectProcFlowList" parameterType="mes.com.prodProcFlow.service.ProdProcFlowVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+				SELECT 	a.COM_PRODUCT_CODE
+						,a.COM_PROCESS_CODE
+						, a.COM_PROCESS_SEQ
+						, b.COM_PROCESS_NAME
+						, b.COM_PROCESS_DESC
+						, b.COM_PROCESS_UNIT
+						, b.COM_PROCESS_BUHA
+						, b.COM_PROCESS_LEADTIME
+						, b.COM_PROCESS_GUBUN
+						, b.COM_PROCESS_ETC
+				FROM COM_PROCESS a
+					, COM_PROCESS_DETAIL b
+				WHERE a.COM_PROCESS_CODE = b.COM_PROCESS_CODE
+				AND 1=1
+				<if test="comProductCode != null and comProductCode != '' ">
+				AND a.COM_PRODUCT_CODE = UPPER(#{comProductCode})
+				</if>
+				ORDER BY a.COM_PROCESS_SEQ ASC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 공정흐름 코드, 이름 조회 모달 -->
+	<select id="selectProcFlowModal" parameterType="mes.com.prodProcFlow.service.ProdProcFlowVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT
+					     COM_PROCESS_CODE
+					     , COM_PROCESS_NAME
+					     , COM_PROCESS_DESC
+					FROM
+					     COM_PROCESS_DETAIL
+					WHERE 1=1
+					<if test="comProcessCode != null and comProcessCode != '' ">
+					AND COM_PROCESS_CODE LIKE UPPER(#{comProcessCode})
+					</if>
+					<if test="comProcessName != null and comProcessName != '' ">
+					AND COM_PROCESS_NAME LIKE UPPER(#{comProcessName})
+					</if>
+					
+					ORDER BY COM_PROCESS_CODE asc
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	
+	<!-- 공정흐름 업데이트 -->
+	<update id="updateProcFlow">
+	UPDATE 
+		COM_PROCESS_DETAIL
+	SET
+		COM_PROCESS_UNIT = #{comProcessUnit}
+		, COM_PROCESS_BUHA = #{comProcessBuha}
+		, COM_PROCESS_UNIT_PRICE = #{comProcessUnitPrice}
+		, COM_PROCESS_LEADTIME = #{comProcessLeadtime}
+		, COM_PROCESS_PRODUCT_DAY = #{comProcessProductDay}
+		, COM_PROCESS_GUBUN = #{comProcessGubun}
+		, COM_PROCESS_ETC = #{comProcessEtc}
+	WHERE 
+		COM_PROCESS_CODE = UPPER(#{comProcessCode})
+	</update>
+	
+	<!-- 공정흐름 삽입 -->
+	<insert id="insertProcFlow">
+	INSERT INTO 
+		COM_PROCESS
+	VALUES(
+			#{comProductCode}	<!-- 버튼값 받기 -->
+			, #{comProcessCode}			
+			, #{comProcessSeq})
+	</insert>
+	
+	<!-- 공정흐름 삭제 -->
+	<delete id="deleteProcFlow" parameterType="mes.com.prodProcFlow.service.ProdProcFlowVO">
+	DELETE FROM 
+			COM_PROCESS
+	WHERE COM_PRODUCT_CODE = UPPER(#{comProductCode})
+		AND COM_PROCESS_CODE = UPPER(#{comProcessCode})
+	</delete>
+
+
+</mapper>

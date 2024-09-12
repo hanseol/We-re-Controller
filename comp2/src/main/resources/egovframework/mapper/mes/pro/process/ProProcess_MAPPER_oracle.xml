@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.pro.proc.service.impl.ProProcessMapper">
+	
+
+	<resultMap id="proProcess" type="mes.pro.proc.service.ProProcessVO">
+		<result property="comProcessCode" column="COM_PROCESS_CODE" />
+		<result property="proOrderDetailCode" column="PRO_ORDER_DETAIL_CODE" />
+		<result property="comProductFCode" column="COM_PRODUCT_F_CODE" />
+		<result property="proProcessFQty" column="PRO_PROCESS_F_QTY" />
+		<result property="macLineNo" column="MAC_LINE_NO" />
+		<result property="proProcessStartTime" column="PRO_PROCESS_START_TIME" />
+		<result property="proProcessEndTime" column="PRO_PROCESS_END_TIME" />
+		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" />
+		<result property="macCode" column="MAC_CODE" />
+		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
+		<result property="proProcessQuantity" column="PRO_PROCESS_QUANTITY" />
+	</resultMap>
+	
+	
+	
+	<delete id="deleteProProcess">
+		<![CDATA[
+			DELETE FROM PRO_PROCESS 
+						WHERE COM_PROCESS_CODE=#{comProcessCode}
+								AND PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				]]>
+	</delete>
+	
+	<select id="selectProProcess" resultMap="proProcess">
+		<![CDATA[
+			SELECT
+				COM_PROCESS_CODE
+				, PRO_ORDER_DETAIL_CODE
+				, COM_PRODUCT_F_CODE
+				, PRO_PROCESS_F_QTY
+				, MAC_LINE_NO
+				, PRO_PROCESS_START_TIME
+				, PRO_PROCESS_END_TIME
+				, ERP_EMPLOYEE_ID
+				, MAC_CODE
+				, PRO_PROCESS_LOT_NO
+				, PRO_PROCESS_QUANTITY
+			FROM PRO_PROCESS
+						WHERE COM_PROCESS_CODE=#{comProcessCode}
+								AND PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				]]>
+	</select>
+	
+	<select id="selectProProcessList" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+SELECT * FROM (
+	SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+								COM_PROCESS_CODE
+								, PRO_ORDER_DETAIL_CODE
+								, COM_PRODUCT_F_CODE
+								, PRO_PROCESS_F_QTY
+								, MAC_LINE_NO
+								, PRO_PROCESS_START_TIME
+								, PRO_PROCESS_END_TIME
+								, ERP_EMPLOYEE_ID
+								, MAC_CODE
+								, PRO_PROCESS_LOT_NO
+								, PRO_PROCESS_QUANTITY
+						FROM PRO_PROCESS
+				WHERE 1=1
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<if test="searchCondition == 0">AND
+						COM_PROCESS_CODE = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 1">AND
+						PRO_ORDER_DETAIL_CODE LIKE '%' || #{searchKeyword} || '%'
+					</if>
+				</if>
+					ORDER BY 
+						COM_PROCESS_CODE DESC
+							, PRO_ORDER_DETAIL_CODE DESC
+		
+		<![CDATA[					
+	) A WHERE ROWNUM <= #{lastIndex}
+)WHERE RNUM > #{firstIndex}
+]]>
+	</select>	
+	<select id="selectProProcessListTotCnt" parameterType="mes.pro.proc.service.ProProcessVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM PRO_PROCESS
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					COM_PROCESS_CODE = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					PRO_ORDER_DETAIL_CODE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+	</select>
+	
+	
+	
+	<!-- 공정별 소요자재 조회(생산 완료된 지시의 소요 자재만 조회) -->
+	<select id="selectProcLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT  cd.com_code_detail_name
+		      , l.pro_order_detail_code
+		      , od.erp_product_code
+		      , od.erp_product_name
+		      , l.mat_lot_no
+		      , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+		      , m.com_material_code
+		      , c.com_material_name
+		      , pd.pro_plan_qty
+		      , od.pro_order_qty
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		      , com_code_detail cd
+		      , pro_order_detail od
+		      , pro_plan_detail pd
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = cd.com_code_detail_id
+		  AND   l.pro_order_detail_code = od.pro_order_detail_code
+		  AND   od.pro_plan_detail_code = pd.pro_plan_detail_code
+		  AND   od.pro_process_status = '6'
+		<if test="searchCondition == 1"> AND
+			m.com_process_code = 'PROCG001'
+		</if>
+		<if test="searchCondition == 2"> AND
+			m.com_process_code = 'PROCG003'
+	    </if>
+		<if test="proOrderDetailCode != null and proOrderDetailCode != ''"> AND
+			l.pro_order_detail_code = #{proOrderDetailCode}
+		</if>
+		ORDER BY m.com_material_code
+	</select>
+	
+	
+	<!-- 공정별 소요자재 조회(전체 조회) -->
+	<select id="selectTotalProcLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT  cd.com_code_detail_name
+		      , l.pro_order_detail_code
+		      , od.erp_product_code
+		      , od.erp_product_name
+		      , l.mat_lot_no
+		      , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+		      , m.com_material_code
+		      , c.com_material_name
+		      , pd.pro_plan_qty
+		      , od.pro_order_qty
+	          <!-- , (SELECT pro_process_quantity 
+	          	 FROM pro_process pp 
+	          	 WHERE pp.pro_order_detail_code = od.pro_order_detail_code 
+	          	 AND ROWNUM = 1) as pro_process_quantity -->
+	          , CASE od.pro_process_status  WHEN 6 THEN '완료'
+		                                   WHEN 5 THEN '생산중'
+		                                   WHEN 4 THEN '생산중'
+		                                   WHEN 3 THEN '생산중'
+		                                   WHEN 2 THEN '생산중'
+		                                   WHEN 1 THEN '생산중'
+      		  ELSE '미완료' END AS pro_process_status
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		      , com_code_detail cd
+		      , pro_order_detail od
+		      , pro_plan_detail pd
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = cd.com_code_detail_id
+		  AND   l.pro_order_detail_code = od.pro_order_detail_code
+		  AND   od.pro_plan_detail_code = pd.pro_plan_detail_code
+				<if test="searchCondition == 1"> AND
+					m.com_process_code = 'PROCG001'
+				</if>
+				<if test="searchCondition == 2"> AND
+					m.com_process_code = 'PROCG003'
+				</if>
+				<if test="totalProOrderDetailCode != null and totalProOrderDetailCode != ''"> AND
+					l.pro_order_detail_code = #{totalProOrderDetailCode}
+				</if>
+		ORDER BY m.com_material_code
+	
+	</select>
+	
+	
+
+
+	<!-- 생산이 완료된 지시코드 조회하기: 모달용 -->
+	<select id="selectfinishOrder" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT pro_order_detail_code
+			 , TO_CHAR(pro_work_date, 'yyyy-MM-dd') as pro_work_date
+			 , erp_product_name
+		FROM   pro_order_detail
+		WHERE  pro_process_status = '6'
+		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" >AND
+			pro_work_date BETWEEN #{startDate} AND #{endDate} 
+		</if>	
+	</select>
+	
+	
+	<!-- 전체 지시코드 조회하기: 모달용 -->
+	<select id="selectTotalOrder" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT pro_order_detail_code
+			 , TO_CHAR(pro_work_date, 'yyyy-MM-dd') as pro_work_date
+			 , erp_product_name
+			 , CASE pro_process_status  WHEN 6 THEN '완료'
+	                                    WHEN 5 THEN '생산중'
+	                                    WHEN 4 THEN '생산중'
+	                                    WHEN 3 THEN '생산중'
+	                                    WHEN 2 THEN '생산중'
+	                                    WHEN 1 THEN '생산중'
+      		  ELSE '미완료' END AS pro_process_status
+		FROM   pro_order_detail
+		WHERE 1=1
+		<if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')" > AND
+			pro_work_date BETWEEN #{startDate} AND #{endDate} 
+		</if>
+	
+	</select>
+
+	
+	
+	<!-- 엑셀작업 -->
+	<select id="procMatrExcel" parameterType="mes.pro.proc.service.ProProcessVO" resultType="HashMap">
+		SELECT  cd.com_code_detail_name
+		      , l.pro_order_detail_code
+		      , od.erp_product_code
+		      , od.erp_product_name
+		      , l.mat_lot_no
+		      , TO_CHAR(od.pro_work_date, 'yyyy-MM-dd') as pro_work_date
+		      , m.com_material_code
+		      , c.com_material_name
+		      , pd.pro_plan_qty
+		      , od.pro_order_qty
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		      , com_code_detail cd
+		      , pro_order_detail od
+		      , pro_plan_detail pd
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = cd.com_code_detail_id
+		  AND   l.pro_order_detail_code = od.pro_order_detail_code
+		  AND   od.pro_plan_detail_code = pd.pro_plan_detail_code
+		<if test="searchCondition == 1"> AND
+			m.com_process_code = 'PROCG001'
+		</if>
+		<if test="searchCondition == 2"> AND
+			m.com_process_code = 'PROCG003'
+	    </if>
+		<if test="proOrderDetailCode != null and proOrderDetailCode != ''"> AND
+			l.pro_order_detail_code = #{proOrderDetailCode}
+		</if>
+		ORDER BY m.com_material_code
+	</select>
+
+
+	<!-- 김한설 공정흐름관리 -->
+	
+	<!-- 공정 리스트 조회 -->
+	<select id="selectProProcessName" resultType="mes.pro.proc.service.ProProcessVO">
+		SELECT 	  COM_CODE_DETAIL_ID AS COM_PROCESS_CODE
+				, COM_CODE_DETAIL_NAME AS COM_PROCESS_NAME
+		FROM 	  COM_CODE_DETAIL
+		WHERE 	  COM_CODE_ID = 'MES007'
+	</select>
+	
+	<!-- 각 공정에서 작업 대기중인 지시 항목 불러오기. (오늘 지시목록 중에 해당공정에서 작업중이거나 작업완료된 지시는 필터링 되어야함.) -->
+	<!-- PROCG001:제작 - 오늘 해야 할 작업 중 제작 대기중인 지시 조회 -->
+	<!-- PROCG002:검사 - 오늘 해야 할 작업 중 제작을 마치고 검사 대기중인 지시 조회 --> 
+	<!-- PROCG003:포장 - 오늘 해야 할 작업 중 검사를 마치고 포장 대기중인 지시 조회 -->
+	<select id="selectProOrderDetailCode" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
+		<if test="comProcessCode == 'PROCG001'">
+			SELECT 	PRO_ORDER_DETAIL_CODE
+			FROM 	PRO_ORDER_DETAIL
+			WHERE 	PRO_PROCESS_STATUS IS NULL
+		</if>
+		<if test="comProcessCode == 'PROCG002'">
+			SELECT	PRO_ORDER_DETAIL_CODE
+			FROM 	PRO_ORDER_DETAIL
+			WHERE 	PRO_PROCESS_STATUS = 2
+		</if>
+		<if test="comProcessCode == 'PROCG003'">
+			SELECT 	PRO_ORDER_DETAIL_CODE
+			FROM 	PRO_ORDER_DETAIL
+			WHERE 	PRO_PROCESS_STATUS = 4
+		</if>
+	</select>
+	
+	
+	<!-- 공정을 선택하여 공정코드로 설비 리스트를 가져오기 -->
+	<select id="selectMacCode" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
+		SELECT 	mac_code
+		FROM 	mac
+		WHERE 	com_process_code = #{comProcessCode}      	
+	</select>
+	
+	<!-- 설비리스트를 선택하여 라인번호 가져오기 -->
+	<select id="selectLineNo" parameterType="mes.pro.proc.service.ProProcessVO" resultType="String">
+		SELECT	mac_line_no
+		FROM 	mac
+		WHERE 	mac_code = #{macCode}
+	</select>
+	
+	
+	<!-- 선택된 지시에 필요한 자재 LOT 정보를 자재 종류별로 보여준다. -->
+	<select id="selectMatrLot" parameterType="mes.pro.proc.service.ProProcessVO" resultType="mes.pro.proc.service.ProProcessVO">
+		SELECT  m.com_material_code
+		      , l.mat_lot_no
+		      , c.com_material_name
+		FROM    mat_inout m
+		      , pro_material_lot l
+		      , com_material c
+		WHERE   m.mat_lot_no = l.mat_lot_no
+		  AND   c.com_material_code = m.com_material_code
+		  AND   m.com_process_code = #{comProcessCode}
+		  AND   l.pro_order_detail_code = #{proOrderDetailCode}
+		ORDER BY m.com_material_code
+	</select>
+	
+	<!-- 지시코드를 선택했을 때 제품명 가져오기 -->
+	<!-- 공정이동표 발행에 필요한 고객사명, 완제품lot 번호 가져오기 -->
+	<!-- 주문코드 받아오기 -->
+	<select id="selectProdName" parameterType="mes.pro.proc.service.ProProcessVO" resultType="egovMap">
+		SELECT 	od.erp_product_name
+				, od.pro_order_qty
+				, get_code_detail(od.erp_customer_code) as erp_customer_name 
+				, od.pro_process_lot_no
+        		, pd.erp_order_code
+		FROM 	pro_order_detail od, pro_plan_detail pd
+		WHERE 	od.pro_order_detail_code = #{proOrderDetailCode}
+		AND		od.pro_plan_detail_code = pd.pro_plan_detail_code
+	</select>
+	
+	<!-- procg001(첫번째공정에서) start 버튼 눌렀을 때 . -->
+	<insert id="insertProProcess">
+		DECLARE
+			BEGIN
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , MAC_LINE_NO
+				  , PRO_PROCESS_START_TIME
+				  , ERP_EMPLOYEE_ID
+				  , MAC_CODE
+				  , ERP_PRODUCT_NAME)
+			VALUES ( #{comProcessCode}
+				  , #{proOrderDetailCode}
+				  , #{macLineNo}
+				  , #{proProcessStartTime}
+				  , #{erpEmployeeId}
+				  , #{macCode} 
+				  , #{erpProductName});
+	
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , ERP_PRODUCT_NAME)
+			VALUES ( 'PROCG002'
+				  , #{proOrderDetailCode}
+				  , #{erpProductName});
+				  
+			INSERT INTO PRO_PROCESS 
+				( COM_PROCESS_CODE
+				  , PRO_ORDER_DETAIL_CODE
+				  , ERP_PRODUCT_NAME)
+			VALUES ( 'PROCG003'
+				  , #{proOrderDetailCode}
+				  , #{erpProductName});
+				  
+			UPDATE PRO_ORDER_DETAIL
+			SET PRO_PROCESS_STATUS = 1
+			WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+			
+		END;
+	</insert>
+	
+	<!-- procg002, procg003에서 start버튼이 눌렸을때. -->
+	<update id="updateStartTime">
+		DECLARE
+			BEGIN
+				UPDATE PRO_PROCESS
+				SET	PRO_PROCESS_START_TIME=#{proProcessStartTime},
+					MAC_LINE_NO=#{macLineNo},
+					ERP_EMPLOYEE_ID=#{erpEmployeeId},
+					MAC_CODE=#{macCode}
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+				AND COM_PROCESS_CODE = #{comProcessCode};
+				
+			<if test="comProcessCode=='PROCG002'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 3
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+			</if>
+			<if test="comProcessCode=='PROCG003'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 5
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+			</if>
+			
+		END;
+		
+		
+	</update>
+	
+	
+	<!-- end 버튼이 눌렸을 때. -->
+	<update id="updateProProcess">
+		<selectKey resultType="string" keyProperty="proProcessLotNo" order="BEFORE">
+       		 SELECT PRO_PROCESS_LOT_NO 
+       		 FROM PRO_ORDER_DETAIL
+       		 WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+   		</selectKey>    
+		DECLARE
+			BEGIN
+				UPDATE PRO_PROCESS
+				SET	PRO_PROCESS_END_TIME=#{proProcessEndTime},
+					PRO_PROCESS_QUANTITY=#{proProcessQuantity}
+				<if test="comProcessCode=='PROCG003'">,
+					PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+				</if>
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode}
+				AND COM_PROCESS_CODE = #{comProcessCode};
+				
+				<if test="comProcessCode=='PROCG001'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 2
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+				</if>
+				<if test="comProcessCode=='PROCG002'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 4
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+				</if>
+				<if test="comProcessCode=='PROCG003'">
+				UPDATE PRO_ORDER_DETAIL
+				SET PRO_PROCESS_STATUS = 6
+				WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+				</if>
+		END;
+	</update>
+	
+	<!-- 선택한 지시를 시작 또는 종료 했을 때 (1.pro_process 테이블에 시간 업데이트, 2.pro_order_detail 테이블에 상태 업데이트)-->
+	<update id="updateProcg2">
+		<if test="proProcessEndTime !=null and proProcessEndTime !='' ">
+			DECLARE
+				BEGIN
+					UPDATE PRO_PROCESS
+					SET COM_PROCESS_CODE=#{comProcessCode}
+						, PRO_PROCESS_END_TIME=#{proProcessEndTime}
+					WHERE PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode};
+					
+					UPDATE PRO_ORDER_DETAIL
+					SET PRO_PROCESS_STATUS = 4
+					WHERE PRO_ORDER_DETAIL_CODE = #{proOrderDetailCode};
+		
+		</if>
+		UPDATE PRO_PROCESS
+		SET COM_PROCESS_CODE=#{comProcessCode}
+				, MAC_LINE_NO=#{macLineNo}
+				, PRO_PROCESS_START_TIME=#{proProcessStartTime}
+				, ERP_EMPLOYEE_ID=#{erpEmployeeId}
+				, MAC_CODE=#{macCode}
+		WHERE PRO_ORDER_DETAIL_CODE=#{proOrderDetailCode}
+				
+	</update>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.comModal.service.impl.ComModalMapper">
+	
+	<!-- 조회 -->
+	<select id="modalProdFault" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+					com_code_detail_id
+					, com_code_detail_name
+				FROM
+					com_code_detail
+				WHERE 1=1
+					AND com_code_id = 'MES013'
+					<if test="comCodeDetailId != null and comCodeDetailId != '' ">
+					AND com_code_detail_id LIKE '%' || UPPER(#{comCodeDetailId}) || '%'
+					</if>
+					<if test="comCodeDetailName != null and comCodeDetailName != '' ">
+					AND com_code_detail_name LIKE '%' || UPPER(#{comCodeDetailName}) || '%'
+					</if>
+					
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+
+</mapper>

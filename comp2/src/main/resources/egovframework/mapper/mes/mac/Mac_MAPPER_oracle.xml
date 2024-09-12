@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.mac.service.impl.MacMapper">
+	
+
+	<resultMap id="mac" type="mes.mac.service.MacVO">
+		<result property="macCode" column="MAC_CODE" />
+		<result property="macLineNo" column="MAC_LINE_NO" />
+		<result property="macHourQty" column="MAC_HOUR_QTY" />
+		<result property="comProductCode" column="COM_PRODUCT_CODE" />
+		<result property="comProcessCode" column="COM_PROCESS_CODE" />
+		<result property="macUnused" column="MAC_UNUSED" />
+		<result property="erpEmployeeId" column="ERP_EMPLOYEE_ID" />
+		<result property="macUsePurpose" column="MAC_USE_PURPOSE" />
+		<result property="macGubun" column="MAC_GUBUN" />
+		<result property="macName" column="MAC_NAME" />
+		<result property="macSize" column="MAC_SIZE" />
+		<result property="macModel" column="MAC_MODEL" />
+		<result property="macMachineConstructor" column="MAC_MACHINE_CONSTRUCTOR" />
+		<result property="macPossibleSize" column="MAC_POSSIBLE_SIZE" />
+		<result property="macMachineDate" column="MAC_MACHINE_DATE" />
+		<result property="macMachineCost" column="MAC_MACHINE_COST" />
+		<result property="macBuha" column="MAC_BUHA" />
+		<result property="macTemp" column="MAC_TEMP" />
+		<result property="macChkDate" column="MAC_CHK_DATE" />
+		<result property="macNextChkDate" column="MAC_NEXT_CHK_DATE" />
+		<result property="macChkCycle" column="MAC_CHK_CYCLE" />
+		<result property="macImage" column="MAC_IMAGE" />
+	</resultMap>
+	
+	<insert id="insertMac">
+		<![CDATA[
+			INSERT INTO MAC 
+				( MAC_CODE
+				  , MAC_LINE_NO
+				  , MAC_HOUR_QTY
+				  , COM_PRODUCT_CODE
+				  , COM_PROCESS_CODE
+				  , MAC_UNUSED
+				  , ERP_EMPLOYEE_ID
+				  , MAC_USE_PURPOSE
+				  , MAC_GUBUN
+				  , MAC_NAME
+				  , MAC_SIZE
+				  , MAC_MODEL
+				  , MAC_MACHINE_CONSTRUCTOR
+				  , MAC_POSSIBLE_SIZE
+				  , MAC_MACHINE_DATE
+				  , MAC_MACHINE_COST
+				  , MAC_BUHA
+				  , MAC_TEMP
+				  , MAC_CHK_DATE
+				  , MAC_NEXT_CHK_DATE
+				  , MAC_CHK_CYCLE
+				  , MAC_IMAGE )
+			VALUES ( #{macCode}
+				  , #{macLineNo}
+				  , #{macHourQty}
+				  , #{comProductCode}
+				  , #{comProcessCode}
+				  , #{macUnused}
+				  , #{erpEmployeeId}
+				  , #{macUsePurpose}
+				  , #{macGubun}
+				  , #{macName}
+				  , #{macSize}
+				  , #{macModel}
+				  , #{macMachineConstructor}
+				  , #{macPossibleSize}
+				  , TO_DATE(#{macMachineDate},'YYYY-MM-DD')
+				  , #{macMachineCost}
+				  , #{macBuha}
+				  , #{macTemp}
+				  , TO_DATE(#{macChkDate},'YYYY-MM-DD')
+				  , TO_DATE(#{macNextChkDate},'YYYY-MM-DD')
+				  , #{macChkCycle}
+				  , #{macImage} )
+		]]>
+	</insert>
+	
+	<update id="updateMac">
+		<![CDATA[
+			UPDATE MAC
+			SET MAC_CODE=#{macCode}
+				, MAC_LINE_NO=#{macLineNo}
+				, MAC_UNUSED=#{macUnused}
+				, MAC_MACHINE_CONSTRUCTOR=#{macMachineConstructor}
+				, MAC_POSSIBLE_SIZE=#{macPossibleSize}
+				, MAC_BUHA=#{macBuha}
+				, MAC_CHK_DATE=TO_DATE(#{macChkDate},'YYYY-MM-DD')
+				, MAC_NEXT_CHK_DATE=TO_DATE(#{macNextChkDate},'YYYY-MM-DD')
+				, MAC_CHK_CYCLE=#{macChkCycle}
+				, MAC_CONSTRUCTOR_PHONE=#{macConstructorPhone}
+				WHERE MAC_CODE=#{macCode}
+				]]>
+	</update>
+	
+	<delete id="deleteMac">
+		<![CDATA[
+			DELETE FROM MAC 
+						WHERE MAC_CODE=#{macCode}
+				]]>
+	</delete>
+	
+	<select id="selectMac" resultMap="mac">
+		<![CDATA[
+			SELECT
+				MAC_CODE
+				, MAC_LINE_NO
+				, MAC_HOUR_QTY
+				, COM_PRODUCT_CODE
+				, COM_PROCESS_CODE
+				, MAC_UNUSED
+				, ERP_EMPLOYEE_ID
+				, MAC_USE_PURPOSE
+				, MAC_GUBUN
+				, MAC_NAME
+				, MAC_SIZE
+				, MAC_MODEL
+				, MAC_MACHINE_CONSTRUCTOR
+				, MAC_POSSIBLE_SIZE
+				, TO_CHAR(MAC_MACHINE_DATE,'YYYY-MM-DD') AS MAC_MACHINE_DATE
+				, TO_CHAR(MAC_MACHINE_COST,'999,999,999,999') AS MAC_MACHINE_COST
+				, MAC_BUHA
+				, MAC_TEMP
+				, TO_CHAR(MAC_CHK_DATE,'YYYY-MM-DD') AS MAC_CHK_DATE
+				, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY-MM-DD') AS MAC_NEXT_CHK_DATE
+				, MAC_CHK_CYCLE
+				, MAC_IMAGE
+				, MAC_CONSTRUCTOR_PHONE
+			FROM MAC
+			WHERE MAC_CODE=#{macCode}
+		]]>
+	</select>
+	
+	<select id="selectMacList" parameterType="mes.mac.service.MacVO" resultType="egovMap">
+	SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+					SELECT
+									MAC_CODE
+									, MAC_LINE_NO
+									, MAC_HOUR_QTY
+									, COM_PRODUCT_CODE
+									, COM_PROCESS_CODE
+									, MAC_UNUSED
+									, ERP_EMPLOYEE_ID
+									, MAC_USE_PURPOSE
+									, MAC_GUBUN
+									, MAC_NAME
+									, MAC_SIZE
+									, MAC_MODEL
+									, MAC_MACHINE_CONSTRUCTOR
+									, MAC_POSSIBLE_SIZE
+									, TO_CHAR(MAC_MACHINE_DATE,'YYYY-MM-DD') AS MAC_MACHINE_DATE
+									, TO_CHAR(MAC_MACHINE_COST,'999,999,999,999') AS MAC_MACHINE_COST
+									, MAC_BUHA
+									, MAC_TEMP
+									, TO_CHAR(MAC_CHK_DATE,'YYYY-MM-DD') AS MAC_CHK_DATE
+									, TO_CHAR(MAC_NEXT_CHK_DATE,'YYYY-MM-DD') AS MAC_NEXT_CHK_DATE
+									, MAC_CHK_CYCLE
+									, MAC_IMAGE
+									, MAC_CONSTRUCTOR_PHONE
+							FROM MAC
+					WHERE 1=1
+					<if test="comProductCode != null and comProductCode != ''">AND
+						COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+					</if>
+					<if test="macLineNo != null and macLineNo != ''">AND
+						MAC_LINE_NO LIKE '%' || #{macLineNo} || '%'
+					</if>
+					<if test="macCode != null and macCode != ''">AND
+						MAC_CODE LIKE '%' || #{macCode} || '%'
+					</if>
+					<if test="macNextChkDate != null and macNextChkDate != ''">AND
+						TO_CHAR(MAC_NEXT_CHK_DATE, 'YYYY-MM-DD') = #{macNextChkDate} 
+					</if>
+						ORDER BY 
+							MAC_NEXT_CHK_DATE ASC
+			
+			<![CDATA[					
+		) A WHERE ROWNUM <= #{lastIndex}
+	)WHERE RNUM >= #{firstIndex}
+	]]>
+	</select>	
+
+	<!-- 설비 점검일 알림 조회 -->
+	<select id="selectLeftDate" resultType="mes.mac.service.MacDateResultVO">
+	  <![CDATA[
+		SELECT  TO_CHAR(TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE))) || 
+	        		'일 : (' ||
+	        		MAC_CODE || ', ' ||
+	       			MAC_LINE_NO || ', ' ||
+	       			MAC_GUBUN || ') ' AS "result",
+              TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) AS "dday"
+		FROM MAC
+		WHERE TO_NUMBER(ROUND(MAC_NEXT_CHK_DATE - SYSDATE)) <= 10
+		]]>
+	</select>
+	
+	<!-- 설비 등록 시 자동 부여 될 코드 생성 -->
+	<select id="selectNextMacCode" resultType="String">
+		SELECT 'MAC' || 
+				TO_CHAR(MAX(TO_NUMBER(SUBSTR(MAC_CODE, 4,LENGTH(MAC_CODE))))+1) 
+		FROM MAC
+	</select>
+	
+	
+	<!-- 설비 등록 시 필요한 정보 조회 -->
+	<!-- 설비 규격 -->
+	<select id="selectMacSize" resultType="String">
+		SELECT com_code_detail_name AS macSize 
+		FROM com_code_detail
+		WHERE com_code_detail_id LIKE 'MACSIZE%'
+	</select>
+	<!-- 사용 용도 -->
+	<select id="selectMacUsePurpose" resultType="String">
+		SELECT com_code_detail_name AS macUsePurpose
+		FROM com_code_detail
+		WHERE com_code_id = 'MES002'
+	</select>
+	
+	<select id="selectMacModel" resultType="String">
+		SELECT com_code_detail_desc AS macModel
+		FROM com_code_detail
+		WHERE com_code_id = 'MES002'
+	</select>
+	
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.sal.match.service.impl.SalMatchMapper">
+	
+
+	<resultMap id="salMatch" type="mes.sal.match.service.SalMatchVO">
+		<result property="salMatchStatement" column="SAL_MATCH_STATEMENT" />
+		<result property="salMatchInout" column="SAL_MATCH_INOUT" />
+		<result property="salMatchDate" column="SAL_MATCH_DATE" />
+		<result property="salMatchQty" column="SAL_MATCH_QTY" />
+		<result property="comProductCode" column="COM_PRODUCT_CODE" />
+		<result property="proProcessLotNo" column="PRO_PROCESS_LOT_NO" />
+		<result property="comProductName" column="COM_PRODUCT_NAME" />
+	</resultMap>
+	
+	<!-- 한 건 조회 -->
+	<select id="selectSalMatch" resultMap="salMatch">
+		<![CDATA[  
+			SELECT
+				SAL_MATCH_STATEMENT
+				, SAL_MATCH_INOUT
+				, SAL_MATCH_DATE
+				, SAL_MATCH_QTY
+				, COM_PRODUCT_CODE
+				, PRO_PROCESS_LOT_NO
+			FROM SAL_MATCH
+						WHERE SAL_MATCH_STATEMENT=#{salMatchStatement}
+				]]>
+	</select>
+	
+	<!-- 정산입출고 조회 -->
+	<select id="selectSalMatchList"
+		parameterType="mes.sal.match.service.SalMatchVO" resultType="egovMap">
+					SELECT SAL_MATCH_STATEMENT, SAL_MATCH_INOUT,
+					TO_CHAR(SAL_MATCH_DATE, 'YYYY/MM/dd') as SAL_MATCH_DATE,
+					S.COM_PRODUCT_CODE, S.PRO_PROCESS_LOT_NO,
+					TO_CHAR(S.SAL_WRITE_DATE, 'YYYY/MM/dd') as SAL_WRITE_DATE,
+					C.COM_PRODUCT_NAME, SAL_MATCH_QTY, SAL_NOW_QUANTITY,								
+					CASE WHEN S.SAL_MATCH_INOUT = 'INOUT004'
+	                THEN (SAL_PAST_QUANTITY + S.SAL_MATCH_QTY)
+	               	ELSE (SAL_PAST_QUANTITY - S.SAL_MATCH_QTY)
+	                END AS SAL_INOUT_QUANTITY         
+					FROM SAL_MATCH S, SAL_INOUT I, COM_PRODUCT C
+					WHERE
+					S.COM_PRODUCT_CODE = C.COM_PRODUCT_CODE
+                    AND S.PRO_PROCESS_LOT_NO = I.PRO_PROCESS_LOT_NO
+                    AND I.SAL_INOUT_GUBUN = 'INOUT002'
+			<if test="salMatchDate != null and salMatchDate != ''"> AND
+					SAL_MATCH_DATE = #{salMatchDate}
+			</if>
+			<if test="salMatchInout != null and salMatchInout != ''"> AND
+					SAL_MATCH_INOUT = #{salMatchInout}
+			</if>
+			<if test="proProcessLotNo != null and proProcessLotNo != ''">AND
+					S.PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+			</if>
+		ORDER BY SAL_MATCH_DATE DESC	
+	</select>
+	
+	<!-- 정산입출고 삽입 -->
+	<insert id="insertSalMatch">
+			INSERT INTO SAL_MATCH
+			VALUES (#{salMatchStatement}
+			, #{salMatchInout}
+			, #{salMatchDate}
+			, #{salMatchQty}
+			, #{comProductCode}
+			, #{proProcessLotNo}
+			, SYSDATE
+			, #{salNowQuantity})
+	</insert>
+	
+	<!-- 입출고 테이블 수량 업데이트 -->
+	<update id="updateSalInout">		
+			UPDATE SAL_INOUT
+			SET
+			SAL_NOW_QUANTITY = #{salInoutQuantity}
+			WHERE PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+			AND SAL_INOUT_GUBUN = 'INOUT002'
+	</update> 
+	
+	<!-- 정산입출고목록 수정 -->
+	<update id="updateSalMatch">
+		UPDATE SAL_MATCH SET
+		SAL_MATCH_DATE = #{salMatchDate}
+		, SAL_MATCH_INOUT = #{salMatchInout}
+		, SAL_MATCH_QTY = #{salMatchQty}
+		, COM_PRODUCT_CODE = #{comProductCode}
+		, PRO_PROCESS_LOT_NO = #{proProcessLotNo}
+		, SAL_WRITE_DATE = #{salWriteDate}
+		, SAL_PAST_QUANTITY = #{salNowQuantity}
+		WHERE SAL_MATCH_STATEMENT = #{salMatchStatement}
+	</update>
+	
+	<!-- 정산입출고목록 삭제 -->
+	<delete id="deleteSalMatch">
+		DELETE FROM SAL_MATCH
+		WHERE SAL_MATCH_STATEMENT = #{salMatchStatement}
+	</delete>
+	
+	<!-- 모달 : 입고된 완제품 LOT_NO 조회 -->
+	<select id="searchProductMatchList"
+	parameterType="mes.sal.match.service.SalMatchVO" resultType="egovMap">
+		SELECT
+		PRO_PROCESS_LOT_NO, SAL_NOW_QUANTITY, COM_PRODUCT_CODE,		
+		GET_CODE_DETAIL(COM_PRODUCT_CODE) as COM_PRODUCT_NAME
+		FROM SAL_INOUT
+		WHERE SAL_INOUT_GUBUN = 'INOUT002'
+    	AND SAL_NOW_QUANTITY NOT IN ('0')
+		<if test="proProcessLotNo != null and proProcessLotNo != ''"> AND
+			PRO_PROCESS_LOT_NO LIKE '%' || #{proProcessLotNo} || '%'
+		</if>
+		<if test="comProductCode != null and comProductCode != ''"> AND
+			COM_PRODUCT_CODE LIKE '%' || #{comProductCode} || '%'
+		</if>
+		<if test="comProductName != null and comProductName != ''"> AND
+			GET_CODE_DETAIL(COM_PRODUCT_CODE) LIKE '%' || #{comProductName} || '%'
+		</if>
+	</select>
+</mapper>

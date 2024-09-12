@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.comCode.service.impl.ComCodeMapper">
+	
+	<!-- 마스터코드 조회 -->
+	<select id="selectComCodeList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT
+					COM_CODE_ID
+					, COM_CODE_NAME
+					, COM_CODE_DESC
+					, COM_CODE_USEDCHK
+					FROM COM_CODE
+					WHERE 1=1
+					<if test="comCodeId != null and comCodeId != ''  ">
+					AND COM_CODE_ID LIKE '%' || UPPER(#{comCodeId}) || '%'
+					</if>
+					<if test="comCodeName != null and comCodeName != ''  ">
+					AND COM_CODE_NAME LIKE '%' || UPPER(#{comCodeName}) || '%'
+					</if>
+					ORDER BY COM_CODE_ID ASC
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+		
+	<!-- 디테일코드 조회 -->
+	<select id="selectComCodeDetailList" parameterType="mes.com.comCode.service.ComCodeVO" resultType="egovMap">
+			SELECT 
+			COM_CODE_ID
+			, COM_CODE_DETAIL_ID
+			, COM_CODE_DETAIL_NAME
+			, COM_CODE_DETAIL_DESC
+			, COM_CODE_DETAIL_SEQ
+			, COM_CODE_DETAIL_USEDCHK
+			FROM COM_CODE_DETAIL
+			<if test="(comCodeId != null and comCodeId != '')  ">
+			WHERE COM_CODE_ID LIKE UPPER(#{comCodeId})
+			</if>
+			ORDER BY COM_CODE_DETAIL_SEQ ASC
+	</select>	
+
+	<!-- 디테일코드 업데이트 -->
+	<update id="updateComCodeDetail">
+		UPDATE COM_CODE_DETAIL
+		SET
+		COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId})
+		, COM_CODE_DETAIL_NAME = #{comCodeDetailName}
+		, COM_CODE_DETAIL_DESC = #{comCodeDetailDesc}
+		, COM_CODE_DETAIL_SEQ = #{comCodeDetailSeq}
+		, COM_CODE_DETAIL_USEDCHK = #{comCodeDetailUsedchk}
+		WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId})
+	</update>
+	
+	<!-- 디테일코드 삽입 -->
+	<insert id="insertComCodeDetail">
+		INSERT INTO COM_CODE_DETAIL
+		(COM_CODE_ID
+		, COM_CODE_DETAIL_ID
+		, COM_CODE_DETAIL_NAME
+		, COM_CODE_DETAIL_DESC
+		, COM_CODE_DETAIL_SEQ
+		, COM_CODE_DETAIL_USEDCHK)
+		VALUES
+		( 
+		UPPER(#{comCodeId})
+		, UPPER(#{comCodeDetailId})
+		, #{comCodeDetailName}
+		, #{comCodeDetailDesc}
+		, #{comCodeDetailSeq}
+		, #{comCodeDetailUsedchk})
+	
+	</insert>
+	
+	<!-- 디테일코드 삭제 -->
+	<delete id="deleteComCodeDetail" parameterType="mes.com.comCode.service.ComCodeVO">
+		DELETE FROM COM_CODE_DETAIL
+		<if test="(comCodeDetailId != null and comCodeDetailId != '')">
+		WHERE COM_CODE_DETAIL_ID = UPPER(#{comCodeDetailId}) 
+		OR COM_CODE_DETAIL_ID = LOWER(#{comCodeDetailId})
+		</if>
+	</delete>
+
+
+</mapper>

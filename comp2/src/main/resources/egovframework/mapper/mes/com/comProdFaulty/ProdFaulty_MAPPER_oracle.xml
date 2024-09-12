@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes.com.prodFaulty.service.impl.ProdFaultyMapper">
+	
+	<!-- 조회 -->
+	<select id="selectProdFaulty" parameterType="mes.com.prodFaulty.service.ProdFaultyVO" resultType="egovMap">
+		SELECT * FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+					SELECT
+							* 
+					FROM 
+							COM_PRODUCT_F
+					WHERE 1=1
+					<if test="comProductFCode != null and comProductFCode != '' ">
+					AND COM_PRODUCT_F_CODE = UPPER(#{comProductFCode})
+					</if>
+					
+				<![CDATA[					
+			) A WHERE ROWNUM <= #{lastIndex}
+		)WHERE RNUM >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 삽입 -->
+	<insert id="insertProdFaulty">
+		INSERT INTO 
+			COM_PRODUCT_F(
+				COM_PRODUCT_F_NO
+				, COM_PRODUCT_F_CODE
+				, COM_PRODUCT_F_NAME
+				, COM_PRODUCT_F_DETAIL
+				, COM_PROCESS_CODE
+				, COM_PROCESS_NAME
+				, COM_PRODUCT_F_ETC)
+		VALUES
+			(F_SEQ.NEXTVAL
+			, #{comProductFCode}
+			, #{comProductFName}
+			, #{comProductFDetail}
+			, #{comProcessCode}
+			, #{comProcessName}
+			, #{comProductFEtc})
+	</insert>
+	
+	<update id="updateProdFault">
+		UPDATE
+			COM_PRODUCT_F
+		SET
+			COM_PRODUCT_F_CODE = #{comProductFCode}
+			, COM_PRODUCT_F_NAME = #{comProductFName}
+			, COM_PRODUCT_F_DETAIL = #{comProductFDetail}
+			, COM_PROCESS_CODE = #{comProcessCode}
+			, COM_PROCESS_NAME = #{comProcessName}
+			, COM_PRODUCT_F_ETC = #{comProductFEtc}
+			, COM_PRODUCT_F_SEQ = #{comProductFSeq}
+		WHERE
+			COM_PRODUCT_F_NO = #{comProductFNo}
+	</update>
+	
+	<delete id="deleteProdFault" parameterType="mes.com.prodFaulty.service.ProdFaultyVO">
+		DELETE FROM 
+			COM_PRODUCT_F
+		WHERE 
+			COM_PRODUCT_F_NO = #{comProductFNo}
+	</delete>
+
+</mapper>

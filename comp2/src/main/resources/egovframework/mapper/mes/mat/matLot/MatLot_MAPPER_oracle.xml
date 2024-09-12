@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mes.mat.lot.service.impl.MatLotMapper">
+
+	<!-- 자재LOT 조정 전체 조회 -->
+	<select id="selectMatLotList" parameterType="mes.mat.lot.service.MatLotVO" resultType="egovMap" >
+		SELECT *
+		FROM   (
+		              SELECT a.*,
+		                     ROWNUM rnum
+		              FROM   (
+										SELECT    m.mat_match_statement,
+										          TO_CHAR(m.mat_match_date, 'YYYY-MM-DD')as mat_match_date,
+										          m.mat_match_inout,
+										          m.mat_lot_no,
+										          m.com_material_code,
+										          c.com_material_name,
+										          i.mat_inout_quantity,
+										          CASE WHEN m.mat_match_inout = 'INOUT004'
+										          THEN (i.mat_inout_quantity + m.mat_match_qty)
+										          ELSE (i.mat_inout_quantity - m.mat_match_qty)
+										          END AS final_qty,
+										          m.mat_match_qty,
+										          m.mat_past_quantity
+										FROM      com_material c,
+										          mat_inout i,
+										          mat_match m
+										WHERE     c.com_material_code = m.com_material_code
+										AND       m.mat_lot_no = i.mat_lot_no
+										AND       i.MAT_INOUT_GUBUN = 'INOUT002'
+		                              <if test="matMatchDate != null and matMatchDate != ''">
+		                              	AND
+							        	m.mat_match_date BETWEEN TO_DATE(#{matMatchDate},'YYYY-MM-DD') AND TO_DATE(#{matMatchEndDate},'YYYY-MM-DD')
+		                              </if>
+		                              <if test="comMaterialCode != null and comMaterialCode != ''">
+		                              	AND
+							        	m.com_material_code LIKE '%' || #{comMaterialCode} || '%'
+		                              </if>
+									  <if test="matMatchInout != null and matMatchInout != ''">
+									  	AND
+									  	m.mat_match_inout = #{matMatchInout}
+									  </if>
+									  <if test="matLotNo != null and matLotNo != ''">
+									  	AND
+									  	m.mat_lot_no LIKE '%' || #{matLotNo} || '%'
+									  </if>									  
+		                              ORDER BY m.mat_match_date  <![CDATA[ ) a
+		              WHERE  ROWNUM <= #{lastIndex} )
+		WHERE  rnum >= #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 정산입출고 삽입 -->
+	<insert id="insertMatLot">
+			INSERT INTO mat_match (	mat_match_statement,
+									mat_match_inout,
+									mat_match_date,
+									mat_match_qty,
+									com_material_code,
+									mat_lot_no,
+									mat_past_quantity)
+			VALUES (#{matMatchStatement}
+			, #{matMatchInout}
+			, SYSDATE
+			, #{matMatchQty}
+			, #{comMaterialCode}
+			, #{matLotNo}
+			, #{matPastQuantity})
+	</insert>
+	
+	<!-- 자재입출고 테이블 업데이트 -->
+	<update id="updateMatInout">
+			UPDATE mat_inout
+			SET MAT_INOUT_QUANTITY = #{matInoutQuantity}
+			WHERE MAT_LOT_NO = #{matLotNo}
+			AND MAT_INOUT_GUBUN = 'INOUT002'
+	</update>
+	
+	<!-- 정산입출고 테이블 업데이트 -->
+	<update id="updateMatLot">
+			UPDATE MAT_MATCH SET
+		MAT_MATCH_DATE = SYSDATE,
+		, MAT_MATCH_INOUT = #{matMatchInout}
+		, MAT_MATCH_QTY = #{matMatchQty}
+		, COM_MATERIAL_CODE = #{comMaterialCode}
+		, MAT_LOT_NO = #{matLotNo}
+		, MAT_PAST_QUANTITY = #{matPastQuantity}
+		WHERE MAT_MATCH_STATEMENT = #{matMatchStatement}
+	</update>
+	
+	<!-- 정산입출고목록 삭제 -->
+	<delete id="deleteMatLot">
+		DELETE FROM MAT_MATCH
+		WHERE MAT_MATCH_STATEMENT = #{matMatchStatement}
+	</delete>
+</mapper>
